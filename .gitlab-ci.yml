@@ -1,8 +1,8 @@
 image: "gcc"
 
 before_script:  
-    - apt-get update
+    - echo this_should_be_setup
 
 build:
   script:
-    - echo hello world
+    - echo hello_world
