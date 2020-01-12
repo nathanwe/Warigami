@@ -27,10 +27,10 @@ set (PLATFORM_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/src/platform/sleep.cpp
 )
 
-add_library(platform STATIC ${PLATFORM_HEADERS} ${PLATFORM_SOURCE_FILES})
+add_library(platform ${PLATFORM_HEADERS} ${PLATFORM_SOURCE_FILES})
 target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include) 
 
-add_library(core STATIC ${CORE_HEADERS} ${CORE_SOURCE_FILES})
+add_library(core ${CORE_HEADERS} ${CORE_SOURCE_FILES})
 target_include_directories(core PUBLIC ${PROJECT_SOURCE_DIR}/include) 
 target_link_libraries(core platform glfw glm nlohmann_json)
 
