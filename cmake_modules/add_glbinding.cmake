@@ -6,10 +6,9 @@ set (OPTION_BUILD_DOCS OFF CACHE INTERNAL "")
 set (OPTION_BUILD_TOOLS OFF CACHE INTERNAL "")
 
 
-FetchContent_Declare(glbinding
-    PREFIX glbinding
+FetchContent_Declare(glbinding    
     GIT_REPOSITORY https://github.com/cginternals/glbinding.git
-    GIT_TAG v3.1.0
+    GIT_TAG 28d32d9bbc72aedf815f18113b0bd3aa7b354108
 	GIT_SHALLOW TRUE
 )
 

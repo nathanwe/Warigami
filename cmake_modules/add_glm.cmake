@@ -2,6 +2,7 @@ include(FetchContent)
 
 set (GLM_TEST_ENABLE OFF CACHE INTERNAL "")
 
+set (CMAKE_CXX_FLAGS ${CXXFLAGS})
 
 FetchContent_Declare(glm
     PREFIX glm
