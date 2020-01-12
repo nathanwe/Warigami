@@ -35,8 +35,6 @@ namespace core
 
         bool was_mouse_released(std::uint8_t mouse_button);
 
-        glm::vec2 click_position(std::uint8_t button);
-
         void update();
 
         const glm::vec2 mouse_delta() { return _mouse_delta.average(); }
@@ -64,6 +62,10 @@ namespace core
             static input_manager& manager = r;
 
             void (*callback)(GLFWwindow*, int, int, int) = ([](GLFWwindow* window, int button, int action, int mods) {
+                (void)button;
+                (void)action;
+                (void)mods; // silence unused param warnings
+
                 double x, y;
                 glfwGetCursorPos(window, &x, &y);
                 manager._last_click_position = {(float)x, (float)y};

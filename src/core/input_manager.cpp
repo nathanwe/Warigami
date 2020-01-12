@@ -48,13 +48,13 @@ void core::input_manager::update()
     for(int i = 0; _glfw_key_codes[i] != GLFW_KEY_LAST; ++i)
     {
         auto state = glfwGetKey(_window, _glfw_key_codes[i]);
-        _current_key_states[_glfw_key_codes[i]] = state;
+        _current_key_states[_glfw_key_codes[i]] = (std::uint8_t) state;
     }
 
     for(int i = 0; _glfw_mouse_button_codes[i] != GLFW_MOUSE_BUTTON_LAST; ++i)
     {
         auto state = glfwGetMouseButton(_window, _glfw_mouse_button_codes[i]);
-        _current_mouse_button_states[_glfw_mouse_button_codes[i]] = state;
+        _current_mouse_button_states[_glfw_mouse_button_codes[i]] = (std::uint8_t) state;
     }
 
     double x, y;
@@ -221,9 +221,3 @@ core::input_manager::input_manager(GLFWwindow *window) :
     _last_x = x;
     _last_y = y;
 }
-
-glm::vec2 core::input_manager::click_position(std::uint8_t button)
-{
-    return _last_click_position;
-}
-
