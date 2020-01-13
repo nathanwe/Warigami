@@ -16,8 +16,7 @@ build:
   script:
     - mkdir build
     - cd build
-    - pwd
-    - cmake-3.16.2-Linux-x86_64/bin/cmake ..
+    - ../cmake-3.16.2-Linux-x86_64/bin/cmake ..
     - make -j8
   #artifacts:
    # paths:
