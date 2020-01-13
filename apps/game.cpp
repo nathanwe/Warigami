@@ -48,6 +48,7 @@ int main() {
         timer.end();
 
         std::cout << timer.frame_info() << std::endl;
+        std::cout << "hello world" << std::endl;
     }
 
     glfwDestroyWindow(window);
