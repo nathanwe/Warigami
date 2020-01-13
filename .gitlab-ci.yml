@@ -9,13 +9,15 @@ build:
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   before_script:
-     - wget -O /root/cmake-3.16.2-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-Linux-x86_64.sh
-     - bash ~/cmake-3.16.2-Linux-x86_64.sh --skip-license --prefix=/root
+    - pwd
+    - wget -O cmake-3.16.2-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-Linux-x86_64.sh
+    - bash cmake-3.16.2-Linux-x86_64.sh --skip-license
 
   script:
     - mkdir build
     - cd build
-    - /root/cmake-3.16.2-Linux-x86_64/bin/cmake ..
+    - pwd
+    - cmake-3.16.2-Linux-x86_64/bin/cmake ..
     - make -j8
   #artifacts:
    # paths:
