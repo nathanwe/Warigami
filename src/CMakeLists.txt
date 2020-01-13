@@ -4,8 +4,7 @@ set (CORE_HEADERS
     ${PROJECT_SOURCE_DIR}/include/core/framerate.hpp
     ${PROJECT_SOURCE_DIR}/include/core/frame_limiter.hpp
     ${PROJECT_SOURCE_DIR}/include/core/frame_timer.hpp
-    ${PROJECT_SOURCE_DIR}/include/core/input_manager.hpp
-    ${PROJECT_SOURCE_DIR}/include/core/startup.hpp
+    ${PROJECT_SOURCE_DIR}/include/core/input_manager.hpp    
     ${PROJECT_SOURCE_DIR}/include/core/startup_config.hpp
     ${PROJECT_SOURCE_DIR}/include/core/system_info.hpp
 )

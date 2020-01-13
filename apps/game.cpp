@@ -11,8 +11,7 @@
 #include <core/input_manager.hpp>
 
 
-int main() {
-    
+int main() {    
     if (!glfwInit())
         return 1;
 
@@ -43,9 +42,12 @@ int main() {
 
         glfwPollEvents();
 
+        input.update();
+
         limiter.wait_remainder();
         timer.end();
-        std::cout << timer.frame_info() <<"f" << std::endl;
+
+        std::cout << timer.frame_info() << std::endl;
     }
 
     glfwDestroyWindow(window);
