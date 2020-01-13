@@ -24,8 +24,7 @@ build:
     - mkdir build
     - pushd build
     - ../cmake-3.16.2-Linux-x86_64/bin/cmake ..
-    - make -j8
-    - popd
+    - make -j8    
 
   #artifacts:
    # paths:
