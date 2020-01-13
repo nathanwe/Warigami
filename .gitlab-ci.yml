@@ -10,10 +10,10 @@ build:
   # install the necessary build tools when needed
   before_script:
     - pwd
+   
+  script:
     - wget -O cmake-3.16.2-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-Linux-x86_64.sh
     - bash cmake-3.16.2-Linux-x86_64.sh --skip-license
-
-  script:
     - ls
     - mkdir build
     - pushd build
