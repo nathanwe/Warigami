@@ -9,7 +9,8 @@ build:
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
   before_script:
-    - pwd
+    - apt-get update
+    - apt-get install libxrandr-dev
    
   script:
     - mkdir cmake-3.16.2-Linux-x86_64
