@@ -9,7 +9,9 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake_modules")
 set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/install")
 set(EXTERNAL_INSTALL_LOCATION "${PROJECT_SOURCE_DIR}/external")
 set(OpenGL_GL_PREFERENCE "GLVND")
-set(ASSETS_DIR ${PROJECT_SOURCE_DIR}/assets)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin)
+
+
 
 # Dependencies
 include(add_glfw)
@@ -19,7 +21,7 @@ include(add_glm)
 
 # Main build targets
 add_subdirectory(src)
-add_subdirectory(apps)
+add_subdirectory(apps/game)
 
 # Tests
 # ...
