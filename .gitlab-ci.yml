@@ -14,10 +14,13 @@ build:
     - bash cmake-3.16.2-Linux-x86_64.sh --skip-license
 
   script:
+    - ls
     - mkdir build
-    - cd build
+    - pushd build
     - ../cmake-3.16.2-Linux-x86_64/bin/cmake ..
     - make -j8
+    - popd
+
   #artifacts:
    # paths:
     #  - mybinary
