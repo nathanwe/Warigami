@@ -8,10 +8,14 @@ build:
   stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
   # install the necessary build tools when needed
-  # before_script:
-  #   - apt update && apt -y install make autoconf
+  before_script:
+     - wget https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-Linux-x86_64.sh
+     - bash cmake-3.16.2-Linux-x86_64.sh --skip-license     
   script:
-    - echo test_script
+    - mkdir build
+    - cd build
+    - ~/cmake-3.16.2-Linux-x86_64/bin/cmake ..
+    - make
   #artifacts:
    # paths:
     #  - mybinary
