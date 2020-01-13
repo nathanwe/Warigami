@@ -12,6 +12,7 @@ build:
     - apt-get update
     - apt-get install -y libxrandr-dev
     - apt-get install -y libxinerama-dev
+    - apt-get install -y libxcursor-dev
    
   script:
     - mkdir cmake-3.16.2-Linux-x86_64
