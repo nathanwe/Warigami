@@ -15,13 +15,12 @@ build:
     - apt-get install -y libxcursor-dev
     - apt-get install -y libxi-dev
     - apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev
-   
-  script:
+
     - mkdir cmake-3.16.2-Linux-x86_64
     - wget https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-Linux-x86_64.sh
     - bash cmake-3.16.2-Linux-x86_64.sh --skip-license --prefix=cmake-3.16.2-Linux-x86_64
-    - pwd
-    - ls
+   
+  script:
     - mkdir build
     - pushd build
     - ../cmake-3.16.2-Linux-x86_64/bin/cmake ..
