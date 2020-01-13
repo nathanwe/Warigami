@@ -10,7 +10,7 @@ build:
   # install the necessary build tools when needed
   before_script:
     - apt-get update
-    - apt-get install libxrandr-dev
+    - apt-get install -y libxrandr-dev
    
   script:
     - mkdir cmake-3.16.2-Linux-x86_64
