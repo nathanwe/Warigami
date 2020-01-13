@@ -15,7 +15,7 @@ build:
     - mkdir build
     - cd build
     - ~/cmake-3.16.2-Linux-x86_64/bin/cmake ..
-    - make
+    - make -j8
   #artifacts:
    # paths:
     #  - mybinary
