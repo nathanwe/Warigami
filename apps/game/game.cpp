@@ -11,7 +11,15 @@
 #include <core/input_manager.hpp>
 
 
-int main() {    
+#include <ecs/entities.hpp>
+
+struct pos
+{
+    float a;
+    float b;
+};
+
+int main() {
     if (!glfwInit())
         return 1;
 

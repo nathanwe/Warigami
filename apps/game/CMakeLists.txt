@@ -2,7 +2,7 @@ add_executable (game game.cpp)
 
 target_link_libraries(game PRIVATE
     glfw
-    core
+    core ecs
     glbinding)
 
 add_custom_target(copy_assets

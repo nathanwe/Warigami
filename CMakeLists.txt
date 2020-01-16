@@ -24,7 +24,7 @@ add_subdirectory(src)
 add_subdirectory(apps/game)
 
 # Tests
-# ...
+add_subdirectory(test)
 
 # Packaging
 # ...
