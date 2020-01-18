@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <memory/pool_memory_block.hpp>
+#include <memory/alignment.hpp>
 
 
 allocators::pool_memory_block::pool_memory_block(
@@ -18,7 +19,7 @@ allocators::pool_memory_block::pool_memory_block(
 
     _malloc_size = calc_total_malloc_size(alignment);
     _original_pointer = (std::uint8_t *) malloc(_malloc_size);
-    _aligned_pointer = _original_pointer + calc_align_adjustment((uintptr_t) _original_pointer, alignment);
+    _aligned_pointer = memory::align_pointer(_original_pointer, alignment);
 
     prepare_memory(_aligned_pointer);
 }
@@ -100,26 +101,5 @@ void allocators::pool_memory_block::link_last_chunk_to(const allocators::pool_me
 
 size_t allocators::pool_memory_block::calc_total_malloc_size(uintptr_t alignment) const
 {
-    return (_chunk_size * _chunk_count) + alignment;
+    return ((size_t)_chunk_size * _chunk_count) + alignment;
 }
-
-
-/**
- * Calculate adjustment by masking off the lower bits of the address,
- * to determine how 'misaligned' it is.
- * */
-uintptr_t allocators::pool_memory_block::calc_align_adjustment(uintptr_t raw, uintptr_t alignment) const
-{
-    uintptr_t mask = (alignment - 1);
-    uintptr_t misalignment = raw & mask;
-
-    std::uint32_t mask_32 = ((std::uint32_t) alignment) - 1;
-    std::uint32_t raw_32 = (std::uint32_t) raw;
-    std::uint32_t misalignment_32 = mask_32 & raw_32;
-
-
-    return misalignment > 0
-           ? alignment - misalignment
-           : 0;
-}
-

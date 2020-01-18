@@ -51,9 +51,7 @@ namespace allocators
 
         void prepare_memory(std::uint8_t *mem);
 
-        size_t calc_total_malloc_size(uintptr_t alignment) const;
-
-        uintptr_t calc_align_adjustment(uintptr_t mem, uintptr_t alignment) const;
+        size_t calc_total_malloc_size(uintptr_t alignment) const;        
 
         std::uint8_t *last_chunk_ptr();
     };
