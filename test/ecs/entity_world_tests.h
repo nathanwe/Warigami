@@ -46,36 +46,41 @@ void test_basic()
 
 void test_each()
 {    
-    ecs::archetype_pools factory;
-    ecs::world world(factory);
+    unsigned int  count = 100;
 
-    auto& entityA = world.add_entity<transform, renderdata>();
-    auto& entityB = world.add_entity<transform, renderdata>();
-    auto& entityC = world.add_entity<transform>();
+    while (count-- > 0)
+    {
+        ecs::archetype_pools factory;
+        ecs::world world(factory);
 
-    auto& transformA = entityA.get_component<transform>();
-    auto& transformB = entityB.get_component<transform>();
-    auto& renderA = entityA.get_component<renderdata>();
+        auto& entityA = world.add_entity<transform, renderdata>();
+        auto& entityB = world.add_entity<transform, renderdata>();
+        auto& entityC = world.add_entity<transform>();
 
-    int iter_count = 0;
+        auto& transformA = entityA.get_component<transform>();
+        auto& transformB = entityB.get_component<transform>();
+        auto& renderA = entityA.get_component<renderdata>();
 
-    world.each<transform, renderdata>([&iter_count](transform& t, renderdata& r) {
-        iter_count++;
-    });
+        int iter_count = 0;
 
-    if (iter_count != 2) throw std::runtime_error("iteration is wrong");
+        world.each<transform, renderdata>([&iter_count](transform& t, renderdata& r) {
+            iter_count++;
+            });
 
-    iter_count = 0;
-    
-    world.each<transform>([&iter_count](transform& t) {
-        iter_count++;
-        t.pitch = 123;        
-    });
+        if (iter_count != 2) throw std::runtime_error("iteration is wrong");
 
-    if (iter_count != 3) throw std::runtime_error("iteration is wrong");
+        iter_count = 0;
 
-    world.each<transform>([&iter_count](transform& t) {
-    if (t.pitch != 123)
-        throw std::runtime_error("transform pitch values should all be 123");
-    });
+        world.each<transform>([&iter_count](transform& t) {
+            iter_count++;
+            t.pitch = 123;
+            });
+
+        if (iter_count != 3) throw std::runtime_error("iteration is wrong");
+
+        world.each<transform>([&iter_count](transform& t) {
+            if (t.pitch != 123)
+                throw std::runtime_error("transform pitch values should all be 123");
+            });
+    }
 }
