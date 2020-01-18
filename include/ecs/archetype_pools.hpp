@@ -25,7 +25,7 @@ namespace ecs
         static const std::uint32_t MinArchetypeChunks;
 
     public:
-        archetype_pools(std::uint32_t next_id) : _next_id(next_id) {}
+        archetype_pools() {}
         archetype_pools(const archetype_pools& other) = delete;
         archetype_pools &operator=(const archetype_pools &other) = delete;
 
@@ -49,7 +49,6 @@ namespace ecs
         
     private:
         std::unordered_map<component_bitset, archetype_pool> _archetype_pools;
-        entity_id _next_id;
        
         archetype_pool& find_pool(component_bitset archetype_id);
     };

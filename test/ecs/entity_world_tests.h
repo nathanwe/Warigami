@@ -31,7 +31,7 @@ void test_basic()
 
     while (count-- > 0)
     {
-        ecs::archetype_pools factory(1);
+        ecs::archetype_pools factory;
         ecs::world world(factory);
 
         auto& entityA = world.add_entity<transform, renderdata>();
@@ -46,7 +46,7 @@ void test_basic()
 
 void test_each()
 {    
-    ecs::archetype_pools factory(1);
+    ecs::archetype_pools factory;
     ecs::world world(factory);
 
     auto& entityA = world.add_entity<transform, renderdata>();
