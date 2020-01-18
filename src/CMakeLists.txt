@@ -1,25 +1,53 @@
 #TODO: Probably split up this cmake file into one file per library
 
 
+##### MEMORY #####
+
+set(MEMORY_HEADER_LIST
+    ${PROJECT_SOURCE_DIR}/include/memory/alignment.hpp
+    ${PROJECT_SOURCE_DIR}/include/memory/pool_allocator.hpp
+    ${PROJECT_SOURCE_DIR}/include/memory/pool_memory_block.hpp
+    ${PROJECT_SOURCE_DIR}/include/memory/typed_pool_allocator.hpp)
+
+set(MEMORY_SOURCE_LIST
+    ${PROJECT_SOURCE_DIR}/src/memory/alignment.cpp
+    ${PROJECT_SOURCE_DIR}/src/memory/pool_allocator.cpp
+    ${PROJECT_SOURCE_DIR}/src/memory/pool_memory_block.cpp)
+
+add_library(memory ${MEMORY_SOURCE_LIST} ${MEMORY_HEADER_LIST})
+target_include_directories(memory PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(memory PUBLIC cxx_std_17)
+
 
 ##### ECS #####
 
-set (ECS_HEADERS
-    ${PROJECT_SOURCE_DIR}/include/ecs/behavior_base.hpp
-    ${PROJECT_SOURCE_DIR}/include/ecs/behaviors.hpp
-    ${PROJECT_SOURCE_DIR}/include/ecs/ecs_types.hpp
-    ${PROJECT_SOURCE_DIR}/include/ecs/entities.hpp
-    ${PROJECT_SOURCE_DIR}/include/ecs/entity.hpp
-    ${PROJECT_SOURCE_DIR}/include/ecs/policies/mock_entities.hpp
-    ${PROJECT_SOURCE_DIR}/include/ecs/policies/mock_entity.hpp
-)
+set (ECS_SOURCE_LIST
+     ${PROJECT_SOURCE_DIR}/src/ecs/archetype_pool.cpp
+     ${PROJECT_SOURCE_DIR}/src/ecs/archetype_pools.cpp
+     ${PROJECT_SOURCE_DIR}/src/ecs/world.cpp
+     ${PROJECT_SOURCE_DIR}/src/ecs/chunk_component_accessor.cpp
+     ${PROJECT_SOURCE_DIR}/src/ecs/entity.cpp
+     ${PROJECT_SOURCE_DIR}/src/ecs/component_meta.cpp
+     ${PROJECT_SOURCE_DIR}/src/ecs/query_cache.cpp)
 
-# this is a header-only lib for now.
-# note you'll have to change this when cpp files are added.
-add_library(ecs INTERFACE)
-target_sources(ecs INTERFACE "$<BUILD_INTERFACE:${ECS_HEADERS}>")
-target_include_directories(ecs INTERFACE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(ecs INTERFACE cxx_std_17)
+set (ECS_HEADER_LIST     
+     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_chunk_component.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_id.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_pool.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/chunk_component_accessor.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/component_meta.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/component.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/ecs_types.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_pools.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/world.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/entity.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/behavior.hpp
+     ${PROJECT_SOURCE_DIR}/include/ecs/register_component.hpp)
+
+add_library(ecs STATIC ${ECS_SOURCE_LIST} ${ECS_HEADER_LIST})
+target_include_directories(ecs PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(ecs PUBLIC cxx_std_17)
+target_link_libraries(ecs PRIVATE memory nlohmann_json)
 
 
 

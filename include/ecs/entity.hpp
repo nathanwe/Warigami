@@ -1,32 +1,67 @@
 //
-// Created by sava on 1/15/20.
+// Created by sava on 10/8/19.
 //
 
-#ifndef WIZARDENGINE_ENTITY_BASE_HPP
-#define WIZARDENGINE_ENTITY_BASE_HPP
+#ifndef __ENTITY_H_
+#define __ENTITY_H_
 
-#include <optional>
-
+#include <ecs/chunk_component_accessor.hpp>
 #include <ecs/ecs_types.hpp>
-#include <ecs/policies/mock_entity.hpp>
+#include <optional>
 
 namespace ecs
 {
-    class entity : public mock_entity
+    class entity
     {
-    public:
-        entity_id id() { return _id; }
+    public:    
 
-        void set_active(bool val) { _is_active = val; }
+        entity(
+            entity_id id,
+            component_bitset archetype_id,
+            std::uint8_t *chunk_ptr);
 
-        bool is_active() const { return _is_active; }
+        entity(const entity& other);
 
+        [[nodiscard]] entity_id id() const { return _id; }
+        [[nodiscard]] void *ptr() const { return _accessor.ptr(); }
+        [[nodiscard]] component_bitset archetype_id() const { return _archetype_id; }
+        [[nodiscard]] bool has(component_bitset component_bit) const { return _archetype_id & component_bit; }
+        [[nodiscard]] bool active() const { return _active; }
+        [[nodiscard]] chunk_component_accessor& accessor() { return _accessor; }
+
+        void destroy();
+        void copy_components_from(entity& other);
+
+        template<typename T>
+        T &get_component()
+        {
+            return *(_accessor.get_component<T>());
+        }
+
+        template<typename T>
+        std::optional<std::reference_wrapper<T>> get_component_opt()
+        {
+            return has<T>()
+                   ? std::optional<std::reference_wrapper<T>>(*(_accessor.get_component<T>()))
+                   : std::optional<std::reference_wrapper<T>>();
+        }
+
+        template<class T>
+        bool has()
+        {
+            return _archetype_id & component<T>::archetype_bit;
+        }
+
+        void set_active(bool val) { _active = val; }
+      
 
     private:
-
         entity_id _id;
-        bool _is_active {true};
+        component_bitset  _archetype_id;
+        chunk_component_accessor _accessor;
+        bool _active;
     };
 }
 
-#endif //WIZARDENGINE_ENTITY_BASE_HPP
+
+#endif //__ENTITY_H_

@@ -1,17 +1,18 @@
 //
-// Created by sava on 1/15/20.
+// Created by sava on 9/21/19.
 //
 
-#ifndef WIZARDENGINE_ECS_TYPES_HPP
-#define WIZARDENGINE_ECS_TYPES_HPP
+#ifndef ECS_DEV_ECS_TYPES_H
+#define ECS_DEV_ECS_TYPES_H
 
 #include <cstdint>
 #include <bitset>
 
-namespace ecs
-{
-    typedef std::uint32_t entity_id;
-    typedef std::bitset<64> archetype_id;
-}
+#define ECS_MAX_COMPONENT_TYPES 64
 
-#endif //WIZARDENGINE_ECS_TYPES_HPP
+typedef unsigned long long component_bitset;
+
+typedef std::uint32_t entity_id;
+typedef std::uint8_t component_shift;
+
+#endif //ECS_DEV_ECS_TYPES_H
