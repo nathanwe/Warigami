@@ -13,14 +13,14 @@ _deps
 external/*
 build/*
 out/*
+install/*
+vsbuild/
 cmake-build-debug/*
 cmake-build-release/*
 
 .vscode
 .vs
+.idea
 
 sh.exe.stackdump
 
-install/
-
-.idea/
