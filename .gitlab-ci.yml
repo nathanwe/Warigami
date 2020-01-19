@@ -25,8 +25,8 @@ build:
     - mkdir build
     - pushd build
     - ../cmake-3.16.2-Linux-x86_64/bin/cmake ..
-    - make -j8 game
-    - make -j8 ecs_tests
+    - make -j2 game
+    - make -j2 ecs_tests
 
   #artifacts:
    # paths:
