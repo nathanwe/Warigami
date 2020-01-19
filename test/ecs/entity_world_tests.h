@@ -41,7 +41,6 @@ void test_basic()
         auto& transformB = entityB.get_component<transform>();
         auto& renderA = entityA.get_component<renderdata>();
     }
-
 }
 
 void test_each()
