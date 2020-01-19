@@ -18,6 +18,7 @@ include(add_glfw)
 include(add_glbinding)
 include(add_nlohmann_json)
 include(add_glm)
+add_subdirectory(thirdparty/imgui)
 
 # Main build targets
 add_subdirectory(src)

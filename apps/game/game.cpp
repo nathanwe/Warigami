@@ -1,7 +1,17 @@
-#include <GLFW/glfw3.h>
+#define  GLFW_INCLUDE_NONE 
+
 #include <iostream>
 
-#include <glbinding/glbinding.h>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+#define GLFW_INCLUDE_NONE
+#include <glbinding/glbinding.h>  // Initialize with glbinding::initialize()
+#include <glbinding/gl/gl.h>
+using namespace gl;
+
+#include <GLFW/glfw3.h>
 
 
 #include <core/frame_limiter.hpp>
@@ -10,23 +20,33 @@
 #include <core/system_info.hpp>
 #include <core/input_manager.hpp>
 
+#include "sample_mgui.hpp"
+
+
+static void glfw_error_callback(int error, const char* description)
+{
+    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
 
 
 int main() {
+
+    glfwSetErrorCallback(glfw_error_callback);
+
     if (!glfwInit())
         return 1;
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-    glbinding::initialize(glfwGetProcAddress, true);
+    const char* glsl_version = "#version 130";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-    /* Prevent framerate cap by gpu driver (don't wait for vblank before returning form glfwSwapBuffers) */
-    glfwSwapInterval(0);
-
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     GLFWwindow* window = glfwCreateWindow(800, 600, "Sample Window", nullptr, nullptr);
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1); //vsync
+
+    bool err = false;
+    glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
 
     core::startup_config conf;
     core::system_info info;
@@ -34,16 +54,25 @@ int main() {
     core::frame_limiter limiter(timer, 60);
     core::input_manager input(window);
 
-  /*  if (!conf.free_mouse())
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);*/
+    sample_mgui mgui_sample(window);
 
+    
 
     while (!glfwWindowShouldClose(window)) {
         timer.start();
 
         glfwPollEvents();
-
         input.update();
+
+        int display_w, display_h;
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClearColor(0.5f, 0.6f, 0.7f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        mgui_sample.draw();
+
+        glfwSwapBuffers(window);
 
         limiter.wait_remainder();
         timer.end();

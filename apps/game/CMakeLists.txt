@@ -3,7 +3,8 @@ add_executable (game game.cpp)
 target_link_libraries(game PRIVATE
     glfw
     core ecs
-    glbinding)
+    glbinding
+    imgui)
 
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
