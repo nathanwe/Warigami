@@ -71,7 +71,7 @@ namespace ecs
         *
         * @return a description of various offsets in the chunk for this archetype
         */
-        static chunk_description chunk_component_accessor::calculate_chunk_description(component_bitset archetype_id, void* chunk_ptr);
+        static chunk_description calculate_chunk_description(component_bitset archetype_id, void* chunk_ptr);
         static chunk_description calculate_worst_case_chunk_description(component_bitset archetype_id);
 
         static size_t chunk_align() { return alignof(component_ptr); }
