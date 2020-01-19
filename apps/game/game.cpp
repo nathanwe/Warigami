@@ -11,13 +11,6 @@
 #include <core/input_manager.hpp>
 
 
-#include <ecs/entities.hpp>
-
-struct pos
-{
-    float a;
-    float b;
-};
 
 int main() {
     if (!glfwInit())
