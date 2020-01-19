@@ -28,5 +28,5 @@ add_subdirectory(apps/game)
 add_subdirectory(test)
 
 # Packaging
-INSTALL(TARGETS game DESTINATION install)
+INSTALL(TARGETS game)
 include (cmake/CPackBuild.cmake)
