@@ -12,6 +12,9 @@ SET(CPACK_PACKAGE_VERSION_PATCH "0")
 
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY WizardGame)
 
+set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
+set(CPACK_COMPONENTS_ALL game)
+
 IF(WIN32 AND NOT UNIX)
   # There is a bug in NSI that does not handle full unix paths properly. Make
   # sure there is at least one set of four (4) backlasshes.
