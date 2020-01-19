@@ -63,7 +63,7 @@ namespace ecs
 
             for (auto a : cache.accessors)
             {
-                callback((*(a.accessor.get_component<TComponents>()))...);
+                callback((*(a.accessor.template get_component<TComponents>()))...);
             }
         }
 
