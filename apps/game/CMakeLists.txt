@@ -1,8 +1,7 @@
 add_executable (game game.cpp)
 
-target_link_libraries(game PRIVATE
-    glfw
-    core ecs
+target_link_libraries(game PRIVATE    
+    ecs
     glbinding
     imgui)
 
