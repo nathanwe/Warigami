@@ -11,10 +11,11 @@ namespace transforms
 	struct transform : component<transform>
 	{
 		ecs::entity_id parent;
-		glm::vec3 position;
-		glm::vec3 rotation;
-		glm::vec3 scale;
-		glm::mat4 localToWorld;
+		glm::vec3 position       = glm::vec3(0);
+		glm::vec3 rotation       = glm::vec3(0);
+		glm::vec3 scale          = glm::vec3(0);
+		glm::mat4 local_to_world = glm::mat4(0);
+		bool is_matrix_dirty     = true;
 	};
 }
 
