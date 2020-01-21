@@ -10,8 +10,8 @@ namespace rendering
 {
 	struct mesh_static_asset
 	{
-		std::vector<vertex> _vertices;
-		std::vector<std::uint32_t> _indices;
+		std::vector<vertex> _vertices {};
+		std::vector<std::uint32_t> _indices {};
 	};
 }
 

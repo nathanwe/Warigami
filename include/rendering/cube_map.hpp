@@ -5,7 +5,7 @@ namespace rendering
 {
 	struct cube_map
 	{
-		std::uint32_t id;
+		std::uint32_t id = 0;
 	};
 }
 

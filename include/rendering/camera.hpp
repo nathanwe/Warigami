@@ -20,12 +20,12 @@ namespace rendering
 		bool is_view_dirty = true;
 		bool is_projection_dirty = true;
 
-		glm::mat4 view                    = glm::mat4(0);
-		glm::mat4 projection              = glm::mat4(0);
-		glm::mat4 view_projection         = glm::mat4(0);
-		glm::mat4 inverse_view            = glm::mat4(0);
-		glm::mat4 inverse_projection      = glm::mat4(0);
-		glm::mat4 inverse_view_projection = glm::mat4(0);
+		glm::mat4 view                    = glm::mat4(1);
+		glm::mat4 projection              = glm::mat4(1);
+		glm::mat4 view_projection         = glm::mat4(1);
+		glm::mat4 inverse_view            = glm::mat4(1);
+		glm::mat4 inverse_projection      = glm::mat4(1);
+		glm::mat4 inverse_view_projection = glm::mat4(1);
 
 		glm::vec3 clear_color = glm::vec3(0);
 		cube_map* clear_sky_box = nullptr;
