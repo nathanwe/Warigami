@@ -8,7 +8,6 @@
 ecs::state::state(archetype_pools& state) :
     _entity_pools(state)
 {
-    _entities.reserve(ReservedEntities);
 }
 
 ecs::entity& ecs::state::add_entity(component_bitset archetype_id)
@@ -16,10 +15,10 @@ ecs::entity& ecs::state::add_entity(component_bitset archetype_id)
     return add_entity(archetype_id, NextEntityId++);;
 }
 
-
 ecs::entity& ecs::state::add_entity(component_bitset archetype_id, entity_id id)
 {
-    auto& new_entity = _entities.emplace_back(_entity_pools.make_entity(archetype_id, id));
+    _entity_lookup.emplace(id, _entity_pools.make_entity(archetype_id, id));
+    auto& new_entity = _entity_lookup.find(id)->second;
 
     for (auto& pair : _caches)
         if ((archetype_id & pair.first) == pair.first)
@@ -39,21 +38,16 @@ void ecs::state::remove_entity(entity& entity)
         if ((archetype_id & pair.first) == pair.first)
             pair.second.remove(entity.id());
 
-    _entities.erase(std::remove_if(
-        _entities.begin(),
-        _entities.end(),
-        [&entity](ecs::entity& e) { return e.id() == entity.id(); }),
-        _entities.end());
+    auto it = _entity_lookup.find(entity.id());
+    _entity_lookup.erase(it);
 }
 
 void ecs::state::free_all()
 {
-    for (auto& e : _entities)
-    {
-        _entity_pools.free_entity(e);
-    }
+    for (auto& pair : _entity_lookup)
+        _entity_pools.free_entity(pair.second);
 
-    _entities.clear();
+    _entity_lookup.clear();
 }
 
 ecs::query_cache& ecs::state::find_query_cache(component_bitset archetype)
@@ -71,12 +65,19 @@ ecs::query_cache& ecs::state::find_query_cache(component_bitset archetype)
 ecs::query_cache ecs::state::build_query_cache(component_bitset archetype)
 {
     query_cache cache{ archetype };
-    for (auto& e : _entities)
+    for (auto& pair : _entity_lookup)
     {
+        auto& e = pair.second;
+
         if ((e.archetype_id() & archetype) == archetype)
             cache.accessors.emplace_back(e.id(), e.accessor());
     }
     return cache;
+}
+
+ecs::entity& ecs::state::find_entity(entity_id id)
+{
+    return _entity_lookup.find(id)->second;
 }
 
 std::atomic_uint ecs::state::NextEntityId = 100000;

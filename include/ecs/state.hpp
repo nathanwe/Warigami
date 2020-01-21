@@ -52,7 +52,7 @@ namespace ecs
 
         void remove_entity(entity& entity);
 
-        query_cache build_query_cache(component_bitset archetype);
+        entity& find_entity(entity_id id);
 
 
         template <typename... TComponents, typename TFunc>
@@ -73,9 +73,11 @@ namespace ecs
         archetype_pools &_entity_pools;        
         std::unordered_set<entity_id> _ids;
         std::unordered_map<component_bitset, query_cache> _caches;
-        std::vector<entity> _entities;
+                
+        std::unordered_map<entity_id, entity> _entity_lookup;
 
         query_cache& find_query_cache(component_bitset archetype);
+        query_cache build_query_cache(component_bitset archetype);
     };
 }
 

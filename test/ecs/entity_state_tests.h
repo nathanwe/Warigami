@@ -11,6 +11,7 @@
 
 void test_basic();
 void test_each();
+void test_find();
 
 
 int test_ecs_state_all()
@@ -20,6 +21,7 @@ int test_ecs_state_all()
 
     test_basic();
     test_each();
+    test_find();
    
     printf("Done with ecs state tests.\n");
     return 0;
@@ -81,5 +83,28 @@ void test_each()
             if (t.pitch != 123)
                 throw std::runtime_error("transform pitch values should all be 123");
             });
+    }
+}
+
+void test_find()
+{
+    unsigned int  count = 100;
+
+    while (count-- > 0)
+    {
+        ecs::archetype_pools factory;
+        ecs::state state(factory);
+
+        auto& entityA = state.add_entity<transform, renderdata>(111);
+        auto& entityB = state.add_entity<transform, renderdata>(222);
+        auto& entityC = state.add_entity<transform>(333);
+
+        auto& a = state.find_entity(111);
+        auto& b = state.find_entity(222);
+        auto& c = state.find_entity(333);
+
+        a.get_component<transform>().pitch = 1;
+        b.get_component<transform>().pitch = 1;
+        c.get_component<transform>().pitch = 1;
     }
 }

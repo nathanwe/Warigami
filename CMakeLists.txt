@@ -11,8 +11,6 @@ set(EXTERNAL_INSTALL_LOCATION "${PROJECT_SOURCE_DIR}/external")
 set(OpenGL_GL_PREFERENCE "GLVND")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin)
 
-
-
 # Dependencies
 include(add_glfw)
 include(add_glbinding)
