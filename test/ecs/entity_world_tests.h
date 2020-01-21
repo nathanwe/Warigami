@@ -36,7 +36,7 @@ void test_update();
 
 int test_ecs_world_all()
 {
-	test_basic();
+	test_update();
 	printf("Done with ecs world tests.\n");
 	return 0;
 }
@@ -55,7 +55,7 @@ void test_update()
 
 	world.update();
 
-	if (a.update_count != 0 && b.update_count != 0)
+	if (a.update_count == 0 || b.update_count == 0)
 	{
 		throw std::runtime_error("failed to update...?");
 	}
