@@ -17,6 +17,7 @@ include(add_glbinding)
 include(add_nlohmann_json)
 include(add_glm)
 add_subdirectory(thirdparty/imgui)
+add_subdirectory(thirdparty/lua)
 
 # Main build targets
 add_subdirectory(src)
