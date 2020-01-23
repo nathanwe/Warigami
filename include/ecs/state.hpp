@@ -37,6 +37,7 @@ namespace ecs
 		entity& add_entity(component_bitset archetype_id);
 		void remove_entity(entity& entity);
 		entity& find_entity(entity_id id);
+		bool has_entity(entity_id id);
 		void free_all();
 
 		template <typename... TComponents, typename TFunc>
@@ -48,6 +49,18 @@ namespace ecs
 			for (auto a : cache.accessors)
 			{
 				callback((*(a.accessor.template get_component<TComponents>()))...);
+			}
+		}
+
+		template <typename... TComponents, typename TFunc>
+		void each_id(TFunc callback)
+		{
+			constexpr auto arch_id = ecs::archetype_id<TComponents...>();
+			auto& cache = find_query_cache(arch_id);
+
+			for (auto a : cache.accessors)
+			{
+				callback(a.entity, (*(a.accessor.template get_component<TComponents>()))...);
 			}
 		}
 

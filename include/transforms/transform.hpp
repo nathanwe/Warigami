@@ -1,16 +1,17 @@
 #ifndef WIZARDPEOPLE_TRANSFORMS_TRANSFORM_HPP
 #define WIZARDPEOPLE_TRANSFORMS_TRANSFORM_HPP
 
-#include "ecs/components.hpp"
+#include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
+#include "transforms/component_bits.hpp"
 
-#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 
 namespace transforms
 {
-	struct transform : component<transform>
+	struct transform : ecs::component<transform>
 	{
-		ecs::entity_id parent;
+		entity_id parent;
 		glm::vec3 position       = glm::vec3(0);
 		glm::vec3 rotation       = glm::vec3(0);
 		glm::vec3 scale          = glm::vec3(0);
@@ -20,5 +21,6 @@ namespace transforms
 }
 
 template<> const component_shift ecs::component<transforms::transform>::component_bitshift = (component_shift)transforms::component_bits::transform;
+template<> const component_bitset ecs::component<transforms::transform>::archetype_bit = component_bitset(1) << transforms::transform::component_bitshift;
 
 #endif

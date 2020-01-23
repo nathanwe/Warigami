@@ -80,4 +80,9 @@ ecs::entity& ecs::state::find_entity(entity_id id)
     return _entity_lookup.find(id)->second;
 }
 
+bool ecs::state::has_entity(entity_id id)
+{
+    return _entity_lookup.find(id) != _entity_lookup.end();
+}
+
 std::atomic_uint ecs::state::NextEntityId = 100000;
