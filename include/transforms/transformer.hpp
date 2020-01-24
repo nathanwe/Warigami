@@ -9,7 +9,7 @@
 
 namespace transforms
 {
-	class transformer : ecs::system_base
+	class transformer : public ecs::system_base
 	{
 	public:
 		virtual void update(ecs::state& state) override;

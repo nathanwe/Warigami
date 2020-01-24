@@ -6,7 +6,7 @@
 
 namespace rendering
 {
-	class renderer : ecs::system_base
+	class renderer : public ecs::system_base
 	{
 	public:
 		virtual void update(ecs::state& state) override;
