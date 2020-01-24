@@ -112,3 +112,16 @@ target_link_libraries(rendering PUBLIC
     ecs
     glm 
     glfw)
+
+
+##### ASSET #####
+set (ASSET_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/asset/asset_manager.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/scene.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/scene_entity.cpp)
+
+add_library(asset STATIC ${ASSET_SOURCE_LIST})
+target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(asset PUBLIC cxx_std_17)
+target_link_libraries(asset PUBLIC core ecs)
+

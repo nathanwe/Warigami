@@ -56,8 +56,6 @@ int main() {
 
     sample_mgui mgui_sample(window);
 
-    
-
     while (!glfwWindowShouldClose(window)) {
         timer.start();
 
