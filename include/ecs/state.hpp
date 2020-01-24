@@ -43,7 +43,7 @@ namespace ecs
 		template <typename... TComponents, typename TFunc>
 		void each(TFunc callback)
 		{
-			constexpr auto arch_id = ecs::archetype_id<TComponents...>();
+			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
 
 			for (auto a : cache.accessors)
@@ -55,7 +55,7 @@ namespace ecs
 		template <typename... TComponents, typename TFunc>
 		void each_id(TFunc callback)
 		{
-			constexpr auto arch_id = ecs::archetype_id<TComponents...>();
+			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
 
 			for (auto a : cache.accessors)
@@ -74,7 +74,7 @@ namespace ecs
 		template <typename... TComponents>
 		entity& add_entity()
 		{
-			constexpr auto archetype = ecs::archetype_id<TComponents...>();
+			auto archetype = ecs::archetype_id<TComponents...>();
 			return add_entity(archetype);
 		}
 
