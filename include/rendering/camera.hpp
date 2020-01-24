@@ -2,6 +2,7 @@
 #define WIZARDPEOPLE_RENDERING_CAMERA_HPP
 
 #include "ecs/component.hpp"
+#include "rendering/component_bits.hpp"
 #include "rendering/cube_map.hpp"
 
 #include "glm/vec3.hpp"
@@ -27,6 +28,7 @@ namespace rendering
 		glm::mat4 inverse_projection      = glm::mat4(1);
 		glm::mat4 inverse_view_projection = glm::mat4(1);
 
+		clear_mode clear_setting = clear_mode::flat_color;
 		glm::vec3 clear_color = glm::vec3(0);
 		cube_map* clear_sky_box = nullptr;
 	};
