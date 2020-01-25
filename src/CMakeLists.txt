@@ -107,7 +107,7 @@ target_link_libraries(asset PUBLIC core ecs)
 ##### TRANSFORMS #####
 set (TRANSFORMS_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/transforms/transformer.cpp
-     ${PROJECT_SOURCE_DIR}/src/transforms/transform_loader.cpp)
+     ${PROJECT_SOURCE_DIR}/src/transforms/transform_loader.cpp transforms/transform.cpp)
 
 add_library(transforms STATIC ${TRANSFORMS_SOURCE_LIST})
 target_include_directories(transforms PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -120,7 +120,7 @@ target_link_libraries(transforms PUBLIC
 ##### RENDERING #####
 set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp rendering/renderable_mesh_static.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)

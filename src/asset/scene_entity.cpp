@@ -17,7 +17,7 @@ asset::scene_entity::scene_entity(json& entity_json, json_cache& cache)
        
     for (auto& c : prototype["root"]["components"])
     {
-        auto& type = c["type"].get<std::string>();
+        auto type = c["type"].get<std::string>();
         auto shift = ecs::component_meta::type_to_bit[type];
         _archetype_id |= component_bitset(1) << shift;
         _components.insert(std::make_pair(shift, c));
@@ -59,7 +59,7 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
     // keep track of scene entity components.
     for (auto& c : source_components)
     {
-        auto& type = c["type"].get<std::string>();
+        auto type = c["type"].get<std::string>();
         auto shift = ecs::component_meta::type_to_bit[type];
         shift_to_source_component[shift] = c;
     }
@@ -67,7 +67,7 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
     // override prototype component props with scene entity component props
     for (auto& target_component : target_components)
     {
-        auto& type = target_component["type"].get<std::string>();
+        auto type = target_component["type"].get<std::string>();
         auto shift = ecs::component_meta::type_to_bit[type];
         target_component_shifts.insert(shift);
 
