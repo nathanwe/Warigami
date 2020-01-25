@@ -19,7 +19,12 @@ add_dependencies (lua_test copy_script)
 
 # asset
 add_executable(asset_tests asset/main.cpp)
-target_link_libraries(asset_tests asset)
+target_link_libraries(asset_tests asset transforms rendering)
 target_include_directories(asset_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(asset_tests PUBLIC cxx_std_17)
 
+add_custom_target(copy_test_assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/asset/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+)
+
+add_dependencies (asset_tests copy_test_assets)

@@ -1,0 +1,28 @@
+{
+  "entities": [
+    {
+      "entity_id": 1,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0, 0, 0 ],
+          "local_to_world": [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
+          "is_matrix_dirty": false,
+          "parent": 0,
+          "has_parent": false
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "this_isnt_a_file.fbx",
+          "material": "this_isnt_a_file.mat"
+        }
+      ]
+    },
+    {
+      "entity_id": 2,
+      "prototype": "assets/prototypes/card.json"
+    }
+  ]
+}

@@ -12,11 +12,7 @@ namespace asset
 {
     typedef std::uint32_t resource_id;
 
-    resource_id next_resource_id()
-    {
-        static std::atomic<std::uint32_t> next_id;
-        return next_id++;
-    }
+    resource_id next_resource_id();
 }
 
 
