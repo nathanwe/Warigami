@@ -16,8 +16,8 @@ void test_find();
 
 int test_ecs_state_all()
 {
-    ecs::register_component<transform>(dummy_load);
-    ecs::register_component<renderdata>(dummy_load);
+    ecs::register_component<transform>("transform");
+    ecs::register_component<renderdata>("transform");
 
     test_basic();
     test_each();

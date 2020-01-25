@@ -3,7 +3,10 @@
 #ifndef __ADD_COMPONNET_HPP_
 #define __ADD_COMPONNET_HPP_
 
-#include <functional>
+#include <string>
+
+#include <ecs/ecs_types.hpp>
+#include <ecs/component_meta.hpp>
 
 #include <util/string_table.hpp>
 
@@ -13,7 +16,7 @@ using nlohmann::json;
 namespace ecs
 {
     template <typename TComponent>
-    void register_component(std::function<void(const json&, ecs::entity&, util::string_table&)> load_func)
+    void register_component(std::string type_name)
     {
         if (ecs::component_meta::bit_metas.find(TComponent::component_bitshift) !=
             ecs::component_meta::bit_metas.end())
@@ -25,8 +28,9 @@ namespace ecs
             TComponent::component_bitshift,
             ecs::component_meta::of<TComponent>()));
 
-      /*  asset::component_loader::loader_functions.insert(
-            std::make_pair(TComponent::component_bitshift, load_func));*/
+        ecs::component_meta::type_to_bit.insert(std::make_pair(
+            type_name,
+            TComponent::component_bitshift));
     }
 }
 

@@ -90,28 +90,47 @@ target_include_directories(ecs PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(ecs PUBLIC cxx_std_17)
 target_link_libraries(ecs PUBLIC core PRIVATE memory)
 
+##### ASSET #####
+set (ASSET_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/asset/asset_manager.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/scene.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/scene_entity.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/json_cache.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/resource_id.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/scene_hydrater.cpp)
+
+add_library(asset STATIC ${ASSET_SOURCE_LIST})
+target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(asset PUBLIC cxx_std_17)
+target_link_libraries(asset PUBLIC core ecs)
+
 ##### TRANSFORMS #####
 set (TRANSFORMS_SOURCE_LIST
-     ${PROJECT_SOURCE_DIR}/src/transforms/transformer.cpp)
+     ${PROJECT_SOURCE_DIR}/src/transforms/transformer.cpp
+     ${PROJECT_SOURCE_DIR}/src/transforms/transform_loader.cpp transforms/transform.cpp)
 
 add_library(transforms STATIC ${TRANSFORMS_SOURCE_LIST})
 target_include_directories(transforms PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(transforms PUBLIC cxx_std_17)
-target_link_libraries(transforms PUBLIC 
+target_link_libraries(transforms PUBLIC
     ecs
+    asset
     glm)
-
+    
 ##### RENDERING #####
 set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/camera_updater.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
+     rendering/renderable_mesh_static.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(rendering PUBLIC cxx_std_17)
 target_link_libraries(rendering PUBLIC 
     ecs
+    asset
     glbinding
     glm 
     glfw)
