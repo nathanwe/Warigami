@@ -14,3 +14,8 @@ void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_n
 		child_transform.parent = entity.id();
 	}
 }
+
+component_bitset transforms::transform_loader::components_to_load()
+{
+	return transform::archetype_bit;
+}

@@ -15,11 +15,13 @@
 #include <rendering/renderable_mesh_static.hpp>
 
 #include "sample_loader.hpp"
+#include "test_actual_loaders.hpp"
 
 
 const std::string ScenePath = "assets/scenes/sample_scene.json";
 
 void test_load_scene();
+
 
 int main (int argc, char** argv)
 {
@@ -27,6 +29,8 @@ int main (int argc, char** argv)
     ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
 
     test_load_scene();
+    test_transform();
+    test_renderable();
 }
 
 void test_load_scene()

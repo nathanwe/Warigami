@@ -39,6 +39,15 @@ namespace asset
 
         const std::vector<scene_entity>& children() const { return _children; }
 
+        bool has_id() const 
+        { 
+            return _entity_json.find("entity_id") != _entity_json.end(); 
+        }
+        
+        entity_id id() const
+        { 
+            return _entity_json["entity_id"].get<entity_id>();
+        }
 
     private:
         resource_id _id;

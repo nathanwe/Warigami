@@ -7,7 +7,7 @@
 namespace rendering
 {
 
-	class render_loader : asset::component_loader
+	class render_loader : public asset::component_loader
 	{
 		void load(asset::asset_loader_node& asset_loader_node) override;
 

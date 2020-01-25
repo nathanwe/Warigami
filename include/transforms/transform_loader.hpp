@@ -8,14 +8,10 @@
 namespace transforms
 {
 
-	class transform_loader : asset::component_loader
+	class transform_loader : public asset::component_loader
 	{
 		void load(asset::asset_loader_node& asset_loader_node) override;
-
-		component_bitset components_to_load() override
-		{
-			return transform::archetype_bit;
-		}
+		component_bitset components_to_load() override;
 	};
 
 }
