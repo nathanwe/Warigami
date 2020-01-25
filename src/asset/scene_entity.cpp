@@ -34,6 +34,20 @@ json& asset::scene_entity::component(component_bitset bit)
     return _components.find(bit)->second;
 }
 
+json asset::scene_entity::inflate_prototype(json& entity_json, json_cache& cache)
+{
+    auto entity_components = entity_json["components"];
+    auto prototype_path_it = entity_json.find("prototype");
+
+    if (prototype_path_it == entity_json.end())
+        return { {"root", entity_json}, {"children", json::array()} };
+
+    auto prototype_path = prototype_path_it.value().get<std::string>();
+    json prototype_json = cache.load(prototype_path);
+    merge_component_props(prototype_json["root"], entity_json);
+    return prototype_json;;
+}
+
 void asset::scene_entity::merge_component_props(json& target, json& source)
 {
     std::unordered_set<std::uint8_t> target_component_shifts;
@@ -46,7 +60,7 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
     for (auto& c : source_components)
     {
         auto& type = c["type"].get<std::string>();
-        auto shift = ecs::component_meta::type_to_bit[type];        
+        auto shift = ecs::component_meta::type_to_bit[type];
         shift_to_source_component[shift] = c;
     }
 
@@ -54,7 +68,7 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
     for (auto& target_component : target_components)
     {
         auto& type = target_component["type"].get<std::string>();
-        auto shift = ecs::component_meta::type_to_bit[type];        
+        auto shift = ecs::component_meta::type_to_bit[type];
         target_component_shifts.insert(shift);
 
         auto it = shift_to_source_component.find(shift);
@@ -76,18 +90,4 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
             target_components.push_back(c);
         }
     }
-}
-
-json asset::scene_entity::inflate_prototype(json& entity_json, json_cache& cache)
-{
-    auto entity_components = entity_json["components"];
-    auto prototype_path_it = entity_json.find("prototype");
-
-    if (prototype_path_it == entity_json.end())
-        return { {"root", entity_json}, {"children", json::array()} };
-
-    auto prototype_path = prototype_path_it.value().get<std::string>();
-    json prototype_json = cache.load(prototype_path);
-    merge_component_props(prototype_json["root"], entity_json);
-    return prototype_json;;
 }
