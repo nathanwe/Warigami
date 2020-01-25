@@ -14,3 +14,10 @@ add_custom_target(copy_script
 )
 
 add_dependencies (lua_test copy_script)
+
+##### RENDERING #####
+add_executable(rendering_test rendering/test.cpp)
+target_link_libraries(rendering_test 
+    rendering
+    transforms)
+target_compile_features(rendering_test PUBLIC cxx_std_17)

@@ -5,7 +5,7 @@
 #include "rendering/component_bits.hpp"
 #include "rendering/cube_map.hpp"
 
-#include "glm/vec3.hpp"
+#include "glm/glm.hpp"
 
 namespace rendering
 {

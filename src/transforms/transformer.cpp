@@ -42,10 +42,10 @@ namespace transforms
 				// calculate local transformation
 				// this has to be done after recursion since _local_to_parent is shared by all iterations
 				//	and would otherwise be overwritten during the recursion
-				_local_to_parent = calculate_matrix(r_transform);
+				m_local_to_parent = calculate_matrix(r_transform);
 
 				// apply inheritance
-				r_transform.local_to_world = parent_transform.local_to_world * _local_to_parent;
+				r_transform.local_to_world = parent_transform.local_to_world * m_local_to_parent;
 			}
 			r_transform.is_matrix_dirty = false;
 		}

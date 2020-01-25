@@ -103,12 +103,15 @@ target_link_libraries(transforms PUBLIC
 
 ##### RENDERING #####
 set (RENDERING_SOURCE_LIST
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/camera_updater.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(rendering PUBLIC cxx_std_17)
 target_link_libraries(rendering PUBLIC 
     ecs
+    glbinding
     glm 
     glfw)
