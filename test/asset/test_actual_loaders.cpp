@@ -9,8 +9,6 @@
 #include <transforms/transform_loader.hpp>
 #include <rendering/render_loader.hpp>
 
-
-
 const std::string ScenePath = "assets/scenes/sample_scene.json";
 
 

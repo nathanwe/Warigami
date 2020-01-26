@@ -97,12 +97,13 @@ set (ASSET_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/asset/scene_entity.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/json_cache.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/resource_id.cpp
-        ${PROJECT_SOURCE_DIR}/src/asset/scene_hydrater.cpp)
+        ${PROJECT_SOURCE_DIR}/src/asset/scene_hydrater.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/model_loader.cpp)
 
 add_library(asset STATIC ${ASSET_SOURCE_LIST})
 target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(asset PUBLIC cxx_std_17)
-target_link_libraries(asset PUBLIC core ecs)
+target_link_libraries(asset PUBLIC core ecs assimp)
 
 ##### TRANSFORMS #####
 set (TRANSFORMS_SOURCE_LIST

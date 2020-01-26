@@ -16,7 +16,7 @@
 
 #include "sample_loader.hpp"
 #include "test_actual_loaders.hpp"
-
+#include "test_model_loader.hpp"
 
 const std::string ScenePath = "assets/scenes/sample_scene.json";
 
@@ -31,6 +31,8 @@ int main (int argc, char** argv)
     test_load_scene();
     test_transform();
     test_renderable();
+
+    test_model_loader();
 }
 
 void test_load_scene()
