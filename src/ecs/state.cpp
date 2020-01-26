@@ -24,6 +24,9 @@ ecs::entity& ecs::state::add_entity(component_bitset archetype_id, entity_id id)
         if ((archetype_id & pair.first) == pair.first)
             pair.second.accessors.emplace_back(new_entity.id(), new_entity.accessor());
 
+    while (_entity_lookup.find(NextEntityId) != _entity_lookup.end())
+        NextEntityId++;
+
     return new_entity;
 }
 

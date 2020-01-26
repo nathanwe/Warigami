@@ -19,7 +19,7 @@ add_dependencies (lua_test copy_script)
 
 # asset
 add_executable(asset_tests asset/main.cpp asset/test_actual_loaders.cpp)
-target_link_libraries(asset_tests asset transforms rendering)
+target_link_libraries(asset_tests asset transforms rendering assimp)
 target_include_directories(asset_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(asset_tests PUBLIC cxx_std_17)
 

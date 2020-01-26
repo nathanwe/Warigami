@@ -99,6 +99,8 @@ public:
 		box_mesh.num_indices = 36;
 	}
 
+#define foo 123;
+
 	virtual void update(ecs::state& r_state) override
 	{
 		// spin box

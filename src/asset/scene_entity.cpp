@@ -8,6 +8,8 @@
 #include <ecs/ecs_types.hpp>
 #include <ecs/component_meta.hpp>
 
+
+
 asset::scene_entity::scene_entity(json& entity_json, json_cache& cache)
     : _id(asset::next_resource_id())
     , _entity_json(entity_json)
@@ -23,9 +25,47 @@ asset::scene_entity::scene_entity(json& entity_json, json_cache& cache)
         _components.insert(std::make_pair(shift, c));
     }
 
+    for (size_t i = 0; i < prototype["children"].size(); ++i)
+        prototype["children"][i]["_index_in_prototype"] = i;
+
+    std::vector<json> descendant_children;
+    std::vector<scene_entity*> inserted_children;
+
     for (auto& c : prototype["children"])
     {
-        _children.emplace_back(c, cache);
+        if (c.find("parent_index") == c.end()) {
+            auto& inserted = _children.emplace_back(c, cache);
+            inserted_children.push_back(&inserted);
+        }
+        else {
+            descendant_children.push_back(c);
+        }
+    }
+
+    while (!descendant_children.empty())
+    {
+        auto no_change = true;
+
+        for (auto *potential_parent : inserted_children)
+        {
+            auto parent_index = potential_parent->_entity_json["_index_in_prototype"].get<int>();
+
+            for (auto& descendant : descendant_children)
+            {
+                auto descendant_parent = descendant["parent_index"].get<int>();
+                if (descendant_parent == parent_index) {
+                    auto& inserted = potential_parent->_children.emplace_back(descendant, cache);
+                    inserted_children.push_back(&inserted);
+                    no_change = false;
+                }
+            }
+
+            auto removal = std::remove_if(descendant_children.begin(), descendant_children.end(),
+                    [parent_index] (json& j) { return j["parent_index"].get<int>() == parent_index; });
+            descendant_children.erase(removal, descendant_children.end());
+        }
+
+        if (no_change) break;
     }
 }
 

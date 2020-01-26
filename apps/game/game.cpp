@@ -1,16 +1,10 @@
-#define  GLFW_INCLUDE_NONE 
-
 #include <iostream>
 
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-
-#define GLFW_INCLUDE_NONE
 #include <glbinding/glbinding.h>  // Initialize with glbinding::initialize()
 #include <glbinding/gl/gl.h>
 using namespace gl;
 
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 
@@ -37,15 +31,13 @@ int main() {
     if (!glfwInit())
         return 1;
 
-    const char* glsl_version = "#version 130";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
     GLFWwindow* window = glfwCreateWindow(800, 600, "Sample Window", nullptr, nullptr);
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); //vsync
+    glfwSwapInterval(1);
 
-    bool err = false;
     glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
 
     core::startup_config conf;
@@ -76,12 +68,9 @@ int main() {
         timer.end();
 
         std::cout << timer.frame_info() << std::endl;
-        std::cout << "hello world" << std::endl;
     }
 
     glfwDestroyWindow(window);
-
     glfwTerminate();
-
     return 0;
 }
