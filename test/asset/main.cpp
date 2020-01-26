@@ -54,6 +54,6 @@ void test_load_scene()
         counter++;
     });
 
-    if (counter != 3)
+    if (counter != 4)
         throw std::runtime_error("scene traversal wrong");
 }

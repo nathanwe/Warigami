@@ -77,6 +77,8 @@ public:
 		glBindVertexArray(0);
 	}
 
+#define foo 123;
+
 	virtual void update(ecs::state& r_state) override
 	{
 		// spin box
