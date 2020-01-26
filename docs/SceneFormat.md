@@ -5,6 +5,8 @@ with some parenting and data inheritance support.
 
 ### Scene
 
+TODO: "parent_id" is unsupported, need to implement it in `scene.hpp`.
+
 A scene is a collection of entities. Child relationships can be represented
 as an an entity id:
 
