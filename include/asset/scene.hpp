@@ -18,7 +18,6 @@ using json = nlohmann::json;
 
 namespace asset
 {
-
     class scene
     {
     public:

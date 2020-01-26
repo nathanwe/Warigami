@@ -22,6 +22,7 @@
     },
     {
       "entity_id": 2,
+      "parent_id": 1,
       "prototype": "assets/prototypes/card.json"
     }
   ]

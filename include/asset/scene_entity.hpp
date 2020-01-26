@@ -37,8 +37,9 @@ namespace asset
 
         const std::vector<scene_entity>& children() const { return _children; }
 
-        bool has_id() const;
-        
+        scene_entity& add_child(json& entity_json, json_cache& cache);
+
+        bool has_id() const;        
         entity_id id() const;
 
     private:
@@ -63,6 +64,8 @@ namespace asset
         * For an entity with a specified prototype, the prototype will be loaded. 
         */
         json inflate_prototype(json& entity_json, json_cache& cache);
+
+        void build_child_tree(json& children, json_cache& cache);
     };
 }
 

@@ -5,8 +5,6 @@ with some parenting and data inheritance support.
 
 ### Scene
 
-TODO: "parent_id" is unsupported, need to implement it in `scene.hpp`.
-
 A scene is a collection of entities. Child relationships can be represented
 as an an entity id:
 
@@ -34,7 +32,7 @@ and id if one is omitted.
 
 Components are identified by the string passed to register_component();
 
-The component_loader should be implemented by various systems that load and initialize entity components in various ways.
+The `component_loader` interface should be implemented by various systems that load and initialize entity components in various ways.
 These loaders will have the json data from the scene file available to them, along with the ecs entity reference. 
 
 
