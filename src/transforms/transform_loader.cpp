@@ -7,7 +7,7 @@ void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_n
 	auto& entity = asset_loader_node.entity_resource.entity;
 	auto& entity_data = asset_loader_node.entity_resource.entity_data;
 
-	auto& json = asset_loader_node.entity_resource.entity_data.component_data(transform::archetype_bit);
+	auto& json = asset_loader_node.entity_resource.entity_data.component_data(transform::component_bitshift);
 
 	auto& t = entity.get_component<transform>();
 
@@ -15,10 +15,12 @@ void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_n
 		json["position"][0].get<float>(),
 		json["position"][1].get<float>(),
 		json["position"][2].get<float>());
+
 	t.rotation = glm::vec3(
 		json["rotation"][0].get<float>(),
 		json["rotation"][1].get<float>(),
 		json["rotation"][2].get<float>());
+
 	t.scale = glm::vec3(
 		json["scale"][0].get<float>(),
 		json["scale"][1].get<float>(),

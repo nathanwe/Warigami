@@ -92,7 +92,6 @@ target_link_libraries(ecs PUBLIC core PRIVATE memory)
 
 ##### ASSET #####
 set (ASSET_SOURCE_LIST
-        ${PROJECT_SOURCE_DIR}/src/asset/asset_manager.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/scene.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/scene_entity.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/json_cache.cpp

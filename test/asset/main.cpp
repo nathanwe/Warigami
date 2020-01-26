@@ -6,7 +6,6 @@
 
 #include <ecs/register_component.hpp>
 
-#include <asset/asset_manager.hpp>
 #include <asset/json_cache.hpp>
 #include <asset/scene.hpp>
 #include <asset/scene_hydrater.hpp>
@@ -39,8 +38,7 @@ void test_load_scene()
 {
     ecs::archetype_pools factory;
     ecs::state state(factory);   
-
-    asset::asset_manager manager;
+        
     asset::json_cache cache;
     asset::scene scene(ScenePath, cache);
     asset::scene_hydrater hydrater(state, scene);

@@ -16,11 +16,11 @@ namespace rendering
 		std::uint32_t texture_normal            = 0;
 		std::uint32_t texture_ambient_occlusion = 0;
 
-		glm::vec2 texture_scale  = glm::vec2(1);
-		glm::vec2 texture_offset = glm::vec2(0);
+		glm::vec2 texture_scale  = glm::vec2(1.f);
+		glm::vec2 texture_offset = glm::vec2(0.f);
 
-		glm::vec3 param_diffuse   = glm::vec3(0.96);
-		glm::vec3 param_metalness = glm::vec3(0.04);
+		glm::vec3 param_diffuse   = glm::vec3(0.96f);
+		glm::vec3 param_metalness = glm::vec3(0.04f);
 		float param_roughness     = 0.5f;
 	};
 }
