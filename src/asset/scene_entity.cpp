@@ -69,7 +69,7 @@ asset::scene_entity::scene_entity(json& entity_json, json_cache& cache)
     }
 }
 
-json& asset::scene_entity::component(component_bitset bit)
+const json& asset::scene_entity::component_data(component_bitset bit) const
 {
     return _components.find(bit)->second;
 }
@@ -130,4 +130,14 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
             target_components.push_back(c);
         }
     }
+}
+
+bool asset::scene_entity::has_id() const
+{
+    return _entity_json.find("entity_id") != _entity_json.end();
+}
+
+entity_id asset::scene_entity::id() const
+{
+    return _entity_json["entity_id"].get<entity_id>();
 }

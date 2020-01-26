@@ -23,12 +23,10 @@ namespace asset
     {
     public:
         scene_entity(json &entity_json, json_cache& cache);
-        json &component(component_bitset bit);
 
-        [[nodiscard]] component_bitset archetype_id() const
-        { 
-            return _archetype_id; 
-        }
+        const json &component_data(component_bitset bit) const;
+
+        [[nodiscard]] component_bitset archetype_id() const { return _archetype_id; }
 
         template <typename TFunc>
         void traverse(TFunc func)
@@ -39,22 +37,16 @@ namespace asset
 
         const std::vector<scene_entity>& children() const { return _children; }
 
-        bool has_id() const 
-        { 
-            return _entity_json.find("entity_id") != _entity_json.end(); 
-        }
+        bool has_id() const;
         
-        entity_id id() const
-        { 
-            return _entity_json["entity_id"].get<entity_id>();
-        }
+        entity_id id() const;
 
     private:
         resource_id _id;
 
         std::map<component_bitset, json> _components;
         std::vector<scene_entity> _children;
-        json _entity_json;
+        json _entity_json;        
         component_bitset _archetype_id;        
 
 
