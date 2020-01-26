@@ -32,6 +32,12 @@ add_dependencies (asset_tests copy_test_assets)
 ##### RENDERING #####
 add_executable(rendering_test rendering/test.cpp)
 target_link_libraries(rendering_test 
+    core
     rendering
     transforms)
 target_compile_features(rendering_test PUBLIC cxx_std_17)
+
+add_custom_target(rendering_test_assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/rendering/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+)
+add_dependencies (rendering_test rendering_test_assets)

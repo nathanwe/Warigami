@@ -8,19 +8,28 @@
 #define GLFW_INCLUDE_NONE
 #include "GLFW/glfw3.h"
 
+#include <memory>
+
 namespace rendering
 {
+	struct viewport
+	{
+		uint32_t x, y, width, height;
+	};
+
 	class renderer : public ecs::system_base
 	{
 	public:
-		renderer(GLFWwindow* window);
+		renderer(GLFWwindow* window, viewport window_view, bool is_debug);
 
 	public:
 		virtual void update(ecs::state& state) override;
 
 	private:
 		GLFWwindow* _window;
-		render_pass m_pass;
+		viewport _window_view;
+		std::unique_ptr<render_pass> _pass;
+		bool _is_debug;
 	};
 }
 

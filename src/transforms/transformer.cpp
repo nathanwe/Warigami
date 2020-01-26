@@ -21,7 +21,6 @@ namespace transforms
 		glm::mat4 rotation    = glm::eulerAngleZXY(r_transform.rotation.z, r_transform.rotation.x, r_transform.rotation.y);
 		glm::mat4 scale       = glm::scale(glm::mat4(1), r_transform.scale);
 		return translation * rotation * scale;
-			
 	}
 
 	void transformer::clean_transform_hierarchy(ecs::state& r_state, entity_id id, transform& r_transform)
