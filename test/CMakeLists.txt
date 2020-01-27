@@ -41,3 +41,13 @@ add_custom_target(rendering_test_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/rendering/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )
 add_dependencies (rendering_test rendering_test_assets)
+
+
+##### AUDIO #####
+add_executable(audio_tests audio/main.cpp)
+target_link_libraries(audio_tests audio ecs)
+target_compile_features(audio_tests PUBLIC cxx_std_17)
+
+add_custom_target(audio_test_assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/audio/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets)
+add_dependencies (audio_tests audio_test_assets)
