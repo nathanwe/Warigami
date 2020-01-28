@@ -17,21 +17,21 @@ namespace rendering
 		auto& json = entity_data.component_data(camera::component_bitshift);
 		auto& cam = entity.get_component<camera>();
 
-		if (auto& it = json.find("field_of_view"); it != json.end())
+		if (auto it = json.find("field_of_view"); it != json.end())
 		{
 			cam.field_of_view = it->get<float>();
 		}
-		if (auto& it = json.find("near_clip_distance"); it != json.end())
+		if (auto it = json.find("near_clip_distance"); it != json.end())
 		{
 			cam.near_clip_distance = it->get<float>();
 		}
-		if (auto& it = json.find("far_clip_distance"); it != json.end())
+		if (auto it = json.find("far_clip_distance"); it != json.end())
 		{
 			cam.far_clip_distance = it->get<float>();
 		}
-		if (auto& it = json.find("clear_setting"); it != json.end())
+		if (auto it = json.find("clear_setting"); it != json.end())
 		{
-			auto& s = it->get<std::string>();
+			auto s = it->get<std::string>();
 			if (s == "none")
 			{
 				cam.clear_setting = camera::clear_mode::none;
@@ -45,13 +45,13 @@ namespace rendering
 				cam.clear_setting = camera::clear_mode::sky_box;
 			}
 		}
-		if (auto& it = json.find("clear_color"); it != json.end())
+		if (auto it = json.find("clear_color"); it != json.end())
 		{
 			cam.clear_color.x = it->operator[](0).get<float>();
 			cam.clear_color.y = it->operator[](1).get<float>();
 			cam.clear_color.z = it->operator[](2).get<float>();
 		}
-		if (auto& it = json.find("clear_sky_box"); it != json.end())
+		if (auto it = json.find("clear_sky_box"); it != json.end())
 		{
 			std::array<std::string, 6> filepaths;
 			filepaths[0] = it->operator[](0).get<std::string>();

@@ -13,11 +13,11 @@ namespace rendering
 		auto& json = entity_data.component_data(light_point::component_bitshift);
 		auto& light = entity.get_component<light_point>();
 
-		if (auto& it = json.find("intensity"); it != json.end())
+		if (auto it = json.find("intensity"); it != json.end())
 		{
 			light.intensity = it->get<float>();
 		}
-		if (auto& it = json.find("color"); it != json.end())
+		if (auto it = json.find("color"); it != json.end())
 		{
 			light.color.x = it->operator[](0).get<float>();
 			light.color.y = it->operator[](1).get<float>();

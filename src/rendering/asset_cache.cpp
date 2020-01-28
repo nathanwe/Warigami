@@ -19,14 +19,14 @@ namespace rendering
 		using namespace gl;
 
 		std::vector<uint32_t> textures;
-		for (auto& it : _cube_maps)
+		for (auto it : _cube_maps)
 		{
 			if (it.second.id != 0)
 			{
 				textures.push_back(it.second.id);
 			}
 		}
-		for (auto& it : _textures)
+		for (auto it : _textures)
 		{
 			if (it.second.id != 0)
 			{
@@ -37,7 +37,7 @@ namespace rendering
 
 		std::vector<uint32_t> vertex_arrays;
 		std::vector<uint32_t> buffers;
-		for (auto& it : _mesh_statics)
+		for (auto it : _mesh_statics)
 		{
 			if (it.second.vao != 0)
 			{
