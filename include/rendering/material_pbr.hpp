@@ -19,8 +19,8 @@ namespace rendering
 		glm::vec2 texture_scale  = glm::vec2(1.f);
 		glm::vec2 texture_offset = glm::vec2(0.f);
 
-		glm::vec3 param_diffuse   = glm::vec3(0.96f);
-		glm::vec3 param_metalness = glm::vec3(0.04f);
+		glm::vec3 param_diffuse   = glm::vec3(1.f);
+		float param_metalness     = 0.f;
 		float param_roughness     = 0.5f;
 	};
 }

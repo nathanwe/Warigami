@@ -13,10 +13,10 @@ namespace rendering
 	{
 		enum class clear_mode { none, flat_color, sky_box };
 
-		float field_of_view      = 0;
-		float aspect_ratio       = 0;
-		float near_clip_distance = 0;
-		float far_clip_distance  = 0;
+		float field_of_view      = 1.5708f; // 90 degrees in radians
+		float aspect_ratio       = 16.f / 9.f;
+		float near_clip_distance = 1.f;
+		float far_clip_distance  = 100.f;
 
 		bool is_view_dirty = true;
 		bool is_projection_dirty = true;
@@ -30,10 +30,8 @@ namespace rendering
 
 		clear_mode clear_setting = clear_mode::flat_color;
 		glm::vec3 clear_color = glm::vec3(0);
-		cube_map* clear_sky_box = nullptr;
+		cube_map clear_sky_box;
 	};
 }
-
-template<> const component_shift ecs::component<rendering::camera>::component_bitshift = (component_shift)rendering::component_bits::camera;
 
 #endif

@@ -114,6 +114,11 @@ namespace rendering
 		}
 	}
 
+	render_pass::~render_pass()
+	{
+		glDeleteProgram(m_render_program_id);
+	}
+
 	int render_pass::get_parameter_location(std::string const& p_r_name) const
 	{
 		return glGetUniformLocation(m_render_program_id, p_r_name.c_str());

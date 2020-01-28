@@ -19,6 +19,7 @@ include(add_glm)
 include(add_assimp)
 add_subdirectory(thirdparty/imgui)
 add_subdirectory(thirdparty/lua)
+add_subdirectory(thirdparty/stb)
 
 # Main build targets
 add_subdirectory(src)

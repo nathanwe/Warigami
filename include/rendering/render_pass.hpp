@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WIZARDPEOPLE_RENDERING_RENDER_PASS_HPP
+#define WIZARDPEOPLE_RENDERING_RENDER_PASS_HPP
 
 #include "glm/glm.hpp"
 
@@ -10,6 +11,7 @@ namespace rendering
 	{
 	public:
 		render_pass(char const* vertex_filepath, char const* fragment_filepath);
+		~render_pass();
 
 	public:
 		void bind() const;
@@ -34,3 +36,5 @@ namespace rendering
 		unsigned int m_render_program_id = 0;
 	};
 }
+
+#endif

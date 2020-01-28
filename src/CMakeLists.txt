@@ -119,11 +119,18 @@ target_link_libraries(transforms PUBLIC
     
 ##### RENDERING #####
 set (RENDERING_SOURCE_LIST
+     ${PROJECT_SOURCE_DIR}/src/rendering/asset_cache.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/camera_updater.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_camera.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/light_directional.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/light_point.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_directional.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_point.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
-     rendering/renderable_mesh_static.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -131,6 +138,8 @@ target_compile_features(rendering PUBLIC cxx_std_17)
 target_link_libraries(rendering PUBLIC 
     ecs
     asset
+    assimp
     glbinding
     glm 
-    glfw)
+    glfw
+    stb_image)
