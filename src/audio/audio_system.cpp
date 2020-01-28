@@ -45,6 +45,7 @@ void audio::audio_system::update(ecs::state &state)
 {
     sync_transform_to_listener(state);
     update_emitters(state);
+    _system->update();
 }
 
 void audio::audio_system::sync_transform_to_listener(ecs::state &state)
