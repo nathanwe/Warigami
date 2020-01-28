@@ -94,7 +94,6 @@ namespace rendering
 					_pass->set_float3(22 + i, light_transform.position);
 					_pass->set_float(26 + i, light.intensity);
 					_pass->set_float3(30 + i, light.color);
-					_pass->set_float(34 + i, light.radius);
 					++i;
 				}
 			});

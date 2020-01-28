@@ -38,7 +38,6 @@ layout(location = 21) uniform vec3  u_light_directional_color;
 layout(location = 22) uniform vec3 u_light_point_position_world[NUM_LIGHT_POINTS];
 layout(location = 26) uniform float u_light_point_intensity[NUM_LIGHT_POINTS];
 layout(location = 30) uniform vec3 u_light_point_color[NUM_LIGHT_POINTS];
-layout(location = 34) uniform float u_light_point_radius[NUM_LIGHT_POINTS];
 /*
 struct Light_Point
 {
