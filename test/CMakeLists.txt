@@ -41,3 +41,15 @@ add_custom_target(rendering_test_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/rendering/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )
 add_dependencies (rendering_test rendering_test_assets)
+
+##### RENDER ASSET #####
+add_executable(render_asset_test render_asset/main.cpp)
+target_link_libraries(render_asset_test 
+    asset
+    core
+    rendering
+    transforms)
+target_compile_features(render_asset_test PUBLIC cxx_std_17)
+add_custom_target(render_asset_test_assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/render_asset/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets)
+add_dependencies (render_asset_test render_asset_test_assets)

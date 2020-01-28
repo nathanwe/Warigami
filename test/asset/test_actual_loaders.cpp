@@ -36,7 +36,8 @@ void test_renderable()
     asset::scene scene(ScenePath, cache);
     asset::scene_hydrater hydrater(state, scene);
 
-    rendering::render_loader render_loader;
+    rendering::asset_cache render_asset_cache;
+    rendering::render_loader render_loader(render_asset_cache);
     hydrater.register_loaders(&render_loader);
 
     hydrater.load();
