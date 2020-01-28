@@ -11,21 +11,27 @@ void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_n
 
 	auto& t = entity.get_component<transform>();
 
-	t.position = glm::vec3(
-		json["position"][0].get<float>(),
-		json["position"][1].get<float>(),
-		json["position"][2].get<float>());
-
-	t.rotation = glm::vec3(
-		json["rotation"][0].get<float>(),
-		json["rotation"][1].get<float>(),
-		json["rotation"][2].get<float>());
-
-	t.scale = glm::vec3(
-		json["scale"][0].get<float>(),
-		json["scale"][1].get<float>(),
-		json["scale"][2].get<float>());
-
+	if (json.find("position") != json.end())
+	{
+		t.position = glm::vec3(
+			json["position"][0].get<float>(),
+			json["position"][1].get<float>(),
+			json["position"][2].get<float>());
+	}
+	if (json.find("rotation") != json.end())
+	{
+		t.rotation = glm::vec3(
+			json["rotation"][0].get<float>(),
+			json["rotation"][1].get<float>(),
+			json["rotation"][2].get<float>());
+	}
+	if (json.find("scale") != json.end())
+	{
+		t.scale = glm::vec3(
+			json["scale"][0].get<float>(),
+			json["scale"][1].get<float>(),
+			json["scale"][2].get<float>());
+	}
 	for (auto& child : asset_loader_node.children)
 	{
 		auto& child_transform = child.entity_resource.entity.get_component<transform>();

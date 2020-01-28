@@ -2,15 +2,19 @@
 
 #include "ecs/state.hpp"
 #include "rendering/camera.hpp"
+#include "rendering/light_directional.hpp"
+#include "rendering/light_point.hpp"
 #include "rendering/renderable_mesh_static.hpp"
 #include "transforms/transform.hpp"
 
 #include "glbinding/gl/gl.h"
 #include "glbinding/glbinding.h"
-
-using namespace gl;
+#include "glm/glm.hpp"
+#include "glm/gtx/euler_angles.hpp"
 
 #include <iostream>
+
+using namespace gl;
 
 namespace rendering
 {
@@ -54,18 +58,79 @@ namespace rendering
 
 	void renderer::update(ecs::state& state)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		state.each<camera>([&](auto& camera) 
+		_pass->bind(); // move to mesh only, move camera and lights to two ubos
+
+		// Camera specific
+		state.each<transforms::transform, camera>([&](auto& camera_transform, auto& cam)
 		{
-			_pass->bind();
+			if (cam.clear_setting == camera::clear_mode::flat_color)
+			{
+				glClearColor(cam.clear_color.x, cam.clear_color.y, cam.clear_color.z, 1.f);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			}
+
+			_pass->set_mat4(4, cam.view_projection);
+			_pass->set_float3(18, camera_transform.position); // maybe need world position separately
+
+			// Light directional specific
+			state.each<transforms::transform, light_directional>([&](auto& light_transform, auto& light)
+			{
+				glm::vec3 light_inverse_direction = -1.f *
+					glm::eulerAngleZXY(light_transform.rotation.z, light_transform.rotation.x, light_transform.rotation.y) * 
+					glm::vec4(0, 0, -1, 1);
+
+				_pass->set_float3(19, light_inverse_direction);
+				_pass->set_float(20, light.intensity);
+				_pass->set_float3(21, light.color);
+			});
+
+			// Light point specific
+			int i = 0;
+			state.each<transforms::transform, light_point>([&](auto& light_transform, auto& light)
+			{
+				if (i < 4) // should sort and use those closest to mesh
+				{
+					_pass->set_float3(22 + i, light_transform.position);
+					_pass->set_float(26 + i, light.intensity);
+					_pass->set_float3(30 + i, light.color);
+					++i;
+				}
+			});
+
+			// Mesh specific
 			state.each<transforms::transform, renderable_mesh_static>([&](auto& transform, auto& renderable)
 			{
-				glm::mat4 world_view_projection = camera.view_projection * transform.local_to_world;
-				_pass->set_mat4(0, world_view_projection);
+				_pass->set_mat4(0, transform.local_to_world);
+
+				_pass->set_texture(0, renderable.material.texture_diffuse);
+				_pass->set_texture(1, renderable.material.texture_metalness);
+				_pass->set_texture(2, renderable.material.texture_normal);
+				_pass->set_texture(3, renderable.material.texture_roughness);
+				_pass->set_texture(4, renderable.material.texture_ambient_occlusion);
+
+				_pass->set_float2(8, renderable.material.texture_scale);
+				_pass->set_float2(9, renderable.material.texture_offset);
+
+				_pass->set_bool(10, renderable.material.texture_diffuse != 0);
+				_pass->set_bool(11, renderable.material.texture_metalness != 0);
+				_pass->set_bool(12, renderable.material.texture_normal != 0);
+				_pass->set_bool(13, renderable.material.texture_roughness != 0);
+				_pass->set_bool(14, renderable.material.texture_ambient_occlusion != 0);
+
+				_pass->set_float3(15, renderable.material.param_diffuse);
+				_pass->set_float(16, renderable.material.param_metalness);
+				_pass->set_float(17, renderable.material.param_roughness);
 
 				glBindVertexArray(renderable.mesh.vao);
 				glDrawArrays(GL_TRIANGLES, 0, renderable.mesh.num_indices);
+
+				_pass->set_texture(0, 0);
+				_pass->set_texture(1, 0);
+				_pass->set_texture(2, 0);
+				_pass->set_texture(3, 0);
+				_pass->set_texture(4, 0);
+				glBindVertexArray(0);
 			});
 		});
 
