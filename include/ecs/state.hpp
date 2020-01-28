@@ -27,7 +27,6 @@ namespace ecs
 	 */
 	class state
 	{
-		const static std::uint32_t ReservedEntities = 4096;
 		static std::atomic_uint NextEntityId;
 
 	public:
@@ -46,7 +45,7 @@ namespace ecs
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
 
-			for (auto a : cache.accessors)
+			for (auto& a : cache.accessors)
 			{
 				callback((*(a.accessor.template get_component<TComponents>()))...);
 			}
@@ -58,7 +57,7 @@ namespace ecs
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
 
-			for (auto a : cache.accessors)
+			for (auto& a : cache.accessors)
 			{
 				callback(a.entity, (*(a.accessor.template get_component<TComponents>()))...);
 			}
