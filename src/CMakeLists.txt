@@ -13,7 +13,6 @@ set (PLATFORM_SOURCE_FILES
 add_library(platform ${PLATFORM_HEADERS} ${PLATFORM_SOURCE_FILES})
 target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include) 
 
-
 ##### CORE #####
 set (CORE_HEADERS
         ${PROJECT_SOURCE_DIR}/include/core/framerate.hpp
@@ -40,6 +39,16 @@ target_link_libraries(core
             platform
             glfw)
 
+##### EVENT #####
+set (EVENT_HEADERS
+        ${PROJECT_SOURCE_DIR}/include/event/event.hpp
+        ${PROJECT_SOURCE_DIR}/include/event/event_manager.hpp)
+
+set (EVENT_SOURCE_FILES
+        ${PROJECT_SOURCE_DIR}/src/event/event_manager.cpp)
+
+add_library(event ${EVENT_HEADERS} ${EVENT_SOURCE_FILES})
+target_include_directories(event PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 ##### MEMORY #####
 set(MEMORY_HEADER_LIST

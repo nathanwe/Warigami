@@ -4,6 +4,11 @@ target_link_libraries(ecs_tests ecs)
 target_include_directories(ecs_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(ecs_tests PUBLIC cxx_std_17)
 
+# event
+add_executable(event_tests event/event_tests.cpp)
+target_link_libraries(event_tests event)
+target_include_directories(event_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(event_tests PUBLIC cxx_std_17)
 
 # lua
 add_executable(lua_test lua/test.c)
@@ -28,19 +33,6 @@ add_custom_target(copy_test_assets
 )
 
 add_dependencies (asset_tests copy_test_assets)
-
-##### RENDERING #####
-add_executable(rendering_test rendering/test.cpp)
-target_link_libraries(rendering_test 
-    core
-    rendering
-    transforms)
-target_compile_features(rendering_test PUBLIC cxx_std_17)
-
-add_custom_target(rendering_test_assets
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/rendering/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
-)
-add_dependencies (rendering_test rendering_test_assets)
 
 ##### RENDER ASSET #####
 add_executable(render_asset_test render_asset/main.cpp)
