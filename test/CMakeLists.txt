@@ -4,6 +4,11 @@ target_link_libraries(ecs_tests ecs)
 target_include_directories(ecs_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(ecs_tests PUBLIC cxx_std_17)
 
+# event
+add_executable(event_tests event/event_tests.cpp)
+target_link_libraries(event_tests event)
+target_include_directories(event_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(event_tests PUBLIC cxx_std_17)
 
 # lua
 add_executable(lua_test lua/test.c)
