@@ -10,16 +10,14 @@ namespace rendering
 {
 	struct light_directional : ecs::component<light_directional>
 	{
-		float intensity;
-		glm::vec3 color;
+		float intensity = 1;
+		glm::vec3 color = glm::vec3(1);
 
-		bool is_shadow_caster;
-		std::uint32_t shadow_texture;
-		glm::mat4 shadow_view;
-		glm::mat4 shadow_projection;
+		bool is_shadow_caster        = false;
+		std::uint32_t shadow_texture = 0;
+		glm::mat4 shadow_view        = glm::mat4(1);
+		glm::mat4 shadow_projection  = glm::mat4(1);
 	};
 }
-
-template<> const component_shift ecs::component<rendering::light_directional>::component_bitshift = (component_shift)rendering::component_bits::light_directional;
 
 #endif

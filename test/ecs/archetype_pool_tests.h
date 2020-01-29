@@ -36,8 +36,8 @@ void dummy_load(const json& j, ecs::entity& e, util::string_table& hashes)
 
 int test_archetype_pool_all()
 {
-    ecs::register_component<transform>(dummy_load);
-    ecs::register_component<renderdata>(dummy_load);
+    ecs::register_component<transform>("transform");
+    ecs::register_component<renderdata>("renderdata");
 
     test_ctor();
     test_make_entity();

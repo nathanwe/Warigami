@@ -1,5 +1,5 @@
 # Preamble
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.12)
 project(WizardEngine C CXX)
 
 # Project wide setup
@@ -16,8 +16,10 @@ include(add_glfw)
 include(add_glbinding)
 include(add_nlohmann_json)
 include(add_glm)
+include(add_assimp)
 add_subdirectory(thirdparty/imgui)
 add_subdirectory(thirdparty/lua)
+add_subdirectory(thirdparty/stb)
 
 # Main build targets
 add_subdirectory(src)

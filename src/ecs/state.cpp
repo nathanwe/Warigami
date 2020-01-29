@@ -21,8 +21,16 @@ ecs::entity& ecs::state::add_entity(component_bitset archetype_id, entity_id id)
     auto& new_entity = _entity_lookup.find(id)->second;
 
     for (auto& pair : _caches)
+    {
         if ((archetype_id & pair.first) == pair.first)
-            pair.second.accessors.emplace_back(new_entity.id(), new_entity.accessor());
+        {
+            pair.second.accessors.emplace_back(new_entity.id(), new_entity.accessor(), new_entity.archetype_id());
+            pair.second.is_sorted = false;
+        }
+    }
+
+    while (_entity_lookup.find(NextEntityId) != _entity_lookup.end())
+        NextEntityId++;
 
     return new_entity;
 }
@@ -70,7 +78,7 @@ ecs::query_cache ecs::state::build_query_cache(component_bitset archetype)
         auto& e = pair.second;
 
         if ((e.archetype_id() & archetype) == archetype)
-            cache.accessors.emplace_back(e.id(), e.accessor());
+            cache.accessors.emplace_back(e.id(), e.accessor(), e.archetype_id());
     }
     return cache;
 }
@@ -78,6 +86,11 @@ ecs::query_cache ecs::state::build_query_cache(component_bitset archetype)
 ecs::entity& ecs::state::find_entity(entity_id id)
 {
     return _entity_lookup.find(id)->second;
+}
+
+bool ecs::state::has_entity(entity_id id)
+{
+    return _entity_lookup.find(id) != _entity_lookup.end();
 }
 
 std::atomic_uint ecs::state::NextEntityId = 100000;

@@ -12,6 +12,8 @@
 #include <util/running_average.hpp>
 
 #include <glm/vec2.hpp>
+
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 namespace core

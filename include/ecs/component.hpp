@@ -5,6 +5,8 @@
 #ifndef __COMPONENT_H_
 #define __COMPONENT_H_
 
+#include <string>
+
 #include "ecs_types.hpp"
 
 
@@ -15,7 +17,7 @@ namespace ecs
     {
     public:
         static const component_shift component_bitshift;
-        static const component_bitset archetype_bit;
+        static const component_bitset archetype_bit;        
     };
 
     template<class T>

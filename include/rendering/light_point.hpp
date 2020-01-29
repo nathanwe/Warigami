@@ -10,13 +10,11 @@ namespace rendering
 {
 	struct light_point : ecs::component<light_point>
 	{
-		float radius;
-		float intensity;
-		glm::vec3 color;
+		float radius    = 1;
+		float intensity = 1;
+		glm::vec3 color = glm::vec3(1);
 	};
 
 }
-
-template<> const component_shift ecs::component<rendering::light_point>::component_bitshift = (component_shift)rendering::component_bits::light_point;
 
 #endif

@@ -5,6 +5,7 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 void MySaveFunction()
@@ -15,7 +16,7 @@ void MySaveFunction()
 // this is a mgui test that should be deleted and never used
 class sample_mgui
 {
-    const char* glsl_version = "#version 130";
+    const char* glsl_version = "#version 460";
 
 
 public:

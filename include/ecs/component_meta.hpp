@@ -50,6 +50,8 @@ namespace ecs
 
         static std::map<component_shift, component_meta> bit_metas;
 
+        static std::map<std::string, component_shift> type_to_bit;
+
         size_t size() const { return _size; }
 
         size_t align() const { return _align; }

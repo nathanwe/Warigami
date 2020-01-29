@@ -1,10 +1,9 @@
-# https://stackoverflow.com/a/17229006/823922
-
 message("-- Linking lua51")
 
 if (WIN32)
 
     #Windows-specific example of imported library
+    #From Professional Cmake book
     add_library(luajit SHARED IMPORTED GLOBAL)
     set_target_properties(luajit PROPERTIES
         IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/lua51.dll
