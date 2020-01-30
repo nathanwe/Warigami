@@ -26,21 +26,24 @@ static void glfw_error_callback(int error, const char* description)
 
 int main() {
 
+    core::startup_config conf;
+
     glfwSetErrorCallback(glfw_error_callback);
 
     if (!glfwInit())
         return 1;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Sample Window", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), "Sample Window", nullptr, nullptr);
+    //GLFWwindow* window = glfwCreateWindow(600, 800, "Sample Window", nullptr, nullptr);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
     glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
 
-    core::startup_config conf;
+    
     core::system_info info;
     core::frame_timer timer;
     core::frame_limiter limiter(timer, 60);

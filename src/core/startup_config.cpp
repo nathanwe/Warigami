@@ -5,14 +5,17 @@
 #include <sys/stat.h>
 #include <fstream>
 #include <iostream>
+#include <platform/user_data_paths.hpp>
 
 using json = nlohmann::json;
 
-const std::string core::startup_config::FileName = "./startup_config.json";
+const std::wstring core::startup_config::FileName = L"\\startup_config.json";
 
 void core::startup_config::load()
 {
-    std::fstream stream(FileName);
+    os::file_path user_data_path = os::user_data_paths::get_user_data_path();
+
+    std::fstream stream(user_data_path + FileName);
 
     if (stream)
     {
