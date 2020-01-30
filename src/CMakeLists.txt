@@ -139,7 +139,9 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
      ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
+     rendering/renderable_mesh_static.cpp rendering/camera.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -152,3 +154,15 @@ target_link_libraries(rendering PUBLIC
     glm 
     glfw
     stb_image)
+
+
+##### AUDIO #####
+set (AUDIO_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/audio/audio_system.cpp
+        ${PROJECT_SOURCE_DIR}/src/audio/audio_listener.cpp
+        ${PROJECT_SOURCE_DIR}/src/audio/audio_emitter.cpp)
+
+add_library(audio STATIC ${AUDIO_SOURCE_LIST})
+target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(audio PUBLIC cxx_std_17)
+target_link_libraries(audio PUBLIC ecs transforms rendering asset fmod glm)
