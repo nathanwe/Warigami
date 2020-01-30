@@ -30,7 +30,7 @@ int main()
     emitter.add_sound(path_hash);
     emitter.set_sound_state(0, audio::playback_requested);
 
-    int duration = 1000000000;
+    int duration = 1000000;
 
     while (duration-- > 0)
     {
