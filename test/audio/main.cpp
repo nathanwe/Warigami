@@ -13,6 +13,13 @@
 #include <glm/gtx/euler_angles.hpp>
 #include <core/frame_timer.hpp>
 
+#include <audio/loader_emitter.hpp>
+#include <asset/scene.hpp>
+#include <asset/scene_hydrater.hpp>
+
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 const std::string SwishFile = "assets/swish.wav";
 
 
@@ -55,12 +62,19 @@ int main()
     auto& emitter = e.get_component<audio::audio_emitter>();
     auto path_hash = strings.hash_and_store(SwishFile);
 
+    auto& t = e.get_component<transforms::transform>();
+    t.position = {0.f, 0.f, -10.f};
+
+    asset::json_cache cache;
+    auto scene = cache.load("assets/scene.json");
+    auto scene_entity = asset::scene_entity(scene["entities"][0], cache);
+    auto loader_node = asset::asset_loader_node(e, scene_entity);
+    audio::loader_emitter eloader(strings);
+    eloader.load(loader_node);
+
     emitter.add_sound(path_hash);
     emitter.set_sound_state(0, audio::playback_requested);
     emitter.emitter_sounds[0].loop = true;
-
-    auto& t = e.get_component<transforms::transform>();
-    t.position = {0.f, 0.f, -10.f};
 
     core::frame_timer timer;
     transforms::transformer transformer;

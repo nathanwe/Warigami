@@ -1,0 +1,18 @@
+{
+  "entities": [
+    {
+      "entity_id": 1,
+      "components": [
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            { "file": "assets/swish.wav", "repeat": true }
+          ]
+        },
+        {
+          "type": "transform"
+        }
+      ]
+    }
+  ]
+}

@@ -145,4 +145,4 @@ set (AUDIO_SOURCE_LIST
 add_library(audio STATIC ${AUDIO_SOURCE_LIST})
 target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(audio PUBLIC cxx_std_17)
-target_link_libraries(audio PUBLIC ecs transforms rendering fmod glm)
+target_link_libraries(audio PUBLIC ecs transforms rendering asset fmod glm)

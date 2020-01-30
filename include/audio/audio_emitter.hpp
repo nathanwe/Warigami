@@ -26,8 +26,8 @@ namespace audio
     struct emitter_sound
     {
         size_t path_hash {};
-        sound_state state { uninitialized };
         bool loop { false };
+        sound_state state { uninitialized };
         float volume { 1.f };
 
         // fmod
