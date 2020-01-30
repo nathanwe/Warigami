@@ -8,6 +8,7 @@
 #include <cstdint>
 
 #include <ecs/component.hpp>
+#include <fmod.hpp>
 
 namespace audio
 {
@@ -28,9 +29,23 @@ namespace audio
     {
         size_t path_hash {}; // maybe don't need this
         sound_state state { uninitialized };
-        playback_id playback { 0 };
         bool loop { false };
         float volume { 1.f };
+
+        // fmod
+        FMOD::Sound * fmod_sound;
+        FMOD::Channel * fmod_channel;
+
+        void set_null()
+        {
+            fmod_sound = nullptr;
+            fmod_channel = nullptr;
+        }
+
+        bool is_null()
+        {
+            return fmod_sound == nullptr || fmod_channel == nullptr;
+        }
     };
 
     struct audio_emitter : ecs::component<audio_emitter>

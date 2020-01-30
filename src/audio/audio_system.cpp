@@ -43,8 +43,8 @@ audio::audio_system::audio_system(util::string_table &app_strings) : _app_string
 
 void audio::audio_system::update(ecs::state &state)
 {
-    sync_transform_to_listener(state);
     update_emitters(state);
+    sync_transform_to_listener(state);
     _system->update();
 }
 
@@ -55,7 +55,6 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
         {
             //auto rb_opt = listener.get_component_opt<ecs::rigid_body_component>();
             auto& entity = state.find_entity(id);
-
             auto cam_opt = entity.get_component_opt<rendering::camera>();
 
             glm::mat3 rot = cam_opt
@@ -92,29 +91,18 @@ void audio::audio_system::update_emitters(ecs::state &state)
 }
 
 
-void audio::audio_system::stop_sound(playback_id playback)
+void audio::audio_system::stop_sound(audio::emitter_sound& sound)
 {
-    if (_playbacks.find(playback) == _playbacks.end()) return;
-
-    auto& sound_channel = _playbacks.find(playback)->second;
-    sound_channel.second->stop();
-    _playbacks.erase(playback);
+    auto& sound_channel = sound.fmod_channel;
+    sound_channel->stop();
 }
 
-void audio::audio_system::stop_all()
-{
-    for (auto pair : _playbacks)
-        pair.second.second->stop();
-
-    _playbacks.clear();
-}
-
-audio::playback_id audio::audio_system::play_sound_3d(size_t path_hash, bool loop)
+void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
 {
     auto mode = FMOD_3D;
-    if (loop) mode |= FMOD_LOOP_NORMAL;
-    auto sound = get_sound(path_hash, mode);
-    return play_sound(sound, path_hash);
+    if (sound.loop) mode |= FMOD_LOOP_NORMAL;
+    auto fmod_sound = get_sound(sound.path_hash, mode);
+    play_sound(fmod_sound, sound);
 }
 
 FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
@@ -130,7 +118,7 @@ FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
     return _sounds.find(hash)->second;
 }
 
-audio::playback_id audio::audio_system::play_sound(FMOD::Sound *sound, size_t path_hash)
+void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& emitter_sound)
 {
     FMOD_RESULT result;
 
@@ -147,15 +135,12 @@ audio::playback_id audio::audio_system::play_sound(FMOD::Sound *sound, size_t pa
     if (!succeededOrWarn("FMOD: Failed to set channel group on", result))
         throw;
 
-    auto playback_id = _next_playback_id++;
-    _playbacks[playback_id] = std::pair(sound, channel);
-    _sound_to_playback[path_hash] = playback_id;
-
     channel->setCallback(&channelGroupCallback);
     if (!succeededOrWarn("FMOD: Failed to set callback for sound_wrapper", result))
         throw;
 
-    return playback_id;
+    emitter_sound.fmod_channel = channel;
+    emitter_sound.fmod_sound = sound;
 }
 
 void audio::audio_system::handle_emitter_sound(audio::emitter_sound &emitter_sound, glm::vec4& t_pos)
@@ -164,27 +149,26 @@ void audio::audio_system::handle_emitter_sound(audio::emitter_sound &emitter_sou
     {
         case sound_state::stop_requested:
         {
-            stop_sound(emitter_sound.playback);
-            emitter_sound.playback = 0;
+            stop_sound(emitter_sound);
+            emitter_sound.set_null();
             break;
         }
         case sound_state::playback_requested:
         {
-            emitter_sound.playback = play_sound_3d(emitter_sound.path_hash, emitter_sound.loop);
+            play_sound_3d(emitter_sound);
         }
         default:
         {
-            if (_playbacks.find(emitter_sound.playback) == _playbacks.end()) break;
+            if (emitter_sound.is_null()) break;
 
-            auto& sound_channel =_playbacks.find(emitter_sound.playback)->second;
             FMOD_VECTOR pos = { t_pos.x, t_pos.y, t_pos.z };
             FMOD_VECTOR vel = { 0.f, 0.f, 0.f };
 //                            rb_opt
 //                                      ? FMOD_VECTOR { rb_opt->get().velocity.x, rb_opt->get().velocity.y, rb_opt->get().velocity.z }
 //                                      : FMOD_VECTOR { 0.f, 0.f, 0.f };
 
-            sound_channel.second->set3DAttributes(&pos, &vel);
-            sound_channel.second->setVolume(emitter_sound.volume);
+            emitter_sound.fmod_channel->set3DAttributes(&pos, &vel);
+            emitter_sound.fmod_channel->setVolume(emitter_sound.volume);
         }
     }
 
