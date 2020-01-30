@@ -39,14 +39,16 @@ int main() {
     std::string window_title_cpp = conf.window_title();
     const char* window_title_c = window_title_cpp.c_str();
     
-    GLFWmonitor* foo = nullptr;
+    GLFWmonitor* p_monitor = nullptr;
     if (conf.fullscreen()) {
-        foo = glfwGetPrimaryMonitor();
+        p_monitor = glfwGetPrimaryMonitor();
     }
    
-    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), window_title_c, foo, nullptr);
+    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), window_title_c, p_monitor, nullptr);
     
- 
+    if (!conf.free_mouse()) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
     
     
 
