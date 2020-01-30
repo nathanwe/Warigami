@@ -30,6 +30,8 @@ public:
     bool backface_culling() const;
     bool free_mouse() const;
     std::string window_title() const;
+    bool god_mode() const;
+    bool auto_play() const;
 
 private:
     json make_default() const;

@@ -38,9 +38,18 @@ int main() {
 
     std::string window_title_cpp = conf.window_title();
     const char* window_title_c = window_title_cpp.c_str();
+    
+    GLFWmonitor* foo = nullptr;
+    if (conf.fullscreen()) {
+        foo = glfwGetPrimaryMonitor();
+    }
+   
+    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), window_title_c, foo, nullptr);
+    
+ 
+    
+    
 
-    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), window_title_c, nullptr, nullptr);
-    //GLFWwindow* window = glfwCreateWindow(600, 800, "Sample Window", nullptr, nullptr);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
