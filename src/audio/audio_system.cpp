@@ -79,8 +79,7 @@ void audio::audio_system::update_emitters(ecs::state &state)
 {
     state.each<transforms::transform, audio_emitter>([this](transforms::transform& transform, audio_emitter& e)
     {
-        auto t = transform.local_to_world * glm::vec4(0.f, 0.f, 0.f, 1.f);
-
+        auto t = transform.local_to_world[3];
         for (std::uint32_t i = 0; i < e.sound_count; ++i)
         {
             auto& emitter_sound = e.emitter_sounds[i];
@@ -94,6 +93,7 @@ void audio::audio_system::stop_sound(audio::emitter_sound& sound)
 {
     auto& sound_channel = sound.fmod_channel;
     sound_channel->stop();
+    sound.set_null();
 }
 
 void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)

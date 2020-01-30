@@ -12,8 +12,6 @@
 
 namespace audio
 {
-    typedef std::uint32_t playback_id;
-
     const std::uint32_t MaxSounds = 16;
 
     enum sound_state
@@ -27,14 +25,14 @@ namespace audio
 
     struct emitter_sound
     {
-        size_t path_hash {}; // maybe don't need this
+        size_t path_hash {};
         sound_state state { uninitialized };
         bool loop { false };
         float volume { 1.f };
 
         // fmod
-        FMOD::Sound * fmod_sound;
-        FMOD::Channel * fmod_channel;
+        FMOD::Sound * fmod_sound{};
+        FMOD::Channel * fmod_channel{};
 
         void set_null()
         {
