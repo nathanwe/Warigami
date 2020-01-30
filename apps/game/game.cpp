@@ -36,7 +36,10 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 
-    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), "Sample Window", nullptr, nullptr);
+    std::string window_title_cpp = conf.window_title();
+    const char* window_title_c = window_title_cpp.c_str();
+
+    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), window_title_c, nullptr, nullptr);
     //GLFWwindow* window = glfwCreateWindow(600, 800, "Sample Window", nullptr, nullptr);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);

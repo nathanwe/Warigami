@@ -29,6 +29,7 @@ public:
     float fov() const;
     bool backface_culling() const;
     bool free_mouse() const;
+    std::string window_title() const;
 
 private:
     json make_default() const;

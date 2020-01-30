@@ -24,7 +24,7 @@ void core::startup_config::load()
     }
     else
     {
-        stream.open(FileName, std::fstream::out);
+        stream.open(user_data_path + FileName, std::fstream::out);
         stream << config_json;
     }
 
@@ -37,6 +37,7 @@ std::uint32_t core::startup_config::width() const { return config_json["width"].
 float core::startup_config::fov() const { return config_json["fov"]; }
 bool core::startup_config::backface_culling() const { return config_json["backfaceCulling"].get<bool>(); }
 bool core::startup_config::free_mouse() const { return config_json["free_mouse"].get<bool>(); }
+std::string core::startup_config::window_title() const { return config_json["window_title"].get<std::string>(); }
 
 json core::startup_config::make_default() const
 {
@@ -46,5 +47,8 @@ json core::startup_config::make_default() const
         {"width", 1400},
         {"fov", 45},
         {"backfaceCulling", true},
-        {"free_mouse", false}};
+        {"free_mouse", false},
+        {"window_title", "Sample Window"}
+    
+    };
 }
