@@ -79,13 +79,12 @@ void audio::audio_system::update_emitters(ecs::state &state)
 {
     state.each<transforms::transform, audio_emitter>([this](transforms::transform& transform, audio_emitter& e)
     {
-        auto t = transform.local_to_world;
-        auto t_pos = t[3];
+        auto t = transform.local_to_world * glm::vec4(0.f, 0.f, 0.f, 1.f);
 
         for (std::uint32_t i = 0; i < e.sound_count; ++i)
         {
             auto& emitter_sound = e.emitter_sounds[i];
-            handle_emitter_sound(emitter_sound, t_pos);
+            handle_emitter_sound(emitter_sound, t);
         }
     });
 }
