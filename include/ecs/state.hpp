@@ -45,6 +45,7 @@ namespace ecs
 		{
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
+			cache.sort();
 
 			for (auto a : cache.accessors)
 			{
@@ -57,6 +58,7 @@ namespace ecs
 		{
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
+            cache.sort();
 
 			for (auto a : cache.accessors)
 			{
