@@ -157,6 +157,12 @@ target_link_libraries(rendering PUBLIC
     glfw
     stb_image)
 
+add_custom_target(copy_shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
+)
+
+add_dependencies (rendering copy_shaders)
+
 
 ##### AUDIO #####
 set (AUDIO_SOURCE_LIST
