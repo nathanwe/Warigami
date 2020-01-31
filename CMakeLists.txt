@@ -19,11 +19,13 @@ include(add_glm)
 include(add_assimp)
 add_subdirectory(thirdparty/imgui)
 add_subdirectory(thirdparty/lua)
+add_subdirectory(thirdparty/fmod)
 add_subdirectory(thirdparty/stb)
 
 # Main build targets
 add_subdirectory(src)
 add_subdirectory(apps/game)
+add_subdirectory(apps/demo)
 
 # Tests
 add_subdirectory(test)
@@ -31,3 +33,4 @@ add_subdirectory(test)
 # Packaging
 INSTALL(TARGETS game COMPONENT game)
 include (cmake/CPackBuild.cmake)
+
