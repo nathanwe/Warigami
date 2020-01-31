@@ -44,7 +44,7 @@ int main() {
         p_monitor = glfwGetPrimaryMonitor();
     }
    
-    GLFWwindow* window = glfwCreateWindow(conf.height(), conf.width(), window_title_c, p_monitor, nullptr);
+    GLFWwindow* window = glfwCreateWindow(conf.width(), conf.height(), window_title_c, p_monitor, nullptr);
     
     if (!conf.free_mouse()) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
