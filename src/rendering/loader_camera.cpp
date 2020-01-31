@@ -31,19 +31,24 @@ namespace rendering
 		}
 		if (auto it = json.find("clear_setting"); it != json.end())
 		{
+			bool is_valid = false;
 			auto s = it->get<std::string>();
 			if (s == "none")
 			{
 				cam.clear_setting = camera::clear_mode::none;
+				is_valid = true;
 			}
 			if (s == "flat_color")
 			{
 				cam.clear_setting = camera::clear_mode::flat_color;
+				is_valid = true;
 			}
 			if (s == "sky_box")
 			{
 				cam.clear_setting = camera::clear_mode::sky_box;
+				is_valid = true;
 			}
+			assert(is_valid);
 		}
 		if (auto it = json.find("clear_color"); it != json.end())
 		{
@@ -61,6 +66,7 @@ namespace rendering
 			filepaths[4] = it->operator[](4).get<std::string>();
 			filepaths[5] = it->operator[](5).get<std::string>();
 			cam.clear_sky_box = _cache.get<cube_map>(filepaths);
+			assert(cam.clear_sky_box.id != 0);
 		}
 	}
 

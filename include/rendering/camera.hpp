@@ -15,7 +15,7 @@ namespace rendering
 
 		float field_of_view      = 1.5708f; // 90 degrees in radians
 		float aspect_ratio       = 16.f / 9.f;
-		float near_clip_distance = 1.f;
+		float near_clip_distance = 0.1f;
 		float far_clip_distance  = 100.f;
 
 		bool is_view_dirty = true;

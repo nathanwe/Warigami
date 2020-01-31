@@ -1,6 +1,8 @@
 #ifndef WIZARDPEOPLE_RENDERING_RENDER_PASS_HPP
 #define WIZARDPEOPLE_RENDERING_RENDER_PASS_HPP
 
+#include "rendering/render_state.hpp"
+
 #include "glm/glm.hpp"
 
 #include <string>
@@ -10,11 +12,20 @@ namespace rendering
 	class render_pass
 	{
 	public:
-		render_pass(char const* vertex_filepath, char const* fragment_filepath);
+		struct description
+		{
+			std::string filepath_vertex;
+			std::string filepath_fragment;
+			render_state state;
+			unsigned int target;
+		};
+
+	public:
+		render_pass(description& desc);
 		~render_pass();
 
 	public:
-		void bind() const;
+		void bind(render_state& current_state) const;
 		int get_parameter_location(std::string const& name) const;
 		void set_bool(int const location, bool const value) const;
 		void set_int(int const location, int const value) const;
@@ -34,7 +45,15 @@ namespace rendering
 
 	private:
 		unsigned int m_render_program_id = 0;
+		unsigned int m_render_target = 0;
+		render_state _render_state;
 	};
+
+	template <gl::GLenum ...TGLEnums>
+	bool is_enum_among(gl::GLenum val)
+	{
+		return ((val == TGLEnums) || ...);
+	}
 }
 
 #endif

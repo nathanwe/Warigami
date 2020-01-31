@@ -1,7 +1,6 @@
 #include "rendering/render_pass.hpp"
 
 #include "glbinding/gl/gl.h"
-#include "glbinding/glbinding.h"
 
 #include <fstream>
 #include <iostream>
@@ -11,34 +10,35 @@ using namespace gl;
 
 namespace rendering
 {
-	void verify_shader_compilation(unsigned int shader_id, char const* filepath);
+	void verify_shader_compilation(unsigned int shader_id, std::string const& filepath);
 	void verify_shader_linkage(unsigned int render_program_id);
 
-	render_pass::render_pass(char const* vertex_filepath, char const* fragment_filepath)
+	render_pass::render_pass(description& desc) :
+		_render_state(desc.state),
+		m_render_target(desc.target)
 	{
-		unsigned int vsId = glCreateShader(GL_VERTEX_SHADER);
-		unsigned int fsId = glCreateShader(GL_FRAGMENT_SHADER);
+		unsigned int vs_id = glCreateShader(GL_VERTEX_SHADER);
+		unsigned int fs_id = glCreateShader(GL_FRAGMENT_SHADER);
+		assert(vs_id != 0 && fs_id != 0);
 
 		// if path to glsl, else path to precompiled binary
 		if (1)
 		{
 			// Load shaders as text
-			std::ifstream vsFile, fsFile;
-			std::stringstream vsStringstream, fsStringstream;
-#ifdef _DEBUG
-			vsFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-			fsFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+			std::ifstream vs_file, fs_file;
+			std::stringstream vs_stringstream, fs_stringstream;
+#ifndef NDEBUG
+			vs_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+			fs_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 			try {
 #endif
-				//std::ifstream vsFile(vertex_filepath);
-				//std::ifstream fsFile(fragment_filepath);
-				vsFile.open(vertex_filepath);
-				fsFile.open(fragment_filepath);
-				vsStringstream << vsFile.rdbuf();
-				fsStringstream << fsFile.rdbuf();
-				vsFile.close();
-				fsFile.close();
-#ifdef _DEBUG
+				vs_file.open(desc.filepath_vertex);
+				fs_file.open(desc.filepath_fragment);
+				vs_stringstream << vs_file.rdbuf();
+				fs_stringstream << fs_file.rdbuf();
+				vs_file.close();
+				fs_file.close();
+#ifndef NDEBUG
 			}
 			catch (std::ifstream::failure e)
 			{
@@ -46,22 +46,22 @@ namespace rendering
 			}
 #endif
 
-			std::string vsText, fsText;
-			vsText = vsStringstream.str();
-			fsText = fsStringstream.str();
-			char const* vsTextCstr = vsText.c_str();
-			char const* fsTextCstr = fsText.c_str();
+			std::string vs_text, fs_text;
+			vs_text = vs_stringstream.str();
+			fs_text = fs_stringstream.str();
+			char const* vs_text_cstr = vs_text.c_str();
+			char const* fs_text_cstr = fs_text.c_str();
 
 			// Compile shaders
-			glShaderSource(vsId, 1, &vsTextCstr, NULL);
-			glCompileShader(vsId);
-#ifdef _DEBUG
-			verify_shader_compilation(vsId, vertex_filepath);
+			glShaderSource(vs_id, 1, &vs_text_cstr, NULL);
+			glCompileShader(vs_id);
+#ifndef NDEBUG
+			verify_shader_compilation(vs_id, desc.filepath_vertex);
 #endif
-			glShaderSource(fsId, 1, &fsTextCstr, NULL);
-			glCompileShader(fsId);
-#ifdef _DEBUG
-			verify_shader_compilation(fsId, fragment_filepath);
+			glShaderSource(fs_id, 1, &fs_text_cstr, NULL);
+			glCompileShader(fs_id);
+#ifndef NDEBUG
+			verify_shader_compilation(fs_id, desc.filepath_fragment);
 #endif
 			// write compiled binary to file
 			// write binary format to metadata file
@@ -72,25 +72,25 @@ namespace rendering
 			//
 			// Get binary format from metadata
 			//
-			//glShaderBinary(1, vsId, , , );
+			//glShaderBinary(1, vs_id, , , );
 		}
 
 		// Connect shaders to render pass
 		m_render_program_id = glCreateProgram();
-		glAttachShader(m_render_program_id, vsId);
-		glAttachShader(m_render_program_id, fsId);
+		glAttachShader(m_render_program_id, vs_id);
+		glAttachShader(m_render_program_id, fs_id);
 		glLinkProgram(m_render_program_id);
-#ifdef _DEBUG
+#ifndef NDEBUG
 		verify_shader_linkage(m_render_program_id);
 #endif
 
-		glDetachShader(m_render_program_id, vsId);
-		glDetachShader(m_render_program_id, fsId);
-		glDeleteShader(vsId);
-		glDeleteShader(fsId);
+		glDetachShader(m_render_program_id, vs_id);
+		glDetachShader(m_render_program_id, fs_id);
+		glDeleteShader(vs_id);
+		glDeleteShader(fs_id);
 	}
 
-	void verify_shader_compilation(unsigned int shader_id, char const* filepath)
+	void verify_shader_compilation(unsigned int shader_id, std::string const& filepath)
 	{
 		GLint result;
 		glGetShaderiv(shader_id, GL_COMPILE_STATUS, &result);
@@ -102,14 +102,14 @@ namespace rendering
 		}
 	}
 
-	void verify_shader_linkage(unsigned int renderPassId)
+	void verify_shader_linkage(unsigned int renderPass_id)
 	{
 		GLint result;
-		glGetProgramiv(renderPassId, GL_LINK_STATUS, &result);
+		glGetProgramiv(renderPass_id, GL_LINK_STATUS, &result);
 		if (!result)
 		{
 			GLchar infoLog[1024];
-			glGetProgramInfoLog(renderPassId, 1024, NULL, infoLog);
+			glGetProgramInfoLog(renderPass_id, 1024, NULL, infoLog);
 			std::cout << "Error: Render pass failed to link shaders. OpenGL logs:\n" << infoLog << std::endl;
 		}
 	}
@@ -124,9 +124,128 @@ namespace rendering
 		return glGetUniformLocation(m_render_program_id, p_r_name.c_str());
 	}
 
-	void render_pass::bind() const
+	void render_pass::bind(render_state& current_state) const
 	{
 		glUseProgram(m_render_program_id);
+		
+		// Render target
+		if (_render_state.target != current_state.target)
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, _render_state.target);
+			current_state.target = _render_state.target;
+		}
+
+		// Face culling
+		if (_render_state.uses_cull_face)
+		{
+			if (_render_state.uses_cull_face != current_state.uses_cull_face)
+			{
+				glEnable(GL_CULL_FACE);
+				current_state.uses_cull_face = _render_state.uses_cull_face;
+			}
+			if (_render_state.culled_face != current_state.culled_face)
+			{
+				auto is_cull_face = [](GLenum val)
+				{
+					return is_enum_among<GL_FRONT, GL_BACK, GL_FRONT_AND_BACK>(val);
+				};
+				assert(is_cull_face(_render_state.culled_face));
+				glCullFace(_render_state.culled_face);
+				current_state.culled_face = _render_state.culled_face;
+			}
+		}
+		else
+		{
+			if (_render_state.uses_cull_face != current_state.uses_cull_face)
+			{
+				glDisable(GL_CULL_FACE);
+				current_state.uses_cull_face = _render_state.uses_cull_face;
+			}
+		}
+
+		// Depth testing
+		if (_render_state.uses_depth_test)
+		{
+			if (_render_state.uses_depth_test != current_state.uses_depth_test)
+			{
+				glEnable(GL_DEPTH_TEST);
+				current_state.uses_depth_test = _render_state.uses_depth_test;
+			}
+			if (_render_state.depth_mask != current_state.depth_mask)
+			{
+				glDepthMask(_render_state.depth_mask);
+				current_state.depth_mask = _render_state.depth_mask;
+			}
+			if (_render_state.depth_func != current_state.depth_func)
+			{
+				auto is_depth_func = [](GLenum val)
+				{
+					return is_enum_among<
+						GL_NEVER, 
+						GL_LESS, 
+						GL_EQUAL, 
+						GL_LEQUAL, 
+						GL_GREATER, 
+						GL_NOTEQUAL,
+						GL_GEQUAL, 
+						GL_ALWAYS>(val);
+				};
+				assert(is_depth_func(_render_state.depth_func));
+				glDepthFunc(_render_state.depth_func);
+				current_state.depth_func = _render_state.depth_func;
+			}
+		}
+		else
+		{
+			if (_render_state.uses_depth_test != current_state.uses_depth_test)
+			{
+				glDisable(GL_DEPTH_TEST);
+				current_state.uses_depth_test = _render_state.uses_depth_test;
+			}
+		}
+
+		// Blending
+		if (_render_state.uses_blend)
+		{
+			if (_render_state.uses_blend != current_state.uses_blend)
+			{
+				glEnable(GL_BLEND);
+				current_state.uses_blend = _render_state.uses_blend;
+			}
+			if (_render_state.blend_src != current_state.blend_src || _render_state.blend_dest != current_state.blend_dest)
+			{
+				auto is_blend_func = [&](GLenum val)
+				{
+					return is_enum_among<
+						GL_ZERO,
+						GL_ONE,
+						GL_SRC_COLOR,
+						GL_ONE_MINUS_SRC_COLOR,
+						GL_DST_COLOR,
+						GL_ONE_MINUS_DST_COLOR,
+						GL_SRC_ALPHA,
+						GL_ONE_MINUS_SRC_ALPHA,
+						GL_DST_ALPHA,
+						GL_ONE_MINUS_DST_ALPHA,
+						GL_CONSTANT_COLOR,
+						GL_ONE_MINUS_CONSTANT_COLOR,
+						GL_CONSTANT_ALPHA,
+						GL_ONE_MINUS_CONSTANT_ALPHA>(val);
+				};
+				assert(is_blend_func(_render_state.blend_src) && is_blend_func(_render_state.blend_dest));
+				glBlendFunc(_render_state.blend_src, _render_state.blend_dest);
+				current_state.blend_src = _render_state.blend_src;
+				current_state.blend_dest = _render_state.blend_dest;
+			}
+		}
+		else
+		{
+			if (_render_state.uses_blend != current_state.uses_blend)
+			{
+				glDisable(GL_BLEND);
+				current_state.uses_blend = _render_state.uses_blend;
+			}
+		}
 	}
 
 	void render_pass::set_bool(int const p_location, bool const p_value) const
