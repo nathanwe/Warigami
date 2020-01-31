@@ -25,6 +25,7 @@ add_subdirectory(thirdparty/stb)
 # Main build targets
 add_subdirectory(src)
 add_subdirectory(apps/game)
+add_subdirectory(apps/demo)
 
 # Tests
 add_subdirectory(test)
