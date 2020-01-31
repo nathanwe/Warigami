@@ -64,11 +64,12 @@ namespace rendering
 		auto& r_cubemap = _cube_maps[filepaths[0]];
 		if (r_cubemap.id == 0)
 		{
-			int texture_width, texture_height, texture_channels;
-			float* texture_bytes;
 			glGenTextures(1, &r_cubemap.id);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, r_cubemap.id);
+			assert(r_cubemap.id != 0);
 
+			int texture_width, texture_height, texture_channels;
+			float* texture_bytes;
 			for (int i_face = 0; i_face < filepaths.size(); ++i_face)
 			{
 				texture_bytes = stbi_loadf(filepaths[i_face].c_str(), &texture_width, &texture_height, &texture_channels, 0);
@@ -90,6 +91,7 @@ namespace rendering
 			}
 
 			glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
