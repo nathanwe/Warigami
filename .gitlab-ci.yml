@@ -26,6 +26,7 @@ build:
     - pushd build
     - ../cmake-3.16.2-Linux-x86_64/bin/cmake ..
     - make -j2 game
+    - make -j2 demo
     - make -j2 ecs_tests
     - make -j2 asset_tests
     - make -j2 audio_tests
