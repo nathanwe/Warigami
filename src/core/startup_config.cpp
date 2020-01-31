@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-const std::wstring core::startup_config::FileName = L"\\startup_config.json";
+const os::file_path core::startup_config::FileName = L"\\startup_config.json";
 
 void core::startup_config::load()
 {
