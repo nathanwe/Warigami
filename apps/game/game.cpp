@@ -61,8 +61,6 @@ int main() {
     core::frame_limiter limiter(timer, 60);
     core::input_manager input(window);
 
-    input.add_gamepad();
-
     sample_mgui mgui_sample(window);
 
     while (!glfwWindowShouldClose(window)) {
@@ -84,7 +82,7 @@ int main() {
         limiter.wait_remainder();
         timer.end();
 
-        std::cout << timer.frame_info() << std::endl;
+        //std::cout << timer.frame_info() << std::endl;
     }
 
     glfwDestroyWindow(window);

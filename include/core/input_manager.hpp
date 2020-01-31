@@ -53,11 +53,9 @@ namespace core
     
     class gamepad {
     public:
-        gamepad();
         gamepad(int gamepad_index);
 
         void update();
-        void refresh_state();
 
         XINPUT_STATE get_state();
         int get_index();
@@ -66,9 +64,9 @@ namespace core
         // Thumbsticks
         bool Lstick_deadzone();
         bool Rstick_deadzone();
-        // pair of <x, y>
-        std::pair<short, short> Lstick_position();
-        std::pair<short, short> Rstick_position();
+        // pair of <x, y> with values -1 to 1
+        std::pair<float, float> Lstick_position();
+        std::pair<float, float> Rstick_position();
 
         // Triggers
         // Values from 0.0 to 1.0
@@ -92,8 +90,6 @@ namespace core
         bool _buttons_pressed[_button_count]; // Buttons being pressed/released in current frame
     };
 
-    extern XINPUT_button_ids Xbuttons;
-
     //////////
 
 
@@ -115,8 +111,6 @@ namespace core
         bool was_mouse_clicked(std::uint8_t mouse_button);
 
         bool was_mouse_released(std::uint8_t mouse_button);
-
-        void add_gamepad();
 
         void update();
 
@@ -157,7 +151,7 @@ namespace core
             return callback;
         }
 
-        std::vector<gamepad*> _gamepads;
+        gamepad* _gamepad;
     };
 }
 
