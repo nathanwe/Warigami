@@ -1,6 +1,8 @@
 #ifndef __STARTUP_CONFIG_H_
 #define __STARTUP_CONFIG_H_
 
+#include <platform/user_data_paths.hpp>
+
 #include <string>
 
 #include <nlohmann/json.hpp>
