@@ -16,11 +16,15 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <Xinput.h>
 #include <utility>
+
+#include <Windows.h>
+#include <Xinput.h>
 
 namespace core
 {
+    // Gamepad based on this tutorial: https://lcmccauley.wordpress.com/2014/01/05/gamepad-input-tutorial/
+    // Gamepad buttons
     static const WORD XINPUT_buttons[] = {
         XINPUT_GAMEPAD_A,
         XINPUT_GAMEPAD_B,
@@ -46,8 +50,7 @@ namespace core
         int Lstick_button, Rstick_button; // Stick press
         int start_button, back_button;
     };
-
-    // Based on this tutorial: https://lcmccauley.wordpress.com/2014/01/05/gamepad-input-tutorial/
+    
     class gamepad {
     public:
         gamepad();
@@ -72,8 +75,8 @@ namespace core
         float Ltrigger();
         float Rtrigger();
 
-        bool get_button_pressed(int button);
-        bool get_button_down(int button);
+        bool is_button_pressed(int button);
+        bool is_button_down(int button);
 
         // Vibration
         // Values from 0.0 to 1.0
@@ -90,6 +93,9 @@ namespace core
     };
 
     extern XINPUT_button_ids Xbuttons;
+
+    //////////
+
 
     class input_manager
     {
@@ -109,6 +115,8 @@ namespace core
         bool was_mouse_clicked(std::uint8_t mouse_button);
 
         bool was_mouse_released(std::uint8_t mouse_button);
+
+        void add_gamepad();
 
         void update();
 
@@ -148,6 +156,8 @@ namespace core
 
             return callback;
         }
+
+        std::vector<gamepad*> _gamepads;
     };
 }
 

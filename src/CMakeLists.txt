@@ -39,7 +39,8 @@ target_link_libraries(core
             nlohmann_json
             glm        
             platform
-            glfw)
+            glfw
+            xinput)
 
 ##### EVENT #####
 set (EVENT_HEADERS

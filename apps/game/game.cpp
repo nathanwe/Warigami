@@ -35,6 +35,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
     GLFWwindow* window = glfwCreateWindow(800, 600, "Sample Window", nullptr, nullptr);
+
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
@@ -45,6 +46,8 @@ int main() {
     core::frame_timer timer;
     core::frame_limiter limiter(timer, 60);
     core::input_manager input(window);
+
+    input.add_gamepad();
 
     sample_mgui mgui_sample(window);
 

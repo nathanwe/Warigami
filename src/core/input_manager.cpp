@@ -112,7 +112,7 @@ float core::gamepad::Rtrigger() {
     return 0.0f;
 }
 
-void core::gamepad::rumble(float left_rumble = 0.0f, float right_rumble = 0.0f) {
+void core::gamepad::rumble(float left_rumble, float right_rumble) {
     XINPUT_VIBRATION vibration_state;
     memset(&vibration_state, 0, sizeof(XINPUT_VIBRATION));
 
@@ -123,14 +123,15 @@ void core::gamepad::rumble(float left_rumble = 0.0f, float right_rumble = 0.0f) 
     XInputSetState(_index, &vibration_state);
 }
 
-bool core::gamepad::get_button_pressed(int button) {
+bool core::gamepad::is_button_pressed(int button) {
     return _state.Gamepad.wButtons & XINPUT_buttons[button];
 }
 
-bool core::gamepad::get_button_down(int button) {
+bool core::gamepad::is_button_down(int button) {
     return _buttons_pressed[button];
 }
 
+/////////////
 
 bool core::input_manager::is_key_down(std::uint16_t key)
 {
@@ -159,6 +160,10 @@ bool core::input_manager::was_mouse_released(std::uint8_t mouse_button)
 {
     return _last_mouse_button_states[mouse_button] != GLFW_RELEASE &&
         _current_mouse_button_states[mouse_button] == GLFW_RELEASE;
+}
+
+void core::input_manager::add_gamepad() {
+    _gamepads.push_back(new gamepad(_gamepads.size() - 1));
 }
 
 
