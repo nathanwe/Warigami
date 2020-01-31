@@ -12,7 +12,7 @@ namespace core
 class startup_config
 {
 private:
-    static const std::wstring FileName;
+    static const os::file_path FileName;
     json config_json;
 
 public:
