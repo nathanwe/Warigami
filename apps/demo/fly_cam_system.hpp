@@ -4,7 +4,7 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <core\frame_timer.hpp>
+#include <core/frame_timer.hpp>
 
 
 class fly_cam : public ecs::system_base
