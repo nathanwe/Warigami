@@ -10,7 +10,7 @@
 #include <iostream>
 #endif
 
-
+#ifdef WIN32
 // From https://stackoverflow.com/questions/22585326/how-to-convert-stdwstring-to-lpctstr-in-c
 std::string os::ws2s(const std::wstring& wstr)
 {
@@ -38,6 +38,7 @@ std::wstring os::s2ws(const std::string& as)
 	// return new string ( compiler should optimize this away )
 	return ret;
 }
+#endif
 
 #ifdef WIN32
 os::file_path os::make_file_path(const std::string& path) { return s2ws(path); }
