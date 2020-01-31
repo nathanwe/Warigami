@@ -26,22 +26,36 @@ static void glfw_error_callback(int error, const char* description)
 
 int main() {
 
+    core::startup_config conf;
+
     glfwSetErrorCallback(glfw_error_callback);
 
     if (!glfwInit())
         return 1;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Sample Window", nullptr, nullptr);
+    std::string window_title_cpp = conf.window_title();
+    const char* window_title_c = window_title_cpp.c_str();
+    
+    GLFWmonitor* p_monitor = nullptr;
+    if (conf.fullscreen()) {
+        p_monitor = glfwGetPrimaryMonitor();
+    }
+   
+    GLFWwindow* window = glfwCreateWindow(conf.width(), conf.height(), window_title_c, p_monitor, nullptr);
+    
+    if (!conf.free_mouse()) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
     glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
 
-    core::startup_config conf;
+    
     core::system_info info;
     core::frame_timer timer;
     core::frame_limiter limiter(timer, 60);

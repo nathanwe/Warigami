@@ -43,11 +43,7 @@ Example:
           "type": "transform",
           "position": [ 1, 2, 3 ],
           "rotation": [ 3.14, 3.14, 3.14 ],
-          "scale": [ 1, 2, 3 ],
-          "local_to_world": [ 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 ],
-          "is_matrix_dirty": false,
-          "parent": 0,
-          "has_parent": false
+          "scale": [ 1, 2, 3 ]
         },
         {
           "type": "renderable_mesh_static",

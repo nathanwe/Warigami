@@ -16,7 +16,7 @@ void MySaveFunction()
 // this is a mgui test that should be deleted and never used
 class sample_mgui
 {
-    const char* glsl_version = "#version 460";
+    const char* glsl_version = "#version 420";
 
 
 public:

@@ -18,10 +18,10 @@ namespace rendering
 				// maybe cache these steps in transform component
 				glm::mat4 translation = glm::translate(glm::mat4(1), r_transform.position);
 				glm::mat4 rotation = glm::eulerAngleZYX(r_transform.rotation.z, r_transform.rotation.y, r_transform.rotation.x);
-// 				r_camera.inverse_view = translation * rotation;
-// 				r_camera.view = glm::inverse(r_camera.inverse_view);
-				r_camera.view = translation * rotation;
-				r_camera.inverse_view = glm::inverse(r_camera.inverse_view);
+ 				r_camera.inverse_view = translation * rotation;
+ 				r_camera.view = glm::inverse(r_camera.inverse_view);
+//				r_camera.view = translation * rotation;
+//				r_camera.inverse_view = glm::inverse(r_camera.inverse_view);
 			}
 			if (r_camera.is_projection_dirty)
 			{

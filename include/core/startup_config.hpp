@@ -12,7 +12,7 @@ namespace core
 class startup_config
 {
 private:
-    static const std::string FileName;
+    static const std::wstring FileName;
     json config_json;
 
 public:
@@ -29,6 +29,9 @@ public:
     float fov() const;
     bool backface_culling() const;
     bool free_mouse() const;
+    std::string window_title() const;
+    bool god_mode() const;
+    bool auto_play() const;
 
 private:
     json make_default() const;
