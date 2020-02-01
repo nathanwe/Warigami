@@ -7,7 +7,17 @@
           "type": "transform"
         },
         {
-          "type": "camera"
+          "type": "camera",
+          "field_of_view": 1.2,
+          "clear_setting": "sky_box",
+          "clear_sky_box": [
+            "assets/cubemaps/beach/env/px.hdr",
+            "assets/cubemaps/beach/env/nx.hdr",
+            "assets/cubemaps/beach/env/py.hdr",
+            "assets/cubemaps/beach/env/ny.hdr",
+            "assets/cubemaps/beach/env/pz.hdr",
+            "assets/cubemaps/beach/env/nz.hdr"
+          ]
         }
       ]
     },
