@@ -18,7 +18,7 @@ build:
     - apt-get install -y xinput
     - apt-get install -y libxcb-xinput-dev
     - apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev
-    - apt-get install -y joystick jstest-gtk joy2key gjoypad xserver-xorg-input-joystick xserver-xorg-input-joystick-dev kodi-peripherals
+    - apt-get install -y joystick jstest-gtk joy2key gjoypad xserver-xorg-input-joystick xserver-xorg-input-joystick-dev 
    
   script:
     - mkdir build
