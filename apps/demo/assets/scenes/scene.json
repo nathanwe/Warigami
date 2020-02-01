@@ -24,7 +24,8 @@
           "sounds": [
             {
               "file": "assets/music.mp3",
-              "loop": true
+              "loop": true,
+              "volume": 0.5
             }
           ]
         },

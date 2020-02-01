@@ -27,8 +27,8 @@ namespace audio
     {
         size_t path_hash {};
         bool loop { false };
-        sound_state state { uninitialized };
-        float volume { 1.f };
+        float volume{ 1.f };
+        sound_state state { uninitialized };       
 
         // fmod
         FMOD::Sound * fmod_sound{};
