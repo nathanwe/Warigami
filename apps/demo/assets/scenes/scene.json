@@ -18,6 +18,18 @@
             "assets/cubemaps/beach/env/pz.hdr",
             "assets/cubemaps/beach/env/nz.hdr"
           ]
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/music.mp3",
+              "loop": true
+            }
+          ]
+        },
+        {
+          "type": "audio_listener"
         }
       ]
     },

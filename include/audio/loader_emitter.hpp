@@ -39,7 +39,7 @@ namespace audio
         }
 
     private:
-        util::string_table _hashes;
+        util::string_table& _hashes;
     };
 }
 

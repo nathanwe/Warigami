@@ -19,6 +19,8 @@
 #include "rendering/renderer.hpp"
 
 #include "fly_cam_system.hpp"
+#include <audio/audio_system.hpp>
+#include <audio/loader_emitter.hpp>
 
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
 
@@ -70,6 +72,8 @@ int main(int argc, char** argv)
 
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug)
 {
+    util::string_table strings;
+
     rendering::viewport window_view{ 0, 0, window_width, window_height };
 
     core::input_manager input(window);
@@ -83,14 +87,20 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     ecs::register_component<rendering::light_directional>("light_directional");
     ecs::register_component<rendering::light_point>("light_point");
     ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
-    rendering::asset_cache render_asset_cache;
+    ecs::register_component<audio::audio_emitter>("audio_emitter");
+    ecs::register_component<audio::audio_listener>("audio_listener");
 
+    rendering::asset_cache render_asset_cache;
     rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
+    audio::audio_system audio_system(strings);
     fly_cam flycam(input, timer);
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam });
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &audio_system });
     ecs::world world(systems, state);
+
+    
+    audio::loader_emitter eloader(strings);
 
     asset::json_cache cache;
     asset::scene scene("assets/scenes/scene.json", cache);
@@ -100,8 +110,12 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     rendering::loader_light_directional dir_light_loader;
     rendering::loader_light_point point_light_loader;
     rendering::render_loader render_loader(render_asset_cache);
-    hydrater.register_loaders(&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader);
+    hydrater.register_loaders(&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader);
     hydrater.load();
+
+    state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
+        e.set_sound_state(0, audio::playback_requested);
+    });
 
     //game loop
     while (!glfwWindowShouldClose(window))
