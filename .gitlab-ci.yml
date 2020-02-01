@@ -16,9 +16,10 @@ build:
     - apt-get install -y libxcursor-dev
     - apt-get install -y libxi-dev
     - apt-get install -y xinput
-    - apt-get install -y libxcb-xinput-dev
+    - apt-get install -y libxcb-xinput-dev    
     - apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev
     - DEBIAN_FRONTEND=noninteractive apt-get install -y joystick jstest-gtk xserver-xorg-input-joystick xserver-xorg-input-joystick-dev 
+    - apt-get install -y cmake
    
   script:
     - mkdir build
