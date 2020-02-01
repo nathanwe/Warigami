@@ -38,7 +38,7 @@ target_link_libraries(core
             glm        
             platform
             glfw
-            $<${WIN32}:xinput>)
+            $<$<BOOL:${WIN32}>:xinput>)
 
 
 
