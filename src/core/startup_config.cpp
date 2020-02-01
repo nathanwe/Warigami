@@ -49,7 +49,7 @@ json core::startup_config::make_default() const
         {"width", 768},
         {"fov", 45},
         {"backfaceCulling", true},
-        {"free_mouse", false},
+        {"free_mouse", true},
         {"window_title", "Sample Window"},
         {"god_mode", false},
         {"auto_play", false}
