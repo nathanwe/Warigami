@@ -11,4 +11,4 @@ template<> const component_shift ecs::component<audio::audio_listener>::componen
         (component_shift)audio::component_bits::audio_listener
 };
 
-std::atomic<int> audio::audio_listener::NextId = 1;
+std::atomic<int> audio::audio_listener::NextId = 0;

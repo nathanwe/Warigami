@@ -20,16 +20,6 @@
           ]
         },
         {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/music.mp3",
-              "loop": true,
-              "volume": 0.5
-            }
-          ]
-        },
-        {
           "type": "audio_listener"
         }
       ]
@@ -133,6 +123,24 @@
           "color": [ 0, 1, 0 ],
           "radius": 5
         }
+      ]
+    },
+    {
+      "entity_id": 9,
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/music.mp3",
+              "loop": true,
+              "volume": 0.25
+            }
+          ]
+        }       
       ]
     }
   ]

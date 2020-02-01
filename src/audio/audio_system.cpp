@@ -57,14 +57,12 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
             auto& entity = state.find_entity(id);
             auto cam_opt = entity.get_component_opt<rendering::camera>();
 
-            glm::mat3 rot = cam_opt
-                    ? glm::mat3(glm::inverse(cam_opt->get().view))
-                    : glm::mat3(t.local_to_world);
+            glm::mat3 ltw = glm::mat3(t.local_to_world);
 
             l.listener_position = t.position;
             l.listener_velocity = glm::vec3(0.f); //rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
-            l.listener_up = rot[1];
-            l.listener_forward = -rot[2];
+            l.listener_up = ltw[1];
+            l.listener_forward = ltw[2];
 
             FMOD_VECTOR pos = {l.listener_position.x, l.listener_position.y, l.listener_position.z};
             FMOD_VECTOR vel = {l.listener_velocity.x, l.listener_velocity.y, l.listener_velocity.z};
@@ -79,7 +77,7 @@ void audio::audio_system::update_emitters(ecs::state &state)
 {
     state.each<transforms::transform, audio_emitter>([this](transforms::transform& transform, audio_emitter& e)
     {
-        auto t = transform.local_to_world[3];
+        auto t = transform.position;
         for (std::uint32_t i = 0; i < e.sound_count; ++i)
         {
             auto& emitter_sound = e.emitter_sounds[i];
@@ -142,7 +140,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     emitter_sound.fmod_sound = sound;
 }
 
-void audio::audio_system::handle_emitter_sound(audio::emitter_sound &emitter_sound, glm::vec4& t_pos)
+void audio::audio_system::handle_emitter_sound(audio::emitter_sound &emitter_sound, glm::vec3& t_pos)
 {
     switch (emitter_sound.state)
     {
