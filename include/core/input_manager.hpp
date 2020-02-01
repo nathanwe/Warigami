@@ -73,8 +73,9 @@ namespace core
         float Ltrigger();
         float Rtrigger();
 
+        bool is_button_held(int button);
         bool is_button_pressed(int button);
-        bool is_button_down(int button);
+        bool is_button_released(int button);
 
         // Vibration
         // Values from 0.0 to 1.0
@@ -87,7 +88,6 @@ namespace core
         static const int _button_count = 14; // Number of buttons in gamepad
         bool _prev_button_states[_button_count];
         bool _current_button_states[_button_count];
-        bool _buttons_pressed[_button_count]; // Buttons being pressed/released in current frame
     };
 
     //////////
@@ -115,6 +115,8 @@ namespace core
         void update();
 
         const glm::vec2 mouse_delta() { return _mouse_delta.average(); }
+
+        gamepad* get_gamepad();
 
     private:
         GLFWwindow *_window;

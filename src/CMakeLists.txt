@@ -21,7 +21,7 @@ set (CORE_HEADERS
         ${PROJECT_SOURCE_DIR}/include/core/frame_limiter.hpp
         ${PROJECT_SOURCE_DIR}/include/core/frame_timer.hpp
         ${PROJECT_SOURCE_DIR}/include/core/input_manager.hpp
-        ${PROJECT_SOURCE_DIR}/include/core/input_event_manager.hpp
+        ${PROJECT_SOURCE_DIR}/include/core/game_input_manager.hpp
         ${PROJECT_SOURCE_DIR}/include/core/startup_config.hpp
         ${PROJECT_SOURCE_DIR}/include/core/system_info.hpp)
 
@@ -30,7 +30,7 @@ set (CORE_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/src/core/frame_limiter.cpp
         ${PROJECT_SOURCE_DIR}/src/core/frame_timer.cpp
         ${PROJECT_SOURCE_DIR}/src/core/input_manager.cpp
-        ${PROJECT_SOURCE_DIR}/src/core/input_event_manager.cpp
+        ${PROJECT_SOURCE_DIR}/src/core/game_input_manager.cpp
         ${PROJECT_SOURCE_DIR}/src/core/startup_config.cpp
         ${PROJECT_SOURCE_DIR}/src/core/system_info.cpp)
 

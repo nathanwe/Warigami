@@ -8,7 +8,7 @@
 #include "Winerror.h"
 #include <iostream>
 
-core::XINPUT_button_ids Xbuttons;
+//core::XINPUT_button_ids Xbuttons;
 
 core::XINPUT_button_ids::XINPUT_button_ids() {
     A = 0; B = 1; X = 2; Y = 3;
@@ -23,7 +23,6 @@ core::gamepad::gamepad(int index) {
     for (int i = 0; i < _button_count; i++) {
         _prev_button_states[i] = false;
         _current_button_states[i] = false;
-        _buttons_pressed[i] = false;
     }
 }
 
@@ -50,28 +49,7 @@ void core::gamepad::update() {
 
     for (int i = 0; i < _button_count; i++) {
         _current_button_states[i] = (_state.Gamepad.wButtons & XINPUT_buttons[i]) == XINPUT_buttons[i];
-        _buttons_pressed[i] = !_prev_button_states[i] && _current_button_states[i];
     }
-    
-    if (!Lstick_deadzone()) std::cout << "Left stick moved: " << Lstick_position().first << " " << Lstick_position().second << std::endl;
-    if (!Rstick_deadzone()) std::cout << "Right stick moved: " << Rstick_position().first << " " << Rstick_position().second << std::endl;
-    if (Ltrigger() > 0) std::cout << "Left trigger pressed " << std::endl;
-    if (Rtrigger() > 0) std::cout << "Right trigger pressed " << std::endl;
-    if (is_button_pressed(Xbuttons.A)) std::cout << "A\n";
-    if (is_button_pressed(Xbuttons.B)) std::cout << "B\n";
-    if (is_button_pressed(Xbuttons.X)) std::cout << "X\n";
-    if (is_button_pressed(Xbuttons.Y)) std::cout << "Y\n";
-    if (is_button_pressed(Xbuttons.start_button)) std::cout << "start\n";
-    if (is_button_pressed(Xbuttons.back_button)) std::cout << "back\n";
-    if (is_button_pressed(Xbuttons.pad_up)) std::cout << "pad up\n";
-    if (is_button_pressed(Xbuttons.pad_down)) std::cout << "pad down\n";
-    if (is_button_pressed(Xbuttons.pad_left)) std::cout << "pad left\n";
-    if (is_button_pressed(Xbuttons.pad_right)) std::cout << "pad right\n";
-    if (is_button_pressed(Xbuttons.Lbumper)) std::cout << "bumper l\n";
-    if (is_button_pressed(Xbuttons.Rbumper)) std::cout << "bumper r\n";
-    if (is_button_pressed(Xbuttons.Lstick_button)) std::cout << "thumb l\n";
-    if (is_button_pressed(Xbuttons.Rstick_button)) std::cout << "thumb r\n";
-    rumble(0.5, 0);
 }
 
 bool core::gamepad::Lstick_deadzone() {
@@ -94,12 +72,10 @@ bool core::gamepad::Rstick_deadzone() {
     short y = _state.Gamepad.sThumbRY;
 
     if (x > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || x < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) {
-        std::cout << "Right stick moved";
         return false;
     }
 
     if (y > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || y < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) {
-        std::cout << "Right stick moved";
         return false;
     }
 
@@ -143,12 +119,16 @@ void core::gamepad::rumble(float left_rumble, float right_rumble) {
     XInputSetState(_index, &vibration_state);
 }
 
-bool core::gamepad::is_button_pressed(int button) {
-    return _state.Gamepad.wButtons & XINPUT_buttons[button];
+bool core::gamepad::is_button_held(int button) {
+    return _current_button_states[button];
 }
 
-bool core::gamepad::is_button_down(int button) {
-    return _buttons_pressed[button];
+bool core::gamepad::is_button_pressed(int button) {
+    return _current_button_states[button] && !_prev_button_states[button];
+}
+
+bool core::gamepad::is_button_released(int button) {
+    return !_current_button_states[button] && _prev_button_states[button];
 }
 
 /////////////
@@ -371,4 +351,8 @@ core::input_manager::input_manager(GLFWwindow *window) :
     _last_y = y;
 
     _gamepad = new gamepad(0);
+}
+
+core::gamepad* core::input_manager::get_gamepad() {
+    return _gamepad;
 }
