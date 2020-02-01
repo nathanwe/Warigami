@@ -15,7 +15,9 @@ build:
     - apt-get install -y libxinerama-dev
     - apt-get install -y libxcursor-dev
     - apt-get install -y libxi-dev
+    - apt-get install -y xinput
     - apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev
+
 
     - mkdir cmake-3.16.2-Linux-x86_64
     - wget https://github.com/Kitware/CMake/releases/download/v3.16.2/cmake-3.16.2-Linux-x86_64.sh
