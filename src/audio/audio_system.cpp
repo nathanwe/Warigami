@@ -126,6 +126,8 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
         throw;
 
     channel->setVolume(emitter_sound.volume);
+    channel->set3DMinMaxDistance(emitter_sound.volume * 30.f, 100000.f);
+
 
     // Assign the channel to the group.
     result = channel->setChannelGroup(_channelGroup);
@@ -135,6 +137,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     channel->setCallback(&channelGroupCallback);
     if (!succeededOrWarn("FMOD: Failed to set callback for sound_wrapper", result))
         throw;
+
 
     emitter_sound.fmod_channel = channel;
     emitter_sound.fmod_sound = sound;
