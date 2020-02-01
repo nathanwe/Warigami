@@ -45,8 +45,8 @@ json core::startup_config::make_default() const
 {
     return {
         {"fullscreen", false},
-        {"height", 1366},
-        {"width", 768},
+        {"height", 768 },
+        {"width", 1366 },
         {"fov", 45},
         {"backfaceCulling", true},
         {"free_mouse", true},
