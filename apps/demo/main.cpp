@@ -24,6 +24,35 @@
 
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
 
+
+
+
+
+class spinner : public ecs::system_base
+{
+public:
+	spinner(core::frame_timer& timer) :
+		_timer(timer)
+	{
+	}
+
+	virtual void update(ecs::state& r_state) override
+	{
+		r_state.each< transforms::transform, rendering::renderable_mesh_static>([&](auto& transform, auto& renderable)
+			{
+				transform.rotation.y += m_rotation_speed * _timer.delta_secs();
+				transform.is_matrix_dirty = true;
+			});
+	}
+
+private:
+	core::frame_timer& _timer;
+	float m_rotation_speed = .5f;
+};
+
+
+
+
 int main(int argc, char** argv)
 {
 #ifndef NDEBUG
@@ -95,8 +124,9 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
     audio::audio_system audio_system(strings);
+	spinner spinner(timer);
     fly_cam flycam(input, timer);
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &audio_system });
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &audio_system, &spinner });
     ecs::world world(systems, state);
 
     
@@ -130,3 +160,4 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
         timer.end();
     }
 }
+
