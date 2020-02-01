@@ -1,6 +1,7 @@
 #include "asset/json_cache.hpp"
 #include "asset/scene.hpp"
 #include "asset/scene_hydrater.hpp"
+#include "core/frame_timer.hpp"
 #include "ecs/register_component.hpp"
 #include "ecs/state.hpp"
 #include "ecs/world.hpp"
@@ -23,17 +24,30 @@ namespace test
 	class spinner : public ecs::system_base
 	{
 	public:
+		spinner(core::frame_timer& timer) :
+			_timer(timer)
+		{
+		}
+
 		virtual void update(ecs::state& r_state) override
 		{
 			r_state.each< transforms::transform, rendering::renderable_mesh_static>([&](auto& transform, auto& renderable)
 			{
-				transform.rotation.y += m_rotation_speed;
+				transform.rotation.y += m_rotation_speed * _timer.delta_secs();
 				transform.is_matrix_dirty = true;
+			});
+			r_state.each< transforms::transform, rendering::camera>([&](auto& transform, auto& cam)
+			{
+				transform.rotation.y += m_rotation_speed * _timer.delta_secs();
+				//transform.rotation.x += m_rotation_speed * _timer.delta_secs();
+				transform.is_matrix_dirty = true;
+				cam.is_view_dirty = true;
 			});
 		}
 
 	private:
-		float m_rotation_speed = .001f;
+		core::frame_timer& _timer;
+		float m_rotation_speed = .5f;
 	};
 }
 
@@ -56,7 +70,7 @@ int main(int argc, char** argv)
 	uint32_t window_height = 720;
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
@@ -80,6 +94,8 @@ int main(int argc, char** argv)
 
 	rendering::viewport window_view{ 0, 0, window_width, window_height };
 
+	core::frame_timer timer;
+
 	// init ecs state
 	ecs::archetype_pools memory;
 	ecs::state state(memory);
@@ -91,8 +107,8 @@ int main(int argc, char** argv)
 	rendering::asset_cache render_asset_cache;
 
 	// init ecs systems
-	rendering::renderer renderer(window, window_view, is_debug);
-	test::spinner spinner;
+	rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
+	test::spinner spinner(timer);
 	transforms::transformer transformer;
 	rendering::camera_updater camera_updater;
 	ecs::systems systems({ &spinner, &transformer, &camera_updater, &renderer });
@@ -113,8 +129,10 @@ int main(int argc, char** argv)
 	//game loop
 	while (!glfwWindowShouldClose(window))
 	{
+		timer.start();
 		glfwPollEvents();
 		world.update();
+		timer.end();
 	}
 
 	glfwTerminate();

@@ -9,7 +9,7 @@
 
 using json = nlohmann::json;
 
-const std::wstring core::startup_config::FileName = L"\\startup_config.json";
+const os::file_path core::startup_config::FileName = os::make_file_path("/startup_config.json");
 
 void core::startup_config::load()
 {
@@ -49,7 +49,7 @@ json core::startup_config::make_default() const
         {"width", 768},
         {"fov", 45},
         {"backfaceCulling", true},
-        {"free_mouse", false},
+        {"free_mouse", true},
         {"window_title", "Sample Window"},
         {"god_mode", false},
         {"auto_play", false}

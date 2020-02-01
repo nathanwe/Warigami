@@ -12,14 +12,43 @@
 
 #ifdef WIN32
 // From https://stackoverflow.com/questions/22585326/how-to-convert-stdwstring-to-lpctstr-in-c
-std::string ws2s(const std::wstring& wstr)
+std::string os::ws2s(const std::wstring& wstr)
 {
 	int size_needed = WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), int(wstr.length() + 1), 0, 0, 0, 0);
 	std::string strTo(size_needed, 0);
 	WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), int(wstr.length() + 1), &strTo[0], size_needed, 0, 0);
 	return strTo;
 }
+
+// From https://stackoverflow.com/questions/6691555/converting-narrow-string-to-wide-string
+std::wstring os::s2ws(const std::string& as)
+{
+	// deal with trivial case of empty string
+	if (as.empty())    return std::wstring();
+
+	// determine required length of new string
+	size_t reqLength = ::MultiByteToWideChar(CP_UTF8, 0, as.c_str(), (int)as.length(), 0, 0);
+
+	// construct new string of required length
+	std::wstring ret(reqLength, L'\0');
+
+	// convert old string to new string
+	::MultiByteToWideChar(CP_UTF8, 0, as.c_str(), (int)as.length(), &ret[0], (int)ret.length());
+
+	// return new string ( compiler should optimize this away )
+	return ret;
+}
 #endif
+
+#ifdef WIN32
+os::file_path os::make_file_path(const std::string& path) { return s2ws(path); }
+#endif
+
+#ifdef __linux__
+os::file_path os::make_file_path(const std::string& path) { return path; }
+#endif
+
+
 
 os::file_path os::user_data_paths::get_user_data_path() {
 

@@ -85,7 +85,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
     rendering::asset_cache render_asset_cache;
 
-    rendering::renderer renderer(window, window_view, is_debug);
+    rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
     fly_cam flycam(input, timer);

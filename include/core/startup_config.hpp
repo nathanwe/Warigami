@@ -1,6 +1,8 @@
 #ifndef __STARTUP_CONFIG_H_
 #define __STARTUP_CONFIG_H_
 
+#include <platform/user_data_paths.hpp>
+
 #include <string>
 
 #include <nlohmann/json.hpp>
@@ -12,7 +14,7 @@ namespace core
 class startup_config
 {
 private:
-    static const std::wstring FileName;
+    static const os::file_path FileName;
     json config_json;
 
 public:

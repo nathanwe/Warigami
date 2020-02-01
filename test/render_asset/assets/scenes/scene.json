@@ -7,7 +7,17 @@
           "type": "transform"
         },
         {
-          "type": "camera"
+          "type": "camera",
+          "field_of_view": 1.2,
+          "clear_setting": "sky_box",
+          "clear_sky_box": [
+            "assets/cubemaps/beach/env/px.hdr",
+            "assets/cubemaps/beach/env/nx.hdr",
+            "assets/cubemaps/beach/env/py.hdr",
+            "assets/cubemaps/beach/env/ny.hdr",
+            "assets/cubemaps/beach/env/pz.hdr",
+            "assets/cubemaps/beach/env/nz.hdr"
+          ]
         }
       ]
     },
@@ -18,7 +28,8 @@
           "type": "transform"
         },
         {
-          "type": "light_directional"
+          "type": "light_directional",
+          "intensity": 2.5
         }
       ]
     },
@@ -27,7 +38,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 2.5, -6 ]
+          "position": [ 0, 2.5, -3 ]
         },
         {
           "type": "light_point",
@@ -42,13 +53,17 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 0, -10 ],
+          "position": [ 0, 0, -7.5 ],
           "scale": [ 5, 5, 5 ]
         },
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/cube/cube.obj",
-          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+          "texture_diffuse": "assets/textures/wood_planks/Planks20_col.jpg",
+          "texture_metalness": "assets/textures/wood_planks/Planks20_met.jpg",
+          "texture_normal": "assets/textures/wood_planks/Planks20_nrm.jpg",
+          "texture_roughness": "assets/textures/wood_planks/Planks20_rgh.jpg",
+          "texture_ambient_occlusion": "assets/textures/wood_planks/Planks20_AO.jpg"
         }
       ]
     }

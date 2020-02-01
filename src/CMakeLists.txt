@@ -136,9 +136,9 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/asset_cache.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/camera_updater.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/loader_camera.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/light_directional.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/light_point.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_camera.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_directional.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_point.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
@@ -159,6 +159,12 @@ target_link_libraries(rendering PUBLIC
     glm 
     glfw
     stb_image)
+
+add_custom_target(copy_shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/src/rendering/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
+)
+
+add_dependencies (rendering copy_shaders)
 
 
 ##### AUDIO #####
