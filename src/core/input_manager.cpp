@@ -5,32 +5,46 @@
 
 #include "core/input_manager.hpp"
 
-#include "Winerror.h"
 #include <iostream>
 
 //core::XINPUT_button_ids Xbuttons;
 
 core::XINPUT_button_ids::XINPUT_button_ids() {
-    A = 0; B = 1; X = 2; Y = 3;
-    pad_up = 4; pad_down = 5; pad_left = 6; pad_right = 7;
-    Lbumper = 8; Rbumper = 9;
-    Lstick_button = 10; Rstick_button = 11;
-    start_button = 12; back_button = 13;
+    A = GLFW_GAMEPAD_BUTTON_A; 
+    B = GLFW_GAMEPAD_BUTTON_B; 
+    X = GLFW_GAMEPAD_BUTTON_X; 
+    Y = GLFW_GAMEPAD_BUTTON_Y;
+    pad_up = GLFW_GAMEPAD_BUTTON_DPAD_UP; 
+    pad_down = GLFW_GAMEPAD_BUTTON_DPAD_DOWN; 
+    pad_left = GLFW_GAMEPAD_BUTTON_DPAD_LEFT; 
+    pad_right = GLFW_GAMEPAD_BUTTON_DPAD_RIGHT;
+    Lbumper = GLFW_GAMEPAD_BUTTON_LEFT_BUMPER;
+    Rbumper = GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER;
+    Lstick_button = GLFW_GAMEPAD_BUTTON_LEFT_THUMB;
+    Rstick_button = GLFW_GAMEPAD_BUTTON_RIGHT_THUMB;
+    start_button = GLFW_GAMEPAD_BUTTON_START; 
+    back_button = GLFW_GAMEPAD_BUTTON_BACK;
 }
 
-core::gamepad::gamepad(int index) {
-    _index = index;
+core::gamepad::gamepad(int index) 
+    : _index(index) 
+    , _connected(glfwJoystickPresent(index)){
     for (int i = 0; i < _button_count; i++) {
         _prev_button_states[i] = false;
         _current_button_states[i] = false;
     }
 }
 
-XINPUT_STATE core::gamepad::get_state() {
-    XINPUT_STATE current_state;
+GLFWgamepadstate core::gamepad::get_state() {
+    auto joystick_num = GLFW_JOYSTICK_1 + _index;
+    GLFWgamepadstate state;
+    glfwGetGamepadState(joystick_num, &state);
+    return state; 
+
+    /*XINPUT_STATE current_state;
     memset(&current_state, 0, sizeof(XINPUT_STATE));
     XInputGetState(_index, &current_state);
-    return current_state;
+    return current_state;*/
 }
 
 int core::gamepad::get_index() {
@@ -38,29 +52,29 @@ int core::gamepad::get_index() {
 }
 
 bool core::gamepad::connected() {
-    memset(&_state, 0, sizeof(XINPUT_STATE));
-    DWORD result = XInputGetState(_index, &_state);
-    return result == ERROR_SUCCESS;
+    auto joystick_num = GLFW_JOYSTICK_1 + _index;
+    return  glfwJoystickPresent(joystick_num);
 }
 
 void core::gamepad::update() {
-    memcpy(_prev_button_states, _current_button_states, sizeof(_prev_button_states));
-    _state = get_state();
+    _connected = glfwJoystickPresent(_index);
 
-    for (int i = 0; i < _button_count; i++) {
-        _current_button_states[i] = (_state.Gamepad.wButtons & XINPUT_buttons[i]) == XINPUT_buttons[i];
+    if (_connected)
+    {
+        memcpy(_prev_button_states, _current_button_states, sizeof(_prev_button_states));
+        _state = get_state();
     }
 }
 
 bool core::gamepad::Lstick_deadzone() {
-    short x = _state.Gamepad.sThumbLX;
-    short y = _state.Gamepad.sThumbLY;
+    auto x = _state.axes[GLFW_GAMEPAD_AXIS_LEFT_X];
+    auto y = _state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y];
 
-    if (x > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || x < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+    if (x > THUMBPAD_EPSILON || x < -THUMBPAD_EPSILON) {
         return false;
     }
 
-    if (y > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || y < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+    if (y > THUMBPAD_EPSILON || y < -THUMBPAD_EPSILON) {
         return false;
     }
 
@@ -68,14 +82,14 @@ bool core::gamepad::Lstick_deadzone() {
 }
 
 bool core::gamepad::Rstick_deadzone() {
-    short x = _state.Gamepad.sThumbRX;
-    short y = _state.Gamepad.sThumbRY;
+    auto x = _state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X];
+    auto y = _state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y];
 
-    if (x > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || x < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) {
+    if (x > THUMBPAD_EPSILON || x < -THUMBPAD_EPSILON) {
         return false;
     }
 
-    if (y > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || y < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) {
+    if (y > THUMBPAD_EPSILON || y < -THUMBPAD_EPSILON) {
         return false;
     }
 
@@ -83,40 +97,33 @@ bool core::gamepad::Rstick_deadzone() {
 }
 
 std::pair<float, float> core::gamepad::Lstick_position() {
-    return std::make_pair(_state.Gamepad.sThumbLX / 32768.0, _state.Gamepad.sThumbLY / 32768.0);
+    return { _state.axes[GLFW_GAMEPAD_AXIS_LEFT_X], _state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y] };
 }
 
 std::pair<float, float> core::gamepad::Rstick_position() {
-    return std::make_pair(_state.Gamepad.sThumbRX / 32768.0, _state.Gamepad.sThumbRY / 32768.0);
+    return { _state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X], _state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] };
 }
 
 float core::gamepad::Ltrigger() {
-    BYTE trigger_value = _state.Gamepad.bLeftTrigger;
-    if (trigger_value > XINPUT_GAMEPAD_TRIGGER_THRESHOLD) {
-        // Value goes from 0 to 255, transform from 0.0 to 1.0
-        return trigger_value / 255.0f;
+    auto trigger_value = _state.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER];
+    if (trigger_value > THUMBPAD_EPSILON || trigger_value < -THUMBPAD_EPSILON) {
+        // Value goes from -1 to 1, transform from 0.0 to 1.0
+        return (trigger_value + 1.f) / 2.f;
     }
     return 0.0f;
 }
 
 float core::gamepad::Rtrigger() {
-    BYTE trigger_value = _state.Gamepad.bRightTrigger;
-    if (trigger_value > XINPUT_GAMEPAD_TRIGGER_THRESHOLD) {
-        // Value goes from 0 to 255, transform from 0.0 to 1.0
-        return trigger_value / 255.0f;
+    auto trigger_value = _state.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER];
+    if (trigger_value > THUMBPAD_EPSILON || trigger_value < -THUMBPAD_EPSILON) {
+        // Value goes from -1 to 1, transform from 0.0 to 1.0
+        return (trigger_value + 1.f) / 2.f;
     }
     return 0.0f;
 }
 
 void core::gamepad::rumble(float left_rumble, float right_rumble) {
-    XINPUT_VIBRATION vibration_state;
-    memset(&vibration_state, 0, sizeof(XINPUT_VIBRATION));
-
-    // Vibration ranges from 0 to 65535
-    vibration_state.wLeftMotorSpeed = int(left_rumble * 65535.0f);
-    vibration_state.wRightMotorSpeed = int(right_rumble * 65535.0f);
-
-    XInputSetState(_index, &vibration_state);
+    os::rumble(_index, left_rumble, right_rumble);
 }
 
 bool core::gamepad::is_button_held(int button) {
@@ -163,14 +170,9 @@ bool core::input_manager::was_mouse_released(std::uint8_t mouse_button)
 }
 
 void core::input_manager::update()
-{
-    std::uint8_t* dummy = _last_key_states;
+{    
     _last_key_states = _current_key_states;
-    _current_key_states = dummy;
-
-    dummy = _last_mouse_button_states;
-    _last_mouse_button_states = _current_mouse_button_states;
-    _current_mouse_button_states = dummy;
+    _last_mouse_button_states = _current_mouse_button_states;    
 
     for(int i = 0; _glfw_key_codes[i] != GLFW_KEY_LAST; ++i)
     {
@@ -349,7 +351,7 @@ core::input_manager::input_manager(GLFWwindow *window) :
     glfwGetCursorPos(_window, &x, &y);
     _last_x = x;
     _last_y = y;
-
+        
     _gamepad = new gamepad(0);
 }
 

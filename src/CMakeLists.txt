@@ -2,17 +2,13 @@
 
 
 ##### PLATFORM #####
-set (PLATFORM_HEADERS 
-   ${PROJECT_SOURCE_DIR}/include/platform/sleep.hpp
-   ${PROJECT_SOURCE_DIR}/include/platform/user_data_paths.hpp
-)
-
 set (PLATFORM_SOURCE_FILES
     ${PROJECT_SOURCE_DIR}/src/platform/sleep.cpp
     ${PROJECT_SOURCE_DIR}/src/platform/user_data_paths.cpp
+    ${PROJECT_SOURCE_DIR}/src/platform/rumble.cpp
 )
 
-add_library(platform ${PLATFORM_HEADERS} ${PLATFORM_SOURCE_FILES})
+add_library(platform ${PLATFORM_SOURCE_FILES})
 target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include) 
 
 ##### CORE #####

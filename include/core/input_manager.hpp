@@ -10,6 +10,7 @@
 #include <cstring>
 
 #include <util/running_average.hpp>
+#include <platform/rumble.hpp>
 
 #include <glm/vec2.hpp>
 
@@ -18,28 +19,31 @@
 
 #include <utility>
 
-#include <Windows.h>
-#include <Xinput.h>
+#include <optional>
+
+#define THUMBPAD_EPSILON 0.0001f
 
 namespace core
 {
     // Gamepad based on this tutorial: https://lcmccauley.wordpress.com/2014/01/05/gamepad-input-tutorial/
     // Gamepad buttons
-    static const WORD XINPUT_buttons[] = {
-        XINPUT_GAMEPAD_A,
-        XINPUT_GAMEPAD_B,
-        XINPUT_GAMEPAD_X,
-        XINPUT_GAMEPAD_Y,
-        XINPUT_GAMEPAD_DPAD_UP,
-        XINPUT_GAMEPAD_DPAD_DOWN,
-        XINPUT_GAMEPAD_DPAD_LEFT,
-        XINPUT_GAMEPAD_DPAD_RIGHT,
-        XINPUT_GAMEPAD_LEFT_SHOULDER,
-        XINPUT_GAMEPAD_RIGHT_SHOULDER,
-        XINPUT_GAMEPAD_LEFT_THUMB,
-        XINPUT_GAMEPAD_RIGHT_THUMB,
-        XINPUT_GAMEPAD_START,
-        XINPUT_GAMEPAD_BACK
+    static const std::uint8_t XINPUT_buttons[] = {
+        GLFW_GAMEPAD_BUTTON_A,
+        GLFW_GAMEPAD_BUTTON_B,
+        GLFW_GAMEPAD_BUTTON_X,
+        GLFW_GAMEPAD_BUTTON_Y,
+        GLFW_GAMEPAD_BUTTON_LEFT_BUMPER,
+        GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER,
+        GLFW_GAMEPAD_BUTTON_BACK,
+        GLFW_GAMEPAD_BUTTON_START,
+        GLFW_GAMEPAD_BUTTON_GUIDE,
+        GLFW_GAMEPAD_BUTTON_LEFT_THUMB,
+        GLFW_GAMEPAD_BUTTON_RIGHT_THUMB,
+        GLFW_GAMEPAD_BUTTON_DPAD_UP,
+        GLFW_GAMEPAD_BUTTON_DPAD_RIGHT,
+        GLFW_GAMEPAD_BUTTON_DPAD_DOWN,
+        GLFW_GAMEPAD_BUTTON_DPAD_LEFT,
+        GLFW_GAMEPAD_BUTTON_LAST    
     };
 
     struct XINPUT_button_ids {
@@ -57,7 +61,7 @@ namespace core
 
         void update();
 
-        XINPUT_STATE get_state();
+        GLFWgamepadstate get_state();
         int get_index();
         bool connected();
 
@@ -82,10 +86,11 @@ namespace core
         void rumble(float left_rumble = 0.0f, float right_rumble = 0.0f);
 
     private:
-        XINPUT_STATE _state;
+        GLFWgamepadstate _state {};
         int _index;
+        bool _connected;
 
-        static const int _button_count = 14; // Number of buttons in gamepad
+        static const int _button_count{ GLFW_GAMEPAD_BUTTON_LAST + 1 }; // Number of buttons in gamepad
         bool _prev_button_states[_button_count];
         bool _current_button_states[_button_count];
     };
@@ -136,6 +141,8 @@ namespace core
 
         glm::vec2 _last_click_position;
 
+        gamepad* _gamepad;
+
         static void (*build_mouse_callback(input_manager& r))(GLFWwindow* window, int, int, int)
         {
             static input_manager& manager = r;
@@ -153,7 +160,7 @@ namespace core
             return callback;
         }
 
-        gamepad* _gamepad;
+        
     };
 }
 
