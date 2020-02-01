@@ -16,8 +16,83 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+#include <utility>
+
+#include <Windows.h>
+#include <Xinput.h>
+
 namespace core
 {
+    // Gamepad based on this tutorial: https://lcmccauley.wordpress.com/2014/01/05/gamepad-input-tutorial/
+    // Gamepad buttons
+    static const WORD XINPUT_buttons[] = {
+        XINPUT_GAMEPAD_A,
+        XINPUT_GAMEPAD_B,
+        XINPUT_GAMEPAD_X,
+        XINPUT_GAMEPAD_Y,
+        XINPUT_GAMEPAD_DPAD_UP,
+        XINPUT_GAMEPAD_DPAD_DOWN,
+        XINPUT_GAMEPAD_DPAD_LEFT,
+        XINPUT_GAMEPAD_DPAD_RIGHT,
+        XINPUT_GAMEPAD_LEFT_SHOULDER,
+        XINPUT_GAMEPAD_RIGHT_SHOULDER,
+        XINPUT_GAMEPAD_LEFT_THUMB,
+        XINPUT_GAMEPAD_RIGHT_THUMB,
+        XINPUT_GAMEPAD_START,
+        XINPUT_GAMEPAD_BACK
+    };
+
+    struct XINPUT_button_ids {
+        XINPUT_button_ids();
+        int A, B, X, Y; // Xbox buttons
+        int pad_up, pad_down, pad_left, pad_right;
+        int Lbumper, Rbumper;
+        int Lstick_button, Rstick_button; // Stick press
+        int start_button, back_button;
+    };
+    
+    class gamepad {
+    public:
+        gamepad(int gamepad_index);
+
+        void update();
+
+        XINPUT_STATE get_state();
+        int get_index();
+        bool connected();
+
+        // Thumbsticks
+        bool Lstick_deadzone();
+        bool Rstick_deadzone();
+        // pair of <x, y> with values -1 to 1
+        std::pair<float, float> Lstick_position();
+        std::pair<float, float> Rstick_position();
+
+        // Triggers
+        // Values from 0.0 to 1.0
+        float Ltrigger();
+        float Rtrigger();
+
+        bool is_button_held(int button);
+        bool is_button_pressed(int button);
+        bool is_button_released(int button);
+
+        // Vibration
+        // Values from 0.0 to 1.0
+        void rumble(float left_rumble = 0.0f, float right_rumble = 0.0f);
+
+    private:
+        XINPUT_STATE _state;
+        int _index;
+
+        static const int _button_count = 14; // Number of buttons in gamepad
+        bool _prev_button_states[_button_count];
+        bool _current_button_states[_button_count];
+    };
+
+    //////////
+
+
     class input_manager
     {
         std::uint8_t _glfw_mouse_button_codes[16];
@@ -40,6 +115,8 @@ namespace core
         void update();
 
         const glm::vec2 mouse_delta() { return _mouse_delta.average(); }
+
+        gamepad* get_gamepad();
 
     private:
         GLFWwindow *_window;
@@ -75,6 +152,8 @@ namespace core
 
             return callback;
         }
+
+        gamepad* _gamepad;
     };
 }
 

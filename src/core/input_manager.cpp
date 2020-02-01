@@ -1,9 +1,137 @@
 //
 // Created by sava on 10/16/19.
+// Edited by Silvia Barbero 1/29/20
 //
 
 #include "core/input_manager.hpp"
 
+#include "Winerror.h"
+#include <iostream>
+
+//core::XINPUT_button_ids Xbuttons;
+
+core::XINPUT_button_ids::XINPUT_button_ids() {
+    A = 0; B = 1; X = 2; Y = 3;
+    pad_up = 4; pad_down = 5; pad_left = 6; pad_right = 7;
+    Lbumper = 8; Rbumper = 9;
+    Lstick_button = 10; Rstick_button = 11;
+    start_button = 12; back_button = 13;
+}
+
+core::gamepad::gamepad(int index) {
+    _index = index;
+    for (int i = 0; i < _button_count; i++) {
+        _prev_button_states[i] = false;
+        _current_button_states[i] = false;
+    }
+}
+
+XINPUT_STATE core::gamepad::get_state() {
+    XINPUT_STATE current_state;
+    memset(&current_state, 0, sizeof(XINPUT_STATE));
+    XInputGetState(_index, &current_state);
+    return current_state;
+}
+
+int core::gamepad::get_index() {
+    return _index;
+}
+
+bool core::gamepad::connected() {
+    memset(&_state, 0, sizeof(XINPUT_STATE));
+    DWORD result = XInputGetState(_index, &_state);
+    return result == ERROR_SUCCESS;
+}
+
+void core::gamepad::update() {
+    memcpy(_prev_button_states, _current_button_states, sizeof(_prev_button_states));
+    _state = get_state();
+
+    for (int i = 0; i < _button_count; i++) {
+        _current_button_states[i] = (_state.Gamepad.wButtons & XINPUT_buttons[i]) == XINPUT_buttons[i];
+    }
+}
+
+bool core::gamepad::Lstick_deadzone() {
+    short x = _state.Gamepad.sThumbLX;
+    short y = _state.Gamepad.sThumbLY;
+
+    if (x > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || x < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+        return false;
+    }
+
+    if (y > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || y < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) {
+        return false;
+    }
+
+    return true;
+}
+
+bool core::gamepad::Rstick_deadzone() {
+    short x = _state.Gamepad.sThumbRX;
+    short y = _state.Gamepad.sThumbRY;
+
+    if (x > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || x < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) {
+        return false;
+    }
+
+    if (y > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE || y < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) {
+        return false;
+    }
+
+    return true;
+}
+
+std::pair<float, float> core::gamepad::Lstick_position() {
+    return std::make_pair(_state.Gamepad.sThumbLX / 32768.0, _state.Gamepad.sThumbLY / 32768.0);
+}
+
+std::pair<float, float> core::gamepad::Rstick_position() {
+    return std::make_pair(_state.Gamepad.sThumbRX / 32768.0, _state.Gamepad.sThumbRY / 32768.0);
+}
+
+float core::gamepad::Ltrigger() {
+    BYTE trigger_value = _state.Gamepad.bLeftTrigger;
+    if (trigger_value > XINPUT_GAMEPAD_TRIGGER_THRESHOLD) {
+        // Value goes from 0 to 255, transform from 0.0 to 1.0
+        return trigger_value / 255.0f;
+    }
+    return 0.0f;
+}
+
+float core::gamepad::Rtrigger() {
+    BYTE trigger_value = _state.Gamepad.bRightTrigger;
+    if (trigger_value > XINPUT_GAMEPAD_TRIGGER_THRESHOLD) {
+        // Value goes from 0 to 255, transform from 0.0 to 1.0
+        return trigger_value / 255.0f;
+    }
+    return 0.0f;
+}
+
+void core::gamepad::rumble(float left_rumble, float right_rumble) {
+    XINPUT_VIBRATION vibration_state;
+    memset(&vibration_state, 0, sizeof(XINPUT_VIBRATION));
+
+    // Vibration ranges from 0 to 65535
+    vibration_state.wLeftMotorSpeed = int(left_rumble * 65535.0f);
+    vibration_state.wRightMotorSpeed = int(right_rumble * 65535.0f);
+
+    XInputSetState(_index, &vibration_state);
+}
+
+bool core::gamepad::is_button_held(int button) {
+    return _current_button_states[button];
+}
+
+bool core::gamepad::is_button_pressed(int button) {
+    return _current_button_states[button] && !_prev_button_states[button];
+}
+
+bool core::gamepad::is_button_released(int button) {
+    return !_current_button_states[button] && _prev_button_states[button];
+}
+
+/////////////
 
 bool core::input_manager::is_key_down(std::uint16_t key)
 {
@@ -34,7 +162,6 @@ bool core::input_manager::was_mouse_released(std::uint8_t mouse_button)
         _current_mouse_button_states[mouse_button] == GLFW_RELEASE;
 }
 
-
 void core::input_manager::update()
 {
     std::uint8_t* dummy = _last_key_states;
@@ -63,6 +190,8 @@ void core::input_manager::update()
     _mouse_delta.update(glm::vec2(x - _last_x, y - _last_y));
     _last_x = x;
     _last_y = y;
+
+    _gamepad->update();
 }
 
 core::input_manager::input_manager(GLFWwindow *window) :
@@ -220,4 +349,10 @@ core::input_manager::input_manager(GLFWwindow *window) :
     glfwGetCursorPos(_window, &x, &y);
     _last_x = x;
     _last_y = y;
+
+    _gamepad = new gamepad(0);
+}
+
+core::gamepad* core::input_manager::get_gamepad() {
+    return _gamepad;
 }

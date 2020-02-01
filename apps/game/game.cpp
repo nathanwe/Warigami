@@ -13,6 +13,7 @@ using namespace gl;
 #include <core/startup_config.hpp>
 #include <core/system_info.hpp>
 #include <core/input_manager.hpp>
+#include <core/game_input_manager.hpp>
 
 #include "sample_mgui.hpp"
 
@@ -49,8 +50,6 @@ int main() {
     if (!conf.free_mouse()) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
-    
-    
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
@@ -62,6 +61,7 @@ int main() {
     core::frame_timer timer;
     core::frame_limiter limiter(timer, 60);
     core::input_manager input(window);
+    core::game_input_manager game_controls(input);
 
     sample_mgui mgui_sample(window);
 
@@ -70,6 +70,11 @@ int main() {
 
         glfwPollEvents();
         input.update();
+        game_controls.update();
+
+        if (game_controls.is_input_active(core::controls::DESCEND_CONTROL)) std::cout << "Descending\n";
+        if (game_controls.is_input_active(core::controls::ASCEND_CONTROL)) std::cout << "Ascending\n";
+        if (game_controls.is_input_started(core::controls::INTERACT_CONTROL)) std::cout << "Interacted\n";
 
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -84,7 +89,7 @@ int main() {
         limiter.wait_remainder();
         timer.end();
 
-        std::cout << timer.frame_info() << std::endl;
+        //std::cout << timer.frame_info() << std::endl;
     }
 
     glfwDestroyWindow(window);
