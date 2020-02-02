@@ -15,6 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <filesystem>
 
 namespace rendering
 {
@@ -103,6 +104,29 @@ namespace rendering
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		}
 		return r_cubemap;
+	}
+
+	template <>
+	json& asset_cache::get<json>(std::string const& filepath)
+	{
+		if (!std::filesystem::exists(filepath))
+		{
+			std::cerr << "Trying to open invalid file " << filepath << std::endl;
+			assert(false);
+		}
+
+		auto it = _json.find(filepath);
+
+		if (it == _json.end())
+		{
+			std::ifstream i(filepath);
+			json j;
+			i >> j;
+
+			_json.insert(std::make_pair(filepath, j));
+		}
+
+		return _json.find(filepath)->second;
 	}
 
 	template <>
