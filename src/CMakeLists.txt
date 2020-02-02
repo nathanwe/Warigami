@@ -15,7 +15,7 @@ target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(platform PUBLIC
             $<$<BOOL:${WIN32}>:xinput>)
 
-cotire(platform)
+# cotire(platform)
 
 ##### CORE #####
 set (CORE_HEADERS

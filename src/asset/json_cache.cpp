@@ -4,11 +4,18 @@
 
 #include <asset/json_cache.hpp>
 #include <fstream>
+#include <filesystem>
 
 using nlohmann::json;
 
 json asset::json_cache::load(const std::string& path)
 {
+    if (!std::filesystem::exists(path))
+    {
+        std::cerr << "Trying to open invalid file " << path << std::endl;
+        assert(false);
+    }
+
     auto it = _path_to_json.find(path);
 
     if (it == _path_to_json.end())

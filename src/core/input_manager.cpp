@@ -39,12 +39,7 @@ GLFWgamepadstate core::gamepad::get_state() {
     auto joystick_num = _index;
     GLFWgamepadstate state;
     glfwGetGamepadState(joystick_num, &state);
-    return state; 
-
-    /*XINPUT_STATE current_state;
-    memset(&current_state, 0, sizeof(XINPUT_STATE));
-    XInputGetState(_index, &current_state);
-    return current_state;*/
+    return state;
 }
 
 int core::gamepad::get_index() {

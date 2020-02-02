@@ -23,7 +23,7 @@ void ecs::archetype_pools::free_entity(ecs::entity& e)
     if (it == _archetype_pools.end())
     {
         std::cerr << "Trying to remove entity with untracked archetype" << std::endl;
-        return;
+        assert(false);
     }
 
     return _archetype_pools.find(id)->second.free_entity(e);
