@@ -21,6 +21,8 @@ namespace transforms
 	};
 }
 
+
+
 //template<> const component_shift ecs::component<transforms::transform>::component_bitshift = (component_shift)transforms::component_bits::transform;
 
 #endif

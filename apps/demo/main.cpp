@@ -17,6 +17,7 @@
 #include "rendering/render_loader.hpp"
 #include "rendering/renderable_mesh_static.hpp"
 #include "rendering/renderer.hpp"
+#include "collisions/collider.hpp"
 
 #include "fly_cam_system.hpp"
 #include <audio/audio_system.hpp>
@@ -118,6 +119,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
     ecs::register_component<audio::audio_emitter>("audio_emitter");
     ecs::register_component<audio::audio_listener>("audio_listener");
+    ecs::register_component<collisions::collider>("collider");
+
 
     rendering::asset_cache render_asset_cache;
     rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);

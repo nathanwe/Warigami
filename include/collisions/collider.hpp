@@ -2,29 +2,30 @@
 #define COLLIDER_HPP
 
 #include <glm/vec3.hpp>
+#include "ecs/component.hpp"
+#include "ecs/ecs_types.hpp"
+#include "collisions/component_bits.hpp"
 
 namespace collisions {
-	class collider {
+	class collider: public ecs::component<collider> {
 	public:
 		enum collider_type {
 			AABB,
 			SPHERE,
 			NUM_COLLIDER_TYPES
 		};
-		collider(collider_type type);
 
-		//virtual bool test_point(glm::vec3 p) = 0;
-
-		//Body* mpOwnerBody;
 		collider_type type;
-	private:
 
+		//Do not use, this is an abstract component
+		collider();
+	protected:
+		collider(collider_type type);
 	};
 
-	class sphere_collider : public collider {
+	class sphere_collider :  public collider {
 	public:
 		sphere_collider();
-		//bool test_point(glm::vec3 p);
 
 		float radius;
 	};
@@ -32,7 +33,6 @@ namespace collisions {
 	class AABB_collider : public collider {
 	public:
 		AABB_collider();
-		//bool test_point(glm::vec3 p);
 
 		float left, right, top, bottom, back, front; // offsets from center
 	};
