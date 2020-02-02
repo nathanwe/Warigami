@@ -9,8 +9,12 @@
 #include "glbinding/gl/gl.h"
 
 #include <array>
-#include <iostream>
 #include <vector>
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
 
 namespace rendering
 {
@@ -226,6 +230,30 @@ namespace rendering
 				indices.emplace_back(p_aiMesh->mFaces[i].mIndices[2]);
 			}
 			r_mesh.num_indices = indices.size();
+
+			auto fn = filepath + ".trace";
+			std::ofstream myfile(fn);
+			
+			myfile << "vertices:" << std::endl;
+
+			for (auto& v : vertices)
+			{
+				myfile << "position: ";					
+				myfile << v.position.x << " " << v.position.y << " " << v.position.z;
+
+				myfile << "; normal: ";
+				myfile << v.normal.x << " " << v.normal.y << " " << v.normal.z << std::endl;
+					
+			}
+
+			myfile << "indices:" << std::endl;
+
+			for (int i = 0; i < indices.size(); i+=3)
+			{				
+				myfile << indices[i] << " " << indices[i+1] << " " << indices[i+2] << std::endl;
+			}
+
+			myfile.close();
 
 			// Create OpenGL representation
 			glGenVertexArrays(1, &r_mesh.vao);
