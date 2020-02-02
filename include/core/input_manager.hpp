@@ -5,7 +5,7 @@
 #ifndef __INPUT_MANAGER_HPP_
 #define __INPUT_MANAGER_HPP_
 
-
+#include <optional>
 #include <cstdint>
 #include <cstring>
 
@@ -19,7 +19,7 @@
 
 #include <utility>
 
-#include <optional>
+
 
 #define THUMBPAD_EPSILON 0.0001f
 

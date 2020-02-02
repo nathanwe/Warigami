@@ -140,7 +140,22 @@
               "volume": 0.25
             }
           ]
-        }       
+        }
+      ]
+    },
+    {
+      "entity_id": 10,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 5, 5, -10 ],
+          "scale": [ 5, 5, 5 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/unit_orange/unit_orange.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        }
       ]
     }
   ]

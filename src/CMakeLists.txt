@@ -9,7 +9,9 @@ set (PLATFORM_SOURCE_FILES
 )
 
 add_library(platform ${PLATFORM_SOURCE_FILES})
-target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include) 
+target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(platform PUBLIC
+            $<$<BOOL:${WIN32}>:xinput>)
 
 ##### CORE #####
 set (CORE_HEADERS
@@ -37,8 +39,7 @@ target_link_libraries(core
             nlohmann_json
             glm        
             platform
-            glfw
-            $<$<BOOL:${WIN32}>:xinput>)
+            glfw)
 
 
 
