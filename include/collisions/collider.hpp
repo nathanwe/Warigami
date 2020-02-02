@@ -7,7 +7,7 @@
 #include "collisions/component_bits.hpp"
 
 namespace collisions {
-	class collider: public ecs::component<collider> {
+	class collider {
 	public:
 		enum collider_type {
 			AABB,
@@ -23,14 +23,14 @@ namespace collisions {
 		collider(collider_type type);
 	};
 
-	class sphere_collider :  public collider {
+	class sphere_collider :  public collider, public ecs::component<sphere_collider> {
 	public:
 		sphere_collider();
 
 		float radius;
 	};
 
-	class AABB_collider : public collider {
+	class AABB_collider : public collider, public ecs::component<AABB_collider> {
 	public:
 		AABB_collider();
 

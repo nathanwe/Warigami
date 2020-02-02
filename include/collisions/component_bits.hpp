@@ -7,8 +7,9 @@ namespace collisions
 {
     enum class component_bits : component_shift
     {
-        collider = 25,
-        rigidbody = 26
+        aabb_collider = 25,
+        sphere_collider = 26,        
+        rigidbody = 27
     };
 }
 

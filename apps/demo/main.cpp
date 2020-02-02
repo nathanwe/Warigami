@@ -119,7 +119,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
     ecs::register_component<audio::audio_emitter>("audio_emitter");
     ecs::register_component<audio::audio_listener>("audio_listener");
-    ecs::register_component<collisions::collider>("collider");
+    ecs::register_component<collisions::sphere_collider>("sphere_collider");
+    ecs::register_component<collisions::AABB_collider>("AABB_collider");
 
 
     rendering::asset_cache render_asset_cache;

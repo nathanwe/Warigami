@@ -5,9 +5,9 @@ void collisions::loader_collider::load(asset::asset_loader_node& asset_loader_no
 	auto& entity = asset_loader_node.entity_resource.entity;
 	auto& entity_data = asset_loader_node.entity_resource.entity_data;
 
-	auto& json = asset_loader_node.entity_resource.entity_data.component_data(collisions::collider::component_bitshift);
+	//auto& json = asset_loader_node.entity_resource.entity_data.component_data(collisions::collider::component_bitshift);
 
-	if (auto it = json.find("collider_type"); it != json.end())
+	/*if (auto it = json.find("collider_type"); it != json.end())
 	{
 		if (it->get<std::string>() == "AABB") {
 			auto& collider = entity.get_component<collisions::AABB_collider>();
@@ -44,10 +44,10 @@ void collisions::loader_collider::load(asset::asset_loader_node& asset_loader_no
 				collider.radius = it->get<float>();
 			}
 		}
-	}
+	}*/
 }
 
 component_bitset collisions::loader_collider::components_to_load()
 {
-	return collisions::collider::archetype_bit;
+	return collisions::AABB_collider::archetype_bit | collisions::sphere_collider::archetype_bit;
 }
