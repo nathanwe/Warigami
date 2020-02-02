@@ -7,10 +7,10 @@ set (ASSIMP_NO_EXPORT ON CACHE INTERNAL "")
 set (ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF CACHE INTERNAL "")
 set (ASSIMP_BUILD_GLTF_IMPORTER TRUE CACHE INTERNAL "")
 set (ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "")
-set (ASSIMP_BUILD_OGRE_IMPORTER TRUE CACHE INTERNAL "")
+set (ASSIMP_BUILD_OGRE_IMPORTER TRUE CACHE INTERNAL "") # Contains common Animation namespace
 
 FetchContent_Declare(assimp
         GIT_REPOSITORY https://github.com/assimp/assimp.git
-        GIT_TAG v5.0.0) # Contains common Animation namespace
+        GIT_TAG 8f0c6b04b2257a520aaab38421b2e090204b69df) 
 
 FetchContent_MakeAvailable(assimp)

@@ -126,10 +126,17 @@
       ]
     },
     {
-      "entity_id": 9,
+      "entity_id": 10,
       "components": [
         {
-          "type": "transform"
+          "type": "transform",
+          "position": [ 1, 0, -5 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/unit_orange/unit_orange.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
         },
         {
           "type": "audio_emitter",
@@ -137,14 +144,14 @@
             {
               "file": "assets/music.mp3",
               "loop": true,
-              "volume": 0.25
+              "volume": 0.0
             }
           ]
         }
       ]
     },
     {
-      "entity_id": 10,
+      "entity_id": 11,
       "components": [
         {
           "type": "transform",
@@ -159,6 +166,20 @@
           "right": 1,
           "front": 1,
           "back": 1
+        }]
+    },    
+    {
+      "entity_id": 12,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1, 0, -1 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/gltf_cube/gltf_cube.gltf",
+          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
         }
       ]
     }

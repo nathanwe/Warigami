@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+
 namespace rendering
 {
 	// does not yet count references for freeing VRAM
@@ -23,7 +24,7 @@ namespace rendering
 	private:
 		std::map<std::string, cube_map> _cube_maps;
 		std::map<std::string, mesh_static> _mesh_statics;
-		std::map<std::string, texture> _textures;
+		std::map<std::string, texture> _textures;		
 	};
 
 	template <>

@@ -1,3 +1,5 @@
+include(cotire)
+
 add_executable (game game.cpp)
 
 target_link_libraries(game PRIVATE    
@@ -20,3 +22,8 @@ endif (UNIX)
 if (CMAKE_DL_LIBS)
     target_link_libraries(game PRIVATE ${CMAKE_DL_LIBS})
 endif ()
+
+
+
+set_target_properties(game PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+cotire(game)

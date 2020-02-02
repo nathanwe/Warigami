@@ -34,8 +34,6 @@ namespace asset
 		std::vector<asset_loader_node> _entity_refs;
 		std::vector<component_loader*> _component_loaders;
 
-		std::vector<asset_loader_node> recurse_to_child(scene_entity& child);
-
 		void hydrate_recurse(const scene_entity& entity, asset_loader_node& graph_entity, ecs::state& ecs_state);
 		void load_recurse(asset_loader_node& entity);
 	};

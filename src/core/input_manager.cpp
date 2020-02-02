@@ -36,15 +36,10 @@ core::gamepad::gamepad(int index)
 }
 
 GLFWgamepadstate core::gamepad::get_state() {
-    auto joystick_num = GLFW_JOYSTICK_1 + _index;
+    auto joystick_num = _index;
     GLFWgamepadstate state;
     glfwGetGamepadState(joystick_num, &state);
-    return state; 
-
-    /*XINPUT_STATE current_state;
-    memset(&current_state, 0, sizeof(XINPUT_STATE));
-    XInputGetState(_index, &current_state);
-    return current_state;*/
+    return state;
 }
 
 int core::gamepad::get_index() {
@@ -62,7 +57,13 @@ void core::gamepad::update() {
     if (_connected)
     {
         memcpy(_prev_button_states, _current_button_states, sizeof(_prev_button_states));
+
         _state = get_state();
+
+        for (std::uint32_t i = 0; i < GLFW_GAMEPAD_BUTTON_LAST + 1; ++i)
+        {
+            _current_button_states[i] = _state.buttons[i];
+        }
     }
 }
 
@@ -171,8 +172,13 @@ bool core::input_manager::was_mouse_released(std::uint8_t mouse_button)
 
 void core::input_manager::update()
 {    
+    std::uint8_t* dummy = _last_key_states;
     _last_key_states = _current_key_states;
-    _last_mouse_button_states = _current_mouse_button_states;    
+    _current_key_states = dummy;
+
+    dummy = _last_mouse_button_states;
+    _last_mouse_button_states = _current_mouse_button_states;
+    _current_mouse_button_states = dummy;
 
     for(int i = 0; _glfw_key_codes[i] != GLFW_KEY_LAST; ++i)
     {
