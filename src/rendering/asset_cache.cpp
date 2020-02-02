@@ -169,15 +169,15 @@ namespace rendering
 		if (r_mesh.vao == 0)
 		{
 			Assimp::Importer importer;
-			const aiScene* scene = importer.ReadFile(filepath,
+			const aiScene* scene = importer.ReadFile(filepath, 
 				 				aiProcess_ValidateDataStructure |
 				 				aiProcess_Triangulate |
 				 				aiProcess_FlipUVs |
 				 				aiProcess_GenSmoothNormals |
 				 				aiProcess_OptimizeMeshes |
 				 				aiProcess_OptimizeGraph |
-				aiProcess_CalcTangentSpace
-			);
+								aiProcess_CalcTangentSpace);
+
 			if (!scene || !scene->HasMeshes() || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
 			{
 				std::cout << "Error: Assimp failed to load mesh from file. " << importer.GetErrorString() << std::endl;
