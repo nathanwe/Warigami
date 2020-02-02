@@ -45,6 +45,7 @@ target_link_libraries(core
             platform
             glfw)
 
+set_target_properties(core PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(core)
 
 
@@ -58,6 +59,8 @@ set (EVENT_SOURCE_FILES
 
 add_library(event ${EVENT_HEADERS} ${EVENT_SOURCE_FILES})
 target_include_directories(event PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+set_target_properties(event PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(event)
 
 ##### MEMORY #####
@@ -75,6 +78,8 @@ set(MEMORY_SOURCE_LIST
 add_library(memory ${MEMORY_SOURCE_LIST} ${MEMORY_HEADER_LIST})
 target_include_directories(memory PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(memory PUBLIC cxx_std_17)
+
+set_target_properties(memory PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(memory)
 
 ##### ECS #####
@@ -108,6 +113,8 @@ add_library(ecs STATIC ${ECS_SOURCE_LIST} ${ECS_HEADER_LIST})
 target_include_directories(ecs PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(ecs PUBLIC cxx_std_17)
 target_link_libraries(ecs PUBLIC core PRIVATE memory)
+
+set_target_properties(ecs PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(ecs)
 
 ##### ASSET #####
@@ -123,6 +130,8 @@ add_library(asset STATIC ${ASSET_SOURCE_LIST})
 target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(asset PUBLIC cxx_std_17)
 target_link_libraries(asset PUBLIC core ecs assimp)
+
+set_target_properties(asset PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(asset)
 
 
@@ -135,6 +144,8 @@ add_library(transforms STATIC ${TRANSFORMS_SOURCE_LIST})
 target_include_directories(transforms PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(transforms PUBLIC cxx_std_17)
 target_link_libraries(transforms PUBLIC ecs asset glm)
+
+set_target_properties(transforms PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(transforms)
 
 ##### RENDERING #####
@@ -166,6 +177,7 @@ target_link_libraries(rendering PUBLIC
     glfw
     stb_image)
 
+set_target_properties(rendering PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(rendering)
 
 add_custom_target(copy_shaders
@@ -186,4 +198,5 @@ target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(audio PUBLIC cxx_std_17)
 target_link_libraries(audio PUBLIC ecs transforms rendering asset fmod glm)
 
+set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(audio)
