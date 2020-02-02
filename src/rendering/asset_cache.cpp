@@ -173,7 +173,8 @@ namespace rendering
 				 				aiProcess_ValidateDataStructure |
 				 				aiProcess_Triangulate |
 				 				aiProcess_FlipUVs |
-				 				aiProcess_GenSmoothNormals |
+								aiProcess_GenNormals |
+				 				//aiProcess_GenSmoothNormals |
 				 				aiProcess_OptimizeMeshes |
 				 				aiProcess_OptimizeGraph |
 								aiProcess_CalcTangentSpace);

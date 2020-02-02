@@ -126,24 +126,6 @@
       ]
     },
     {
-      "entity_id": 9,
-      "components": [
-        {
-          "type": "transform"
-        },
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/music.mp3",
-              "loop": true,
-              "volume": 0.1
-            }
-          ]
-        }
-      ]
-    },
-    {
       "entity_id": 10,
       "components": [
         {
@@ -155,6 +137,32 @@
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/unit_orange/unit_orange.obj",
           "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/music.mp3",
+              "loop": true,
+              "volume": 0.0
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "entity_id": 11,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1, 0, -1 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/gltf_cube/gltf_cube.gltf",
+          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
         }
       ]
     }
