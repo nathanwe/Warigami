@@ -8,9 +8,6 @@
 #include <map>
 #include <string>
 
-#include <nlohmann/json.hpp>
-using nlohmann::json;
-
 
 namespace rendering
 {
@@ -27,8 +24,7 @@ namespace rendering
 	private:
 		std::map<std::string, cube_map> _cube_maps;
 		std::map<std::string, mesh_static> _mesh_statics;
-		std::map<std::string, texture> _textures;
-		std::map<std::string, json> _json;
+		std::map<std::string, texture> _textures;		
 	};
 
 	template <>
@@ -39,9 +35,6 @@ namespace rendering
 
 	template <>
 	mesh_static& asset_cache::get<mesh_static>(std::string const& filepath);
-
-	template <>
-	json& asset_cache::get<json>(std::string const& filepath);
 }
 
 #endif
