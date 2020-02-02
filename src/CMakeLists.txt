@@ -1,5 +1,7 @@
 #TODO: Probably split up this cmake file into one file per library
 
+include(cotire)
+
 
 ##### PLATFORM #####
 set (PLATFORM_SOURCE_FILES
@@ -12,6 +14,8 @@ add_library(platform ${PLATFORM_SOURCE_FILES})
 target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(platform PUBLIC
             $<$<BOOL:${WIN32}>:xinput>)
+
+cotire(platform)
 
 ##### CORE #####
 set (CORE_HEADERS
@@ -41,6 +45,7 @@ target_link_libraries(core
             platform
             glfw)
 
+cotire(core)
 
 
 ##### EVENT #####
@@ -53,6 +58,7 @@ set (EVENT_SOURCE_FILES
 
 add_library(event ${EVENT_HEADERS} ${EVENT_SOURCE_FILES})
 target_include_directories(event PUBLIC ${PROJECT_SOURCE_DIR}/include)
+cotire(event)
 
 ##### MEMORY #####
 set(MEMORY_HEADER_LIST
@@ -69,7 +75,7 @@ set(MEMORY_SOURCE_LIST
 add_library(memory ${MEMORY_SOURCE_LIST} ${MEMORY_HEADER_LIST})
 target_include_directories(memory PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(memory PUBLIC cxx_std_17)
-
+cotire(memory)
 
 ##### ECS #####
 set (ECS_SOURCE_LIST
@@ -102,6 +108,7 @@ add_library(ecs STATIC ${ECS_SOURCE_LIST} ${ECS_HEADER_LIST})
 target_include_directories(ecs PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(ecs PUBLIC cxx_std_17)
 target_link_libraries(ecs PUBLIC core PRIVATE memory)
+cotire(ecs)
 
 ##### ASSET #####
 set (ASSET_SOURCE_LIST
@@ -116,6 +123,8 @@ add_library(asset STATIC ${ASSET_SOURCE_LIST})
 target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(asset PUBLIC cxx_std_17)
 target_link_libraries(asset PUBLIC core ecs assimp)
+cotire(asset)
+
 
 ##### TRANSFORMS #####
 set (TRANSFORMS_SOURCE_LIST
@@ -125,11 +134,9 @@ set (TRANSFORMS_SOURCE_LIST
 add_library(transforms STATIC ${TRANSFORMS_SOURCE_LIST})
 target_include_directories(transforms PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(transforms PUBLIC cxx_std_17)
-target_link_libraries(transforms PUBLIC
-    ecs
-    asset
-    glm)
-    
+target_link_libraries(transforms PUBLIC ecs asset glm)
+cotire(transforms)
+
 ##### RENDERING #####
 set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/asset_cache.cpp
@@ -159,6 +166,8 @@ target_link_libraries(rendering PUBLIC
     glfw
     stb_image)
 
+cotire(rendering)
+
 add_custom_target(copy_shaders
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/src/rendering/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
 )
@@ -176,3 +185,5 @@ add_library(audio STATIC ${AUDIO_SOURCE_LIST})
 target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(audio PUBLIC cxx_std_17)
 target_link_libraries(audio PUBLIC ecs transforms rendering asset fmod glm)
+
+cotire(audio)
