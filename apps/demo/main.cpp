@@ -128,7 +128,6 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     fly_cam flycam(input, timer);
     ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &audio_system, &spinner });
     ecs::world world(systems, state);
-
     
     audio::loader_emitter eloader(strings);
 
