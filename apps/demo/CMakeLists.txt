@@ -1,7 +1,10 @@
 include(cotire)
 
 
-add_executable (demo main.cpp components/game_piece.cpp components/game_piece_loader.cpp)
+add_executable (demo main.cpp 
+				components/game_piece.cpp components/game_piece_loader.cpp 
+				components/board.cpp components/board_loader.cpp 
+				components/board_square.cpp components/board_square_loader.cpp)
 
 target_link_libraries(demo PRIVATE
 	ecs

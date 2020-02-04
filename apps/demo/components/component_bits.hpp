@@ -7,7 +7,9 @@ namespace components
 {
 	enum class component_bits : component_shift
 	{
-		game_piece = 32
+		game_piece = 32,
+		board = 33,
+		board_square = 34
 	};
 }
 

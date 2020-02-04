@@ -20,6 +20,10 @@
 #include "core/game_input_manager.hpp"
 #include "components/game_piece.hpp"
 #include "components/game_piece_loader.hpp"
+#include "components/board.hpp"
+#include "components/board_loader.hpp"
+#include "components/board_square.hpp"
+#include "components/board_square_loader.hpp"
 
 #include "fly_cam_system.hpp"
 #include <audio/audio_system.hpp>
