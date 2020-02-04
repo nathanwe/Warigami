@@ -45,10 +45,6 @@ void core::game_input_manager::update() {
 	GLFWgamepadstate state;
 	glfwGetGamepadState(0, &state);
 
-	std::cout << "Left stick: " << state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] << ", " << state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
-		<< std::endl << "Right stick: " << state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] << ", " << state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] 
-		<< std::endl << std::endl;
-
 	// Update pitch and yaw axis states
 	_pitch = _input.get_gamepad()->engaged_Rstick_position().second;
 	_yaw = _input.get_gamepad()->engaged_Rstick_position().first;

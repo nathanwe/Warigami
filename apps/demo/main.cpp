@@ -153,9 +153,6 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
         timer.start();
         glfwPollEvents();
         input.update();
-        if (input.is_input_active(core::controls::)) {
-            glfwWindowShouldClose(window);
-        }
         world.update();
         timer.end();
     }
