@@ -119,6 +119,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     ecs::archetype_pools memory;
     ecs::state state(memory);
 	ecs::register_component<components::game_piece>("game_piece");
+	ecs::register_component<components::game_piece>("board");
+	ecs::register_component<components::game_piece>("board_square");
     ecs::register_component<transforms::transform>("transform");
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
@@ -148,7 +150,10 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     rendering::loader_light_point point_light_loader;
     rendering::render_loader render_loader(render_asset_cache);
 	components::game_piece_loader game_piece_loader;
-    hydrater.register_loaders(&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader, &game_piece_loader);
+	components::board_loader board_loader;
+	components::board_square_loader board_square_loader;
+    hydrater.register_loaders(	&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader, 
+								&game_piece_loader, &board_loader, &board_square_loader );
     hydrater.load();
 
     state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
