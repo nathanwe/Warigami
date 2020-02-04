@@ -46,6 +46,10 @@ public:
         ImGui::NewFrame();
 
         // some window
+        auto sz = ImGui::GetWindowSize();
+        ImGui::SetNextWindowPos({ 0, 0 });
+        ImGui::SetNextWindowSize(ImGui::GetWindowSize());
+
         ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
         ImGui::Text("Hello, world %d", 123);
         if (ImGui::Button("Save"))

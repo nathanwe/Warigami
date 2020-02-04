@@ -200,3 +200,15 @@ target_link_libraries(audio PUBLIC ecs transforms rendering asset fmod glm)
 
 set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(audio)
+
+##### ENGINE-UI #####
+set (ENGINEUI_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/engine-ui/views/console.cpp)
+
+add_library(engineui STATIC ${ENGINEUI_SOURCE_LIST})
+target_include_directories(engineui PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(engineui PUBLIC cxx_std_17)
+target_link_libraries(engineui PUBLIC core event imgui)
+
+set_target_properties(engineui PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+cotire(engineui)
