@@ -42,6 +42,9 @@ namespace asset
         bool has_id() const;        
         entity_id id() const;
 
+
+        json& j() { return _entity_json; }
+
     private:
         resource_id _id;
 

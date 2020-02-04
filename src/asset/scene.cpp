@@ -14,13 +14,15 @@ asset::scene::scene(std::string file_path, json_cache& cache)
 
 	std::vector<json> descendant_children;
 	std::vector<scene_entity*> inserted_children;
+    
+    _entities.reserve(j["entities"].size());
 
 	for (auto entity : j["entities"])
 	{
 		if (entity.find("parent_id") == entity.end())
 		{
-			auto& e = _entities.emplace_back(entity, cache);
-			inserted_children.push_back(&e);
+			_entities.emplace_back(entity, cache);
+			inserted_children.push_back(&_entities.back());
 		}
 		else
 		{
@@ -34,6 +36,8 @@ asset::scene::scene(std::string file_path, json_cache& cache)
 
         for (auto* potential_parent : inserted_children)
         {
+            auto jsonstr = potential_parent->j().dump();
+
             auto parent_id = potential_parent->id();
 
             for (auto& descendant : descendant_children)
