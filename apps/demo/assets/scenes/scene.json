@@ -144,27 +144,11 @@
             {
               "file": "assets/music.mp3",
               "loop": true,
-              "volume": 0.0
+              "volume": 0.04
             }
           ]
         }
       ]
-    },
-
-    {
-      "entity_id": 11,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 1, 0, -1 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/gltf_cube/gltf_cube.gltf",
-          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
-        }
-      ]
-    }
+    } 
   ]
 }

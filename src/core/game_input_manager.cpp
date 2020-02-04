@@ -24,6 +24,9 @@
 
 #define INTERACT_BUTTON Xbuttons.A
 
+// A lower number is a higher sensitivity
+#define MOUSE_SENSITIVITY 32.f
+
 
 core::XINPUT_button_ids Xbuttons;
 
@@ -35,27 +38,58 @@ core::game_input_manager::game_input_manager(input_manager input) : _input (inpu
 }
 
 void core::game_input_manager::update() {
+	_input.update();
+
 	memcpy(_prev_game_state, _current_game_state, sizeof(_prev_game_state));
 
+	GLFWgamepadstate state;
+	glfwGetGamepadState(0, &state);
+
+	std::cout << "Left stick: " << state.axes[GLFW_GAMEPAD_AXIS_LEFT_X] << ", " << state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]
+		<< std::endl << "Right stick: " << state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X] << ", " << state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] 
+		<< std::endl << std::endl;
+
+	// Update pitch and yaw axis states
+	_pitch = _input.get_gamepad()->engaged_Rstick_position().second;
+	_yaw = _input.get_gamepad()->engaged_Rstick_position().first;
+
+	auto mousedt = _input.mouse_delta();
+	mousedt /= MOUSE_SENSITIVITY;
+	_pitch += mousedt.y;
+	_yaw += mousedt.x;
+
+	// Update forward and strafe axis states
+	_forward = _input.get_gamepad()->engaged_Lstick_position().second;
+	_strafe = _input.get_gamepad()->engaged_Lstick_position().first;
+
+	if (_input.is_key_down(GLFW_KEY_W) || _input.is_key_down(GLFW_KEY_UP)) {
+		_forward = -1.0f;
+	} else if (_input.is_key_down(GLFW_KEY_S) || _input.is_key_down(GLFW_KEY_DOWN)) {
+		_forward = 1.0f;
+	}
+
+	if (_input.is_key_down(GLFW_KEY_A) || _input.is_key_down(GLFW_KEY_LEFT)) {
+		_strafe = -1.0f;
+	} else if (_input.is_key_down(GLFW_KEY_D) || _input.is_key_down(GLFW_KEY_RIGHT)) {
+		_strafe = 1.0f;
+	}
+
+	// Check axis inputs against epsilon for state
 	// UP
 	//// W, up key, or left stick up
-	_current_game_state[UP_CONTROL] = _input.is_key_down(GLFW_KEY_W) || _input.is_key_down(GLFW_KEY_UP) 
-		|| (_input.get_gamepad()->Lstick_position().second > 0 && !_input.get_gamepad()->Lstick_deadzone());
+	_current_game_state[UP_CONTROL] = _forward < -THUMBPAD_EPSILON;
 
 	// DOWN
 	//// S, down key, or left stick down
-	_current_game_state[DOWN_CONTROL] = _input.is_key_down(GLFW_KEY_S) || _input.is_key_down(GLFW_KEY_DOWN)
-		|| (_input.get_gamepad()->Lstick_position().second < 0 && !_input.get_gamepad()->Lstick_deadzone());
+	_current_game_state[DOWN_CONTROL] = _forward > THUMBPAD_EPSILON;
 
 	// LEFT
 	//// A, left key, or left stick left
-	_current_game_state[LEFT_CONTROL] = _input.is_key_down(GLFW_KEY_A) || _input.is_key_down(GLFW_KEY_LEFT)
-		|| (_input.get_gamepad()->Lstick_position().first < 0 && !_input.get_gamepad()->Lstick_deadzone());
+	_current_game_state[LEFT_CONTROL] = _strafe < -THUMBPAD_EPSILON;
 
 	// RIGHT
 	//// D, right key, or left stick right
-	_current_game_state[RIGHT_CONTROL] = _input.is_key_down(GLFW_KEY_D) || _input.is_key_down(GLFW_KEY_RIGHT)
-		|| (_input.get_gamepad()->Lstick_position().first > 0 && !_input.get_gamepad()->Lstick_deadzone());
+	_current_game_state[RIGHT_CONTROL] = _strafe > THUMBPAD_EPSILON;
 
 	// MENU
 	_current_game_state[MENU_CONTROL] = _input.is_key_down(MENU_KEY)

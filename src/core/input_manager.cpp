@@ -105,6 +105,17 @@ std::pair<float, float> core::gamepad::Rstick_position() {
     return { _state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X], _state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y] };
 }
 
+std::pair<float, float> core::gamepad::engaged_Lstick_position()
+{
+    if (Lstick_deadzone()) return { 0,0 };
+    return Lstick_position();
+}
+
+std::pair<float, float> core::gamepad::engaged_Rstick_position() {
+    if (Rstick_deadzone()) return { 0,0 };
+    return Rstick_position();
+}
+
 float core::gamepad::Ltrigger() {
     auto trigger_value = _state.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER];
     if (trigger_value > THUMBPAD_EPSILON || trigger_value < -THUMBPAD_EPSILON) {

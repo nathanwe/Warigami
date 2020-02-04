@@ -23,6 +23,11 @@ namespace core {
 		CONTROL_COUNT
 	};
 
+	// -1 to 1
+	typedef float input_axis;
+
+	typedef float view_axis;
+
 	class game_input_manager {
 	public:
 		game_input_manager(input_manager input);
@@ -31,10 +36,19 @@ namespace core {
 		bool is_input_ended(controls control);
 
 		void update();
+
+		input_axis forward() { return _forward; }
+		input_axis strafe() { return _strafe; }
+		view_axis pitch() { return _pitch; }
+		view_axis yaw() { return _yaw; }
 	private:
 		input_manager _input;
 		bool _prev_game_state[CONTROL_COUNT];
 		bool _current_game_state[CONTROL_COUNT];
+		input_axis _forward{ 0 };
+		input_axis _strafe{ 0 };
+		view_axis _pitch{ 0 };
+		view_axis _yaw{ 0 };
 	};
 }
 

@@ -17,6 +17,7 @@
 #include "rendering/render_loader.hpp"
 #include "rendering/renderable_mesh_static.hpp"
 #include "rendering/renderer.hpp"
+#include "core/game_input_manager.hpp"
 
 #include "fly_cam_system.hpp"
 #include <audio/audio_system.hpp>
@@ -105,7 +106,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 
     rendering::viewport window_view{ 0, 0, window_width, window_height };
 
-    core::input_manager input(window);
+    core::game_input_manager input(window);
     core::frame_timer timer;
 
     // init ecs state
@@ -152,7 +153,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
         timer.start();
         glfwPollEvents();
         input.update();
-        if (input.was_key_pressed(GLFW_KEY_ESCAPE)) {
+        if (input.is_input_active(core::controls::)) {
             glfwWindowShouldClose(window);
         }
         world.update();
