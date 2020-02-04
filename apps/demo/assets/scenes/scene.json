@@ -101,12 +101,13 @@
         {
           "type": "transform",
           "position": [ 5, 5, -10 ],
-          "scale": [ 5, 5, 5 ]
+          "scale": [ 2.5, 2.5, 2.5 ]
         },
         {
           "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/cube/cube.obj",
-          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+          "mesh": "assets/meshes/gltf_cube/gltf_cube.gltf",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png",
+          "texture_scale": [ 4, 4 ]
         }
       ]
     },

@@ -12,7 +12,7 @@ namespace rendering
 	{
 		state.each<transforms::transform, camera>([&](auto& r_transform, auto& r_camera) 
 		{
-			if (r_camera.is_view_dirty)
+			//if (r_camera.is_view_dirty)
 			{
 				// doesn't handle inheritance
 				// maybe cache these steps in transform component

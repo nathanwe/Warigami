@@ -153,15 +153,13 @@ namespace rendering
 				_pass_default->set_float(16, renderable.material.param_metalness);
 				_pass_default->set_float(17, renderable.material.param_roughness);
 
-				glBindVertexArray(renderable.mesh.vao);
-				glDrawArrays(GL_TRIANGLES, 0, renderable.mesh.num_indices);
+				draw_mesh_static(renderable.mesh);
 
 				_pass_default->set_texture(0, 0);
 				_pass_default->set_texture(1, 0);
 				_pass_default->set_texture(2, 0);
 				_pass_default->set_texture(3, 0);
 				_pass_default->set_texture(4, 0);
-				glBindVertexArray(0);
 			});
 
 			/**/
@@ -174,15 +172,29 @@ namespace rendering
 				glm::mat4 view_projection_no_translation = cam.projection * glm::mat4(glm::mat3(cam.view));
 				_pass_cubemap->set_mat4(0, view_projection_no_translation);
 
-				glBindVertexArray(_mesh_cube.vao);
-				glDrawArrays(GL_TRIANGLES, 0, _mesh_cube.num_indices);
+				draw_mesh_static(_mesh_cube);
 
 				_pass_cubemap->set_cubemap(0, 0);
-				glBindVertexArray(0);
 			}
 			/**/
 		});
 
 		glfwSwapBuffers(_window);
+	}
+
+	void draw_mesh_static(mesh_static& mesh)
+	{
+		glBindVertexArray(mesh.vao);
+		if (mesh.ebo)
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ebo);
+			glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		}
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, mesh.num_indices);
+		}
+		glBindVertexArray(0);
 	}
 }
