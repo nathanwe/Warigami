@@ -139,6 +139,10 @@
           "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
         },
         {
+          "type": "game_piece",
+            "succ": 7
+        },
+        {
           "type": "audio_emitter",
           "sounds": [
             {

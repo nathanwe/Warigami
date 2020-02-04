@@ -18,6 +18,8 @@
 #include "rendering/renderable_mesh_static.hpp"
 #include "rendering/renderer.hpp"
 #include "core/game_input_manager.hpp"
+#include "components/game_piece.hpp"
+#include "components/game_piece_loader.hpp"
 
 #include "fly_cam_system.hpp"
 #include <audio/audio_system.hpp>
@@ -112,6 +114,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     // init ecs state
     ecs::archetype_pools memory;
     ecs::state state(memory);
+	ecs::register_component<components::game_piece>("game_piece");
     ecs::register_component<transforms::transform>("transform");
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
@@ -140,7 +143,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     rendering::loader_light_directional dir_light_loader;
     rendering::loader_light_point point_light_loader;
     rendering::render_loader render_loader(render_asset_cache);
-    hydrater.register_loaders(&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader);
+	components::game_piece_loader game_piece_loader;
+    hydrater.register_loaders(&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader, &game_piece_loader);
     hydrater.load();
 
     state.each<audio::audio_emitter>([](audio::audio_emitter& e) {

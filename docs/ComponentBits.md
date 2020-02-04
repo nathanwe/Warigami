@@ -36,3 +36,13 @@ Bit shift range: **17-24**
     };
 ```
 
+## Game
+Bit shift range: **32-48**
+
+```c++
+    enum class component_bits : component_shift
+    {
+        game_piece = 32
+    };
+```
+
