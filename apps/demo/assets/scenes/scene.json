@@ -174,7 +174,13 @@
 
     {
       "entity_id": 12,
-      "prototype": "assets/prototypes/gameboard.json"
+      "prototype": "assets/prototypes/gameboard.json",
+      "components": [
+        {
+          "type": "transform",          
+          "scale": [ 5, 5, 5 ]
+        }
+      ]
     }
   ]
 }

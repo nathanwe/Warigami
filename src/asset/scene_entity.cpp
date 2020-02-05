@@ -133,7 +133,8 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
     // insert components that are in scene, but not prototype
     for (auto& c : source_components)
     {
-        auto shift = c["component_bitshift"].get<std::uint8_t>();
+        auto type = c["type"].get<std::string>();
+        auto shift = ecs::component_meta::type_to_bit[type];
         if (target_component_shifts.find(shift) == target_component_shifts.end())
         {
             target_components.push_back(c);
