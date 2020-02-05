@@ -19,6 +19,8 @@ using namespace gl;
 
 namespace rendering
 {
+	void draw_mesh_static(mesh_static& mesh);
+
 	void gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* user_parameter)
 	{
 		// reformat
