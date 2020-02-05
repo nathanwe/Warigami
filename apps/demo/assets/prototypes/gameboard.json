@@ -1,0 +1,84 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 10, 0, 10 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      {
+        "type": "board"
+      }
+    ]
+  },
+  "children": [
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        },
+        {
+          "type": "board_square"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        },
+        {
+          "type": "board_square"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 1 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        },
+        {
+          "type": "board_square"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1, 0, 1 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        },
+        {
+          "type": "board_square"
+        }
+      ]
+    }
+  ]
+}

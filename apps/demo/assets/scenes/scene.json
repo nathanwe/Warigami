@@ -174,34 +174,7 @@
 
     {
       "entity_id": 12,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 10, 0, 10 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "board"
-        }
-      ]
-    },
-    {
-      "entity_id": 13,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 0, 0, 0 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/cube/cube.obj",
-          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-        },
-        {
-          "type": "board_square"
-        }
-      ]
+      "prototype": "assets/prototypes/gameboard.json"
     }
   ]
 }
