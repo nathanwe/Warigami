@@ -36,6 +36,9 @@ void asset::scene_entity::build_child_tree(json& children, json_cache& cache)
     std::vector<json> descendant_children;
     std::vector<scene_entity*> inserted_children;
 
+    _children.reserve(children.size());
+    inserted_children.reserve(children.size());
+
     for (auto& c : children)
     {
         if (c.find("parent_index") == c.end()) {

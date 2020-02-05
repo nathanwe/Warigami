@@ -33,7 +33,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 1, 0, 0 ],
+          "position": [ 2, 0, 0 ],
           "scale": [ 1, 1, 1 ]
         },
         {
@@ -50,7 +50,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 0, 1 ],
+          "position": [ 0, 0, 2 ],
           "scale": [ 1, 1, 1 ]
         },
         {
@@ -64,10 +64,11 @@
       ]
     },
     {
+      "parent_index": 0,
       "components": [
         {
           "type": "transform",
-          "position": [ 1, 0, 1 ],
+          "position": [ 0, -3, 0 ],
           "scale": [ 1, 1, 1 ]
         },
         {
