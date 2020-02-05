@@ -38,6 +38,7 @@
 
 // Game systems
 #include "fly_cam_system.hpp"
+#include "util/boardgen.hpp"
 
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
 
@@ -71,8 +72,11 @@ int main(int argc, char** argv)
 #ifndef NDEBUG
 	bool is_debug = true;
 #else
-	bool is_debug = false;
+	bool is_debug = false;	
 #endif
+
+	// Generate a new game board json file of size x * 2 + 1 by y * 2 + 1
+	// boardgen::generateBoardJson("assets/prototypes/testgameboard.json", "assets/prototypes/boardsquare.json", 3, 4);
 
 	// init glfw
 	if (!glfwInit())
