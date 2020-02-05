@@ -187,7 +187,6 @@
     },
     {
       "entity_id": 13,
-      "parent_id": 12,
       "components": [
         {
           "type": "transform",
