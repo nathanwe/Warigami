@@ -11,7 +11,10 @@ namespace components
 {
 	struct game_piece : ecs::component<game_piece>
 	{
-		float does_give_succ = 0.f;
+		float speed = 0.f;
+		float power = 0.f;
+		float armor = 0.f;
+		float health = 0.f;
 	};
 }
 

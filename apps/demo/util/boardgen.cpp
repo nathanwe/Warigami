@@ -78,17 +78,33 @@ namespace boardgen {
 		fileStream << "}";
 	}
 
-	void generateBoardJson(std::string boardFile, std::string squareProto, int maxX, int maxY)
+	void generateBoardJson(std::string boardFile, std::string squareProto, std::string squareProto2, int maxX, int maxY)
 	{
 		std::fstream f;
-		f.open(boardFile, std::fstream::out | std::fstream::in);
+		f.open(boardFile, std::fstream::out | std::fstream::trunc);
 		if (f.is_open()) {
 			std::cerr << "file opened to write" << std::endl;
 		}
 		startBoard(f);
 		for (int i = -maxX; i <= maxX; i++) {
 			for (int j = maxY; j >= -maxY; j--) {
-				writeSquare(f, squareProto, i, 1, j);
+				if (i % 2 != 0) {
+					if (j % 2 == 0) {
+						writeSquare(f, squareProto, i, 1, j);
+					}
+					else {
+						writeSquare(f, squareProto2, i, 1, j);
+					}
+				}
+				else {
+					if (j % 2 != 0) {
+						writeSquare(f, squareProto, i, 1, j);
+					}
+					else {
+						writeSquare(f, squareProto2, i, 1, j);
+					}
+				}
+				
 			}
 		}
 		endBoard(f);

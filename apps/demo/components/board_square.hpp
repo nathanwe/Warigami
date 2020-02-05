@@ -7,11 +7,22 @@
 
 #include <glm/glm.hpp>
 
+enum class terrain {
+	water,
+	earth,
+	fire,
+	air,
+	empty,
+	num
+};
+
 namespace components
 {
 	struct board_square : ecs::component<board_square>
 	{
-		// Tracking board-state
+		float x = 0.f;
+		float y = 0.f;
+		terrain terrain_type = terrain::empty;
 	};
 }
 

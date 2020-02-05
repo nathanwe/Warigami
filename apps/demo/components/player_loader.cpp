@@ -7,9 +7,16 @@ void components::player_loader::load(asset::asset_loader_node& asset_loader_node
 
 	auto& json = asset_loader_node.entity_resource.entity_data.component_data(components::player::component_bitshift);
 
-	auto& gp = entity.get_component<player>();
+	auto& p = entity.get_component<player>();
 
-	// Do loading here
+	if (json.find("energy") != json.end())
+	{
+		p.energy = json["energy"].get<float>();
+	}
+	if (json.find("health") != json.end())
+	{
+		p.health = json["health"].get<float>();
+	}
 
 }
 

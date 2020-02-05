@@ -10,9 +10,21 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 
 	auto& gp = entity.get_component<game_piece>();
 
-	if (json.find("succ") != json.end())
+	if (json.find("speed") != json.end())
 	{
-		std::cerr << "succ does indeed succ" << std::endl;
+		gp.speed = json["speed"].get<float>();
+	}
+	if (json.find("power") != json.end())
+	{
+		gp.power = json["power"].get<float>();
+	}
+	if (json.find("armor") != json.end())
+	{
+		gp.armor = json["armor"].get<float>();
+	}
+	if (json.find("health") != json.end())
+	{
+		gp.health = json["health"].get<float>();
 	}
 
 }

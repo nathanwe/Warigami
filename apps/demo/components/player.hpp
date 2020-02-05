@@ -11,7 +11,9 @@ namespace components
 {
 	struct player : ecs::component<player>
 	{
-		// Tracking player-state
+		float energy = 0.f;
+		float health = 0.f;
+		// Needs a list of cards in hand and dice in pool
 	};
 }
 

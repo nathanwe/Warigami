@@ -76,7 +76,8 @@ int main(int argc, char** argv)
 #endif
 
 	// Generate a new game board json file of size x * 2 + 1 by y * 2 + 1
-	// boardgen::generateBoardJson("assets/prototypes/testgameboard.json", "assets/prototypes/boardsquare.json", 3, 4);
+	// File is in out/build/x64-Debug/bin/assets/prototypes
+	//boardgen::generateBoardJson("assets/prototypes/newgameboard.json", "assets/prototypes/boardsquare.json", "assets/prototypes/boardsquare2.json", 3, 4);
 
 	// init glfw
 	if (!glfwInit())

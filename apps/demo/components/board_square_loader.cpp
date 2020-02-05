@@ -7,10 +7,21 @@ void components::board_square_loader::load(asset::asset_loader_node& asset_loade
 
 	auto& json = asset_loader_node.entity_resource.entity_data.component_data(components::board_square::component_bitshift);
 
-	auto& gp = entity.get_component<board_square>();
-
-	// Do loading here
-
+	auto& bs = entity.get_component<board_square>();
+	
+	if (json.find("squareX") != json.end())
+	{
+		bs.x = json["squareX"].get<float>();
+	}
+	if (json.find("squareY") != json.end())
+	{
+		bs.y = json["squareY"].get<float>();
+	}
+	if (json.find("terrain") != json.end())
+	{
+		bs.terrain_type = json["terrain"].get<terrain>();
+	}
+	
 }
 
 component_bitset components::board_square_loader::components_to_load()

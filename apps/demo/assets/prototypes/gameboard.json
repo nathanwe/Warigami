@@ -22,7 +22,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -58,7 +58,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -94,7 +94,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -112,7 +112,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -130,7 +130,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -148,7 +148,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -166,7 +166,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -184,7 +184,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -202,7 +202,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -220,7 +220,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -238,7 +238,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -256,7 +256,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -274,7 +274,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -292,7 +292,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -310,7 +310,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -328,7 +328,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -346,7 +346,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -364,7 +364,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -382,7 +382,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -400,7 +400,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -418,7 +418,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -436,7 +436,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -454,7 +454,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -472,7 +472,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -490,7 +490,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -508,7 +508,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -526,7 +526,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -544,7 +544,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",
@@ -562,7 +562,7 @@
       ]
     },
     {
-      "prototype": "assets/prototypes/boardsquare.json",
+      "prototype": "assets/prototypes/boardsquare2.json",
       "components": [
         {
           "type": "transform",

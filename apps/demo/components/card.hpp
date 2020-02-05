@@ -11,7 +11,11 @@ namespace components
 {
 	struct card : ecs::component<card>
 	{
-		// Card information
+		float speed = 0.f;
+		float power = 0.f;
+		float armor = 0.f;
+		float health = 0.f;
+		float cost = 0.f;
 	};
 }
 
