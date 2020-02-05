@@ -125,11 +125,11 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     ecs::archetype_pools memory;
     ecs::state state(memory);
 	ecs::register_component<components::game_piece>("game_piece");
-	ecs::register_component<components::game_piece>("board");
-	ecs::register_component<components::game_piece>("board_square");
-	ecs::register_component<components::game_piece>("card");
-	ecs::register_component<components::game_piece>("dice");
-	ecs::register_component<components::game_piece>("player");
+	ecs::register_component<components::board>("board");
+	ecs::register_component<components::board_square>("board_square");
+	ecs::register_component<components::card>("card");
+	ecs::register_component<components::dice>("dice");
+	ecs::register_component<components::player>("player");
     ecs::register_component<transforms::transform>("transform");
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
