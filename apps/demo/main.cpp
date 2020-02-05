@@ -45,11 +45,11 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each< transforms::transform, rendering::renderable_mesh_static>([&](auto& transform, auto& renderable)
+		/*r_state.each< transforms::transform, rendering::renderable_mesh_static>([&](auto& transform, auto& renderable)
 			{
 				transform.rotation.y += m_rotation_speed * _timer.delta_secs();
 				transform.is_matrix_dirty = true;
-			});
+			});*/
 	}
 
 private:

@@ -19,9 +19,9 @@ void asset::scene_hydrater::hydrate_recurse(const scene_entity& entity, asset_lo
 {
 	for (auto& c : entity.children())
 	{
-		auto& ecs_entity = entity.has_id()
-			? ecs_state.add_entity(entity.archetype_id(), entity.id() )
-			: ecs_state.add_entity(entity.archetype_id());
+		auto& ecs_entity = c.has_id()
+			? ecs_state.add_entity(c.archetype_id(), c.id() )
+			: ecs_state.add_entity(c.archetype_id());
 
 		auto& graph_child = graph_entity.children.emplace_back(ecs_entity, c);
 		hydrate_recurse(c, graph_child, ecs_state);
