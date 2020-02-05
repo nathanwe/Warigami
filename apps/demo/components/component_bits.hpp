@@ -9,7 +9,10 @@ namespace components
 	{
 		game_piece = 32,
 		board = 33,
-		board_square = 34
+		board_square = 34,
+		card = 35,
+		dice = 36,
+		player = 37
 	};
 }
 

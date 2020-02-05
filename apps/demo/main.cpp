@@ -1,3 +1,4 @@
+// Engine systems
 #include "asset/json_cache.hpp"
 #include "asset/scene.hpp"
 #include "asset/scene_hydrater.hpp"
@@ -18,22 +19,27 @@
 #include "rendering/renderable_mesh_static.hpp"
 #include "rendering/renderer.hpp"
 #include "core/game_input_manager.hpp"
+#include <audio/audio_system.hpp>
+#include <audio/loader_emitter.hpp>
+
+// Components
 #include "components/game_piece.hpp"
 #include "components/game_piece_loader.hpp"
 #include "components/board.hpp"
 #include "components/board_loader.hpp"
 #include "components/board_square.hpp"
 #include "components/board_square_loader.hpp"
+#include "components/card.hpp"
+#include "components/card_loader.hpp"
+#include "components/dice.hpp"
+#include "components/dice_loader.hpp"
+#include "components/player.hpp"
+#include "components/player_loader.hpp"
 
+// Game systems
 #include "fly_cam_system.hpp"
-#include <audio/audio_system.hpp>
-#include <audio/loader_emitter.hpp>
 
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
-
-
-
-
 
 class spinner : public ecs::system_base
 {
@@ -121,6 +127,9 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 	ecs::register_component<components::game_piece>("game_piece");
 	ecs::register_component<components::game_piece>("board");
 	ecs::register_component<components::game_piece>("board_square");
+	ecs::register_component<components::game_piece>("card");
+	ecs::register_component<components::game_piece>("dice");
+	ecs::register_component<components::game_piece>("player");
     ecs::register_component<transforms::transform>("transform");
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
@@ -152,8 +161,11 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 	components::game_piece_loader game_piece_loader;
 	components::board_loader board_loader;
 	components::board_square_loader board_square_loader;
+	components::card_loader card_loader;
+	components::dice_loader dice_loader;
+	components::player_loader player_loader;
     hydrater.register_loaders(	&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader, 
-								&game_piece_loader, &board_loader, &board_square_loader );
+								&game_piece_loader, &board_loader, &board_square_loader, &card_loader, &dice_loader, &player_loader );
     hydrater.load();
 
     state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
