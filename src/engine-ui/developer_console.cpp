@@ -13,8 +13,7 @@ engineui::developer_console::developer_console(EventManager& events) : _events(e
 
 void engineui::developer_console::draw()
 {
-    ImGui::SetNextWindowPos({ 500, 0 });
-
+    ImGui::SetNextWindowSize({ 600, 300 }, ImGuiCond_FirstUseEver);
     ImGui::Begin("DevConsole");
     ImGui::PushItemWidth(-1);
     ImGui::InputTextMultiline("##out", _output, IM_ARRAYSIZE(_output), { 0, 0 }, ImGuiInputTextFlags_ReadOnly);
