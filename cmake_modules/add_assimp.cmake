@@ -11,6 +11,6 @@ set (ASSIMP_BUILD_OGRE_IMPORTER TRUE CACHE INTERNAL "") # Contains common Animat
 
 FetchContent_Declare(assimp
         GIT_REPOSITORY https://github.com/assimp/assimp.git
-        GIT_TAG 8f0c6b04b2257a520aaab38421b2e090204b69df) 
+        GIT_TAG 8f0c6b04b2257a520aaab38421b2e090204b69df)
 
 FetchContent_MakeAvailable(assimp)

@@ -1,6 +1,8 @@
 #include <collisions/collision_manager.hpp>
 using namespace collisions;
 
+#include <math.h>
+
 // Helpful for collisions
 float square_distance(glm::vec3 p1, glm::vec3 p2) {
 	return powf(p2.x - p1.x, 2) + powf(p2.y - p1.y, 2) + powf(p2.z - p1.z, 2);
