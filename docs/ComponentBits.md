@@ -36,8 +36,17 @@ Bit shift range: **17-24**
     };
 ```
 
+## Physics
+Bit shift range: **25-31**
+```c++
+    enum class component_bits : component_shift
+    {
+        collider = 25,
+        rigidbody = 26
+    };
+```
 ## Game
-Bit shift range: **32-48**
+Bit shift range: **32-64**
 
 ```c++
     enum class component_bits : component_shift

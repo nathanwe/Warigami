@@ -26,6 +26,9 @@ namespace ecs
             _size = other._size;
             _align = other._align;
             _shift = other._shift;
+            _ctor = other._ctor;
+            _dtor = other._dtor;
+            _copier = other._copier;
             return *this;
         }
 

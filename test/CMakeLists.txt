@@ -55,3 +55,8 @@ target_compile_features(audio_tests PUBLIC cxx_std_17)
 add_custom_target(audio_test_assets
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/audio/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets)
 add_dependencies (audio_tests audio_test_assets)
+
+##### COLLISIONS #####
+add_executable(collision_tests collisions/collisions_test.cpp)
+target_include_directories(collision_tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(collision_tests collisions glm)
