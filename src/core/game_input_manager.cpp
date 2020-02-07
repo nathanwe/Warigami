@@ -128,6 +128,10 @@ void core::game_input_manager::update() {
 	// Right stick up and ASCEND_KEY
 	_current_game_state[ASCEND_CONTROL] = _input.is_key_down(ASCEND_KEY)
 		|| (_input.get_gamepad()->Rstick_position().second > 0 && !_input.get_gamepad()->Rstick_deadzone());
+
+	// DEVELOPER CONSOLE
+	// ~ on keyboard (no gamepad)
+	_current_game_state[DEVELOPER_CONSOLE] = _input.is_key_down(GLFW_KEY_GRAVE_ACCENT);
 }
 
 bool core::game_input_manager::is_input_active(controls control) {

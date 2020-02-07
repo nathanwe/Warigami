@@ -181,8 +181,6 @@ namespace rendering
 				glBindVertexArray(0);
 			}
 			/**/
-		});
-
-		glfwSwapBuffers(_window);
+		});		
 	}
 }

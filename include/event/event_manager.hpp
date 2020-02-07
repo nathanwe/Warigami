@@ -5,7 +5,6 @@
 #include <vector>
 
 
-// TO DO: Hook in framerate controller reference for timed events
 
 /*******
 * Description:	A centralized system for recieving and sending events to other objects

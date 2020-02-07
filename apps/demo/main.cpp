@@ -23,9 +23,19 @@
 #include <audio/audio_system.hpp>
 #include <audio/loader_emitter.hpp>
 
+#include <engine-ui/imgui_overlay.hpp>
+#include <engine-ui/developer_console.hpp>
+
+
+#include <glbinding/glbinding.h>  // Initialize with glbinding::initialize()
+#include <glbinding/gl/gl.h>
+#include <engine-ui/fps_display.hpp>
+
+using namespace gl;
+
+
+
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
-
-
 
 
 
@@ -103,11 +113,13 @@ int main(int argc, char** argv)
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug)
 {
     util::string_table strings;
+	EventManager events;
 
     rendering::viewport window_view{ 0, 0, window_width, window_height };
 
     core::game_input_manager input(window);
     core::frame_timer timer;
+	core::cursor_state cursor(window);
 
     // init ecs state
     ecs::archetype_pools memory;
@@ -147,13 +159,26 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
         e.set_sound_state(0, audio::playback_requested);
     });
 
+
+	engineui::developer_console console(events);
+	engineui::fps_display fps(timer);
+	engineui::imgui_overlay overlay(window, input, cursor);
+	overlay.register_views(&console, &fps);
+
+	cursor.disable();
+
     //game loop
     while (!glfwWindowShouldClose(window))
     {
         timer.start();
         glfwPollEvents();
-        input.update();
+
+		input.update();
         world.update();
+
+		overlay.update();
+
+		glfwSwapBuffers(window);
         timer.end();
     }
 }
