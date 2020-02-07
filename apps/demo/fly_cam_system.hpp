@@ -1,3 +1,6 @@
+#ifndef GAME_FLY_CAM_SYSTEM_HPP
+#define GAME_FLY_CAM_SYSTEM_HPP
+
 #include <transforms/transform.hpp>
 #include <rendering/camera.hpp>
 #include <core/game_input_manager.hpp>
@@ -38,3 +41,5 @@ private:
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 };
+
+#endif

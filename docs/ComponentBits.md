@@ -42,7 +42,8 @@ Bit shift range: **25-31**
     enum class component_bits : component_shift
     {
         collider = 25,
-        rigidbody = 26
+        sphere_collider = 26,
+        rigidbody = 27,
     };
 ```
 ## Game

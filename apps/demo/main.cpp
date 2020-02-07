@@ -19,8 +19,8 @@
 #include "rendering/renderable_mesh_static.hpp"
 #include "rendering/renderer.hpp"
 #include "collisions/collider.hpp"
-
-#include "fly_cam_system.hpp"
+#include "collisions/aabb_collider_loader.hpp"
+#include "collisions/sphere_collider_loader.hpp"
 #include <audio/audio_system.hpp>
 #include <audio/loader_emitter.hpp>
 
@@ -174,8 +174,11 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 	components::card_loader card_loader;
 	components::dice_loader dice_loader;
 	components::player_loader player_loader;
+	collisions::aabb_collider_loader aabb_collider_loader;
+	collisions::sphere_collider_loader sphere_collider_loader;
     hydrater.register_loaders(	&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader, 
-								&game_piece_loader, &board_loader, &board_square_loader, &card_loader, &dice_loader, &player_loader );
+								&game_piece_loader, &board_loader, &board_square_loader, &card_loader, &dice_loader, &player_loader,
+								&aabb_collider_loader, &sphere_collider_loader);
     hydrater.load();
 
     state.each<audio::audio_emitter>([](audio::audio_emitter& e) {

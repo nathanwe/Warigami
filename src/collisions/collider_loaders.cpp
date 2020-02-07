@@ -5,7 +5,7 @@ void collisions::loader_collider::load(asset::asset_loader_node& asset_loader_no
 	auto& entity = asset_loader_node.entity_resource.entity;
 	auto& entity_data = asset_loader_node.entity_resource.entity_data;
 
-	//auto& json = asset_loader_node.entity_resource.entity_data.component_data(collisions::collider::component_bitshift);
+	/*auto& json = asset_loader_node.entity_resource.entity_data.component_data(collisions::AABB_collider::component_bitshift);
 
 	/*if (auto it = json.find("collider_type"); it != json.end())
 	{

@@ -204,7 +204,8 @@ cotire(audio)
 ##### COLLISIONS #####
 set (COLLISIONS_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/collisions/collider.cpp
-        ${PROJECT_SOURCE_DIR}/src/collisions/collider_loaders.cpp
+        ${PROJECT_SOURCE_DIR}/src/collisions/aabb_collider_loader.cpp
+        ${PROJECT_SOURCE_DIR}/src/collisions/sphere_collider_loader.cpp
         ${PROJECT_SOURCE_DIR}/src/collisions/collision_manager.cpp)
 
 add_library(collisions STATIC ${COLLISIONS_SOURCE_LIST})
