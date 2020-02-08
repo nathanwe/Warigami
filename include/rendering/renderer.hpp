@@ -23,7 +23,7 @@ namespace rendering
 	class renderer : public ecs::system_base
 	{
 	public:
-		renderer(GLFWwindow* window, viewport window_view, bool is_debug, asset_cache& cache);
+		renderer(GLFWwindow* window, viewport window_view, bool is_de, asset_cache& cache);
 
 	public:
 		virtual void update(ecs::state& state) override;
