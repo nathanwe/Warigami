@@ -1,7 +1,8 @@
 #ifndef EVENT_EVENT_MANAGER_CPP
 #define EVENT_EVENT_MANAGER_CPP
 
-#include "event\event_manager.hpp"
+#include <algorithm>
+#include <event/event_manager.hpp>
 
 /*******
 * Description:	Basic constructor, sizes the listeners vector to match the number of events in the system
