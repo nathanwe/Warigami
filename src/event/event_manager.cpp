@@ -1,7 +1,8 @@
 #ifndef EVENT_EVENT_MANAGER_CPP
 #define EVENT_EVENT_MANAGER_CPP
 
-#include "event\event_manager.hpp"
+#include <event/event_manager.hpp>
+#include <algorithm>
 
 /*******
 * Description:	Basic constructor, sizes the listeners vector to match the number of events in the system
@@ -29,7 +30,9 @@ EventManager::~EventManager() {
 *******/
 void EventManager::Subscribe(Listener* listener, EVENT_TYPE type) {
 
-	auto finder = std::find(mListeners.at(static_cast<unsigned int>(type)).begin(), mListeners.at(static_cast<unsigned int>(type)).end(), listener);
+	auto finder = std::find(
+	        mListeners.at(static_cast<unsigned int>(type)).begin(),
+	        mListeners.at(static_cast<unsigned int>(type)).end(), listener);
 
 	if (finder == mListeners.at(static_cast<unsigned int>(type)).end()) {
 		mListeners.at(static_cast<unsigned int>(type)).push_back(listener);
