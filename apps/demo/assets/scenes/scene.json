@@ -201,12 +201,23 @@
     },
 
     {
-      "entity_id": 14,      
+      "entity_id": 14,
       "components": [
         {
           "type": "transform",
           "position": [ 40, 0, 40 ],
           "scale": [ 6, 2, 6 ]
+        }
+      ]
+    },
+
+    {
+      "entity_id": 15,
+      "prototype": "assets/prototypes/game_piece.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [0, 10, 30]
         }
       ]
     }

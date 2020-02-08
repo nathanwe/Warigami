@@ -122,9 +122,7 @@ int main(int argc, char** argv)
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug)
 {
     util::string_table strings;
-
     rendering::viewport window_view{ 0, 0, window_width, window_height };
-
     core::game_input_manager input(window);
     core::frame_timer timer;
 
