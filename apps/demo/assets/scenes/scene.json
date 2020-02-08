@@ -194,7 +194,18 @@
       "components": [
         {
           "type": "transform",
-          "position": [40, 0, 40],
+          "position": [ 40, 0, 40 ],
+          "scale": [ 6, 2, 6 ]
+        }
+      ]
+    },
+
+    {
+      "entity_id": 14,      
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 40, 0, 40 ],
           "scale": [ 6, 2, 6 ]
         }
       ]
