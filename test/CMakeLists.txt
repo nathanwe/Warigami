@@ -64,9 +64,9 @@ target_link_libraries(skeletal_test
         rendering
         transforms)
 target_compile_features(skeletal_test PUBLIC cxx_std_17)
-add_custom_target(skeletal_test
+add_custom_target(skeletal_test_assets
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/skeletal/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets)
-add_dependencies (skeletal_test render_asset_test_assets)
+add_dependencies (skeletal_test skeletal_test_assets)
 
 ##### COLLISIONS #####
 add_executable(collision_tests collisions/collisions_test.cpp)
