@@ -1,6 +1,7 @@
 #ifndef WIZARDPEOPLE_RENDERING_RENDERER_HPP
 #define WIZARDPEOPLE_RENDERING_RENDERER_HPP
 
+#include "core/viewport.hpp"
 #include "ecs/state.hpp"
 #include "ecs/system_base.hpp"
 #include "rendering/asset_cache.hpp"
@@ -15,15 +16,12 @@
 
 namespace rendering
 {
-	struct viewport
-	{
-		uint32_t x, y, width, height;
-	};
+	
 
 	class renderer : public ecs::system_base
 	{
 	public:
-		renderer(GLFWwindow* window, viewport window_view, bool is_de, asset_cache& cache);
+		renderer(GLFWwindow* window, core::viewport window_view, bool is_de, asset_cache& cache);
 
 	public:
 		virtual void update(ecs::state& state) override;
@@ -31,7 +29,7 @@ namespace rendering
 	private:
 		bool _is_debug;
 		GLFWwindow* _window;
-		viewport _window_view;
+		core::viewport _window_view;
 		std::unique_ptr<render_pass> _pass_default;
 		std::unique_ptr<render_pass> _pass_cubemap;
 		mesh_static _mesh_cube;

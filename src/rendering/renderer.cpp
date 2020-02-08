@@ -41,7 +41,7 @@ namespace rendering
 		}
 	}
 
-	renderer::renderer(GLFWwindow* window, viewport window_view, bool is_debug, asset_cache& cache) :
+	renderer::renderer(GLFWwindow* window, core::viewport window_view, bool is_debug, asset_cache& cache) :
 		_window(window),
 		_window_view(window_view),
 		_is_debug(is_debug)

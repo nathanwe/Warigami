@@ -215,7 +215,7 @@ set (ENGINEUI_SOURCE_LIST
 add_library(engineui STATIC ${ENGINEUI_SOURCE_LIST})
 target_include_directories(engineui PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(engineui PUBLIC cxx_std_17)
-target_link_libraries(engineui PUBLIC core event imgui)
+target_link_libraries(engineui PUBLIC core event imgui rendering)
 
 set_target_properties(engineui PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(engineui)

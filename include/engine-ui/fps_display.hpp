@@ -10,7 +10,7 @@ namespace engineui
 	class fps_display : public view
 	{
 	public:
-		fps_display(core::frame_timer& timer);
+		fps_display(core::viewport& viewport, core::frame_timer& timer);
 
 		void draw();
 

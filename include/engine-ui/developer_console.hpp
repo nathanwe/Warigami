@@ -1,6 +1,7 @@
 #ifndef __DEVCONSOLE_HPP_
 #define __DEVCONSOLE_HPP_
 
+#include <cstdint>
 #include <functional>
 #include <string>
 #include <engine-ui/view.hpp>
@@ -11,9 +12,10 @@ namespace engineui
 
 	class developer_console : public view
 	{
-	public:
-		developer_console(EventManager& events);
+		const float Height = 200.f;
 
+	public:
+		developer_console(core::viewport& viewport, EventManager& events);
 		void draw();
 
 	private:

@@ -7,7 +7,7 @@
 
 
 
-engineui::fps_display::fps_display(core::frame_timer& timer) : _frame_timer(timer)
+engineui::fps_display::fps_display(core::viewport& viewport, core::frame_timer& timer) : view(viewport), _frame_timer(timer)
 {
 }
 

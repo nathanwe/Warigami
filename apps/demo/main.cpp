@@ -115,7 +115,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     util::string_table strings;
 	EventManager events;
 
-    rendering::viewport window_view{ 0, 0, window_width, window_height };
+    core::viewport window_view{ 0, 0, window_width, window_height };
 
     core::game_input_manager input(window);
     core::frame_timer timer;
@@ -160,8 +160,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     });
 
 
-	engineui::developer_console console(events);
-	engineui::fps_display fps(timer);
+	engineui::developer_console console(window_view, events);
+	engineui::fps_display fps(window_view, timer);
 	engineui::imgui_overlay overlay(window, input, cursor);
 	overlay.register_views(&console, &fps);
 
