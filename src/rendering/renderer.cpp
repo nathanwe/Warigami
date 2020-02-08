@@ -7,6 +7,8 @@
 #include "rendering/renderable_mesh_static.hpp"
 #include "transforms/transform.hpp"
 
+#include <util/debounce.hpp>
+
 #include "glbinding/gl/gl.h"
 #include "glbinding/glbinding.h"
 #include "glm/glm.hpp"
@@ -21,12 +23,15 @@ namespace rendering
 {
 	void gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* user_parameter)
 	{
-		// reformat
-		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
-			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-			type, severity, message);
-
-		//std::cout << "OpenGL Error Callback:\nSource: " << source << ", Type: " << type << ", Severity: " << severity << ", Length: " << length << ",\n    Message: " << message << std::endl;
+		static debounce<GLenum, GLenum, const GLchar*> print_debounce(
+			std::chrono::duration<float>(1.f),
+			[]( GLenum type, GLenum severity, const GLchar* message) {
+				fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
+					(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+					type, severity, message);
+			});		
+		
+		print_debounce(type, severity, message);
 	}
 
 	renderer::renderer(GLFWwindow* window, viewport window_view, bool is_debug, asset_cache& cache) :

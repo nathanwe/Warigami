@@ -19,6 +19,5 @@ void engineui::developer_console::draw()
     ImGui::InputTextMultiline("##out", _output, IM_ARRAYSIZE(_output), { 0, 0 }, ImGuiInputTextFlags_ReadOnly);
     ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input));
     ImGui::PopItemWidth();
-
     ImGui::End();
 }
