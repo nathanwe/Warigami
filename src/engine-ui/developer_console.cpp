@@ -8,7 +8,8 @@
 
 engineui::developer_console::developer_console(core::viewport& viewport, EventManager& events) : view(viewport), _events(events)
 {
-
+    setbuf(stdout, _output);
+    setbuf(stderr, _output);
 }
 
 void engineui::developer_console::draw()

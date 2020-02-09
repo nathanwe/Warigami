@@ -167,6 +167,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 
 	cursor.disable();
 
+	printf("Hello, I'm the dev console!");
+
     //game loop
     while (!glfwWindowShouldClose(window))
     {
