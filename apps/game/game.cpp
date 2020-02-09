@@ -23,6 +23,8 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
+void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
+
 
 
 int main() {
@@ -56,7 +58,17 @@ int main() {
 
     glbinding::initialize([](const char* name) { return (glbinding::ProcAddress)glfwGetProcAddress(name); });
 
-    
+    run_game(window, conf.width(), conf.height(), true);
+ 
+    glfwDestroyWindow(window);
+    glfwTerminate();
+    return 0;
+}
+
+
+void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug)
+{
+
     core::system_info info;
     core::frame_timer timer;
     core::frame_limiter limiter(timer, 60);
@@ -81,7 +93,7 @@ int main() {
         glViewport(0, 0, display_w, display_h);
         glClearColor(0.5f, 0.6f, 0.7f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+
         mgui_sample.draw();
 
         glfwSwapBuffers(window);
@@ -92,7 +104,4 @@ int main() {
         //std::cout << timer.frame_info() << std::endl;
     }
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
-    return 0;
 }
