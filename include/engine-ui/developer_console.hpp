@@ -12,7 +12,9 @@ namespace engineui
 
 	class developer_console : public view
 	{
+		static const std::uint16_t BufSize = 4096;
 		const float Height = 200.f;
+
 
 	public:
 		developer_console(core::viewport& viewport, EventManager& events);
@@ -21,7 +23,11 @@ namespace engineui
 	private:
 		EventManager& _events;
 
-		char _output[4096]{ "" };
+		char _outbuf[BUFSIZ]{ "" };
+		char _errbuf[BUFSIZ]{ "" };
+
+		char _output[BufSize]{ "" };
+		char _error[BufSize]{ "" };
 		char _input[2048]{ "" };
 	};
 	

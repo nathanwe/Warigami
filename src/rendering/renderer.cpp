@@ -26,7 +26,7 @@ namespace rendering
 		static debounce<GLenum, GLenum, const GLchar*> print_debounce(
 			std::chrono::duration<float>(1.f),
 			[](GLenum type, GLenum severity, const GLchar* message) {
-				fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
+				fprintf(stdout, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
 					(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
 					type, severity, message);
 			});
