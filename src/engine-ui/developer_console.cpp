@@ -1,5 +1,6 @@
 #include <engine-ui/developer_console.hpp>
 
+#include <cstdio>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -10,7 +11,7 @@ engineui::developer_console::developer_console(core::viewport& viewport, EventMa
 {
     setvbuf(stdout, _outbuf, _IOFBF, BUFSIZ);
     setvbuf(stderr, _errbuf, _IOFBF, BUFSIZ);
-}
+} 
 
 void engineui::developer_console::draw()
 {
