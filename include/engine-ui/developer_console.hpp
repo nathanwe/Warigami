@@ -13,24 +13,24 @@ namespace engineui
 	class developer_console : public view
 	{
 		static const std::uint16_t BufSize = 4096;
-		const float Height = 256.f;
-
+		static const std::uint16_t InputBufSize = 2048;
+		static const std::uint32_t Height = 256;
 
 	public:
 		developer_console(core::viewport& viewport, EventManager& events);
 		void draw();
 
 	private:
-		EventManager& _events;
-
+		// keep these static
 		static char _outbuf[BUFSIZ];
 		static char _errbuf[BUFSIZ];
+
+		EventManager& _events;
 
 		char _command[BufSize]{ "" };
 		char _output[BufSize]{ "" };
 		char _error[BufSize]{ "" };
-
-		char _input[2048]{ "" };
+		char _input[InputBufSize]{ "" };
 
 		void write_buffer(char* output, char* buffer);
 	};
