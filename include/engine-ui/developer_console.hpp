@@ -23,8 +23,8 @@ namespace engineui
 	private:
 		EventManager& _events;
 
-		char _outbuf[BUFSIZ]{ "" };
-		char _errbuf[BUFSIZ]{ "" };
+		static char _outbuf[BUFSIZ];
+		static char _errbuf[BUFSIZ];
 
 		char _command[BufSize]{ "" };
 		char _output[BufSize]{ "" };

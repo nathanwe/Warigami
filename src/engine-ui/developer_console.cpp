@@ -65,3 +65,6 @@ void engineui::developer_console::write_buffer(char* output, char* buffer)
 
     memcpy(output + outlen, buffer, buflen);
 }
+
+char engineui::developer_console::_outbuf[BUFSIZ]{ "" };
+char engineui::developer_console::_errbuf[BUFSIZ]{ "" };
