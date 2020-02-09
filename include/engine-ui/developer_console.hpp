@@ -13,7 +13,7 @@ namespace engineui
 	class developer_console : public view
 	{
 		static const std::uint16_t BufSize = 4096;
-		const float Height = 200.f;
+		const float Height = 256.f;
 
 
 	public:
@@ -26,9 +26,13 @@ namespace engineui
 		char _outbuf[BUFSIZ]{ "" };
 		char _errbuf[BUFSIZ]{ "" };
 
+		char _command[BufSize]{ "" };
 		char _output[BufSize]{ "" };
 		char _error[BufSize]{ "" };
+
 		char _input[2048]{ "" };
+
+		void write_buffer(char* output, char* buffer);
 	};
 	
 }
