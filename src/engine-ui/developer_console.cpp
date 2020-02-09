@@ -34,18 +34,18 @@ void engineui::developer_console::draw()
     {
     case 0:        
         ImGui::InputTextMultiline("##cmd", _command, IM_ARRAYSIZE(_command), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input));
         break;
     case 1:
         write_buffer(_output, _outbuf);
-        ImGui::InputTextMultiline("##out", _output, IM_ARRAYSIZE(_output), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputTextMultiline("##out", _output, IM_ARRAYSIZE(_output), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
         break;
     case 2:
         write_buffer(_error, _errbuf);
-        ImGui::InputTextMultiline("##err", _error, IM_ARRAYSIZE(_error), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputTextMultiline("##err", _error, IM_ARRAYSIZE(_error), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
         break;
     }
-    
-    ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input));
+        
     ImGui::PopItemWidth();
     ImGui::End();
 }
