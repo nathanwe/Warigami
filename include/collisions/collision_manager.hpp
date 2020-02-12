@@ -9,10 +9,10 @@ namespace collisions {
 	public:
 		collision_manager();
 
-		bool check_collision(collider* collider1, glm::vec3 pos1, collider* collider2, glm::vec3 pos2);
+		bool check_collision(collider* collider1, collider* collider2);
 
 		bool(*collision_functions[(unsigned int)collider::collider_type::NUM_COLLIDER_TYPES][(unsigned int)collider::collider_type::NUM_COLLIDER_TYPES])
-			(collider* collider1, glm::vec3 pos1, collider* collider2, glm::vec3 pos2);
+			(collider* collider1, collider* collider2);
 	};
 }
 

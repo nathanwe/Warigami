@@ -26,14 +26,16 @@ namespace collisions {
 	class sphere_collider :  public collider, public ecs::component<sphere_collider> {
 	public:
 		sphere_collider();
-
+		glm::vec3 position_relative;
+		glm::vec3 position_absolute;
 		float radius;
 	};
 
 	class AABB_collider : public collider, public ecs::component<AABB_collider> {
 	public:
 		AABB_collider();
-
+		glm::vec3 position_relative;
+		glm::vec3 position_absolute;
 		float left, right, top, bottom, back, front; // offsets from center
 	};
 }

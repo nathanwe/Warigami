@@ -1,5 +1,5 @@
 #include <transforms/transform_loader.hpp>
-
+#include <iostream>
 #include <glm/vec3.hpp>
 
 void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_node)

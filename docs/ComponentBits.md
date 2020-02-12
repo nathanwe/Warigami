@@ -41,7 +41,7 @@ Bit shift range: **25-31**
 ```c++
     enum class component_bits : component_shift
     {
-        collider = 25,
+        aabb_collider = 25,
         sphere_collider = 26,
         rigidbody = 27,
     };

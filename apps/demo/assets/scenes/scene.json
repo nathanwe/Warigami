@@ -96,22 +96,6 @@
       ]
     },
     {
-      "entity_id": 7,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 5, 5, -10 ],
-          "scale": [ 2.5, 2.5, 2.5 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/gltf_cube/gltf_cube.gltf",
-          "texture_diffuse": "assets/textures/colors/red.png",
-          "texture_scale": [ 4, 4 ]
-        }
-      ]
-    },
-    {
       "entity_id": 8,
       "components": [
         {
@@ -132,6 +116,16 @@
           "type": "transform",
           "position": [ 1, 0, -5 ],
           "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 1.0,
+          "right": 1.0,
+          "top": 1.0,
+          "bottom": 1.0,
+          "back": 1.0,
+          "front": 1.0,
+          "relative": [ 0, 0, 0 ]
         },
         {
           "type": "renderable_mesh_static",
@@ -172,22 +166,6 @@
           "back": 1
         }]
     },    
-    {
-      "entity_id": 12,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 1, 0, -1 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/gltf_cube/gltf_cube.gltf",
-          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
-        }
-      ]
-    },
-
     {
       "entity_id": 13,
       "prototype": "assets/prototypes/gameboard.json",
