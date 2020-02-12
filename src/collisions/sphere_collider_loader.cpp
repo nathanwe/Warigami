@@ -18,9 +18,9 @@ void collisions::sphere_collider_loader::load(asset::asset_loader_node& asset_lo
 		if (json.find("transform") != json.end())
 		{
 			c.position_absolute = glm::vec3(
-				json["relative"][0].get<float>() + json["transform"][0],
-				json["relative"][1].get<float>() + json["transform"][1],
-				json["relative"][2].get<float>() + json["transform"][2]);
+				json["relative"][0].get<float>() + json["transform"][0].get<float>(),
+				json["relative"][1].get<float>() + json["transform"][1].get<float>(),
+				json["relative"][2].get<float>() + json["transform"][2].get<float>());
 		}
 	}
 }
