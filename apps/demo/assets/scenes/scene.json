@@ -198,6 +198,38 @@
           "position": [0, 10, 30]
         }
       ]
+    },
+
+
+
+    {
+      "entity_id": 16,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1, 0, -5 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 1.0,
+          "right": 1.0,
+          "top": 1.0,
+          "bottom": 1.0,
+          "back": 1.0,
+          "front": 1.0,
+          "relative": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/gltf_cube/gltf_cube.gltf",
+          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
+        },
+        {
+          "type": "game_piece",
+          "succ": 7
+        }
+      ]
     }
   ]
 }
