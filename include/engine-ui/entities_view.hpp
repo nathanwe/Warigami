@@ -9,6 +9,7 @@
 #include "ecs/state.hpp"
 #include "transforms/transform.hpp"
 #include <ecs/ecs_types.hpp>
+#include "engine-ui/transform_tree.hpp"
 
 namespace engineui
 {
@@ -19,7 +20,8 @@ namespace engineui
 		static const std::uint32_t Height = 200;
 
 	public:
-		entities_view(core::viewport& viewport, EventManager& events);
+		entities_view(core::viewport& viewport, EventManager& events, ecs::state& r_ecs_state);
+
 		void draw();
 
 		void update(ecs::state state);
@@ -28,6 +30,9 @@ namespace engineui
 		std::list<entity_id> _entities;
 
 		EventManager& _events;
+
+		ecs::state& m_r_ecs_state;
+		transform_tree tree;
 	};
 
 }
