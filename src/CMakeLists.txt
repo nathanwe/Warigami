@@ -209,6 +209,7 @@ cotire(audio)
 ##### ENGINE-UI #####
 set (ENGINEUI_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/engine-ui/developer_console.cpp
+        ${PROJECT_SOURCE_DIR}/src/engine-ui/entities_view.cpp
         ${PROJECT_SOURCE_DIR}/src/engine-ui/fps_display.cpp
         ${PROJECT_SOURCE_DIR}/src/engine-ui/imgui_overlay.cpp)
 
