@@ -163,9 +163,9 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 
 	engineui::developer_console console(window_view, events);
 	engineui::fps_display fps(window_view, timer);
-	engineui::entities_view entities(window_view, events);
+	engineui::entities_view entities_view(window_view, events);
 	engineui::imgui_overlay overlay(window, input, cursor);
-	overlay.register_views(&console, &fps, &entities);
+	overlay.register_views(&console, &fps, &entities_view);
 
 	cursor.disable();
 
@@ -180,7 +180,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 		input.update();
         world.update();
 
-		entities.update(state);
+		entities_view.update(state);
 		overlay.update();
 
 		glfwSwapBuffers(window);

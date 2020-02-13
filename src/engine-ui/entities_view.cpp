@@ -33,10 +33,8 @@ void engineui::entities_view::draw()
 
     // For each entity
     for (std::list<entity_id>::iterator iter = _entities.begin(); iter != _entities.end(); iter++) {
-        // Get entity name and id
-        const char* name = "Temp name";
         // Make a tree node
-        if (ImGui::TreeNode(name))
+        if (ImGui::TreeNode(std::to_string(*iter).c_str()))
         {
             ImGui::Indent();
             ImGui::Text("dummy");
