@@ -72,7 +72,7 @@ namespace engineui
 
 		bool contains(entity_id id)
 		{
-			contains_recurse(id, _roots);
+			return contains_recurse(id, _roots);
 		}
 
 		void clear()
@@ -80,10 +80,15 @@ namespace engineui
 			_roots.clear();
 		}
 
-		template <typename TFunc>
-		void preorder(TFunc functor)
+		/*
+		FunctorOnStepDown should be a lambda that takes no parameters. It is called when stepping down the tree, from a parent to next operate on its children.
+		FunctorOnNode should be a lambda that takes a node as reference parameter.
+		FunctorOnStepUp should be a lambda that takes no parameters. It is called when stepping up the tree, after processing all children moving back up to parent.
+		*/
+		template <typename FunctorOnStepDown, typename FunctorOnNode, typename FunctorOnStepUp>
+		void preorder(FunctorOnStepDown on_down, FunctorOnNode on_node, FunctorOnStepUp on_up)
 		{
-			preorder_recurse(functor, _roots);
+			preorder_recurse(on_down, on_node, on_up, _roots);
 		}
 
 	private:
@@ -112,14 +117,16 @@ namespace engineui
 			return false;
 		}
 
-		template <typename TFunc>
-		void preorder_recurse(TFunc functor, std::vector<node>& nodes)
+		template <typename FunctorOnStepDown, typename FunctorOnNode, typename FunctorOnStepUp>
+		void preorder_recurse(FunctorOnStepDown on_down, FunctorOnNode on_node, FunctorOnStepUp on_up)
 		{
+			on_down();
 			for (auto& n : nodes)
 			{
-				functor(n);
-				preorder_recurse(functor, n.children);
+				on_node(n);
+				preorder_recurse(on_down, on_node, on_up, n.children);
 			}
+			on_up();
 		}
 
 	private:
