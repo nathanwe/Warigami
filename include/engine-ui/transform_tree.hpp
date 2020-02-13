@@ -118,7 +118,7 @@ namespace engineui
 		}
 
 		template <typename FunctorOnStepDown, typename FunctorOnNode, typename FunctorOnStepUp>
-		void preorder_recurse(FunctorOnStepDown on_down, FunctorOnNode on_node, FunctorOnStepUp on_up)
+		void preorder_recurse(FunctorOnStepDown on_down, FunctorOnNode on_node, FunctorOnStepUp on_up, std::vector<node>& nodes)
 		{
 			on_down();
 			for (auto& n : nodes)
