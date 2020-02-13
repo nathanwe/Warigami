@@ -25,6 +25,7 @@
 
 #include <engine-ui/imgui_overlay.hpp>
 #include <engine-ui/developer_console.hpp>
+#include <engine-ui/entities_view.hpp>
 
 
 #include <glbinding/glbinding.h>  // Initialize with glbinding::initialize()
@@ -162,8 +163,9 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 
 	engineui::developer_console console(window_view, events);
 	engineui::fps_display fps(window_view, timer);
+	engineui::entities_view entities(window_view, events);
 	engineui::imgui_overlay overlay(window, input, cursor);
-	overlay.register_views(&console, &fps);
+	overlay.register_views(&console, &fps, &entities);
 
 	cursor.disable();
 
@@ -178,6 +180,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 		input.update();
         world.update();
 
+		entities.update(state);
 		overlay.update();
 
 		glfwSwapBuffers(window);
