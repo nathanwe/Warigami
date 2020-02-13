@@ -31,21 +31,25 @@ namespace engineui
 
 			if (contains(id))
 			{
+				// early exit
 				return;
 			}
+
+			// prepare new node for insertion
 			node self;
 			self.id = id;
 
+			auto is_self = [&](auto& n) { return n.id == self.id; };
 			auto is_lesser_node = [](const node& a, const node& b) { return a.id < b.id; };
 
 			transforms::transform& t = e.get_component<transforms::transform>();
 			if (t.has_parent)
 			{
-				// recursively insert parents before self
+				// recursively verify insertion of parents before self
 				insert(t.parent);
 				node& parent = *find(t.parent);
 
-				auto is_self = [&](auto& n) { return n.id == self.id; };
+				// insert self as child
 				if (std::find_if(parent.children.begin(), parent.children.end(), is_self) != parent.children.end())
 				{
 					parent.children.push_back(self);
@@ -54,11 +58,35 @@ namespace engineui
 			}
 			else
 			{
+				// insert self as a root
 				_roots.push_back(self);
 				std::sort(_roots.begin(), _roots.end(), is_lesser_node);
 			}
 		}
 
+		node* find(entity_id id)
+		{
+			assert(contains(id));
+			return find_recurse(id, _roots);
+		}
+
+		bool contains(entity_id id)
+		{
+			contains_recurse(id, _roots);
+		}
+
+		void clear()
+		{
+			_roots.clear();
+		}
+
+		template <typename TFunc>
+		void preorder(TFunc functor)
+		{
+			preorder_recurse(functor, _roots);
+		}
+
+	private:
 		node* find_recurse(entity_id id, std::vector<node>& nodes)
 		{
 			for (auto& n : _roots)
@@ -70,12 +98,6 @@ namespace engineui
 				find_recurse(id, n.children);
 			}
 			return nullptr;
-		}
-
-		node* find(entity_id id)
-		{
-			assert(contains(id));
-			return find_recurse(id, _roots);
 		}
 
 		bool contains_recurse(entity_id id, std::vector<node>& nodes)
@@ -90,14 +112,14 @@ namespace engineui
 			return false;
 		}
 
-		bool contains(entity_id id)
+		template <typename TFunc>
+		void preorder_recurse(TFunc functor, std::vector<node>& nodes)
 		{
-			contains_recurse(id, _roots);
-		}
-
-		void clear()
-		{
-			_roots.clear();
+			for (auto& n : nodes)
+			{
+				functor(n);
+				preorder_recurse(functor, n.children);
+			}
 		}
 
 	private:
