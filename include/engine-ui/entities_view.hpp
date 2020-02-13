@@ -1,6 +1,7 @@
 #ifndef __ENTITIES_VIEW_HPP_
 #define __ENTITIES_VIEW_HPP_
 
+#include <list>
 #include <cstdint>
 #include <functional>
 #include <string>
