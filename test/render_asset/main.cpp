@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 	}
 	glfwMakeContextCurrent(window);
 
-	rendering::viewport window_view{ 0, 0, window_width, window_height };
+	core::viewport window_view{ 0, 0, window_width, window_height };
 
 	core::frame_timer timer;
 
