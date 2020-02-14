@@ -1,7 +1,7 @@
 #ifndef PHYSICS_PHYSICS_UPDATE_HPP
 #define PHYSICS_PHYSICS_UPDATE_HPP
 
-#define GRAVITY 2.0f
+#define GRAVITY 0.0f
 
 #include "ecs/state.hpp"
 #include "ecs/system_base.hpp"

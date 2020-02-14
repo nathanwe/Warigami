@@ -89,35 +89,35 @@ void core::game_input_manager::update() {
 
 	// MENU
 	_current_game_state[MENU_CONTROL] = _input.is_key_down(MENU_KEY)
-		|| _input.get_gamepad()->is_button_pressed(Xbuttons.start_button);
+		|| _input.get_gamepad()->is_button_held(Xbuttons.start_button);
 
 	// BACK
 	_current_game_state[BACK_CONTROL] = _input.is_key_down(BACK_KEY)
-		|| _input.get_gamepad()->is_button_pressed(Xbuttons.B);
+		|| _input.get_gamepad()->is_button_held(Xbuttons.B);
 
 	// CONFIRM
 	_current_game_state[CONFIRM_CONTROL] = _input.is_key_down(CONFIRM_KEY)
-		|| _input.get_gamepad()->is_button_pressed(Xbuttons.A);
+		|| _input.get_gamepad()->is_button_held(Xbuttons.A);
 
 	// ACTION 1
 	_current_game_state[ACTION1_CONTROL] = _input.is_key_down(ACTION1_KEY)
-		|| _input.get_gamepad()->is_button_pressed(ACTION1_BUTTON);
+		|| _input.get_gamepad()->is_button_held(ACTION1_BUTTON);
 
 	// ACTION 2
 	_current_game_state[ACTION2_CONTROL] = _input.is_key_down(ACTION2_KEY)
-		|| _input.get_gamepad()->is_button_pressed(ACTION2_BUTTON);
+		|| _input.get_gamepad()->is_button_held(ACTION2_BUTTON);
 
 	// ACTION 3
 	_current_game_state[ACTION3_CONTROL] = _input.is_key_down(ACTION3_KEY)
-		|| _input.get_gamepad()->is_button_pressed(ACTION3_BUTTON);
+		|| _input.get_gamepad()->is_button_held(ACTION3_BUTTON);
 
 	// ACTION 4
 	_current_game_state[ACTION4_CONTROL] = _input.is_key_down(ACTION4_KEY)
-		|| _input.get_gamepad()->is_button_pressed(ACTION4_BUTTON);
+		|| _input.get_gamepad()->is_button_held(ACTION4_BUTTON);
 
 	// INTERACT
 	_current_game_state[INTERACT_CONTROL] = _input.is_key_down(INTERACT_KEY)
-		|| _input.get_gamepad()->is_button_pressed(INTERACT_BUTTON);
+		|| _input.get_gamepad()->is_button_held(INTERACT_BUTTON);
 
 	// DESCEND
 	// Right stick down and DESCEND_KEY
