@@ -14,15 +14,17 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each< transforms::transform, rendering::camera>([&](transforms::transform& transform, rendering::camera& camera)
+		r_state.each< transforms::transform, rendering::camera, collisions::rigid_body>([&](transforms::transform& transform, rendering::camera& camera, collisions::rigid_body& rigid_body)
 			{
 				auto camera_world = camera.inverse_view;
 				auto fwd = glm::vec3(camera_world[2]);
 				auto right = glm::vec3(camera_world[0]);
 				//auto up = glm::vec3(camera_world[1]);
 
-				transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 10.f;
-				transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * 10.f;
+				//transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 10.f;
+				//transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * 10.f;
+				rigid_body.forces += -m_input.forward() * fwd * 10.f;
+				rigid_body.forces += -m_input.strafe() * right * 10.f;
 
 				transform.rotation.y -= m_input.yaw() * .05f;
 				transform.rotation.x -= m_input.pitch() * .05f;

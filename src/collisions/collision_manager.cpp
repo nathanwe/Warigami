@@ -37,12 +37,12 @@ bool check_collision_sphere_AABB(collider* collider_sphere, collider* collider_A
 	AABB_collider* AABB = static_cast<AABB_collider*>(collider_AABB);
 	sphere_collider* sphere = static_cast<sphere_collider*>(collider_sphere);
 
-	if (sphere->position_absolute.x + sphere->radius >= AABB->position_absolute.x + AABB->left &&
-		sphere->position_absolute.x - sphere->radius <= AABB->position_absolute.x - AABB->right &&
-		sphere->position_absolute.y + sphere->radius <= AABB->position_absolute.y + AABB->top &&
-		sphere->position_absolute.y - sphere->radius >= AABB->position_absolute.y - AABB->bottom &&
-		sphere->position_absolute.z + sphere->radius <= AABB->position_absolute.z + AABB->back &&
-		sphere->position_absolute.z - sphere->radius >= AABB->position_absolute.z - AABB->front) {
+	if (sphere->position_absolute.x + sphere->radius >= AABB->position_absolute.x - AABB->left &&
+		sphere->position_absolute.x - sphere->radius <= AABB->position_absolute.x + AABB->right &&
+		sphere->position_absolute.y - sphere->radius <= AABB->position_absolute.y + AABB->top &&
+		sphere->position_absolute.y + sphere->radius >= AABB->position_absolute.y - AABB->bottom &&
+		sphere->position_absolute.z + sphere->radius >= AABB->position_absolute.z - AABB->back &&
+		sphere->position_absolute.z - sphere->radius <= AABB->position_absolute.z + AABB->front) {
 		return true;
 	}
 

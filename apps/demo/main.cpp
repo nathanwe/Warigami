@@ -150,7 +150,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 
 	collisions::collision_manager collision_manager;
-	physics::physics_update physics_update(collision_manager);
+	physics::physics_update physics_update(collision_manager, timer);
     rendering::asset_cache render_asset_cache;
     rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
     transforms::transformer transformer;

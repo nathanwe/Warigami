@@ -149,30 +149,6 @@ set_target_properties(transforms PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(transforms)
 
 
-##### AUDIO #####
-set (AUDIO_SOURCE_LIST
-        ${PROJECT_SOURCE_DIR}/src/audio/audio_system.cpp
-        ${PROJECT_SOURCE_DIR}/src/audio/audio_listener.cpp
-        ${PROJECT_SOURCE_DIR}/src/audio/audio_emitter.cpp)
-
-add_library(audio STATIC ${AUDIO_SOURCE_LIST})
-target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(audio PUBLIC cxx_std_17)
-target_link_libraries(audio PUBLIC ecs transforms rendering asset fmod glm)
-set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(audio)
-
-
-##### COLLISIONS #####
-set (COLLISIONS_SOURCE_LIST
-        ${PROJECT_SOURCE_DIR}/src/collisions/collider.cpp
-        ${PROJECT_SOURCE_DIR}/src/collisions/aabb_collider_loader.cpp
-        ${PROJECT_SOURCE_DIR}/src/collisions/sphere_collider_loader.cpp
-        ${PROJECT_SOURCE_DIR}/src/collisions/collision_manager.cpp)
-
-add_library(collisions STATIC ${COLLISIONS_SOURCE_LIST})
-target_include_directories(collisions PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(collisions PUBLIC glm asset)
 
 
 

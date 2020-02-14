@@ -12,8 +12,12 @@ namespace collisions
 	struct rigid_body : ecs::component<rigid_body>
 	{
 		float mass;
+		float inv_mass;
+		float grav_muliplier;
+		float lul_friction;
 		glm::vec3 acceleration;
 		glm::vec3 velocity;
+		glm::vec3 forces;
 	};
 }
 
