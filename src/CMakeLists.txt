@@ -148,44 +148,6 @@ target_link_libraries(transforms PUBLIC ecs asset glm)
 set_target_properties(transforms PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(transforms)
 
-##### RENDERING #####
-set (RENDERING_SOURCE_LIST
-     ${PROJECT_SOURCE_DIR}/src/rendering/asset_cache.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/camera_updater.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/light_directional.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/light_point.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/loader_camera.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_directional.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_point.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
-     rendering/renderable_mesh_static.cpp rendering/camera.cpp)
-
-add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
-target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(rendering PUBLIC cxx_std_17)
-target_link_libraries(rendering PUBLIC 
-    ecs
-    asset
-    assimp
-    glbinding
-    glm 
-    glfw
-    stb_image)
-
-set_target_properties(rendering PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(rendering)
-
-add_custom_target(copy_shaders
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/src/rendering/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
-)
-
-add_dependencies (rendering copy_shaders)
-
 
 ##### AUDIO #####
 set (AUDIO_SOURCE_LIST
@@ -211,3 +173,44 @@ set (COLLISIONS_SOURCE_LIST
 add_library(collisions STATIC ${COLLISIONS_SOURCE_LIST})
 target_include_directories(collisions PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(collisions PUBLIC glm asset)
+
+
+
+##### RENDERING #####
+set (RENDERING_SOURCE_LIST
+     ${PROJECT_SOURCE_DIR}/src/rendering/asset_cache.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/camera_updater.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/light_directional.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/light_point.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_camera.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_directional.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_point.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
+     rendering/renderable_mesh_static.cpp rendering/camera.cpp)
+
+add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
+target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(rendering PUBLIC cxx_std_17)
+target_link_libraries(rendering PUBLIC 
+    asset
+    assimp
+    collisions
+    ecs
+    glbinding
+    glm 
+    glfw
+    stb_image)
+
+set_target_properties(rendering PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+cotire(rendering)
+
+add_custom_target(copy_shaders
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/src/rendering/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
+)
+
+add_dependencies (rendering copy_shaders)

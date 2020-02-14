@@ -135,6 +135,13 @@ namespace rendering
 			current_state.target = _render_state.target;
 		}
 
+		// Polygon mode
+		if (_render_state.polygon_mode != current_state.polygon_mode)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, _render_state.polygon_mode);
+			current_state.polygon_mode = _render_state.polygon_mode;
+		}
+
 		// Face culling
 		if (_render_state.uses_cull_face)
 		{

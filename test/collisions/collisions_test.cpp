@@ -5,7 +5,7 @@
 using namespace collisions;
 
 int main() {
-
+	/*
 	collision_manager cm;
 
 	sphere_collider* sphere = new sphere_collider();
@@ -129,6 +129,6 @@ int main() {
 	!cm.check_collision(sphere, glm::vec3(0, 0, 0), cube, glm::vec3(0, 0, -2)) ? std::cout << "OK\n" : std::cout << "ERROR\n";
 	!cm.check_collision(sphere, glm::vec3(0, 0, 0), cube, glm::vec3(0, 2, 1)) ? std::cout << "OK\n" : std::cout << "ERROR\n";
 	!cm.check_collision(sphere, glm::vec3(0, 0, 0), cube, glm::vec3(1, 1, 2)) ? std::cout << "OK\n" : std::cout << "ERROR\n";
-
+	*/
 	return 0;
 }
