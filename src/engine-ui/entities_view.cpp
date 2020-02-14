@@ -13,34 +13,42 @@ engineui::entities_view::entities_view(core::viewport& viewport, EventManager& e
 }
 
 void engineui::entities_view::update(ecs::state state) {
-    if (_entities.size() > 0) {
-        _entities.clear();
-    }
-    //// Get all entities and sort them
-    state.each< transforms::transform>([&](transforms::transform& transform)
+    tree.clear();
+    m_r_ecs_state.each_id< transforms::transform>([&](auto id, auto transform)
     {
-        _entities.push_front(transform.parent);
+        tree.insert(id);
     });
-    _entities.sort();
 }
 
 void engineui::entities_view::draw()
 {
-
-    ImGui::SetNextWindowSize({ Width, Height }, ImGuiCond_Always);
+    // Draw tree
+    ImGui::SetNextWindowSize({ Width, Height }, ImGuiCond_Once);
     ImGui::Begin("Entities");
-    ImGui::SetWindowPos({ 0, 50 }, ImGuiCond_Always);
+    ImGui::SetWindowPos({ 10, 50 }, ImGuiCond_Once);
 
-    // For each entity
-    for (std::list<entity_id>::iterator iter = _entities.begin(); iter != _entities.end(); iter++) {
-        // Make a tree node
-        if (ImGui::TreeNode(std::to_string(*iter).c_str()))
-        {
-            ImGui::Indent();
-            ImGui::Text("dummy");
-            ImGui::Unindent();
-            ImGui::TreePop();
-        }
-    }
+    ImGui::Unindent();
+
+    tree.preorder([&]() {
+        // On down
+        ImGui::Indent();
+    },
+        [&](engineui::transform_tree::node node) {
+        // On node
+        ImGui::Bullet();
+        ImGui::Button(std::to_string(node.id).c_str());
+    },
+        [&]() {
+        // On up
+        ImGui::Unindent();
+    });
+
+    ImGui::End();
+
+    // Draw Inspector window
+    ImGui::SetNextWindowSize({ InspectorWidth, InspectorHeight }, ImGuiCond_Once);
+    ImGui::Begin("Inspector");
+    ImGui::Text("Hello! I do nothing yet!");
+    ImGui::SetWindowPos({ 10, Height+60 }, ImGuiCond_Once);
     ImGui::End();
 }

@@ -12,13 +12,13 @@ namespace engineui
 {
 	class transform_tree
 	{
+	public:
 		struct node
 		{
 			entity_id id;
 			std::vector<node> children;
 		};
 
-	public:
 		transform_tree(ecs::state& ecs_state) : _ecs_state(ecs_state)
 		{
 		}
