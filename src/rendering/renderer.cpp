@@ -14,7 +14,7 @@ using namespace gl;
 
 namespace rendering
 {
-	void draw_mesh_static(mesh_static& mesh);
+	void draw_mesh_static(const mesh_static& mesh);
 
 	void gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* user_parameter)
 	{
@@ -84,7 +84,7 @@ namespace rendering
 		pass_debug_desc.state.uses_depth_test = GL_TRUE;
 		pass_debug_desc.state.uses_blend = GL_FALSE;
 		pass_debug_desc.state.depth_func = GL_LESS;
-		pass_debug_desc.state.depth_mask = GL_FALSE;
+		pass_debug_desc.state.depth_mask = GL_TRUE;
 		_pass_debug = std::make_unique<render_pass>(pass_debug_desc);
 		assert(_pass_debug.get());
 	}
@@ -103,12 +103,44 @@ namespace rendering
 		glViewport(window_view.x, window_view.y, window_view.width, window_view.height);
 		glClearColor(1, 0, 0, 1);
 		glClearDepth(1);
+
+
+		glBindFramebuffer(GL_FRAMEBUFFER, _render_state.target);
+		glPolygonMode(GL_FRONT_AND_BACK, _render_state.polygon_mode);
+		if (_render_state.uses_cull_face)
+		{
+			glEnable(GL_CULL_FACE);
+			glCullFace(_render_state.culled_face);
+		}
+		else
+		{
+			glDisable(GL_CULL_FACE);
+		}
+		if (_render_state.uses_depth_test)
+		{
+			glEnable(GL_DEPTH_TEST);
+			glDepthMask(_render_state.depth_mask);
+			gl::glDepthFunc(_render_state.depth_func);
+		}
+		else
+		{
+			glDisable(GL_DEPTH_TEST);
+		}
+		if (_render_state.uses_blend)
+		{
+			glEnable(GL_BLEND);
+			gl::glBlendFunc(_render_state.blend_src, _render_state.blend_dest);
+		}
+		else
+		{
+			glDisable(GL_BLEND);
+		}
 	}
 
 	void renderer::update(ecs::state& ecs_state)
 	{
 		transforms::transform* active_camera_transform = nullptr;
-		camera* active_camera;
+		camera* active_camera = nullptr;
 
 		find_active_camera(ecs_state, active_camera_transform, active_camera);
 		if (active_camera == nullptr)
@@ -133,7 +165,7 @@ namespace rendering
 		glfwSwapBuffers(_window);
 	}
 
-	void renderer::find_active_camera(ecs::state& ecs_state, transforms::transform*& camera_transform, camera*& cam)
+	void renderer::find_active_camera(ecs::state& ecs_state, transforms::transform*& active_camera_transform, camera*& active_camera)
 	{
 		// 
 		ecs_state.each<transforms::transform, camera>([&](auto& camera_transform, auto& cam)
@@ -146,6 +178,8 @@ namespace rendering
 	void renderer::clear_camera(const camera& cam)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glDepthMask(GL_TRUE);
+
 		switch (cam.clear_setting)
 		{
 		case camera::clear_mode::none:
@@ -160,6 +194,7 @@ namespace rendering
 		default:
 			assert(false);
 		}
+		glDepthMask(_render_state.depth_mask);
 	}
 
 	void renderer::run_pass_default(ecs::state& ecs_state, const transforms::transform camera_transform, const camera& cam)
@@ -251,6 +286,7 @@ namespace rendering
 
 	void renderer::run_pass_cubemap(const camera& cam)
 	{
+		_pass_cubemap->bind(_render_state);
 		cubemap_bind_camera(cam);
 		draw_mesh_static(_mesh_cube);
 		cubemap_unbind();
@@ -259,7 +295,6 @@ namespace rendering
 	void renderer::cubemap_bind_camera(const camera& cam)
 	{
 		assert(cam.clear_sky_box.id != 0);
-		_pass_cubemap->bind(_render_state);
 		_pass_cubemap->set_cubemap(0, cam.clear_sky_box.id);
 
 		glm::mat4 view_projection_no_translation = cam.projection * glm::mat4(glm::mat3(cam.view));

@@ -59,6 +59,16 @@
           "scale": [ 5, 5, 5 ]
         },
         {
+          "type": "AABB_collider",
+          "left": 1.0,
+          "right": 1.0,
+          "top": 1.0,
+          "bottom": 1.0,
+          "back": 1.0,
+          "front": 1.0,
+          "relative": [ 0, 0, 0 ]
+        },
+        {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/cube/cube.obj",
           "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
@@ -72,6 +82,16 @@
           "type": "transform",
           "position": [ 10, 0, -10 ],
           "scale": [ 5, 5, 5 ]
+        },
+        {
+          "type": "sphere_collider",
+          "left": 1.0,
+          "right": 1.0,
+          "top": 1.0,
+          "bottom": 1.0,
+          "back": 1.0,
+          "front": 1.0,
+          "relative": [ 0, 0, 0 ]
         },
         {
           "type": "renderable_mesh_static",
@@ -211,7 +231,7 @@
           "scale": [ 1, 1, 1 ]
         },
         {
-          "type": "aabb_collider",
+          "type": "AABB_collider",
           "left": 1.0,
           "right": 1.0,
           "top": 1.0,
