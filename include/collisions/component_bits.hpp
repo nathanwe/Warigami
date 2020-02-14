@@ -9,7 +9,7 @@ namespace collisions
     {
         aabb_collider = 25,
         sphere_collider = 26,        
-        rigidbody = 27
+        rigid_body = 27
     };
 }
 

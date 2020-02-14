@@ -1,5 +1,5 @@
-#ifndef GAME_COMPONENTS_RIGID_BODY_HPP
-#define GAME_COMPONENTS_RIGID_BODY_HPP
+#ifndef GAME_COLLISIONS_RIGID_BODY_HPP
+#define GAME_COLLISIONS_RIGID_BODY_HPP
 
 #include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
@@ -7,11 +7,13 @@
 
 #include <glm/glm.hpp>
 
-namespace components
+namespace collisions
 {
 	struct rigid_body : ecs::component<rigid_body>
 	{
-		// Rigid body state
+		float mass;
+		glm::vec3 acceleration;
+		glm::vec3 velocity;
 	};
 }
 

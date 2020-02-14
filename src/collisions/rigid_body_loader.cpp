@@ -1,19 +1,34 @@
-#include "rigid_body_loader.hpp"
+#include "collisions/rigid_body_loader.hpp"
 
-void components::board_square_loader::load(asset::asset_loader_node& asset_loader_node)
+void collisions::rigid_body_loader::load(asset::asset_loader_node& asset_loader_node)
 {
 	auto& entity = asset_loader_node.entity_resource.entity;
 	auto& entity_data = asset_loader_node.entity_resource.entity_data;
 
-	auto& json = asset_loader_node.entity_resource.entity_data.component_data(components::rigid_body::component_bitshift);
+	auto& json = asset_loader_node.entity_resource.entity_data.component_data(collisions::rigid_body::component_bitshift);
 
 	auto& rb = entity.get_component<rigid_body>();
 
-	// Do loading here
+	rb.mass = json.value("mass", 0.f);
 
+	if (json.find("acceleration") != json.end())
+	{
+		rb.acceleration = glm::vec3(
+			json["acceleration"][0].get<float>(),
+			json["acceleration"][1].get<float>(),
+			json["acceleration"][2].get<float>());
+	}
+
+	if (json.find("velocity") != json.end())
+	{
+		rb.acceleration = glm::vec3(
+			json["velocity"][0].get<float>(),
+			json["velocity"][1].get<float>(),
+			json["velocity"][2].get<float>());
+	}
 }
 
-component_bitset components::rigid_body_loader::components_to_load()
+component_bitset collisions::rigid_body_loader::components_to_load()
 {
-	return components::rigid_body::archetype_bit;
+	return collisions::rigid_body::archetype_bit;
 }

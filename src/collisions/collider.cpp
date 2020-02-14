@@ -11,12 +11,14 @@ collider::collider(collider_type type) : type(type) {}
 sphere_collider::sphere_collider() : collider(collider_type::SPHERE) {
 	position_relative = { 0.f, 0.f, 0.f };
 	position_absolute = { 0.f, 0.f, 0.f };
+	owner_id = 0;
 	radius = 0.0f;
 }
 
 AABB_collider::AABB_collider() : collider(collider_type::AABB) {
 	position_relative = { 0.f, 0.f, 0.f };
 	position_absolute = { 0.f, 0.f, 0.f };
+	owner_id = 0;
 	left = right = top = bottom = back = front = 0.0f;
 }
 

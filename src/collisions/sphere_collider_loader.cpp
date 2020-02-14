@@ -7,6 +7,8 @@ void collisions::sphere_collider_loader::load(asset::asset_loader_node& asset_lo
 	auto& json = entity_data.component_data(collisions::sphere_collider::component_bitshift);
 	auto& c = entity.get_component<sphere_collider>();
 
+	c.owner_id = entity.id();
+
 	c.radius = json.value("radius", 0.f);
 	if (json.find("relative") != json.end())
 	{

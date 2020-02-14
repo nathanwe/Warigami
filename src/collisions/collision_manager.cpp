@@ -22,12 +22,12 @@ bool check_collision_AABB_AABB(collider* collider1, collider* collider2) {
 	AABB_collider* AABB1 = static_cast<AABB_collider*>(collider1);
 	AABB_collider* AABB2 = static_cast<AABB_collider*>(collider2);
 
-	if (AABB1->position_absolute.x + AABB1->right >= AABB2->position_absolute.x + AABB2->left &&
-		AABB2->position_absolute.x + AABB2->right >= AABB1->position_absolute.x + AABB1->left &&
-		AABB1->position_absolute.y + AABB1->top >= AABB2->position_absolute.y + AABB2->bottom &&
-		AABB2->position_absolute.y + AABB2->top >= AABB1->position_absolute.y + AABB1->bottom &&
-		AABB1->position_absolute.z + AABB1->back >= AABB2->position_absolute.z + AABB2->front &&
-		AABB2->position_absolute.z + AABB2->back >= AABB1->position_absolute.z + AABB1->front) {
+	if (AABB1->position_absolute.x + AABB1->right >= AABB2->position_absolute.x - AABB2->left &&
+		AABB2->position_absolute.x + AABB2->right >= AABB1->position_absolute.x - AABB1->left &&
+		AABB1->position_absolute.y + AABB1->top >= AABB2->position_absolute.y - AABB2->bottom &&
+		AABB2->position_absolute.y + AABB2->top >= AABB1->position_absolute.y - AABB1->bottom &&
+		AABB1->position_absolute.z - AABB1->back <= AABB2->position_absolute.z + AABB2->front &&
+		AABB2->position_absolute.z - AABB2->back <= AABB1->position_absolute.z + AABB1->front) {
 		return true;
 	}
 	return false;

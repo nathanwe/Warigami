@@ -21,8 +21,11 @@
 #include "collisions/collider.hpp"
 #include "collisions/aabb_collider_loader.hpp"
 #include "collisions/sphere_collider_loader.hpp"
+#include "collisions/rigid_body_loader.hpp"
+#include "collisions/collision_manager.hpp"
 #include <audio/audio_system.hpp>
 #include <audio/loader_emitter.hpp>
+#include <physics/physics_update.hpp>
 
 // Components
 #include "components/game_piece.hpp"
@@ -143,9 +146,11 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     ecs::register_component<audio::audio_emitter>("audio_emitter");
     ecs::register_component<audio::audio_listener>("audio_listener");
     ecs::register_component<collisions::sphere_collider>("sphere_collider");
-    ecs::register_component<collisions::AABB_collider>("AABB_collider");
+    ecs::register_component<collisions::AABB_collider>("aabb_collider");
+	ecs::register_component<collisions::rigid_body>("rigid_body");
 
-
+	collisions::collision_manager collision_manager;
+	physics::physics_update physics_update(collision_manager);
     rendering::asset_cache render_asset_cache;
     rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
     transforms::transformer transformer;
@@ -153,7 +158,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     audio::audio_system audio_system(strings);
 	spinner spinner(timer);
     fly_cam flycam(input, timer);
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &audio_system, &spinner });
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &audio_system, &spinner, &physics_update });
     ecs::world world(systems, state);
     
     audio::loader_emitter eloader(strings);
@@ -174,9 +179,10 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 	components::player_loader player_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
+	collisions::rigid_body_loader rigid_body_loader;
     hydrater.register_loaders(	&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader, 
 								&game_piece_loader, &board_loader, &board_square_loader, &card_loader, &dice_loader, &player_loader,
-								&aabb_collider_loader, &sphere_collider_loader);
+								&aabb_collider_loader, &sphere_collider_loader, &rigid_body_loader);
     hydrater.load();
 
     state.each<audio::audio_emitter>([](audio::audio_emitter& e) {

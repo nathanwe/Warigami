@@ -206,8 +206,18 @@ set (COLLISIONS_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/collisions/collider.cpp
         ${PROJECT_SOURCE_DIR}/src/collisions/aabb_collider_loader.cpp
         ${PROJECT_SOURCE_DIR}/src/collisions/sphere_collider_loader.cpp
-        ${PROJECT_SOURCE_DIR}/src/collisions/collision_manager.cpp)
+        ${PROJECT_SOURCE_DIR}/src/collisions/collision_manager.cpp
+        ${PROJECT_SOURCE_DIR}/src/collisions/rigid_body.cpp
+        ${PROJECT_SOURCE_DIR}/src/collisions/rigid_body_loader.cpp)
 
 add_library(collisions STATIC ${COLLISIONS_SOURCE_LIST})
 target_include_directories(collisions PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(collisions PUBLIC glm asset)
+
+##### PHYSICS #####
+set (PHYSICS_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/physics/physics_update.cpp)
+
+add_library(physics STATIC ${PHYSICS_SOURCE_LIST})
+target_include_directories(physics PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(physics PUBLIC glm asset)

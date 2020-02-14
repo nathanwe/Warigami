@@ -2,6 +2,7 @@
 #define COLLISION_MANAGER_HPP
 
 #include "collider.hpp"
+#include "rigid_body.hpp"
 #include <list>
 
 namespace collisions {

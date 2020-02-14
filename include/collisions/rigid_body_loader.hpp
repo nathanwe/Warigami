@@ -1,11 +1,11 @@
-#ifndef GAME_COMPONENTS_RIGID_BODY_LOADER_HPP
-#define GAME_COMPONENTS_RIGID_BODY_LOADER_HPP
+#ifndef GAME_COLLISIONS_RIGID_BODY_LOADER_HPP
+#define GAME_COLLISIONS_RIGID_BODY_LOADER_HPP
 
 #include <asset/component_loader.hpp>
 #include "rigid_body.hpp"
 
 
-namespace components
+namespace collisions
 {
 	class rigid_body_loader : public asset::component_loader
 	{
