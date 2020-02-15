@@ -26,6 +26,12 @@ public:
 				//transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * 10.f;
 				
 				// Chad physics flying
+				//rigid_body.forces += -m_input.forward() * fwd * 10.f;
+				//rigid_body.forces += -m_input.strafe() * right * 10.f;
+
+				// Semi-Chad physics walking
+				fwd.y = 0;
+				right.y = 0;
 				rigid_body.forces += -m_input.forward() * fwd * 10.f;
 				rigid_body.forces += -m_input.strafe() * right * 10.f;
 
@@ -39,7 +45,8 @@ public:
 
 				if (m_input.is_input_ended(core::controls::ACTION1_CONTROL)) {
 					std::cerr << "JUMP RELEASED" << std::endl;
-					rigid_body.forces += fwd * JUMP_POWA;
+					rigid_body.forces += fwd * JUMP_POWA * 0.5f;
+					rigid_body.forces.y -= JUMP_POWA * 0.5f;
 					JUMP_POWA = 0.f;
 				}
 
