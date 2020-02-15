@@ -93,9 +93,7 @@ namespace physics
 	{
 		state.each< transforms::transform, collisions::AABB_collider>([&](transforms::transform& transform, collisions::AABB_collider& collider)
 		{
-			collider.position_absolute.x = transform.position.x + collider.position_relative.x;
-			collider.position_absolute.y = transform.position.y + collider.position_relative.y;
-			collider.position_absolute.z = transform.position.z + collider.position_relative.z;
+			collider.position_absolute = transform.position + collider.position_relative;			
 			collider.front = 0.5f * transform.scale.z;
 			collider.back = 0.5f * transform.scale.z;
 			collider.left = 0.5f * transform.scale.x;
@@ -106,9 +104,7 @@ namespace physics
 
 		state.each< transforms::transform, collisions::sphere_collider>([&](transforms::transform& transform, collisions::sphere_collider& collider)
 		{
-			collider.position_absolute.x = transform.position.x + collider.position_relative.x;
-			collider.position_absolute.y = transform.position.y + collider.position_relative.y;
-			collider.position_absolute.z = transform.position.z + collider.position_relative.z;
+			collider.position_absolute = transform.position.x + collider.position_relative;
 			collider.radius = 0.5f * transform.scale.x;
 		});
 	}
@@ -121,23 +117,12 @@ namespace physics
 
 				rigid_body.forces.y += GRAVITY * rigid_body.grav_muliplier;
 
-				rigid_body.acceleration.x = rigid_body.forces.x * rigid_body.inv_mass;
-				rigid_body.acceleration.y = rigid_body.forces.y * rigid_body.inv_mass;
-				rigid_body.acceleration.z = rigid_body.forces.z * rigid_body.inv_mass;
-				
-				rigid_body.velocity.x *= rigid_body.lul_friction;
-				rigid_body.velocity.y *= rigid_body.lul_friction;
-				rigid_body.velocity.z *= rigid_body.lul_friction;
-
-				rigid_body.velocity.x = rigid_body.acceleration.x * frame_manager.smoothed_delta_secs() + rigid_body.velocity.x;
-				rigid_body.velocity.y = rigid_body.acceleration.y * frame_manager.smoothed_delta_secs() + rigid_body.velocity.y;
-				rigid_body.velocity.z = rigid_body.acceleration.z * frame_manager.smoothed_delta_secs() + rigid_body.velocity.z;
-
+				rigid_body.acceleration = rigid_body.forces * rigid_body.inv_mass;				
+				rigid_body.velocity *= rigid_body.lul_friction;
+				rigid_body.velocity = rigid_body.acceleration.x * frame_manager.smoothed_delta_secs() + rigid_body.velocity;
 				rigid_body.forces = glm::vec3(0);
-
-				transform.position.x = rigid_body.velocity.x * frame_manager.smoothed_delta_secs() + transform.prev_position.x;
-				transform.position.y = rigid_body.velocity.y * frame_manager.smoothed_delta_secs() + transform.prev_position.y;
-				transform.position.z = rigid_body.velocity.z * frame_manager.smoothed_delta_secs() + transform.prev_position.z;
+				transform.position = rigid_body.velocity.x * frame_manager.smoothed_delta_secs() + transform.prev_position;
+				
 		});
 	}
 }
