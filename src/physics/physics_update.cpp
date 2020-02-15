@@ -46,52 +46,16 @@ namespace physics
 
 	void physics_update::GenerateContacts(ecs::state& state)
 	{
-		state.each<collisions::AABB_collider, collisions::rigid_body>([&](collisions::AABB_collider& collider_one, collisions::rigid_body& useless)
-			{
-				state.each<collisions::AABB_collider>([&](collisions::AABB_collider& collider_two)
-					{
-						if (collider_one.owner_id != collider_two.owner_id)
-						{
-							if (c_manager.check_collision(&collider_one, &collider_two))
-							{
-								contactList.emplace_back(collider_one.owner_id, collider_two.owner_id);
-							}
-						}
-					});
-			});
-
-		state.each<collisions::sphere_collider, collisions::rigid_body>([&](collisions::sphere_collider& collider_one, collisions::rigid_body& useless)
-			{
-				state.each<collisions::sphere_collider>([&](collisions::sphere_collider& collider_two)
-					{
-						if (collider_one.owner_id != collider_two.owner_id)
-						{
-							if (c_manager.check_collision(&collider_one, &collider_two))
-							{
-								contactList.emplace_back(collider_one.owner_id, collider_two.owner_id);
-							}
-						}
-					});
-			});
-
-		state.each<collisions::AABB_collider, collisions::rigid_body>([&](collisions::AABB_collider& collider_one, collisions::rigid_body& useless)
-			{
-				state.each<collisions::sphere_collider>([&](collisions::sphere_collider& collider_two)
-					{
-						if (collider_one.owner_id != collider_two.owner_id)
-						{
-							if (c_manager.check_collision(&collider_one, &collider_two))
-							{
-								contactList.emplace_back(collider_one.owner_id, collider_two.owner_id);
-							}
-						}
-					});
-			});
+		DoColliderPair<collisions::AABB_collider, collisions::AABB_collider>(state);
+		DoColliderPair<collisions::AABB_collider, collisions::sphere_collider>(state);
+		DoColliderPair<collisions::sphere_collider, collisions::sphere_collider>(state);
 	}
+
+
 
 	void physics_update::UpdateColliders(ecs::state& state)
 	{
-		state.each< transforms::transform, collisions::AABB_collider>([&](transforms::transform& transform, collisions::AABB_collider& collider)
+		state.each<transforms::transform, collisions::AABB_collider>([&](transforms::transform& transform, collisions::AABB_collider& collider)
 			{
 				collider.position_absolute = transform.position + collider.position_relative;
 				collider.front = 0.5f * transform.scale.z;

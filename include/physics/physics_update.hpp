@@ -14,7 +14,7 @@ namespace physics
 
 	struct contact
 	{
-		contact(entity_id first, entity_id second) : first_entity_id(first), second_entity_id(second){}
+		contact(entity_id first, entity_id second) : first_entity_id(first), second_entity_id(second) {}
 		entity_id first_entity_id;
 		entity_id second_entity_id;
 	};
@@ -28,6 +28,31 @@ namespace physics
 		void GenerateContacts(ecs::state& state);
 		void UpdateColliders(ecs::state& state);
 		void Step(ecs::state& state);
+
+		template <typename TC1, typename TC2>
+		void DoColliderPair(ecs::state& state)
+		{
+			state.each<TC1, collisions::rigid_body>([&](TC1& collider_one, collisions::rigid_body& useless)
+			{
+				state.each<TC2>([&](TC2& collider_two)
+				{
+					CheckPair(collider_one, collider_two);
+				});
+			});
+		}
+
+		template <typename TC1, typename TC2>
+		void CheckPair(TC1& collider_one, TC2& collider_two)
+		{
+			if (collider_one.owner_id != collider_two.owner_id)
+			{
+				if (c_manager.check_collision(&collider_one, &collider_two))
+				{
+					contactList.emplace_back(collider_one.owner_id, collider_two.owner_id);
+				}
+			}
+		}
+
 	public:
 		collisions::collision_manager& c_manager;
 		core::frame_timer& frame_manager;
