@@ -161,6 +161,7 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/asset_cache.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/camera_updater.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/debug_view.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/light_directional.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/light_point.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_camera.cpp
@@ -181,6 +182,7 @@ target_link_libraries(rendering PUBLIC
     assimp
     collisions
     ecs
+    engineui
     glbinding
     glm 
     glfw

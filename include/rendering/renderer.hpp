@@ -32,6 +32,11 @@ namespace rendering
 	public:
 		virtual void update(ecs::state& state) override;
 
+	public:
+		bool _is_default_pass_enabled = true;
+		bool _is_debug_colliders = true;
+		bool _is_debug_velocity = true;
+
 	private:
 		void initialize_backend();
 		void initialize_passes();
@@ -67,9 +72,6 @@ namespace rendering
 		mesh_static _mesh_sphere;
 		mesh_static _mesh_arrow;
 		render_state _render_state;
-		bool _is_default_pass_enabled = true;
-		bool _is_debug_colliders = true; 
-		bool _is_debug_velocity = true;
 		glm::vec3 _debug_collider_color = glm::vec3(0, 1, 0);
 	};
 }

@@ -11,6 +11,7 @@
 #include "transforms/transform_loader.hpp"
 #include "rendering/camera.hpp"
 #include "rendering/camera_updater.hpp"
+#include "rendering/debug_view.hpp"
 #include "rendering/light_directional.hpp"
 #include "rendering/light_point.hpp"
 #include "rendering/loader_camera.hpp"
@@ -206,7 +207,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 	engineui::fps_display fps(window_view, timer);
 	engineui::entities_view entities_view(window_view, events, state);
 	engineui::imgui_overlay overlay(window, input, cursor);
-	overlay.register_views(&console, &fps, &entities_view);
+	rendering::debug_view render_debug_view(window_view, renderer);
+	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
 	cursor.disable();
 
