@@ -117,6 +117,8 @@ int main(int argc, char** argv)
 	}
 	glfwMakeContextCurrent(window);
 
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     run_game(window, window_width, window_height, is_debug);
 
 	glfwTerminate();
