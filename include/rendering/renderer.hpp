@@ -65,7 +65,7 @@ namespace rendering
 		mesh_static _mesh_cube;
 		mesh_static _mesh_sphere;
 		render_state _render_state;
-		bool _is_debug_colliders = true; 
+		bool _is_debug_colliders = false; 
 		bool _is_debug_velocity = false;
 		glm::vec3 _debug_collider_color = glm::vec3(0, 1, 0);
 	};

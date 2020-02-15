@@ -279,6 +279,39 @@
           "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
         }
       ]
+    },
+    {
+      "entity_id": 18,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -500, 2, -510 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        },
+        {
+          "type": "rigid_body",
+          "mass": 1.0
+        },
+        {
+          "type": "game_piece",
+          "speed": 5.0
+        }
+      ]
     }
   ]
 }
