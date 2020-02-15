@@ -3,6 +3,8 @@
 #include "collisions/collider.hpp"
 #include "collisions/rigid_body.hpp"
 
+#include <util/debounce.hpp>
+
 #include "glbinding/gl/gl.h"
 #include "glbinding/glbinding.h"
 #include "glm/glm.hpp"
@@ -20,15 +22,25 @@ namespace rendering
 
 	void gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* user_parameter)
 	{
-		// reformat
-		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
-			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-			type, severity, message);
+		static debounce<GLenum, GLenum, const GLchar*> print_debounce(
+			std::chrono::duration<float>(1.f),
+			[](GLenum type, GLenum severity, const GLchar* message) {
+				fprintf(stdout, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
+					(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+					type, severity, message);
+			});
 
-		//std::cout << "OpenGL Error Callback:\nSource: " << source << ", Type: " << type << ", Severity: " << severity << ", Length: " << length << ",\n    Message: " << message << std::endl;
+		print_debounce(type, severity, message);
+
+		if (severity > GL_DEBUG_SEVERITY_MEDIUM)
+		{
+			fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
+				(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+				type, severity, message);
+		}
 	}
 
-	renderer::renderer(GLFWwindow* window, viewport window_view, bool is_debug, asset_cache& cache) :
+	renderer::renderer(GLFWwindow* window, core::viewport window_view, bool is_debug, asset_cache& cache) :
 		_window(window),
 		_window_view(window_view),
 		_is_debug(is_debug)
@@ -102,7 +114,7 @@ namespace rendering
 		assert(_mesh_arrow.vao != 0 && _mesh_arrow.num_indices != 0);
 	}
 
-	void renderer::initialize_state(viewport window_view)
+	void renderer::initialize_state(core::viewport window_view)
 	{
 		glViewport(window_view.x, window_view.y, window_view.width, window_view.height);
 		glClearColor(1, 0, 0, 1);
@@ -169,7 +181,6 @@ namespace rendering
 		{
 			run_pass_cubemap(*active_camera);
 		}
-		glfwSwapBuffers(_window);
 	}
 
 	void renderer::find_active_camera(ecs::state& ecs_state, transforms::transform*& active_camera_transform, camera*& active_camera, entity_id& active_camera_id)

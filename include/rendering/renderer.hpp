@@ -1,6 +1,7 @@
 #ifndef WIZARDPEOPLE_RENDERING_RENDERER_HPP
 #define WIZARDPEOPLE_RENDERING_RENDERER_HPP
 
+#include "core/viewport.hpp"
 #include "ecs/ecs_types.hpp"
 #include "ecs/state.hpp"
 #include "ecs/system_base.hpp"
@@ -21,15 +22,12 @@
 
 namespace rendering
 {
-	struct viewport
-	{
-		uint32_t x, y, width, height;
-	};
+	
 
 	class renderer : public ecs::system_base
 	{
 	public:
-		renderer(GLFWwindow* window, viewport window_view, bool is_debug, asset_cache& cache);
+		renderer(GLFWwindow* window, core::viewport window_view, bool is_de, asset_cache& cache);
 
 	public:
 		virtual void update(ecs::state& state) override;
@@ -38,7 +36,7 @@ namespace rendering
 		void initialize_backend();
 		void initialize_passes();
 		void initialize_assets(asset_cache& cache);
-		void initialize_state(viewport window_view);
+		void initialize_state(core::viewport window_view);
 
 		void find_active_camera(ecs::state& ecs_state, transforms::transform*& camera_transform, camera*& cam, entity_id& active_camera_id);
 
@@ -61,7 +59,7 @@ namespace rendering
 	private:
 		bool _is_debug = false;
 		GLFWwindow* _window = nullptr;
-		viewport _window_view;
+		core::viewport _window_view;
 		std::unique_ptr<render_pass> _pass_default;
 		std::unique_ptr<render_pass> _pass_cubemap;
 		std::unique_ptr<render_pass> _pass_debug;

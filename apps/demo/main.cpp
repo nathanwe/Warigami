@@ -2,6 +2,7 @@
 #include "asset/json_cache.hpp"
 #include "asset/scene.hpp"
 #include "asset/scene_hydrater.hpp"
+#include "core/viewport.hpp"
 #include "ecs/register_component.hpp"
 #include "ecs/state.hpp"
 #include "ecs/world.hpp"
@@ -46,7 +47,11 @@
 #include "box_move_system.hpp"
 #include "util/boardgen.hpp"
 
-void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
+#include <engine-ui/imgui_overlay.hpp>
+#include <engine-ui/developer_console.hpp>
+#include <engine-ui/entities_view.hpp>
+#include <engine-ui/fps_display.hpp>
+
 
 class spinner : public ecs::system_base
 {
@@ -71,6 +76,7 @@ private:
 };
 
 
+void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
 
 
 int main(int argc, char** argv)
@@ -128,9 +134,11 @@ int main(int argc, char** argv)
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug)
 {
     util::string_table strings;
-    rendering::viewport window_view{ 0, 0, window_width, window_height };
+    core::viewport window_view{ 0, 0, window_width, window_height };
     core::game_input_manager input(window);
     core::frame_timer timer;
+	core::cursor_state cursor(window);
+	EventManager events;
 
     // init ecs state
     ecs::archetype_pools memory;
@@ -193,13 +201,30 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
         e.set_sound_state(0, audio::playback_requested);
     });
 
+
+	engineui::developer_console console(window_view, events);
+	engineui::fps_display fps(window_view, timer);
+	engineui::entities_view entities_view(window_view, events, state);
+	engineui::imgui_overlay overlay(window, input, cursor);
+	overlay.register_views(&console, &fps, &entities_view);
+
+	cursor.disable();
+
+	printf("Hello, I'm the dev console!");
+
     //game loop
     while (!glfwWindowShouldClose(window))
     {
         timer.start();
         glfwPollEvents();
-        input.update();
+
+		input.update();
         world.update();
+
+		entities_view.update(state);
+		overlay.update();
+		
+		glfwSwapBuffers(window);
         timer.end();
     }
 }

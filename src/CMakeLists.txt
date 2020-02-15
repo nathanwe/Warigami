@@ -17,6 +17,22 @@ target_link_libraries(platform PUBLIC
 
 # cotire(platform)
 
+
+##### EVENT #####
+set (EVENT_HEADERS
+        ${PROJECT_SOURCE_DIR}/include/event/event.hpp
+        ${PROJECT_SOURCE_DIR}/include/event/event_manager.hpp)
+
+set (EVENT_SOURCE_FILES
+        ${PROJECT_SOURCE_DIR}/src/event/event_manager.cpp)
+
+add_library(event ${EVENT_HEADERS} ${EVENT_SOURCE_FILES})
+target_include_directories(event PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+set_target_properties(event PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+cotire(event)
+
+
 ##### CORE #####
 set (CORE_HEADERS
         ${PROJECT_SOURCE_DIR}/include/core/framerate.hpp
@@ -34,7 +50,8 @@ set (CORE_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/src/core/input_manager.cpp
         ${PROJECT_SOURCE_DIR}/src/core/game_input_manager.cpp
         ${PROJECT_SOURCE_DIR}/src/core/startup_config.cpp
-        ${PROJECT_SOURCE_DIR}/src/core/system_info.cpp)
+        ${PROJECT_SOURCE_DIR}/src/core/system_info.cpp
+        ${PROJECT_SOURCE_DIR}/src/core/cursor_state.cpp)
 
 add_library(core ${CORE_HEADERS} ${CORE_SOURCE_FILES})
 target_include_directories(core PUBLIC ${PROJECT_SOURCE_DIR}/include)
@@ -43,25 +60,12 @@ target_link_libraries(core
             nlohmann_json
             glm        
             platform
-            glfw)
+            glfw
+            event)
 
 set_target_properties(core PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(core)
 
-
-##### EVENT #####
-set (EVENT_HEADERS
-        ${PROJECT_SOURCE_DIR}/include/event/event.hpp
-        ${PROJECT_SOURCE_DIR}/include/event/event_manager.hpp)
-
-set (EVENT_SOURCE_FILES
-        ${PROJECT_SOURCE_DIR}/src/event/event_manager.cpp)
-
-add_library(event ${EVENT_HEADERS} ${EVENT_SOURCE_FILES})
-target_include_directories(event PUBLIC ${PROJECT_SOURCE_DIR}/include)
-
-set_target_properties(event PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(event)
 
 ##### MEMORY #####
 set(MEMORY_HEADER_LIST
@@ -206,6 +210,20 @@ set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(audio)
 
 
+##### ENGINE-UI #####
+set (ENGINEUI_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/engine-ui/developer_console.cpp
+        ${PROJECT_SOURCE_DIR}/src/engine-ui/entities_view.cpp
+        ${PROJECT_SOURCE_DIR}/src/engine-ui/fps_display.cpp
+        ${PROJECT_SOURCE_DIR}/src/engine-ui/imgui_overlay.cpp)
+
+add_library(engineui STATIC ${ENGINEUI_SOURCE_LIST})
+target_include_directories(engineui PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(engineui PUBLIC cxx_std_17)
+target_link_libraries(engineui PUBLIC core event imgui rendering)
+
+set_target_properties(engineui PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+cotire(engineui)
 ##### COLLISIONS #####
 set (COLLISIONS_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/collisions/collider.cpp
@@ -225,4 +243,5 @@ set (PHYSICS_SOURCE_LIST
 
 add_library(physics STATIC ${PHYSICS_SOURCE_LIST})
 target_include_directories(physics PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(physics PUBLIC glm asset)
 target_link_libraries(physics PUBLIC glm asset)
