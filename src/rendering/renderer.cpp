@@ -153,24 +153,22 @@ namespace rendering
 		}
 
 		clear_camera(*active_camera);
-
-		run_pass_default(ecs_state, *active_camera_transform, *active_camera);
-
+		if (_is_default_pass_enabled)
+		{
+			run_pass_default(ecs_state, *active_camera_transform, *active_camera);
+		}
 		if (_is_debug_velocity)
 		{
 			run_pass_debug_velocity(ecs_state, *active_camera, active_camera_id);
 		}
-
 		if (_is_debug_colliders)
 		{
 			run_pass_debug_colliders(ecs_state, *active_camera);
 		}
-
 		if (active_camera->clear_setting == camera::clear_mode::sky_box)
 		{
 			run_pass_cubemap(*active_camera);
 		}
-
 		glfwSwapBuffers(_window);
 	}
 
