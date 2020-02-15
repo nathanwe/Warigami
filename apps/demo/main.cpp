@@ -43,6 +43,7 @@
 
 // Game systems
 #include "fly_cam_system.hpp"
+#include "box_move_system.hpp"
 #include "util/boardgen.hpp"
 
 void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height, bool is_debug);
@@ -160,7 +161,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     audio::audio_system audio_system(strings);
 	spinner spinner(timer);
     fly_cam flycam(input, timer);
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &audio_system, &spinner, &physics_update });
+	box_move boxmove(timer);
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &spinner, &physics_update });
     ecs::world world(systems, state);
     
     audio::loader_emitter eloader(strings);

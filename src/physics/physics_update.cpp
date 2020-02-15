@@ -21,7 +21,7 @@ namespace physics
 
 		for (int i = 0; i < contactList.size(); i++)
 		{
-			if (contactList[i].first_entity_id == 1)
+			if (contactList[i].first_entity_id == 1 || contactList[i].first_entity_id == 18)
 			{
 				ecs::entity me = state.find_entity(contactList[i].first_entity_id);
 				transforms::transform& t = me.get_component<transforms::transform>();
@@ -30,7 +30,7 @@ namespace physics
 				t.position.y = t.prev_position.y;
 				r.velocity.y = 0.f;
 			}
-			if (contactList[i].second_entity_id == 1)
+			if (contactList[i].second_entity_id == 1 || contactList[i].second_entity_id == 18)
 			{
 				ecs::entity me = state.find_entity(contactList[i].second_entity_id);
 				transforms::transform& t = me.get_component<transforms::transform>();
