@@ -22,12 +22,12 @@ bool check_collision_AABB_AABB(collider* collider1, collider* collider2) {
 	AABB_collider* AABB1 = static_cast<AABB_collider*>(collider1);
 	AABB_collider* AABB2 = static_cast<AABB_collider*>(collider2);
 
-	if (AABB1->position_absolute.x + AABB1->right >= AABB2->position_absolute.x + AABB2->left &&
-		AABB2->position_absolute.x + AABB2->right >= AABB1->position_absolute.x + AABB1->left &&
-		AABB1->position_absolute.y + AABB1->top >= AABB2->position_absolute.y + AABB2->bottom &&
-		AABB2->position_absolute.y + AABB2->top >= AABB1->position_absolute.y + AABB1->bottom &&
-		AABB1->position_absolute.z + AABB1->back >= AABB2->position_absolute.z + AABB2->front &&
-		AABB2->position_absolute.z + AABB2->back >= AABB1->position_absolute.z + AABB1->front) {
+	if (AABB1->position_absolute.x + AABB1->right >= AABB2->position_absolute.x - AABB2->left &&
+		AABB2->position_absolute.x + AABB2->right >= AABB1->position_absolute.x - AABB1->left &&
+		AABB1->position_absolute.y + AABB1->top >= AABB2->position_absolute.y - AABB2->bottom &&
+		AABB2->position_absolute.y + AABB2->top >= AABB1->position_absolute.y - AABB1->bottom &&
+		AABB1->position_absolute.z - AABB1->back <= AABB2->position_absolute.z + AABB2->front &&
+		AABB2->position_absolute.z - AABB2->back <= AABB1->position_absolute.z + AABB1->front) {
 		return true;
 	}
 	return false;
@@ -37,12 +37,12 @@ bool check_collision_sphere_AABB(collider* collider_sphere, collider* collider_A
 	AABB_collider* AABB = static_cast<AABB_collider*>(collider_AABB);
 	sphere_collider* sphere = static_cast<sphere_collider*>(collider_sphere);
 
-	if (sphere->position_absolute.x + sphere->radius >= AABB->position_absolute.x + AABB->left &&
-		sphere->position_absolute.x - sphere->radius <= AABB->position_absolute.x - AABB->right &&
-		sphere->position_absolute.y + sphere->radius <= AABB->position_absolute.y + AABB->top &&
-		sphere->position_absolute.y - sphere->radius >= AABB->position_absolute.y - AABB->bottom &&
-		sphere->position_absolute.z + sphere->radius <= AABB->position_absolute.z + AABB->back &&
-		sphere->position_absolute.z - sphere->radius >= AABB->position_absolute.z - AABB->front) {
+	if (sphere->position_absolute.x + sphere->radius >= AABB->position_absolute.x - AABB->left &&
+		sphere->position_absolute.x - sphere->radius <= AABB->position_absolute.x + AABB->right &&
+		sphere->position_absolute.y - sphere->radius <= AABB->position_absolute.y + AABB->top &&
+		sphere->position_absolute.y + sphere->radius >= AABB->position_absolute.y - AABB->bottom &&
+		sphere->position_absolute.z + sphere->radius >= AABB->position_absolute.z - AABB->back &&
+		sphere->position_absolute.z - sphere->radius <= AABB->position_absolute.z + AABB->front) {
 		return true;
 	}
 

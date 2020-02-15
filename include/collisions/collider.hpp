@@ -28,6 +28,7 @@ namespace collisions {
 		sphere_collider();
 		glm::vec3 position_relative;
 		glm::vec3 position_absolute;
+		entity_id owner_id;
 		float radius;
 	};
 
@@ -36,6 +37,7 @@ namespace collisions {
 		AABB_collider();
 		glm::vec3 position_relative;
 		glm::vec3 position_absolute;
+		entity_id owner_id;
 		float left, right, top, bottom, back, front; // offsets from center
 	};
 }
