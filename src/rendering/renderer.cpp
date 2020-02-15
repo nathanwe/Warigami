@@ -104,7 +104,6 @@ namespace rendering
 		glClearColor(1, 0, 0, 1);
 		glClearDepth(1);
 
-
 		glBindFramebuffer(GL_FRAMEBUFFER, _render_state.target);
 		glPolygonMode(GL_FRONT_AND_BACK, _render_state.polygon_mode);
 		if (_render_state.uses_cull_face)
@@ -306,18 +305,25 @@ namespace rendering
 		_pass_cubemap->set_cubemap(0, 0);
 	}
 
+	glm::mat4 local_to_parent(transforms::transform transform)
+	{
+		glm::mat4 translation = glm::translate(glm::mat4(1), transform.position);
+		glm::mat4 scale = glm::scale(glm::mat4(1), transform.scale);
+		return translation * scale;
+	}
+
 	void renderer::run_pass_debug_colliders(ecs::state& ecs_state, const camera& cam)
 	{
 		_pass_debug->bind(_render_state);
 		_pass_debug->set_float3(4, _debug_collider_color);
 		ecs_state.each<transforms::transform, collisions::AABB_collider>([&](auto& transform, auto& collider)
 		{
-			_pass_debug->set_mat4(0, cam.view_projection * transform.local_to_world);
+			_pass_debug->set_mat4(0, cam.view_projection * local_to_parent(transform));
 			draw_mesh_static(_mesh_cube);
 		});
 		ecs_state.each<transforms::transform, collisions::sphere_collider>([&](auto& transform, auto& collider)
 		{
-			_pass_debug->set_mat4(0, cam.view_projection * transform.local_to_world);
+			_pass_debug->set_mat4(0, cam.view_projection * local_to_parent(transform));
 			draw_mesh_static(_mesh_sphere);
 		});
 	}
