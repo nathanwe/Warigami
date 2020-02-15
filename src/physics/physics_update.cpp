@@ -26,18 +26,18 @@ namespace physics
 				ecs::entity me = state.find_entity(contactList[i].first_entity_id);
 				transforms::transform& t = me.get_component<transforms::transform>();
 				collisions::AABB_collider& c = me.get_component<collisions::AABB_collider>();
-				t.position.x = 0.f;
-				t.position.y = 0.f;
-				t.position.z = 0.f;
+				collisions::rigid_body& r = me.get_component<collisions::rigid_body>();
+				t.position.y = t.prev_position.y;
+				r.velocity.y = 0.f;
 			}
 			if (contactList[i].second_entity_id == 1)
 			{
 				ecs::entity me = state.find_entity(contactList[i].second_entity_id);
 				transforms::transform& t = me.get_component<transforms::transform>();
 				collisions::AABB_collider& c = me.get_component<collisions::AABB_collider>();
-				t.position.x = 0.f;
-				t.position.y = 0.f;
-				t.position.z = 0.f;
+				collisions::rigid_body& r = me.get_component<collisions::rigid_body>();
+				t.position.y = t.prev_position.y;
+				r.velocity.y = 0.f;
 			}
 		}
 
@@ -96,6 +96,12 @@ namespace physics
 			collider.position_absolute.x = transform.position.x + collider.position_relative.x;
 			collider.position_absolute.y = transform.position.y + collider.position_relative.y;
 			collider.position_absolute.z = transform.position.z + collider.position_relative.z;
+			collider.front = 0.5f * transform.scale.z;
+			collider.back = 0.5f * transform.scale.z;
+			collider.left = 0.5f * transform.scale.x;
+			collider.right = 0.5f * transform.scale.x;
+			collider.top = 0.5f * transform.scale.y;
+			collider.bottom = 0.5 * transform.scale.y;
 		});
 
 		state.each< transforms::transform, collisions::sphere_collider>([&](transforms::transform& transform, collisions::sphere_collider& collider)
@@ -103,6 +109,7 @@ namespace physics
 			collider.position_absolute.x = transform.position.x + collider.position_relative.x;
 			collider.position_absolute.y = transform.position.y + collider.position_relative.y;
 			collider.position_absolute.z = transform.position.z + collider.position_relative.z;
+			collider.radius = 0.5f * transform.scale.x;
 		});
 	}
 

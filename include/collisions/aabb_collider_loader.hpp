@@ -3,6 +3,7 @@
 
 #include <asset/component_loader.hpp>
 #include "collisions/collider.hpp"
+#include "transforms/transform.hpp"
 
 
 namespace collisions

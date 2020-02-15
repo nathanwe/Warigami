@@ -217,7 +217,7 @@ set (COLLISIONS_SOURCE_LIST
 
 add_library(collisions STATIC ${COLLISIONS_SOURCE_LIST})
 target_include_directories(collisions PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(collisions PUBLIC glm asset)
+target_link_libraries(collisions PUBLIC glm asset transforms)
 
 ##### PHYSICS #####
 set (PHYSICS_SOURCE_LIST
