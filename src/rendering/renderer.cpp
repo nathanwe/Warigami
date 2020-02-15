@@ -1,11 +1,13 @@
 #include "rendering/renderer.hpp"
 
 #include "collisions/collider.hpp"
+#include "collisions/rigid_body.hpp"
 
 #include "glbinding/gl/gl.h"
 #include "glbinding/glbinding.h"
 #include "glm/glm.hpp"
 #include "glm/gtx/euler_angles.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 #include <iostream>
 #include <string>
@@ -96,6 +98,8 @@ namespace rendering
 		assert(_mesh_cube.vao != 0 && _mesh_cube.num_indices != 0);
 		_mesh_sphere = cache.get<mesh_static>("assets/meshes/sphere/sphere.obj"s);
 		assert(_mesh_sphere.vao != 0 && _mesh_sphere.num_indices != 0);
+		_mesh_arrow = cache.get<mesh_static>("assets/meshes/arrow/arrow.obj"s);
+		assert(_mesh_arrow.vao != 0 && _mesh_arrow.num_indices != 0);
 	}
 
 	void renderer::initialize_state(viewport window_view)
@@ -140,8 +144,9 @@ namespace rendering
 	{
 		transforms::transform* active_camera_transform = nullptr;
 		camera* active_camera = nullptr;
+		entity_id active_camera_id = 0;
 
-		find_active_camera(ecs_state, active_camera_transform, active_camera);
+		find_active_camera(ecs_state, active_camera_transform, active_camera, active_camera_id);
 		if (active_camera == nullptr)
 		{
 			return;
@@ -150,6 +155,11 @@ namespace rendering
 		clear_camera(*active_camera);
 
 		run_pass_default(ecs_state, *active_camera_transform, *active_camera);
+
+		if (_is_debug_velocity)
+		{
+			run_pass_debug_velocity(ecs_state, *active_camera, active_camera_id);
+		}
 
 		if (_is_debug_colliders)
 		{
@@ -164,11 +174,11 @@ namespace rendering
 		glfwSwapBuffers(_window);
 	}
 
-	void renderer::find_active_camera(ecs::state& ecs_state, transforms::transform*& active_camera_transform, camera*& active_camera)
+	void renderer::find_active_camera(ecs::state& ecs_state, transforms::transform*& active_camera_transform, camera*& active_camera, entity_id& active_camera_id)
 	{
-		// 
-		ecs_state.each<transforms::transform, camera>([&](auto& camera_transform, auto& cam)
+		ecs_state.each_id<transforms::transform, camera>([&](auto id, auto& camera_transform, auto& cam)
 		{
+			active_camera_id = id;
 			active_camera_transform = &camera_transform;
 			active_camera = &cam;
 		});
@@ -327,6 +337,31 @@ namespace rendering
 			draw_mesh_static(_mesh_sphere);
 		});
 	}
+
+	glm::mat4 debug_velocity_transform(const transforms::transform& transform, const collisions::rigid_body& rigid_body, glm::vec3 offset)
+	{
+		glm::vec3 position = glm::vec3(transform.local_to_world * glm::vec4(offset, 1));
+		glm::mat4 translation = glm::translate(glm::mat4(1), position);
+		
+		glm::mat4 rotation = glm::toMat4(glm::quat(glm::vec3(0, 1, 0), rigid_body.velocity));
+
+		const float garrett_nonsense = 0.5f;
+		float speed = garrett_nonsense * glm::length(rigid_body.velocity);
+		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(speed * 0.5f, speed, speed * 0.5f));
+
+		return translation * rotation * scale;
+	}
+
+	void renderer::run_pass_debug_velocity(ecs::state& ecs_state, const camera& cam, entity_id active_camera_id)
+	{
+		_pass_debug->bind(_render_state);
+		_pass_debug->set_float3(4, _debug_collider_color);
+		ecs_state.each_id<transforms::transform, collisions::rigid_body>([&](auto id, auto& transform, auto& rigid_body)
+		{
+			_pass_debug->set_mat4(0, cam.view_projection * debug_velocity_transform(transform, rigid_body, id == active_camera_id ? glm::vec3(0, 0, -3) : glm::vec3(0)));
+			draw_mesh_static(_mesh_arrow);
+		});
+	};
 
 	void draw_mesh_static(const mesh_static& mesh)
 	{

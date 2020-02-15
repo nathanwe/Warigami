@@ -1,6 +1,7 @@
 #ifndef WIZARDPEOPLE_RENDERING_RENDERER_HPP
 #define WIZARDPEOPLE_RENDERING_RENDERER_HPP
 
+#include "ecs/ecs_types.hpp"
 #include "ecs/state.hpp"
 #include "ecs/system_base.hpp"
 #include "rendering/asset_cache.hpp"
@@ -39,7 +40,7 @@ namespace rendering
 		void initialize_assets(asset_cache& cache);
 		void initialize_state(viewport window_view);
 
-		void find_active_camera(ecs::state& ecs_state, transforms::transform*& camera_transform, camera*& cam);
+		void find_active_camera(ecs::state& ecs_state, transforms::transform*& camera_transform, camera*& cam, entity_id& active_camera_id);
 
 		void run_pass_default(ecs::state& ecs_state, const transforms::transform camera_transform, const camera& cam);
 		void clear_camera(const camera& cam);
@@ -55,6 +56,8 @@ namespace rendering
 
 		void run_pass_debug_colliders(ecs::state& ecs_state, const camera& cam);
 
+		void run_pass_debug_velocity(ecs::state& ecs_state, const camera& cam, entity_id active_camera_id);
+
 	private:
 		bool _is_debug = false;
 		GLFWwindow* _window = nullptr;
@@ -64,9 +67,10 @@ namespace rendering
 		std::unique_ptr<render_pass> _pass_debug;
 		mesh_static _mesh_cube;
 		mesh_static _mesh_sphere;
+		mesh_static _mesh_arrow;
 		render_state _render_state;
 		bool _is_debug_colliders = true; 
-		bool _is_debug_velocity = false;
+		bool _is_debug_velocity = true;
 		glm::vec3 _debug_collider_color = glm::vec3(0, 1, 0);
 	};
 }
