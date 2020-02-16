@@ -324,10 +324,22 @@ namespace rendering
 		_pass_cubemap->set_cubemap(0, 0);
 	}
 
-	glm::mat4 local_to_parent(transforms::transform transform)
+	glm::mat4 local_to_parent(transforms::transform& transform, collisions::AABB_collider& collider)
 	{
-		glm::mat4 translation = glm::translate(glm::mat4(1), transform.position);
-		glm::mat4 scale = glm::scale(glm::mat4(1), transform.scale);
+		glm::mat4 translation = glm::translate(glm::mat4(1), collider.position_absolute);
+		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3
+		(
+			collider.left + collider.right,
+			collider.top + collider.bottom,
+			collider.front + collider.back
+		));
+		return translation * scale;
+	}
+
+	glm::mat4 local_to_parent(transforms::transform& transform, collisions::sphere_collider& collider)
+	{
+		glm::mat4 translation = glm::translate(glm::mat4(1), collider.position_absolute);
+		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(collider.radius));
 		return translation * scale;
 	}
 
@@ -337,12 +349,12 @@ namespace rendering
 		_pass_debug->set_float3(4, _debug_collider_color);
 		ecs_state.each<transforms::transform, collisions::AABB_collider>([&](auto& transform, auto& collider)
 		{
-			_pass_debug->set_mat4(0, cam.view_projection * local_to_parent(transform));
+			_pass_debug->set_mat4(0, cam.view_projection * local_to_parent(transform, collider));
 			draw_mesh_static(_mesh_cube);
 		});
 		ecs_state.each<transforms::transform, collisions::sphere_collider>([&](auto& transform, auto& collider)
 		{
-			_pass_debug->set_mat4(0, cam.view_projection * local_to_parent(transform));
+			_pass_debug->set_mat4(0, cam.view_projection * local_to_parent(transform, collider));
 			draw_mesh_static(_mesh_sphere);
 		});
 	}
