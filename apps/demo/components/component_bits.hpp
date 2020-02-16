@@ -12,7 +12,8 @@ namespace components
 		board_square = 34,
 		card = 35,
 		dice = 36,
-		player = 37
+		player = 37,
+		board_path_movement = 38
 	};
 }
 

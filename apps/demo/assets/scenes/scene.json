@@ -68,28 +68,28 @@
     },
     {
       "entity_id": 4,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 0, 0, -10 ],
-          "scale": [ 5, 5, 5 ]
-        },
-        {
-          "type": "AABB_collider",
-          "left": 1.0,
-          "right": 1.0,
-          "top": 1.0,
-          "bottom": 1.0,
-          "back": 1.0,
-          "front": 1.0,
-          "relative": [ 0, 0, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/cube/cube.obj",
-          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-        }
-      ]
+        "components": [
+            {
+                "type": "transform",
+                "position": [ 0, 0, -10 ],
+                "scale": [ 5, 5, 5 ]
+            },
+            {
+                "type": "AABB_collider",
+                "left": 1.0,
+                "right": 1.0,
+                "top": 1.0,
+                "bottom": 1.0,
+                "back": 1.0,
+                "front": 1.0,
+                "relative": [ 0, 0, 0 ]
+            },
+            {
+                "type": "renderable_mesh_static",
+                "mesh": "assets/meshes/cube/cube.obj",
+                "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+            }
+        ]
     },
     {
       "entity_id": 5,
@@ -147,32 +147,45 @@
     },
     {
       "entity_id": 10,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 1, 0, -5 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 1.0,
-          "right": 1.0,
-          "top": 1.0,
-          "bottom": 1.0,
-          "back": 1.0,
-          "front": 1.0,
-          "relative": [ 0, 0, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/unit_orange/unit_orange.obj",
-          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-        },
-        {
-          "type": "game_piece",
-          "succ": 7
-        }
-      ]
+        "components": [
+            {
+                "type": "transform",
+                "position": [ 1, 0, -5 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            {
+                "type": "aabb_collider",
+                "left": 1.0,
+                "right": 1.0,
+                "top": 1.0,
+                "bottom": 1.0,
+                "back": 1.0,
+                "front": 1.0,
+                "relative": [ 0, 0, 0 ]
+            },
+            {
+                "type": "renderable_mesh_static",
+                "mesh": "assets/meshes/unit_orange/unit_orange.obj",
+                "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+            },
+            {
+                "type": "board_path_movement"
+            },
+            {
+                "type": "game_piece",
+                "succ": 7
+            },
+            {
+                "type": "audio_emitter",
+                "sounds": [
+                    {
+                        "file": "assets/music.mp3",
+                        "loop": true,
+                        "volume": 0.04
+                    }
+                ]
+            }
+        ]
     },
     {
       "entity_id": 11,

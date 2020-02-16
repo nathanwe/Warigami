@@ -13,12 +13,15 @@
 #include "components/dice_loader.hpp"
 #include "components/player.hpp"
 #include "components/player_loader.hpp"
+#include "components/board_path_movement.hpp"
+#include "components/board_path_movement_loader.hpp"
 
 // Game systems
 #include "spinner.hpp"
 #include "fly_cam_system.hpp"
 #include "box_move_system.hpp"
 #include "util/boardgen.hpp"
+#include "board_path_movement_system.hpp"
 
 
 
@@ -44,12 +47,13 @@ int main(int argc, char** argv)
     // init ecs state
     ecs::archetype_pools memory;
     ecs::state state(memory);
-    ecs::register_component<components::game_piece>("game_piece");
-    ecs::register_component<components::board>("board");
-    ecs::register_component<components::board_square>("board_square");
-    ecs::register_component<components::card>("card");
-    ecs::register_component<components::dice>("dice");
-    ecs::register_component<components::player>("player");
+	ecs::register_component<components::game_piece>("game_piece");
+	ecs::register_component<components::board>("board");
+	ecs::register_component<components::board_square>("board_square");
+	ecs::register_component<components::card>("card");
+	ecs::register_component<components::dice>("dice");
+	ecs::register_component<components::player>("player");
+	ecs::register_component<components::board_path_movement>("board_path_movement");
     ecs::register_component<transforms::transform>("transform");
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
@@ -70,8 +74,10 @@ int main(int argc, char** argv)
     audio::audio_system audio_system(strings);
     spinner spinner(timer);
     fly_cam flycam(input, timer);
-    box_move boxmove(timer);
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &spinner, &physics_update });
+	box_move boxmove(timer);
+	board_path_movement_system board_path_movement(timer);
+
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &spinner, &physics_update, &board_path_movement });
     ecs::world world(systems, state);
 
     audio::loader_emitter eloader(strings);
@@ -84,18 +90,19 @@ int main(int argc, char** argv)
     rendering::loader_light_directional dir_light_loader;
     rendering::loader_light_point point_light_loader;
     rendering::render_loader render_loader(render_asset_cache);
-    components::game_piece_loader game_piece_loader;
-    components::board_loader board_loader;
-    components::board_square_loader board_square_loader;
-    components::card_loader card_loader;
-    components::dice_loader dice_loader;
-    components::player_loader player_loader;
-    collisions::aabb_collider_loader aabb_collider_loader;
-    collisions::sphere_collider_loader sphere_collider_loader;
-    collisions::rigid_body_loader rigid_body_loader;
-    hydrater.register_loaders(&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader,
-        &game_piece_loader, &board_loader, &board_square_loader, &card_loader, &dice_loader, &player_loader,
-        &aabb_collider_loader, &sphere_collider_loader, &rigid_body_loader);
+	components::game_piece_loader game_piece_loader;
+	components::board_loader board_loader;
+	components::board_square_loader board_square_loader;
+	components::card_loader card_loader;
+	components::dice_loader dice_loader;
+	components::player_loader player_loader;
+	components::board_path_movement_loader board_path_movement_loader;
+	collisions::aabb_collider_loader aabb_collider_loader;
+	collisions::sphere_collider_loader sphere_collider_loader;
+	collisions::rigid_body_loader rigid_body_loader;
+    hydrater.register_loaders(	&transform_loader, &camera_loader, &dir_light_loader, &point_light_loader, &render_loader, &eloader, 
+								&game_piece_loader, &board_loader, &board_square_loader, &card_loader, &dice_loader, &player_loader,
+								&aabb_collider_loader, &sphere_collider_loader, &rigid_body_loader, &board_path_movement_loader);
     hydrater.load();
 
     state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
