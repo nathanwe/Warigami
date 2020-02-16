@@ -1,5 +1,6 @@
 #include <string>
 
+#include "asset/asset_manager.hpp"
 #include <rendering/camera.hpp>
 #include <transforms/transform.hpp>
 #include <audio/audio_emitter.hpp>
@@ -51,10 +52,12 @@ int main()
     ecs::register_component<audio::audio_listener>("audio_listener");
     ecs::register_component<audio::audio_emitter>("audio_emitter");
 
+    asset::asset_manager assets;
+
     ecs::archetype_pools factory;
     ecs::state state(factory);
     util::string_table strings;
-    audio::audio_system system(strings);
+    audio::audio_system system(strings, assets);
 
     auto& e = state.add_entity<transforms::transform, audio::audio_emitter, audio::audio_listener>();
     auto& l = state.add_entity<transforms::transform, audio::audio_listener>();
@@ -65,9 +68,8 @@ int main()
     auto& t = e.get_component<transforms::transform>();
     t.position = {0.f, 0.f, -10.f};
 
-    asset::json_cache cache;
-    auto scene = cache.load("assets/scene.json");
-    auto scene_entity = asset::scene_entity(scene["entities"][0], cache);
+    auto scene = assets.get<nlohmann::json>("assets/scene.json");
+    auto scene_entity = asset::scene_entity(scene["entities"][0], assets);
     auto loader_node = asset::asset_loader_node(e, scene_entity);
     audio::loader_emitter eloader(strings);
     eloader.load(loader_node);

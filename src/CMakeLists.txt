@@ -56,7 +56,8 @@ set (CORE_SOURCE_FILES
 add_library(core ${CORE_HEADERS} ${CORE_SOURCE_FILES})
 target_include_directories(core PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(core
-        PUBLIC            
+        PUBLIC
+            asset
             nlohmann_json
             glm        
             platform
@@ -123,9 +124,9 @@ cotire(ecs)
 
 ##### ASSET #####
 set (ASSET_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/asset/asset_manager.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/scene.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/scene_entity.cpp
-        ${PROJECT_SOURCE_DIR}/src/asset/json_cache.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/resource_id.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/scene_hydrater.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/model_loader.cpp)
@@ -133,7 +134,7 @@ set (ASSET_SOURCE_LIST
 add_library(asset STATIC ${ASSET_SOURCE_LIST})
 target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(asset PUBLIC cxx_std_17)
-target_link_libraries(asset PUBLIC core ecs assimp)
+target_link_libraries(asset PUBLIC core ecs assimp fmod stb_image)
 
 set_target_properties(asset PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(asset)

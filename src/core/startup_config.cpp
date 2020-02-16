@@ -11,24 +11,10 @@ using json = nlohmann::json;
 
 const os::file_path core::startup_config::FileName = os::make_file_path("/startup_config.json");
 
-void core::startup_config::load()
+void core::startup_config::load(asset::asset_manager& assets)
 {
     os::file_path user_data_path = os::user_data_paths::get_user_data_path();
-
-    std::fstream stream(user_data_path + FileName);
-
-    if (stream)
-    {
-        config_json.clear();
-        stream >> config_json;
-    }
-    else
-    {
-        stream.open(user_data_path + FileName, std::fstream::out);
-        stream << config_json;
-    }
-
-    stream.close();
+    assets.read_otherise_write(user_data_path + FileName, config_json);
 }
 
 bool core::startup_config::fullscreen() const { return config_json["fullscreen"].get<bool>(); }

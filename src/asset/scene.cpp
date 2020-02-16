@@ -7,10 +7,10 @@
 #include <asset/scene.hpp>
 #include <asset/resource_id.hpp>
 
-asset::scene::scene(std::string file_path, json_cache& cache)
+asset::scene::scene(std::string file_path, asset_manager& assets)
 {
 	// read a JSON file
-	auto j = cache.load(file_path);
+	auto j = assets.get<nlohmann::json>(file_path);
 
 	std::vector<json> descendant_children;
 	std::vector<scene_entity*> inserted_children;
@@ -21,7 +21,7 @@ asset::scene::scene(std::string file_path, json_cache& cache)
 	{
 		if (entity.find("parent_id") == entity.end())
 		{
-			_entities.emplace_back(entity, cache);
+			_entities.emplace_back(entity, assets);
 			inserted_children.push_back(&_entities.back());
 		}
 		else
@@ -45,7 +45,7 @@ asset::scene::scene(std::string file_path, json_cache& cache)
                 auto descendant_parent_id = descendant["parent_id"].get<entity_id>();
                 if (descendant_parent_id == parent_id)
                 {
-                    auto& inserted = potential_parent->add_child(descendant, cache);
+                    auto& inserted = potential_parent->add_child(descendant, assets);
                     inserted_children.push_back(&inserted);
                     no_change = false;
                 }

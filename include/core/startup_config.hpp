@@ -1,6 +1,7 @@
 #ifndef __STARTUP_CONFIG_H_
 #define __STARTUP_CONFIG_H_
 
+#include "asset/asset_manager.hpp"
 #include <platform/user_data_paths.hpp>
 
 #include <string>
@@ -18,10 +19,10 @@ private:
     json config_json;
 
 public:
-    startup_config()
+    startup_config(asset::asset_manager& assets)
         : config_json(make_default())
     {
-        load();
+        load(assets);
     }
 
 
@@ -37,7 +38,7 @@ public:
 
 private:
     json make_default() const;
-    void load();
+    void load(asset::asset_manager& assets);
 
 };
 } // namespace core

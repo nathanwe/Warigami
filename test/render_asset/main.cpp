@@ -1,4 +1,4 @@
-#include "asset/json_cache.hpp"
+#include "asset/asset_manager.hpp"
 #include "asset/scene.hpp"
 #include "asset/scene_hydrater.hpp"
 #include "core/frame_timer.hpp"
@@ -95,6 +95,7 @@ int main(int argc, char** argv)
 	core::viewport window_view{ 0, 0, window_width, window_height };
 
 	core::frame_timer timer;
+	asset::asset_manager assets;
 
 	// init ecs state
 	ecs::archetype_pools memory;
@@ -104,7 +105,7 @@ int main(int argc, char** argv)
 	ecs::register_component<rendering::light_directional>("light_directional");
 	ecs::register_component<rendering::light_point>("light_point");
 	ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
-	rendering::asset_cache render_asset_cache;
+	rendering::asset_cache render_asset_cache(assets);
 
 	// init ecs systems
 	rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
@@ -115,8 +116,7 @@ int main(int argc, char** argv)
 	ecs::world world(systems, state);
 
 	// load default scene
-	asset::json_cache cache;
-	asset::scene scene("assets/scenes/scene.json", cache);
+	asset::scene scene("assets/scenes/scene.json", assets);
 	asset::scene_hydrater hydrater(state, scene);
 	transforms::transform_loader transform_loader;
 	rendering::loader_camera camera_loader(render_asset_cache);

@@ -10,12 +10,12 @@
 
 
 
-asset::scene_entity::scene_entity(json& entity_json, json_cache& cache)
+asset::scene_entity::scene_entity(json& entity_json, asset_manager& assets)
     : _id(asset::next_resource_id())
     , _entity_json(entity_json)
     , _archetype_id(0)
 {
-    auto prototype = inflate_prototype(entity_json, cache);    
+    auto prototype = inflate_prototype(entity_json, assets);    
        
     for (auto& c : prototype["root"]["components"])
     {
@@ -28,10 +28,10 @@ asset::scene_entity::scene_entity(json& entity_json, json_cache& cache)
     for (size_t i = 0; i < prototype["children"].size(); ++i)
         prototype["children"][i]["_index_in_prototype"] = i;
 
-    build_child_tree(prototype["children"], cache);
+    build_child_tree(prototype["children"], assets);
 }
 
-void asset::scene_entity::build_child_tree(json& children, json_cache& cache)
+void asset::scene_entity::build_child_tree(json& children, asset_manager& assets)
 {
     std::vector<json> descendant_children;
     std::vector<scene_entity*> inserted_children;
@@ -42,7 +42,7 @@ void asset::scene_entity::build_child_tree(json& children, json_cache& cache)
     for (auto& c : children)
     {
         if (c.find("parent_index") == c.end()) {
-            auto& inserted = _children.emplace_back(c, cache);
+            auto& inserted = _children.emplace_back(c, assets);
             inserted_children.push_back(&inserted);
         }
         else {
@@ -63,7 +63,7 @@ void asset::scene_entity::build_child_tree(json& children, json_cache& cache)
                 auto descendant_parent_index = descendant["parent_index"].get<std::uint32_t>();
                 if (descendant_parent_index == parent_index)
                 {
-                    auto& inserted = potential_parent->_children.emplace_back(descendant, cache);
+                    auto& inserted = potential_parent->_children.emplace_back(descendant, assets);
                     inserted_children.push_back(&inserted);
                     no_change = false;
                 }
@@ -83,7 +83,7 @@ const json& asset::scene_entity::component_data(component_bitset bit) const
     return _components.find(bit)->second;
 }
 
-json asset::scene_entity::inflate_prototype(json& entity_json, json_cache& cache)
+json asset::scene_entity::inflate_prototype(json& entity_json, asset_manager& assets)
 {
     auto entity_components = entity_json["components"];
     auto prototype_path_it = entity_json.find("prototype");
@@ -92,7 +92,7 @@ json asset::scene_entity::inflate_prototype(json& entity_json, json_cache& cache
         return { {"root", entity_json}, {"children", json::array()} };
 
     auto prototype_path = prototype_path_it.value().get<std::string>();
-    json prototype_json = cache.load(prototype_path);
+    json prototype_json = assets.get<json>(prototype_path);
     merge_component_props(prototype_json["root"], entity_json);
     return prototype_json;;
 }
@@ -142,9 +142,9 @@ void asset::scene_entity::merge_component_props(json& target, json& source)
     }
 }
 
-asset::scene_entity& asset::scene_entity::add_child(json& entity_json, json_cache& cache)
+asset::scene_entity& asset::scene_entity::add_child(json& entity_json, asset_manager& assets)
 {
-    return _children.emplace_back(entity_json, cache);
+    return _children.emplace_back(entity_json, assets);
 }
 
 bool asset::scene_entity::has_id() const

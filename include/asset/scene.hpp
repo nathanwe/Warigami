@@ -9,9 +9,9 @@
 #include <nlohmann/json.hpp>
 #include <ecs/ecs_types.hpp>
 
+#include "asset/asset_manager.hpp"
 #include <asset/scene_entity.hpp>
 #include <asset/resource_id.hpp>
-#include <asset/json_cache.hpp>
 
 using json = nlohmann::json;
 
@@ -21,7 +21,7 @@ namespace asset
     class scene
     {
     public:
-        explicit scene(std::string file_path, json_cache& cache);
+        explicit scene(std::string file_path, asset_manager& assets);
 
         template<typename TFunc>
         void traverse(TFunc func)

@@ -29,7 +29,8 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 
 int main() {
 
-    core::startup_config conf;
+    asset::asset_manager assets;
+    core::startup_config conf(assets);
 
     glfwSetErrorCallback(glfw_error_callback);
 

@@ -1,5 +1,5 @@
 // Engine systems
-#include "asset/json_cache.hpp"
+#include "asset/asset_manager.hpp"
 #include "asset/scene.hpp"
 #include "asset/scene_hydrater.hpp"
 #include "core/viewport.hpp"
@@ -140,6 +140,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     core::frame_timer timer;
 	core::cursor_state cursor(window);
 	EventManager events;
+	asset::asset_manager assets;
 
     // init ecs state
     ecs::archetype_pools memory;
@@ -163,11 +164,11 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
-    rendering::asset_cache render_asset_cache;
+    rendering::asset_cache render_asset_cache(assets);
     rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
-    audio::audio_system audio_system(strings);
+    audio::audio_system audio_system(strings, assets);
 	spinner spinner(timer);
     fly_cam flycam(input, timer);
 	box_move boxmove(timer);
@@ -176,8 +177,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
     
     audio::loader_emitter eloader(strings);
 
-    asset::json_cache cache;
-    asset::scene scene("assets/scenes/scene.json", cache);
+    asset::scene scene("assets/scenes/scene.json", assets);
     asset::scene_hydrater hydrater(state, scene);
     transforms::transform_loader transform_loader;
     rendering::loader_camera camera_loader(render_asset_cache);
