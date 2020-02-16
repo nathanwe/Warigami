@@ -5,7 +5,6 @@
 #include <rendering/skeleton_animation.hpp>
 #include <rendering/skeleton_node.hpp>
 
-
 int main(int argc, char** argv)
 {
 	rendering::skeleton_node node;
