@@ -31,3 +31,9 @@
 #include <transforms/transform_loader.hpp>
 #include <transforms/transform.hpp>
 #include <transforms/transformer.hpp>
+
+// Overlays
+#include <engine-ui/imgui_overlay.hpp>
+#include <engine-ui/developer_console.hpp>
+#include <engine-ui/entities_view.hpp>
+#include <engine-ui/fps_display.hpp>
