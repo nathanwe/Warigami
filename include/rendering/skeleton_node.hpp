@@ -6,7 +6,7 @@
 #define WIZARDENGINE_SKELETON_NODE_HPP
 
 #include <vector>
-#include <rendering/skeletal_animation>
+#include <rendering/skeleton_animation.hpp>
 
 namespace rendering
 {
