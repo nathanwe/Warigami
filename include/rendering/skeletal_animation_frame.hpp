@@ -6,6 +6,7 @@
 #define WIZARDENGINE_SKELETAL_ANIMATION_FRAME_HPP
 
 #include <glm/gtc/quaternion.hpp>
+#include <glm/vec3.hpp>
 
 namespace rendering
 {
@@ -13,8 +14,8 @@ namespace rendering
     {
         float t {0};
         float scale {1.f};
-        glm::quat rotation {0};
-        glm::vec3 position {0};
+        glm::quat rotation;
+        glm::vec3 position {0.f};
 
     };
 }
