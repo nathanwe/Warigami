@@ -58,12 +58,19 @@ void engineui::entities_view::draw()
     else {
         ImGui::Text("Entity %s", std::to_string(_current_entity_selected->id()).c_str());
         ImGui::Indent();
-        ImGui::Text("Active: %s", _current_entity_selected->active()? "true" : "false");
-        auto archetype = _current_entity_selected->archetype_id();
-        ImGui::Text("Archetype id: %llu", archetype);
-        ImGui::Text("Components:");
-        ImGui::Indent();
-        ImGui::Text("WIP");
+            auto archetype = _current_entity_selected->archetype_id();
+            ImGui::Text("Archetype id: %llu", archetype);
+            ImGui::Text("Components:");
+            ImGui::Indent();
+            ImGui::Text("Transform:");
+                transforms::transform* tr = &_current_entity_selected->get_component<transforms::transform>();
+                if (tr != nullptr) {
+                    ImGui::Indent();
+                    ImGui::Text("x: %.2f", tr->position.x);
+                    ImGui::Text("y: %.2f", tr->position.y);
+                    ImGui::Text("z: %.2f", tr->position.z);
+                    ImGui::Unindent();
+                }
         ImGui::Unindent();
     }
 
