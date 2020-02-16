@@ -171,16 +171,6 @@
         {
           "type": "game_piece",
           "succ": 7
-        },
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/music.mp3",
-              "loop": true,
-              "volume": 0.04
-            }
-          ]
         }
       ]
     },
@@ -310,6 +300,16 @@
         {
           "type": "game_piece",
           "speed": 5.0
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/DejaVu.mp3",
+              "loop": true,
+              "volume": 1.0
+            }
+          ]
         }
       ]
     }
