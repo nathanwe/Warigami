@@ -94,7 +94,7 @@ namespace engineui
 	private:
 		node* find_recurse(entity_id id, std::vector<node>& nodes)
 		{
-			for (auto& n : _roots)
+			for (auto& n : nodes)
 			{
 				if (n.id == id)
 				{
