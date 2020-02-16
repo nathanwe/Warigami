@@ -8,7 +8,7 @@
 
 
 engineui::entities_view::entities_view(core::viewport& viewport, EventManager& events, ecs::state& r_ecs_state) : 
-    view(viewport), _events(events), m_r_ecs_state(r_ecs_state), tree(m_r_ecs_state)
+    view(viewport), _events(events), m_r_ecs_state(r_ecs_state), tree(m_r_ecs_state), _current_entity_selected(nullptr)
 {
 }
 
@@ -36,7 +36,9 @@ void engineui::entities_view::draw()
         [&](engineui::transform_tree::node node) {
         // On node
         ImGui::Bullet();
-        ImGui::Button(std::to_string(node.id).c_str());
+        if (ImGui::Button(std::to_string(node.id).c_str())) {
+            _current_entity_selected = &(m_r_ecs_state.find_entity(node.id));
+        }
     },
         [&]() {
         // On up
@@ -48,7 +50,23 @@ void engineui::entities_view::draw()
     // Draw Inspector window
     ImGui::SetNextWindowSize({ InspectorWidth, InspectorHeight }, ImGuiCond_Once);
     ImGui::Begin("Inspector");
-    ImGui::Text("Hello! I do nothing yet!");
     ImGui::SetWindowPos({ 10, Height+60 }, ImGuiCond_Once);
+
+    if (_current_entity_selected == nullptr) {
+        ImGui::Text("Select an entity");
+    }
+    else {
+        ImGui::Text("Entity %s", std::to_string(_current_entity_selected->id()).c_str());
+        ImGui::Indent();
+        ImGui::Text("Active: %s", _current_entity_selected->active()? "true" : "false");
+        auto archetype = _current_entity_selected->archetype_id();
+        ImGui::Text("Archetype id: %llu", archetype);
+        ImGui::Text("Components:");
+        ImGui::Indent();
+        ImGui::Text("WIP");
+        ImGui::Unindent();
+    }
+
+    ImGui::Unindent();
     ImGui::End();
 }
