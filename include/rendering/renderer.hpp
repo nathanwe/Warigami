@@ -1,6 +1,7 @@
 #ifndef WIZARDPEOPLE_RENDERING_RENDERER_HPP
 #define WIZARDPEOPLE_RENDERING_RENDERER_HPP
 
+#include "asset/asset_manager.hpp"
 #include "core/viewport.hpp"
 #include "ecs/ecs_types.hpp"
 #include "ecs/state.hpp"
@@ -27,7 +28,7 @@ namespace rendering
 	class renderer : public ecs::system_base
 	{
 	public:
-		renderer(GLFWwindow* window, core::viewport window_view, bool is_de, asset_cache& cache);
+		renderer(GLFWwindow* window, core::viewport window_view, bool is_de, asset_cache& cache, asset::asset_manager& assets);
 
 	public:
 		virtual void update(ecs::state& state) override;
@@ -39,7 +40,7 @@ namespace rendering
 
 	private:
 		void initialize_backend();
-		void initialize_passes();
+		void initialize_passes(asset::asset_manager& assets);
 		void initialize_assets(asset_cache& cache);
 		void initialize_state(core::viewport window_view);
 

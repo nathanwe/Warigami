@@ -1,6 +1,7 @@
 #ifndef WIZARDPEOPLE_RENDERING_RENDER_PASS_HPP
 #define WIZARDPEOPLE_RENDERING_RENDER_PASS_HPP
 
+#include "asset/proto_shader.hpp"
 #include "rendering/render_state.hpp"
 
 #include "glm/glm.hpp"
@@ -14,10 +15,14 @@ namespace rendering
 	public:
 		struct description
 		{
-			std::string filepath_vertex;
-			std::string filepath_fragment;
+			asset::proto_shader const& proto_vertex;
+			asset::proto_shader const& proto_fragment;
 			render_state state;
 			unsigned int target;
+
+			description(asset::proto_shader const& proto_v, asset::proto_shader const& proto_f) :
+				proto_vertex(proto_v), proto_fragment(proto_f)
+			{}
 		};
 
 	public:

@@ -1,5 +1,9 @@
 #include "rendering/asset_cache.hpp"
 
+#include "asset/proto_mesh.hpp"
+#include "asset/proto_shader.hpp"
+#include "asset/proto_texture.hpp"
+#include "asset/proto_texture_hdr.hpp"
 #include "rendering/vertex.hpp"
 
 #include "assimp/Importer.hpp"
@@ -72,26 +76,11 @@ namespace rendering
 			glBindTexture(GL_TEXTURE_CUBE_MAP, r_cubemap.id);
 			assert(r_cubemap.id != 0);
 
-			int texture_width, texture_height, texture_channels;
-			float* texture_bytes;
 			for (int i_face = 0; i_face < filepaths.size(); ++i_face)
 			{
-				texture_bytes = stbi_loadf(filepaths[i_face].c_str(), &texture_width, &texture_height, &texture_channels, 0);
-				if (!texture_bytes)
-				{
-					std::cout << "Error: stbi failed to load texture from file." << std::endl;
-					stbi_image_free(texture_bytes);
-					assert(false);
-				}
-				if (texture_channels != 3)
-				{
-					std::cout << "Error: Unexpected amount of channels while loading texture." << std::endl;
-					stbi_image_free(texture_bytes);
-					assert(false);
-				}
-
-				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i_face, 0, GL_RGB16F, texture_width, texture_height, 0, GL_RGB, GL_FLOAT, texture_bytes);
-				stbi_image_free(texture_bytes);
+				asset::proto_texture_hdr& proto_tex = _assets.get_proto_texture_hdr(filepaths[i_face]);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i_face, 0, GL_RGB16F, proto_tex.width, proto_tex.height, 0, GL_RGB, GL_FLOAT, proto_tex.bytes);
+				_assets.unload_proto_texture_hdr(filepaths[i_face]);
 			}
 
 			glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
@@ -113,18 +102,10 @@ namespace rendering
 		auto& r_texture = _textures[filepath];
 		if (r_texture.id == 0)
 		{
-			int texture_width, texture_height, texture_channels;
-			unsigned char* texture_bytes;
-
-			texture_bytes = stbi_load(filepath.c_str(), &texture_width, &texture_height, &texture_channels, 0);
-			if (!texture_bytes)
-			{
-				std::cout << "Error: stbi failed to load texture from file." << std::endl;
-				assert(false);
-			}
+			asset::proto_texture& proto_tex = _assets.get_proto_texture(filepath);
 
 			GLenum texture_channels_gl;
-			switch (texture_channels)
+			switch (proto_tex.channels)
 			{
 			case 1:
 				texture_channels_gl = GL_RED;
@@ -141,7 +122,7 @@ namespace rendering
 
 			default:
 				std::cout << "Error: Unexpected amount of channels while loading texture." << std::endl;
-				stbi_image_free(texture_bytes);
+				_assets.unload_proto_texture(filepath);
 				assert(false);
 			}
 
@@ -150,7 +131,7 @@ namespace rendering
 			glBindTexture(GL_TEXTURE_2D, r_texture.id);
 
 			// Copy data to VRAM
-			glTexImage2D(GL_TEXTURE_2D, 0, texture_channels_gl, texture_width, texture_height, 0, texture_channels_gl, GL_UNSIGNED_BYTE, texture_bytes);
+			glTexImage2D(GL_TEXTURE_2D, 0, texture_channels_gl, proto_tex.width, proto_tex.height, 0, texture_channels_gl, GL_UNSIGNED_BYTE, proto_tex.bytes);
 
 			// OpenGL texture settings
 			glGenerateMipmap(GL_TEXTURE_2D);
@@ -159,7 +140,7 @@ namespace rendering
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			stbi_image_free(texture_bytes);
+			_assets.unload_proto_texture(filepath);
 		}
 		return r_texture;
 	}
@@ -172,87 +153,46 @@ namespace rendering
 		auto& r_mesh = _mesh_statics[filepath];
 		if (r_mesh.vao == 0)
 		{
-			Assimp::Importer importer;
-			const aiScene* scene = importer.ReadFile(filepath, 
-				 				aiProcess_ValidateDataStructure |
-				 				aiProcess_Triangulate |
-				 				aiProcess_FlipUVs |
-				 				aiProcess_GenSmoothNormals |
-				 				aiProcess_OptimizeMeshes |
-				 				aiProcess_OptimizeGraph |
-								aiProcess_CalcTangentSpace);
-
-			if (!scene || !scene->HasMeshes() || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
-			{
-				std::cout << "Error: Assimp failed to load mesh from file. " << importer.GetErrorString() << std::endl;
-				assert(false);
-			}
-
-			// Only take the first mesh from the file
-			const aiMesh* p_aiMesh = scene->mMeshes[0];
+			asset::proto_mesh& proto = _assets.get_proto_mesh(filepath);
 
 			// Reorganize data into array of struct instead of separate arrays
 			std::vector<vertex> vertices;
 			std::vector<uint32_t> indices;
 			vertex swap_vertex;
-			for (size_t i = 0; i < p_aiMesh->mNumVertices; i++)
+			for (size_t i = 0; i < proto.assimp_mesh->mNumVertices; i++)
 			{
-				swap_vertex.position.x = p_aiMesh->mVertices[i].x;
-				swap_vertex.position.y = p_aiMesh->mVertices[i].y;
-				swap_vertex.position.z = p_aiMesh->mVertices[i].z;
-				if (p_aiMesh->HasNormals())
+				swap_vertex.position.x = proto.assimp_mesh->mVertices[i].x;
+				swap_vertex.position.y = proto.assimp_mesh->mVertices[i].y;
+				swap_vertex.position.z = proto.assimp_mesh->mVertices[i].z;
+				if (proto.assimp_mesh->HasNormals())
 				{
-					swap_vertex.normal.x = p_aiMesh->mNormals[i].x;
-					swap_vertex.normal.y = p_aiMesh->mNormals[i].y;
-					swap_vertex.normal.z = p_aiMesh->mNormals[i].z;
+					swap_vertex.normal.x = proto.assimp_mesh->mNormals[i].x;
+					swap_vertex.normal.y = proto.assimp_mesh->mNormals[i].y;
+					swap_vertex.normal.z = proto.assimp_mesh->mNormals[i].z;
 				}
-				if (p_aiMesh->HasTextureCoords(0))
+				if (proto.assimp_mesh->HasTextureCoords(0))
 				{
-					swap_vertex.tex_coord.x = p_aiMesh->mTextureCoords[0][i].x;
-					swap_vertex.tex_coord.y = p_aiMesh->mTextureCoords[0][i].y;
+					swap_vertex.tex_coord.x = proto.assimp_mesh->mTextureCoords[0][i].x;
+					swap_vertex.tex_coord.y = proto.assimp_mesh->mTextureCoords[0][i].y;
 				}
-				if (p_aiMesh->HasTangentsAndBitangents())
+				if (proto.assimp_mesh->HasTangentsAndBitangents())
 				{
-					swap_vertex.tangent.x = p_aiMesh->mTangents[i].x;
-					swap_vertex.tangent.y = p_aiMesh->mTangents[i].y;
-					swap_vertex.tangent.z = p_aiMesh->mTangents[i].z;
-					swap_vertex.bitangent.x = p_aiMesh->mBitangents[i].x;
-					swap_vertex.bitangent.y = p_aiMesh->mBitangents[i].y;
-					swap_vertex.bitangent.z = p_aiMesh->mBitangents[i].z;
+					swap_vertex.tangent.x = proto.assimp_mesh->mTangents[i].x;
+					swap_vertex.tangent.y = proto.assimp_mesh->mTangents[i].y;
+					swap_vertex.tangent.z = proto.assimp_mesh->mTangents[i].z;
+					swap_vertex.bitangent.x = proto.assimp_mesh->mBitangents[i].x;
+					swap_vertex.bitangent.y = proto.assimp_mesh->mBitangents[i].y;
+					swap_vertex.bitangent.z = proto.assimp_mesh->mBitangents[i].z;
 				}
 				vertices.push_back(swap_vertex);
 			}
-			for (size_t i = 0; i < p_aiMesh->mNumFaces; i++)
+			for (size_t i = 0; i < proto.assimp_mesh->mNumFaces; i++)
 			{
-				indices.emplace_back(p_aiMesh->mFaces[i].mIndices[0]);
-				indices.emplace_back(p_aiMesh->mFaces[i].mIndices[1]);
-				indices.emplace_back(p_aiMesh->mFaces[i].mIndices[2]);
+				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[0]);
+				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[1]);
+				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[2]);
 			}
 			r_mesh.num_indices = indices.size();
-
-			auto fn = filepath + ".trace";
-			std::ofstream myfile(fn);
-			
-			myfile << "vertices:" << std::endl;
-
-			for (auto& v : vertices)
-			{
-				myfile << "position: ";					
-				myfile << v.position.x << " " << v.position.y << " " << v.position.z;
-
-				myfile << "; normal: ";
-				myfile << v.normal.x << " " << v.normal.y << " " << v.normal.z << std::endl;
-					
-			}
-
-			myfile << "indices:" << std::endl;
-
-			for (int i = 0; i < indices.size(); i+=3)
-			{				
-				myfile << indices[i] << " " << indices[i+1] << " " << indices[i+2] << std::endl;
-			}
-
-			myfile.close();
 
 			// Create OpenGL representation
 			glGenVertexArrays(1, &r_mesh.vao);
@@ -279,6 +219,8 @@ namespace rendering
 			glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, bitangent));
 
 			glBindVertexArray(0);
+
+			_assets.unload_proto_mesh(filepath);
 		}
 		return r_mesh;
 	}

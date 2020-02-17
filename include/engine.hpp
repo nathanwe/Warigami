@@ -1,7 +1,7 @@
 // Index header, which includes common engine headers for convenience. 
 
 // Engine Systems
-#include <asset/json_cache.hpp>
+#include <asset/asset_manager.hpp>
 #include <asset/scene_hydrater.hpp>
 #include <asset/scene.hpp>
 #include <audio/audio_system.hpp>

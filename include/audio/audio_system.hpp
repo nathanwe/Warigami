@@ -5,6 +5,7 @@
 #ifndef WIZARDENGINE_AUDIO_SYSTEM_HPP
 #define WIZARDENGINE_AUDIO_SYSTEM_HPP
 
+#include "asset/asset_manager.hpp"
 #include <audio/audio_listener.hpp>
 #include <audio/audio_emitter.hpp>
 #include <ecs/system_base.hpp>
@@ -19,11 +20,12 @@ namespace audio
     class audio_system : public ecs::system_base
     {
     public:
-        explicit audio_system(util::string_table &app_strings);
+        explicit audio_system(util::string_table &app_strings, asset::asset_manager& assets);
 
         void update(ecs::state &state) override;
 
     private:
+        asset::asset_manager& _assets;
         FMOD::ChannelGroup *_channelGroup { nullptr };
         FMOD::System *_system = { nullptr };
         std::unordered_map<size_t, FMOD::Sound *> _sounds {};

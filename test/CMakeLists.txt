@@ -49,7 +49,7 @@ add_dependencies (render_asset_test render_asset_test_assets)
 
 ##### AUDIO #####
 add_executable(audio_tests audio/main.cpp)
-target_link_libraries(audio_tests core audio ecs transforms)
+target_link_libraries(audio_tests asset core audio ecs transforms rendering)
 target_compile_features(audio_tests PUBLIC cxx_std_17)
 
 add_custom_target(audio_test_assets
