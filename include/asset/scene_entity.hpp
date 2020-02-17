@@ -10,9 +10,9 @@
 #include <unordered_map>
 #include <nlohmann/json.hpp>
 
+#include "asset/asset_manager.hpp"
 #include <ecs/ecs_types.hpp>
 #include <asset/resource_id.hpp>
-#include <asset/json_cache.hpp>
 
 
 using json = nlohmann::json;
@@ -22,7 +22,7 @@ namespace asset
     class scene_entity
     {
     public:
-        scene_entity(json &entity_json, json_cache& cache);
+        scene_entity(json &entity_json, asset_manager& assets);
 
         const json &component_data(component_bitset bit) const;
 
@@ -37,7 +37,7 @@ namespace asset
 
         const std::vector<scene_entity>& children() const { return _children; }
 
-        scene_entity& add_child(json& entity_json, json_cache& cache);
+        scene_entity& add_child(json& entity_json, asset_manager& assets);
 
         bool has_id() const;        
         entity_id id() const;
@@ -66,9 +66,9 @@ namespace asset
         * 
         * For an entity with a specified prototype, the prototype will be loaded. 
         */
-        json inflate_prototype(json& entity_json, json_cache& cache);
+        json inflate_prototype(json& entity_json, asset_manager& assets);
 
-        void build_child_tree(json& children, json_cache& cache);
+        void build_child_tree(json& children, asset_manager& assets);
     };
 }
 

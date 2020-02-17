@@ -21,59 +21,20 @@ namespace rendering
 		unsigned int fs_id = glCreateShader(GL_FRAGMENT_SHADER);
 		assert(vs_id != 0 && fs_id != 0);
 
-		// if path to glsl, else path to precompiled binary
-		if (1)
-		{
-			// Load shaders as text
-			std::ifstream vs_file, fs_file;
-			std::stringstream vs_stringstream, fs_stringstream;
-#ifndef NDEBUG
-			vs_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-			fs_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-			try {
-#endif
-				vs_file.open(desc.filepath_vertex);
-				fs_file.open(desc.filepath_fragment);
-				vs_stringstream << vs_file.rdbuf();
-				fs_stringstream << fs_file.rdbuf();
-				vs_file.close();
-				fs_file.close();
-#ifndef NDEBUG
-			}
-			catch (std::ifstream::failure e)
-			{
-				std::cout << "Error: Failed to read shader from source file. Log: " << e.what() << std::endl;
-			}
-#endif
+		char const* vs_text_cstr = desc.proto_vertex.source.c_str();
+		char const* fs_text_cstr = desc.proto_fragment.source.c_str();
 
-			std::string vs_text, fs_text;
-			vs_text = vs_stringstream.str();
-			fs_text = fs_stringstream.str();
-			char const* vs_text_cstr = vs_text.c_str();
-			char const* fs_text_cstr = fs_text.c_str();
-
-			// Compile shaders
-			glShaderSource(vs_id, 1, &vs_text_cstr, NULL);
-			glCompileShader(vs_id);
+		// Compile shaders
+		glShaderSource(vs_id, 1, &vs_text_cstr, NULL);
+		glCompileShader(vs_id);
 #ifndef NDEBUG
-			verify_shader_compilation(vs_id, desc.filepath_vertex);
+		verify_shader_compilation(vs_id, desc.proto_vertex.path);
 #endif
-			glShaderSource(fs_id, 1, &fs_text_cstr, NULL);
-			glCompileShader(fs_id);
+		glShaderSource(fs_id, 1, &fs_text_cstr, NULL);
+		glCompileShader(fs_id);
 #ifndef NDEBUG
-			verify_shader_compilation(fs_id, desc.filepath_fragment);
+		verify_shader_compilation(fs_id, desc.proto_fragment.path);
 #endif
-			// write compiled binary to file
-			// write binary format to metadata file
-		}
-		else
-		{
-			// Load precompiled shader binaries
-			//
-			// Get binary format from metadata
-			//
-			//glShaderBinary(1, vs_id, , , );
-		}
 
 		// Connect shaders to render pass
 		m_render_program_id = glCreateProgram();

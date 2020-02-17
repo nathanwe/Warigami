@@ -40,13 +40,13 @@ namespace rendering
 		}
 	}
 
-	renderer::renderer(GLFWwindow* window, core::viewport window_view, bool is_debug, asset_cache& cache) :
+	renderer::renderer(GLFWwindow* window, core::viewport window_view, bool is_debug, asset_cache& cache, asset::asset_manager& assets) :
 		_window(window),
 		_window_view(window_view),
 		_is_debug(is_debug)
 	{
 		initialize_backend();
-		initialize_passes();
+		initialize_passes(assets);
 		initialize_assets(cache);
 		initialize_state(window_view);
 	}
@@ -63,11 +63,13 @@ namespace rendering
 		}
 	}
 
-	void renderer::initialize_passes()
+	void renderer::initialize_passes(asset::asset_manager& assets)
 	{
-		render_pass::description pass_default_desc;
-		pass_default_desc.filepath_vertex = "assets/shaders/default.vert";
-		pass_default_desc.filepath_fragment = "assets/shaders/default.frag";
+		render_pass::description pass_default_desc
+		(
+			assets.get_proto_shader("assets/shaders/default.vert"),
+			assets.get_proto_shader("assets/shaders/default.frag")
+		);
 		pass_default_desc.state.polygon_mode = GL_FILL;
 		pass_default_desc.state.uses_cull_face = GL_TRUE;
 		pass_default_desc.state.uses_depth_test = GL_TRUE;
@@ -78,9 +80,11 @@ namespace rendering
 		_pass_default = std::make_unique<render_pass>(pass_default_desc);
 		assert(_pass_default.get());
 
-		render_pass::description pass_cubemap_desc;
-		pass_cubemap_desc.filepath_vertex = "assets/shaders/cubemap.vert";
-		pass_cubemap_desc.filepath_fragment = "assets/shaders/cubemap.frag";
+		render_pass::description pass_cubemap_desc
+		(
+			assets.get_proto_shader("assets/shaders/cubemap.vert"),
+			assets.get_proto_shader("assets/shaders/cubemap.frag")
+		);
 		pass_cubemap_desc.state.polygon_mode = GL_FILL;
 		pass_cubemap_desc.state.uses_cull_face = GL_FALSE;
 		pass_cubemap_desc.state.uses_depth_test = GL_TRUE;
@@ -90,9 +94,11 @@ namespace rendering
 		_pass_cubemap = std::make_unique<render_pass>(pass_cubemap_desc);
 		assert(_pass_cubemap.get());
 
-		render_pass::description pass_debug_desc;
-		pass_debug_desc.filepath_vertex = "assets/shaders/debug.vert";
-		pass_debug_desc.filepath_fragment = "assets/shaders/debug.frag";
+		render_pass::description pass_debug_desc
+		(
+			assets.get_proto_shader("assets/shaders/debug.vert"),
+			assets.get_proto_shader("assets/shaders/debug.frag")
+		);
 		pass_debug_desc.state.polygon_mode = GL_LINE;
 		pass_debug_desc.state.uses_cull_face = GL_FALSE;
 		pass_debug_desc.state.uses_depth_test = GL_TRUE;
