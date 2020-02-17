@@ -24,8 +24,6 @@
 #include "board_path_movement_system.hpp"
 
 
-
-
 int main(int argc, char** argv)
 {
 #ifndef NDEBUG
