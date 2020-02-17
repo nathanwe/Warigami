@@ -142,7 +142,8 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
-     rendering/renderable_mesh_static.cpp rendering/camera.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp 
+     ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -198,7 +199,7 @@ add_library(physics STATIC ${PHYSICS_SOURCE_LIST})
 target_include_directories(physics PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(physics PUBLIC glm asset)
 
-<<<<<<< HEAD
+
 
 ##### AUDIO #####
 set (AUDIO_SOURCE_LIST
@@ -238,5 +239,3 @@ target_link_libraries(audio PUBLIC collisions ecs transforms rendering asset fmo
 #cotire(rendering)
 #cotire(engineui)
 #cotire(audio)
-=======
->>>>>>> skeletal
