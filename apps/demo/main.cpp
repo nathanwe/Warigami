@@ -18,6 +18,7 @@
 #include "spinner.hpp"
 #include "fly_cam_system.hpp"
 #include "box_move_system.hpp"
+#include "disco_light_system.hpp"
 #include "util/boardgen.hpp"
 
 
@@ -71,13 +72,14 @@ int main(int argc, char** argv)
     spinner spinner(timer);
     fly_cam flycam(input, timer);
     box_move boxmove(timer);
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &spinner, &physics_update });
+    disco_light discolight(timer, glm::vec3(0,3,0));
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &discolight, &audio_system, &spinner, &physics_update });
     ecs::world world(systems, state);
 
     audio::loader_emitter eloader(strings);
 
     asset::json_cache cache;
-    asset::scene scene("assets/scenes/scene.json", cache);
+    asset::scene scene("assets/scenes/lightRoom.json", cache);
     asset::scene_hydrater hydrater(state, scene);
     transforms::transform_loader transform_loader;
     rendering::loader_camera camera_loader(render_asset_cache);
