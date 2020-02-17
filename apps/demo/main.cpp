@@ -107,7 +107,7 @@ int main(int argc, char** argv)
         });
 
 
-    engineui::developer_console console(window_view, events);
+    engineui::developer_console console(window_view, events, glfw.window());
     engineui::fps_display fps(window_view, timer);
     engineui::entities_view entities_view(window_view, events, state);
     engineui::imgui_overlay overlay(glfw.window(), input, cursor);

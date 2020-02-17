@@ -7,7 +7,11 @@
 #include <imgui_impl_opengl3.h>
 
 
-engineui::developer_console::developer_console(core::viewport& viewport, EventManager& events) : view(viewport), _events(events)
+
+engineui::developer_console::developer_console(core::viewport& viewport, EventManager& events, GLFWwindow* window) 
+    : view(viewport)
+    , _events(events)
+    , _window(window)
 {
     setvbuf(stdout, _outbuf, _IOFBF, BUFSIZ);
     setvbuf(stderr, _errbuf, _IOFBF, BUFSIZ);
@@ -32,9 +36,12 @@ void engineui::developer_console::draw()
 
     switch (output_type)
     {
-    case 0:        
+    case 0: {
         ImGui::InputTextMultiline("##cmd", _command, IM_ARRAYSIZE(_command), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
-        ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input));
+        auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input), ImGuiInputTextFlags_EnterReturnsTrue);
+        if (pressed && strcmp(_input, "exit") == 0)
+            glfwSetWindowShouldClose(_window, true);
+    }
         break;
     case 1:
         write_buffer(_output, _outbuf);

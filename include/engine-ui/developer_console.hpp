@@ -7,6 +7,9 @@
 #include <engine-ui/view.hpp>
 #include <event/event_manager.hpp>
 
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+
 namespace engineui
 {
 
@@ -17,7 +20,7 @@ namespace engineui
 		static const std::uint32_t Height = 256;
 
 	public:
-		developer_console(core::viewport& viewport, EventManager& events);
+		developer_console(core::viewport& viewport, EventManager& events, GLFWwindow* window);
 		void draw();
 
 	private:
@@ -26,6 +29,7 @@ namespace engineui
 		static char _errbuf[BUFSIZ];
 
 		EventManager& _events;
+		GLFWwindow* _window;
 
 		char _command[BufSize]{ "" };
 		char _output[BufSize]{ "" };
