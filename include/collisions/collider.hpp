@@ -39,6 +39,7 @@ namespace collisions {
 		glm::vec3 position_absolute;
 		entity_id owner_id;
 		float left, right, top, bottom, back, front; // offsets from center
+		float local_left, local_right, local_top, local_bottom, local_back, local_front;
 	};
 }
 

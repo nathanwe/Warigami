@@ -20,6 +20,7 @@ AABB_collider::AABB_collider() : collider(collider_type::AABB) {
 	position_absolute = { 0.f, 0.f, 0.f };
 	owner_id = 0;
 	left = right = top = bottom = back = front = 0.0f;
+	local_left = local_right = local_top = local_bottom = local_back = local_front = 0.0f;
 }
 
 template<> const component_shift ecs::component<sphere_collider>::component_bitshift = (component_shift)component_bits::sphere_collider;

@@ -39,13 +39,10 @@ public:
 				transform.rotation.x -= m_input.pitch() * .05f;
 
 				if (m_input.is_input_active(core::controls::ACTION1_CONTROL) && JUMP_POWA <= 2000.f) {
-					std::cerr << "JUMP PRESSED" << std::endl;
 					JUMP_POWA += 50.f;
 				}
 
 				if (m_input.is_input_ended(core::controls::ACTION1_CONTROL)) {
-					std::cerr << "JUMP RELEASED" << std::endl;
-					rigid_body.forces += fwd * JUMP_POWA * 0.5f;
 					rigid_body.forces.y -= JUMP_POWA * 0.5f;
 					JUMP_POWA = 0.f;
 				}

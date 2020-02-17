@@ -11,12 +11,12 @@ void collisions::aabb_collider_loader::load(asset::asset_loader_node& asset_load
 
 	c.owner_id = entity.id();
 
-	c.left = json.value("left", 0.5f);
-	c.right = json.value("right", 0.5f);
-	c.top = json.value("top", 0.5f);
-	c.bottom = json.value("bottom", 0.5f);
-	c.back = json.value("back", 0.5f);
-	c.front = json.value("front", 0.5f);
+	c.local_left = json.value("left", 0.5f);
+	c.local_right = json.value("right", 0.5f);
+	c.local_top = json.value("top", 0.5f);
+	c.local_bottom = json.value("bottom", 0.5f);
+	c.local_back = json.value("back", 0.5f);
+	c.local_front = json.value("front", 0.5f);
 
 	if (json.find("relative") != json.end())
 	{
