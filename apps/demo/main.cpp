@@ -72,12 +72,11 @@ int main(int argc, char** argv)
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
     audio::audio_system audio_system(strings);
-    spinner spinner(timer);
     fly_cam flycam(input, timer);
 	box_move boxmove(timer);
 	board_path_movement_system board_path_movement(timer);
 
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &spinner, &physics_update, &board_path_movement });
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &physics_update, &board_path_movement });
     ecs::world world(systems, state);
 
     audio::loader_emitter eloader(strings);

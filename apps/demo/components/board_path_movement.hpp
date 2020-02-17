@@ -10,6 +10,7 @@
 
 
 
+
 namespace components
 {
 	struct board_path_movement : ecs::component<board_path_movement>
@@ -17,7 +18,7 @@ namespace components
 		// Tracking board-state
 		//glm::vec2 foo = { 1,1 };
 		std::list<glm::vec3> path = { {3,3,3},{-3,3,3},{-3,-3,3},{3,-3,3},{3,-3,-3}, {0,0,0} };
-		float speed = 1.0f; // squares/sec
+		float speed = 10.0f; // squares/sec
 		
 	};
 }
