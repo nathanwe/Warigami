@@ -116,7 +116,7 @@ int main(int argc, char** argv)
     rendering::debug_view render_debug_view(window_view, renderer);
     overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
-    cursor.disable();
+    //cursor.disable();
 
     printf("Hello, I'm the dev console!");
 

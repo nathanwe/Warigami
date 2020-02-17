@@ -22,9 +22,9 @@ public:
 				//auto up = glm::vec3(camera_world[1]);
 
 				// Non physics movement for the plebians
-				//transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 10.f; 
+				//transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 10.f;
 				//transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * 10.f;
-				
+
 				// Chad physics flying
 				//rigid_body.forces += -m_input.forward() * fwd * 10.f;
 				//rigid_body.forces += -m_input.strafe() * right * 10.f;
@@ -49,8 +49,8 @@ public:
 					JUMP_POWA = 0.f;
 				}
 
-			
-			
+
+
 			transform.is_matrix_dirty = true;
 			camera.is_view_dirty = true;
 		});

@@ -9,6 +9,7 @@
 #include <fmod_errors.h>
 #include <transforms/transform.hpp>
 #include <rendering/camera.hpp>
+#include <collisions/rigid_body.hpp>
 
 bool succeededOrWarn(const std::string &message, FMOD_RESULT result);
 FMOD_RESULT F_CALLBACK channelGroupCallback(FMOD_CHANNELCONTROL *channelControl,
@@ -56,11 +57,12 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
             //auto rb_opt = listener.get_component_opt<ecs::rigid_body_component>();
             auto& entity = state.find_entity(id);
             auto cam_opt = entity.get_component_opt<rendering::camera>();
+            auto rb_opt = entity.get_component_opt<collisions::rigid_body>();
 
             glm::mat3 ltw = glm::mat3(t.local_to_world);
 
             l.listener_position = t.position;
-            l.listener_velocity = glm::vec3(0.f); //rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
+            l.listener_velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
             l.listener_up = ltw[1];
             l.listener_forward = ltw[2];
 
@@ -75,13 +77,17 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 
 void audio::audio_system::update_emitters(ecs::state &state)
 {
-    state.each<transforms::transform, audio_emitter>([this](transforms::transform& transform, audio_emitter& e)
+    state.each_id<transforms::transform, audio_emitter>([&](entity_id id, transforms::transform& transform, audio_emitter& e)
     {
         auto t = transform.position;
+        auto& entity = state.find_entity(id);
+        auto rb_opt = entity.get_component_opt<collisions::rigid_body>();
+        auto velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
+
         for (std::uint32_t i = 0; i < e.sound_count; ++i)
         {
             auto& emitter_sound = e.emitter_sounds[i];
-            handle_emitter_sound(emitter_sound, t);
+            handle_emitter_sound(emitter_sound, t, velocity);
         }
     });
 }
@@ -127,8 +133,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
         throw;
 
     channel->setVolume(emitter_sound.volume);
-    channel->set3DMinMaxDistance(0, 100.f);
-
+    channel->set3DMinMaxDistance(emitter_sound.volume * 30.f, 100000.f);
 
     // Assign the channel to the group.
     result = channel->setChannelGroup(_channelGroup);
@@ -139,12 +144,14 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     if (!succeededOrWarn("FMOD: Failed to set callback for sound_wrapper", result))
         throw;
 
-
     emitter_sound.fmod_channel = channel;
     emitter_sound.fmod_sound = sound;
 }
 
-void audio::audio_system::handle_emitter_sound(audio::emitter_sound &emitter_sound, glm::vec3& t_pos)
+void audio::audio_system::handle_emitter_sound(
+        audio::emitter_sound &emitter_sound,
+        glm::vec3& t_pos,
+        glm::vec3& velocity)
 {
     switch (emitter_sound.state)
     {
@@ -163,11 +170,7 @@ void audio::audio_system::handle_emitter_sound(audio::emitter_sound &emitter_sou
             if (emitter_sound.is_null()) break;
 
             FMOD_VECTOR pos = { t_pos.x, t_pos.y, t_pos.z };
-            FMOD_VECTOR vel = { 0.f, 0.f, 0.f };
-//                            rb_opt
-//                                      ? FMOD_VECTOR { rb_opt->get().velocity.x, rb_opt->get().velocity.y, rb_opt->get().velocity.z }
-//                                      : FMOD_VECTOR { 0.f, 0.f, 0.f };
-
+            FMOD_VECTOR vel = { velocity.x, velocity.y, velocity.z };
             emitter_sound.fmod_channel->set3DAttributes(&pos, &vel);
             emitter_sound.fmod_channel->setVolume(emitter_sound.volume);
         }

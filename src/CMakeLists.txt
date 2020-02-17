@@ -188,21 +188,6 @@ add_custom_target(copy_shaders
 
 add_dependencies (rendering copy_shaders)
 
-
-##### AUDIO #####
-set (AUDIO_SOURCE_LIST
-        ${PROJECT_SOURCE_DIR}/src/audio/audio_system.cpp
-        ${PROJECT_SOURCE_DIR}/src/audio/audio_listener.cpp
-        ${PROJECT_SOURCE_DIR}/src/audio/audio_emitter.cpp)
-
-add_library(audio STATIC ${AUDIO_SOURCE_LIST})
-target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_compile_features(audio PUBLIC cxx_std_17)
-target_link_libraries(audio PUBLIC ecs transforms rendering asset fmod glm)
-set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(audio)
-
-
 ##### ENGINE-UI #####
 set (ENGINEUI_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/engine-ui/developer_console.cpp
@@ -237,4 +222,17 @@ set (PHYSICS_SOURCE_LIST
 add_library(physics STATIC ${PHYSICS_SOURCE_LIST})
 target_include_directories(physics PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(physics PUBLIC glm asset)
-target_link_libraries(physics PUBLIC glm asset)
+
+
+##### AUDIO #####
+set (AUDIO_SOURCE_LIST
+        ${PROJECT_SOURCE_DIR}/src/audio/audio_system.cpp
+        ${PROJECT_SOURCE_DIR}/src/audio/audio_listener.cpp
+        ${PROJECT_SOURCE_DIR}/src/audio/audio_emitter.cpp)
+
+add_library(audio STATIC ${AUDIO_SOURCE_LIST})
+target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_compile_features(audio PUBLIC cxx_std_17)
+target_link_libraries(audio PUBLIC collisions ecs transforms rendering asset fmod glm)
+set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+cotire(audio)
