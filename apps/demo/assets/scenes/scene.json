@@ -5,7 +5,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -500, 3, -500 ],
+          "position": [ 0, 10, 0 ],
           "scale": [2, 4, 2]
         },
         {
@@ -26,13 +26,13 @@
         },
         {
           "type": "aabb_collider",
-          "left": 1.0,
-          "right": 1.0,
-          "top": 1.0,
-          "bottom": 1.0,
-          "back": 1.0,
-          "front": 1.0,
-          "relative": [ 0, 0, 0 ]
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, -4, 0 ]
         },
         {
           "type": "rigid_body",
@@ -174,16 +174,6 @@
             {
                 "type": "game_piece",
                 "succ": 7
-            },
-            {
-                "type": "audio_emitter",
-                "sounds": [
-                    {
-                        "file": "assets/music.mp3",
-                        "loop": true,
-                        "volume": 0.04
-                    }
-                ]
             }
         ]
     },
@@ -289,7 +279,8 @@
         {
           "type": "transform",
           "position": [ -500, 10, -510 ],
-          "scale": [ 1, 1, 1 ]
+          "scale": [ 1, 1, 1 ],
+          "rotation": [ 0, 90, 0 ]
         },
         {
           "type": "aabb_collider",
@@ -313,18 +304,47 @@
         {
           "type": "game_piece",
           "speed": 5.0
-        },
+        }
+      ]
+    },
+
+
+
+    {
+      "entity_id": 20,
+      "components": [
         {
           "type": "audio_emitter",
           "sounds": [
             {
               "file": "assets/DejaVu.mp3",
               "loop": true,
-              "volume": 6.9
+              "volume": 0.5
             }
           ]
+        },
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 500,
+          "right": 500,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 500,
+          "front": 500,
+          "relative": [ 0, 1, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/demoroom/demoroom.gltf",
+          "texture_diffuse": "assets/meshes/demoroom/wall.jpg"
         }
       ]
+
     }
   ]
 }

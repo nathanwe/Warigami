@@ -32,20 +32,19 @@ public:
 				// Semi-Chad physics walking
 				fwd.y = 0;
 				right.y = 0;
-				rigid_body.forces += -m_input.forward() * fwd * 10.f;
-				rigid_body.forces += -m_input.strafe() * right * 10.f;
+				auto speed = 600.f;
+				rigid_body.forces += -m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
+				rigid_body.forces += -m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
 
-				transform.rotation.y -= m_input.yaw() * .05f;
-				transform.rotation.x -= m_input.pitch() * .05f;
+				auto turn_speed = 2.f;
+				transform.rotation.y -= m_input.yaw() *  m_timer.smoothed_delta_secs() * turn_speed;
+				transform.rotation.x -= m_input.pitch() * m_timer.smoothed_delta_secs() * turn_speed;
 
 				if (m_input.is_input_active(core::controls::ACTION1_CONTROL) && JUMP_POWA <= 2000.f) {
-					std::cerr << "JUMP PRESSED" << std::endl;
 					JUMP_POWA += 50.f;
 				}
 
 				if (m_input.is_input_ended(core::controls::ACTION1_CONTROL)) {
-					std::cerr << "JUMP RELEASED" << std::endl;
-					rigid_body.forces += fwd * JUMP_POWA * 0.5f;
 					rigid_body.forces.y -= JUMP_POWA * 0.5f;
 					JUMP_POWA = 0.f;
 				}

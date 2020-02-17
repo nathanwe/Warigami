@@ -21,9 +21,9 @@ void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_n
 	if (json.find("rotation") != json.end())
 	{
 		t.rotation = glm::vec3(
-			json["rotation"][0].get<float>(),
-			json["rotation"][1].get<float>(),
-			json["rotation"][2].get<float>());
+			glm::radians(json["rotation"][0].get<float>()),
+			glm::radians(json["rotation"][1].get<float>()),
+			glm::radians(json["rotation"][2].get<float>()));
 	}
 	if (json.find("scale") != json.end())
 	{

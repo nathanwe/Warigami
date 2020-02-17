@@ -18,7 +18,7 @@ FMOD_RESULT F_CALLBACK channelGroupCallback(FMOD_CHANNELCONTROL *channelControl,
                                             void *commandData2);
 
 
-audio::audio_system::audio_system(util::string_table &app_strings) : _app_strings(app_strings)
+audio::audio_system::audio_system(util::string_table &app_strings, asset::asset_manager& assets) : _app_strings(app_strings), _assets(assets)
 {
     FMOD_RESULT result;
 
@@ -108,7 +108,8 @@ FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
     {
         FMOD::Sound *sound = nullptr;
         auto& track = _app_strings[hash];
-        _system->createSound(track.c_str(), mode, nullptr, &sound);
+        sound = _assets.get_sound(track, _system, mode);
+        //_system->createSound(track.c_str(), mode, nullptr, &sound);
         _sounds.insert({hash, sound});
     }
 
@@ -126,7 +127,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
         throw;
 
     channel->setVolume(emitter_sound.volume);
-    channel->set3DMinMaxDistance(emitter_sound.volume * 30.f, 100000.f);
+    channel->set3DMinMaxDistance(0, 100.f);
 
 
     // Assign the channel to the group.

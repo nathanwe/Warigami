@@ -3,6 +3,7 @@
 #include <ecs/ecs_types.hpp>
 #include <ecs/world.hpp>
 
+#include <asset/asset_manager.hpp>
 #include <asset/scene.hpp>
 #include <asset/scene_hydrater.hpp>
 
@@ -17,8 +18,8 @@ void test_transform()
     ecs::archetype_pools factory;
     ecs::state state(factory);
     
-    asset::json_cache cache;
-    asset::scene scene(ScenePath, cache);
+    asset::asset_manager assets;
+    asset::scene scene(ScenePath, assets);
     asset::scene_hydrater hydrater(state, scene);
 
     transforms::transform_loader transform_loader;
@@ -32,11 +33,11 @@ void test_renderable()
     ecs::archetype_pools factory;
     ecs::state state(factory);
 
-    asset::json_cache cache;
-    asset::scene scene(ScenePath, cache);
+    asset::asset_manager assets;
+    asset::scene scene(ScenePath, assets);
     asset::scene_hydrater hydrater(state, scene);
 
-    rendering::asset_cache render_asset_cache;
+    rendering::asset_cache render_asset_cache(assets);
     rendering::render_loader render_loader(render_asset_cache);
     hydrater.register_loaders(&render_loader);
 

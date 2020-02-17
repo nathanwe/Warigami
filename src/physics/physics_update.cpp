@@ -21,7 +21,8 @@ namespace physics
 
 		for (int i = 0; i < contactList.size(); i++)
 		{
-			if (contactList[i].first_entity_id == 1 || contactList[i].first_entity_id == 18)
+			
+			if (state.find_entity(contactList[i].first_entity_id).has<collisions::rigid_body>())
 			{
 				ecs::entity me = state.find_entity(contactList[i].first_entity_id);
 				transforms::transform& t = me.get_component<transforms::transform>();
@@ -30,7 +31,7 @@ namespace physics
 				t.position.y = t.prev_position.y;
 				r.velocity.y = 0.f;
 			}
-			if (contactList[i].second_entity_id == 1 || contactList[i].second_entity_id == 18)
+			if (state.find_entity(contactList[i].second_entity_id).has<collisions::rigid_body>())
 			{
 				ecs::entity me = state.find_entity(contactList[i].second_entity_id);
 				transforms::transform& t = me.get_component<transforms::transform>();
@@ -58,12 +59,12 @@ namespace physics
 		state.each<transforms::transform, collisions::AABB_collider>([&](transforms::transform& transform, collisions::AABB_collider& collider)
 			{
 				collider.position_absolute = transform.position + collider.position_relative;
-				collider.front = 0.5f * transform.scale.z;
-				collider.back = 0.5f * transform.scale.z;
-				collider.left = 0.5f * transform.scale.x;
-				collider.right = 0.5f * transform.scale.x;
-				collider.top = 0.5f * transform.scale.y;
-				collider.bottom = 0.5 * transform.scale.y;
+				collider.front = collider.local_front * transform.scale.z;
+				collider.back = collider.local_back * transform.scale.z;
+				collider.left = collider.local_left * transform.scale.x;
+				collider.right = collider.local_right * transform.scale.x;
+				collider.top = collider.local_top * transform.scale.y;
+				collider.bottom = collider.local_bottom * transform.scale.y;
 			});
 
 		state.each< transforms::transform, collisions::sphere_collider>([&](transforms::transform& transform, collisions::sphere_collider& collider)

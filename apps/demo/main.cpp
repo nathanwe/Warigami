@@ -34,15 +34,16 @@ int main(int argc, char** argv)
 	bool is_debug = false;	
 #endif
 
-	core::startup_config config;
+	asset::asset_manager assets;
+	core::startup_config config(assets);
 	core::glfw_context glfw(config);	
 
     util::string_table strings;
     core::viewport window_view{ 0, 0, config.width(), config.height() };
     core::game_input_manager input(glfw.window());
     core::frame_timer timer;
-    core::cursor_state cursor(glfw.window());
-    EventManager events;
+	core::cursor_state cursor(glfw.window());
+	EventManager events;
 
     // init ecs state
     ecs::archetype_pools memory;
@@ -65,15 +66,15 @@ int main(int argc, char** argv)
     ecs::register_component<collisions::AABB_collider>("aabb_collider");
     ecs::register_component<collisions::rigid_body>("rigid_body");
 
-    collisions::collision_manager collision_manager;
-    physics::physics_update physics_update(collision_manager, timer);
-    rendering::asset_cache render_asset_cache;
-    rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache);
+	collisions::collision_manager collision_manager;
+	physics::physics_update physics_update(collision_manager, timer);
+    rendering::asset_cache render_asset_cache(assets);
+    rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
     audio::audio_system audio_system(strings);
     fly_cam flycam(input, timer);
-	box_move boxmove(timer);
+    box_move boxmove(timer, input);
 	board_path_movement_system board_path_movement(timer);
 
     ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &physics_update, &board_path_movement });
@@ -81,8 +82,7 @@ int main(int argc, char** argv)
 
     audio::loader_emitter eloader(strings);
 
-    asset::json_cache cache;
-    asset::scene scene("assets/scenes/scene.json", cache);
+    asset::scene scene("assets/scenes/scene.json", assets);
     asset::scene_hydrater hydrater(state, scene);
     transforms::transform_loader transform_loader;
     rendering::loader_camera camera_loader(render_asset_cache);
