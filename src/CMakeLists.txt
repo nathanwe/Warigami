@@ -246,4 +246,4 @@ set (PHYSICS_SOURCE_LIST
 add_library(physics STATIC ${PHYSICS_SOURCE_LIST})
 target_include_directories(physics PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(physics PUBLIC glm asset)
-target_link_libraries(physics PUBLIC glm asset)
+
