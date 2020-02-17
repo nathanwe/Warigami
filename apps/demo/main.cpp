@@ -67,7 +67,7 @@ int main(int argc, char** argv)
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
     rendering::asset_cache render_asset_cache(assets);
-    rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets);
+    rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets, timer);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
     audio::audio_system audio_system(strings, assets);
