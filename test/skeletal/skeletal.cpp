@@ -4,7 +4,7 @@
 
 #include <rendering/skeleton_animation.hpp>
 #include <rendering/skeleton_node.hpp>
-#include <rendering/rigged_mesh_asset.hpp>
+
 
 int main(int argc, char** argv)
 {

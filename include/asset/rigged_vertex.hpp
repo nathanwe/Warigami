@@ -9,7 +9,8 @@
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
-namespace rendering
+
+namespace asset
 {
 
     struct rigged_vertex
