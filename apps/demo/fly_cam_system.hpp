@@ -32,11 +32,11 @@ public:
 				// Semi-Chad physics walking
 				fwd.y = 0;
 				right.y = 0;
-				rigid_body.forces += -m_input.forward() * fwd * 10.f;
-				rigid_body.forces += -m_input.strafe() * right * 10.f;
+				rigid_body.forces += -m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 100.f;
+				rigid_body.forces += -m_input.strafe() * right * m_timer.smoothed_delta_secs() * 100.f;
 
-				transform.rotation.y -= m_input.yaw() * .05f;
-				transform.rotation.x -= m_input.pitch() * .05f;
+				transform.rotation.y -= m_input.yaw() *  m_timer.smoothed_delta_secs() * .5f;
+				transform.rotation.x -= m_input.pitch() * m_timer.smoothed_delta_secs() * .5f;
 
 				if (m_input.is_input_active(core::controls::ACTION1_CONTROL) && JUMP_POWA <= 2000.f) {
 					JUMP_POWA += 50.f;
