@@ -1,6 +1,8 @@
 #ifndef WIZARD_ASSETS_MANAGER_HPP
 #define WIZARD_ASSETS_MANAGER_HPP
 
+#include <fstream>
+
 #include "asset/proto_mesh.hpp"
 #include "asset/proto_shader.hpp"
 #include "asset/proto_texture_hdr.hpp"
