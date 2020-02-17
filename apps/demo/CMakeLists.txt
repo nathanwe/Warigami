@@ -36,5 +36,5 @@ if (CMAKE_DL_LIBS)
     target_link_libraries(demo PRIVATE ${CMAKE_DL_LIBS})
 endif ()
 
-
+set_target_properties(demo PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(demo)
