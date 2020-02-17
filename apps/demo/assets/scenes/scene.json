@@ -5,7 +5,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -500, 3, -500 ],
+          "position": [ 0, 3, 0 ],
           "scale": [2, 4, 2]
         },
         {
@@ -325,6 +325,35 @@
           ]
         }
       ]
+    },
+
+
+
+    {
+      "entity_id": 20,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 500,
+          "right": 500,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 500,
+          "front": 500,
+          "relative": [ 0, -5, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/demoroom/demoroom.gltf",
+          "texture_diffuse": "assets/meshes/demoroom/wall.jpg"
+        }
+      ]
+
     }
   ]
 }

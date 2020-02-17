@@ -126,7 +126,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
         throw;
 
     channel->setVolume(emitter_sound.volume);
-    channel->set3DMinMaxDistance(emitter_sound.volume * 30.f, 100000.f);
+    channel->set3DMinMaxDistance(0, 100.f);
 
 
     // Assign the channel to the group.
