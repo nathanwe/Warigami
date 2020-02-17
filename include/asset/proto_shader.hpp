@@ -7,7 +7,8 @@ namespace asset
 {
 	struct proto_shader
 	{
-		std::string text;
+		std::string source;
+		std::string path;
 	};
 }
 

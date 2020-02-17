@@ -178,16 +178,14 @@ set (RENDERING_SOURCE_LIST
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(rendering PUBLIC cxx_std_17)
-target_link_libraries(rendering PUBLIC 
-    asset
-    assimp
+target_link_libraries(rendering PUBLIC     
     collisions
     ecs
     engineui
     glbinding
     glm 
     glfw
-    stb_image)
+    asset)
 
 set_target_properties(rendering PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(rendering)

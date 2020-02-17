@@ -92,7 +92,7 @@ json asset::scene_entity::inflate_prototype(json& entity_json, asset_manager& as
         return { {"root", entity_json}, {"children", json::array()} };
 
     auto prototype_path = prototype_path_it.value().get<std::string>();
-    json prototype_json = assets.get<json>(prototype_path);
+    json prototype_json = assets.get_json(prototype_path);
     merge_component_props(prototype_json["root"], entity_json);
     return prototype_json;;
 }

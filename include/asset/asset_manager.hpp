@@ -6,21 +6,37 @@
 #include "asset/proto_texture_hdr.hpp"
 #include "asset/proto_texture.hpp"
 
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 #include "fmod.hpp"
+#include "fmod_errors.h"
 #include "nlohmann/json.hpp"
+#include "stb/stb_image.h"
 
 #include <array>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 namespace asset
 {
 	class asset_manager
 	{
 	public:
-		template <typename TAsset, typename TPath, typename... TDependencies>
-		TAsset& get(TPath const& filepath, TDependencies... dependencies);
+		nlohmann::json& get_json(std::string const& filepath);
+		proto_mesh& get_proto_mesh(std::string const& filepath);
+		proto_shader& get_proto_shader(std::string const& filepath);
+		proto_texture& get_proto_texture(std::string const& filepath);
+		proto_texture_hdr& get_proto_texture_hdr(std::string const& filepath);
+		FMOD::Sound*& get_sound(std::string const& filepath, FMOD::System* system, FMOD_MODE mode);
 
-		template <typename TAsset, typename TPath, typename... TDependencies>
-		void unload(TPath const& filepath, TDependencies... dependencies);
+		void unload_json(std::string const& filepath);
+		void unload_proto_mesh(std::string const& filepath);
+		void unload_proto_shader(std::string const& filepath);
+		void unload_proto_texture(std::string const& filepath);
+		void unload_proto_texture_hdr(std::string const& filepath);
 
 		template <typename TPath>
 		void read_otherise_write(const TPath& filepath, nlohmann::json& data);
@@ -33,24 +49,6 @@ namespace asset
 		std::map<std::string, nlohmann::json> _json_cache;
 		std::map<std::string, FMOD::Sound*> _sound_cache;
 	};
-
-	template <>
-	proto_texture_hdr& asset_manager::get<proto_texture_hdr>(std::string const& filepath);
-
-	template <>
-	proto_texture& asset_manager::get<proto_texture>(std::string const& filepath);
-
-	template <>
-	proto_mesh& asset_manager::get<proto_mesh>(std::string const& filepath);
-
-	template <>
-	proto_shader& asset_manager::get<proto_shader>(std::string const& filepath);
-
-	template <>
-	nlohmann::json& asset_manager::get<nlohmann::json>(std::string const& filepath);
-
-	template <>
-	FMOD::Sound*& asset_manager::get<FMOD::Sound*>(std::string const& filepath, FMOD::System* system, FMOD_MODE mode);
 
 	template<typename TPath>
 	void asset_manager::read_otherise_write(const TPath& filepath, nlohmann::json& data)
@@ -68,7 +66,6 @@ namespace asset
 		}
 		stream.close();
 	}
-
 }
 
 #endif

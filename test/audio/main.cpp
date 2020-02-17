@@ -68,7 +68,7 @@ int main()
     auto& t = e.get_component<transforms::transform>();
     t.position = {0.f, 0.f, -10.f};
 
-    auto scene = assets.get<nlohmann::json>("assets/scene.json");
+    auto scene = assets.get_json("assets/scene.json");
     auto scene_entity = asset::scene_entity(scene["entities"][0], assets);
     auto loader_node = asset::asset_loader_node(e, scene_entity);
     audio::loader_emitter eloader(strings);

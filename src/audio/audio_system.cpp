@@ -108,7 +108,7 @@ FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
     {
         FMOD::Sound *sound = nullptr;
         auto& track = _app_strings[hash];
-        sound = _assets.get<FMOD::Sound*>(track, _system, mode);
+        sound = _assets.get_sound(track, _system, mode);
         //_system->createSound(track.c_str(), mode, nullptr, &sound);
         _sounds.insert({hash, sound});
     }

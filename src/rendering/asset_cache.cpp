@@ -78,9 +78,9 @@ namespace rendering
 
 			for (int i_face = 0; i_face < filepaths.size(); ++i_face)
 			{
-				asset::proto_texture_hdr& proto_tex = _assets.get<asset::proto_texture_hdr>(filepaths[i_face]);
+				asset::proto_texture_hdr& proto_tex = _assets.get_proto_texture_hdr(filepaths[i_face]);
 				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i_face, 0, GL_RGB16F, proto_tex.width, proto_tex.height, 0, GL_RGB, GL_FLOAT, proto_tex.bytes);
-				_assets.unload<asset::proto_texture_hdr>(filepaths[i_face]);
+				_assets.unload_proto_texture_hdr(filepaths[i_face]);
 			}
 
 			glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
@@ -102,7 +102,7 @@ namespace rendering
 		auto& r_texture = _textures[filepath];
 		if (r_texture.id == 0)
 		{
-			asset::proto_texture proto_tex = _assets.get<asset::proto_texture>(filepath);
+			asset::proto_texture& proto_tex = _assets.get_proto_texture(filepath);
 
 			GLenum texture_channels_gl;
 			switch (proto_tex.channels)
@@ -122,7 +122,7 @@ namespace rendering
 
 			default:
 				std::cout << "Error: Unexpected amount of channels while loading texture." << std::endl;
-				_assets.unload<asset::proto_texture>(filepath);
+				_assets.unload_proto_texture(filepath);
 				assert(false);
 			}
 
@@ -140,7 +140,7 @@ namespace rendering
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			_assets.unload<asset::proto_texture>(filepath);
+			_assets.unload_proto_texture(filepath);
 		}
 		return r_texture;
 	}
@@ -153,7 +153,7 @@ namespace rendering
 		auto& r_mesh = _mesh_statics[filepath];
 		if (r_mesh.vao == 0)
 		{
-			asset::proto_mesh& proto = _assets.get<asset::proto_mesh>(filepath);
+			asset::proto_mesh& proto = _assets.get_proto_mesh(filepath);
 
 			// Reorganize data into array of struct instead of separate arrays
 			std::vector<vertex> vertices;
@@ -220,7 +220,7 @@ namespace rendering
 
 			glBindVertexArray(0);
 
-			_assets.unload<asset::proto_mesh>(filepath);
+			_assets.unload_proto_mesh(filepath);
 		}
 		return r_mesh;
 	}

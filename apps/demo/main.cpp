@@ -165,7 +165,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
     rendering::asset_cache render_asset_cache(assets);
-    rendering::renderer renderer(window, window_view, is_debug, render_asset_cache);
+    rendering::renderer renderer(window, window_view, is_debug, render_asset_cache, assets);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
     audio::audio_system audio_system(strings, assets);
