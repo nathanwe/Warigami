@@ -1,5 +1,3 @@
-include(cotire)
-
 
 add_executable (demo main.cpp 
 				components/game_piece.cpp components/game_piece_loader.cpp 
@@ -38,5 +36,5 @@ if (CMAKE_DL_LIBS)
     target_link_libraries(demo PRIVATE ${CMAKE_DL_LIBS})
 endif ()
 
-set_target_properties(demo PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+
 cotire(demo)

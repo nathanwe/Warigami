@@ -1,7 +1,5 @@
 #TODO: Probably split up this cmake file into one file per library
 
-include(cotire)
-
 
 ##### PLATFORM #####
 set (PLATFORM_SOURCE_FILES
@@ -15,8 +13,6 @@ target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(platform PUBLIC
             $<$<BOOL:${WIN32}>:xinput>)
 
-# cotire(platform)
-
 
 ##### EVENT #####
 set (EVENT_HEADERS
@@ -28,9 +24,6 @@ set (EVENT_SOURCE_FILES
 
 add_library(event ${EVENT_HEADERS} ${EVENT_SOURCE_FILES})
 target_include_directories(event PUBLIC ${PROJECT_SOURCE_DIR}/include)
-
-set_target_properties(event PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(event)
 
 
 ##### CORE #####
@@ -56,9 +49,6 @@ target_link_libraries(core
             glfw
             event)
 
-set_target_properties(core PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(core)
-
 
 ##### MEMORY #####
 set(MEMORY_HEADER_LIST
@@ -76,8 +66,6 @@ add_library(memory ${MEMORY_SOURCE_LIST} ${MEMORY_HEADER_LIST})
 target_include_directories(memory PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(memory PUBLIC cxx_std_17)
 
-set_target_properties(memory PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(memory)
 
 ##### ECS #####
 set (ECS_SOURCE_LIST
@@ -111,8 +99,6 @@ target_include_directories(ecs PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(ecs PUBLIC cxx_std_17)
 target_link_libraries(ecs PUBLIC core PRIVATE memory)
 
-set_target_properties(ecs PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(ecs)
 
 ##### ASSET #####
 set (ASSET_SOURCE_LIST
@@ -128,9 +114,6 @@ target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(asset PUBLIC cxx_std_17)
 target_link_libraries(asset PUBLIC core ecs assimp fmod stb_image)
 
-set_target_properties(asset PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(asset)
-
 
 ##### TRANSFORMS #####
 set (TRANSFORMS_SOURCE_LIST
@@ -141,12 +124,6 @@ add_library(transforms STATIC ${TRANSFORMS_SOURCE_LIST})
 target_include_directories(transforms PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(transforms PUBLIC cxx_std_17)
 target_link_libraries(transforms PUBLIC ecs asset glm)
-
-set_target_properties(transforms PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(transforms)
-
-
-
 
 
 ##### RENDERING #####
@@ -179,8 +156,6 @@ target_link_libraries(rendering PUBLIC
     glfw
     asset)
 
-set_target_properties(rendering PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(rendering)
 
 add_custom_target(copy_shaders
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/src/rendering/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
@@ -200,8 +175,8 @@ target_include_directories(engineui PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(engineui PUBLIC cxx_std_17)
 target_link_libraries(engineui PUBLIC core event imgui rendering)
 
-set_target_properties(engineui PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(engineui)
+
+
 ##### COLLISIONS #####
 set (COLLISIONS_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/collisions/collider.cpp
@@ -234,5 +209,31 @@ add_library(audio STATIC ${AUDIO_SOURCE_LIST})
 target_include_directories(audio PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(audio PUBLIC cxx_std_17)
 target_link_libraries(audio PUBLIC collisions ecs transforms rendering asset fmod glm)
-set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(audio)
+
+
+
+
+
+
+
+# cotire stuff
+#set_target_properties(event PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(core PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(memory PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(ecs PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(asset PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(transforms PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(rendering PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(engineui PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+#set_target_properties(audio PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+
+#cotire(platform)
+#cotire(event)
+#cotire(core)
+#cotire(memory)
+#cotire(ecs)
+#cotire(asset)
+#cotire(transforms)
+#cotire(rendering)
+#cotire(engineui)
+#cotire(audio)
