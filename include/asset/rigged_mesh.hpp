@@ -5,7 +5,7 @@
 #include <vector>
 #include <assimp/scene.h>
 #include <asset/rigged_vertex.hpp>
-
+#include <asset/asset_manager.hpp>
 
 
 namespace asset
@@ -18,7 +18,7 @@ namespace asset
 	private:
 		std::vector<rigged_vertex> _vertices;
 		std::vector<std::uint32_t> _indices;
-
+        std::uint32_t _num_indices;
 	};
 }
 #endif
