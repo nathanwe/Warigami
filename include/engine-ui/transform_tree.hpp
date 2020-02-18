@@ -50,7 +50,7 @@ namespace engineui
 				node& parent = *find(t.parent);
 
 				// insert self as child
-				if (std::find_if(parent.children.begin(), parent.children.end(), is_self) != parent.children.end())
+				if (std::find_if(parent.children.begin(), parent.children.end(), is_self) == parent.children.end())
 				{
 					parent.children.push_back(self);
 					std::sort(parent.children.begin(), parent.children.end(), is_lesser_node);
@@ -59,8 +59,11 @@ namespace engineui
 			else
 			{
 				// insert self as a root
-				_roots.push_back(self);
-				std::sort(_roots.begin(), _roots.end(), is_lesser_node);
+				if (std::find_if(_roots.begin(), _roots.end(), is_self) == _roots.end())
+				{
+					_roots.push_back(self);
+					std::sort(_roots.begin(), _roots.end(), is_lesser_node);
+				}
 			}
 		}
 
@@ -100,7 +103,10 @@ namespace engineui
 				{
 					return &n;
 				}
-				find_recurse(id, n.children);
+				if (node* p = find_recurse(id, n.children))
+				{
+					return p;
+				}
 			}
 			return nullptr;
 		}
