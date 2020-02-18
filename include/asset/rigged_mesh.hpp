@@ -19,6 +19,8 @@ namespace asset
 		std::vector<rigged_vertex> _vertices;
 		std::vector<std::uint32_t> _indices;
         std::uint32_t _num_indices;
+
+        std::vector<rigged_vertex> build_vertices(aiMesh* mesh)
 	};
 }
 #endif
