@@ -41,8 +41,8 @@ public:
 				{
 					// Chad physics flying
 					rigid_body.grav_muliplier = 0;
-					rigid_body.forces += -m_input.forward() * fwd * 10.f;
-					rigid_body.forces += -m_input.strafe() * right * 10.f;
+					rigid_body.forces += -m_input.forward() * fwd * 1000.f;
+					rigid_body.forces += -m_input.strafe() * right * 1000.f;
 				}
 				else
 				{
@@ -50,12 +50,12 @@ public:
 					rigid_body.grav_muliplier = 1;
 					fwd.y = 0;
 					right.y = 0;
-					auto speed = 600.f;
+					auto speed = 60000.f;
 					rigid_body.forces += -m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
 					rigid_body.forces += -m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
 				}
 
-				auto turn_speed = 2.f;
+				auto turn_speed = 200.f;
 				transform.rotation.y -= m_input.yaw() *  m_timer.smoothed_delta_secs() * turn_speed;
 				transform.rotation.x -= m_input.pitch() * m_timer.smoothed_delta_secs() * turn_speed;
 
@@ -67,6 +67,7 @@ public:
 					rigid_body.forces.y -= JUMP_POWA * 0.5f;
 					JUMP_POWA = 0.f;
 				}
+				std::cout << "x:" << transform.position.x << "  z:" << transform.position.z << "  y:" << transform.position.y << std::endl;
 
 			transform.is_matrix_dirty = true;
 			camera.is_view_dirty = true;
@@ -76,7 +77,7 @@ public:
 private:
 	float m_rotation_speed = .001f;
 	float JUMP_POWA = 0.0f;
-	bool noclips = false;
+	bool noclips = true;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;

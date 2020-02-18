@@ -87,7 +87,7 @@ public:
 			{
 				
 				
-				std::list<glm::vec2> locations = { { 0,0 }, { 2,0 }, { 2, 1 }, {-1,3 } };
+				std::list<glm::vec2> locations = { { 3,1 }, { -2,0 }, { -2, 1 }, { -2, 3}, {-2, 0} };
 				if (board_path.path.size() == 0)
 				{
 					add_path(r_state, 10, locations);
