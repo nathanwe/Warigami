@@ -22,6 +22,7 @@
 #include "box_move_system.hpp"
 #include "util/boardgen.hpp"
 #include "board_path_movement_system.hpp"
+#include "health_damage_system.hpp"
 
 
 int main(int argc, char** argv)
@@ -53,6 +54,7 @@ int main(int argc, char** argv)
 	ecs::register_component<components::dice>("dice");
 	ecs::register_component<components::player>("player");
 	ecs::register_component<components::board_path_movement>("board_path_movement");
+    ecs::register_component<components::hit_points>("hit_points");
     ecs::register_component<transforms::transform>("transform");
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
@@ -75,8 +77,9 @@ int main(int argc, char** argv)
     fly_cam flycam(input, timer, events);
     box_move boxmove(timer, input);
 	board_path_movement_system board_path_movement(timer);
+    health_damage_system health_damage_system(timer);
 
-    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &physics_update, &board_path_movement });
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &physics_update, &board_path_movement, &health_damage_system });
     ecs::world world(systems, state);
 
     audio::loader_emitter eloader(strings);

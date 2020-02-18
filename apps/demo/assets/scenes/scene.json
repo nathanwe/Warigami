@@ -221,23 +221,13 @@
             "components": [
                 {
                     "type": "transform",
-                    "position": [ 1, 0, -5 ],
-                    "scale": [ 3, 3, 3 ]
-                },
-                {
-                    "type": "aabb_collider",
-                    "left": 1.0,
-                    "right": 1.0,
-                    "top": 1.0,
-                    "bottom": 1.0,
-                    "back": 1.0,
-                    "front": 1.0,
-                    "relative": [ 0, 0, 0 ]
+                    "position": [ 20, 0, 20 ],
+                    "scale": [ 1, 2, 1 ]
                 },
                 {
                     "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/unit_orange/unit_orange.obj",
-                    "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+                    "mesh": "assets/meshes/dude/dude.gltf",
+                    "texture_diffuse": "assets/textures/dude/texture.png"
                 },
                 {
                     "type": "board_path_movement"
@@ -245,7 +235,35 @@
                 {
                     "type": "game_piece",
                     "succ": 7
+                },
+                {
+                    "type": "hit_points"
                 }
+
+
+            ]
+        },
+        {
+            "entity_id": 11,
+            "components": [
+                {
+                    "type": "transform",
+                    "position": [ 40, 5, 50 ],
+                    "scale": [ 1, 2, 1 ]
+                },
+                {
+                    "type": "renderable_mesh_static",
+                    "mesh": "assets/meshes/dude/dude.gltf",
+                    "texture_diffuse": "assets/textures/dude/texture.png"
+                },
+                {
+                    "type": "game_piece",
+                    "succ": 7
+                },
+                {
+                    "type": "hit_points"
+                }
+
 
             ]
         }

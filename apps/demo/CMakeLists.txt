@@ -7,6 +7,7 @@ add_executable (demo main.cpp
 				components/dice.cpp components/dice_loader.cpp
 				components/player.cpp components/player_loader.cpp
 				components/board_path_movement.cpp components/board_path_movement_loader.cpp
+				components/hit_points.cpp
 				util/boardgen.cpp)
 
 target_link_libraries(demo PRIVATE

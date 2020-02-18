@@ -12,9 +12,6 @@
 
 #define EPSILON 0.000001f
 
-float sq_dist(glm::vec3 in) {
-	return in.x * in.x + in.y * in.y + in.z * in.z;
-}
 
 class board_path_movement_system : public ecs::system_base
 {
@@ -69,8 +66,8 @@ public:
 					glm::vec3 movement_direction =  *(board_path.path.begin()) - transform.position;
 					glm::vec3 normal_move = glm::normalize(movement_direction);
 					glm::vec3 scaled_move = normal_move * board_path.speed * m_timer.delta_secs();
-					float move_distance = sq_dist(scaled_move);
-					float target_distance = sq_dist(movement_direction);
+					float move_distance = glm::length(scaled_move);
+					float target_distance = glm::length(movement_direction);
 					if (move_distance < target_distance) {
 						transform.position += scaled_move;
 					}

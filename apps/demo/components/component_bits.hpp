@@ -13,7 +13,8 @@ namespace components
 		card = 35,
 		dice = 36,
 		player = 37,
-		board_path_movement = 38
+		board_path_movement = 38,
+		hit_points = 39
 	};
 }
 
