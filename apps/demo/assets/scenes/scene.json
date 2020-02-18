@@ -266,6 +266,17 @@
 
 
             ]
+        },
+
+        {
+            "entity_id": 12,
+            "prototype": "assets/prototypes/disco.json",
+            "components": [
+                {
+                    "type": "transform",
+                    "position": [-54, 55, 33]
+                }
+            ]
         }
 
     ]

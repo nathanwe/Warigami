@@ -69,6 +69,8 @@ public:
 					rigid_body.forces.y -= JUMP_POWA * 0.5f;
 					JUMP_POWA = 0.f;
 				}
+
+
 				std::cout << "x:" << transform.position.x << "  z:" << transform.position.z << "  y:" << transform.position.y << std::endl;
 
 			transform.is_matrix_dirty = true;

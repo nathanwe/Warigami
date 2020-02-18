@@ -1,0 +1,86 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [0,0,0],
+        "scale": [1,1,1],
+        "rotation": [0,0,0]
+      }
+    ]
+  },
+  "children": [
+    {
+      "prototype": "assets/prototypes/gameboard.json"
+    },
+    {
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "light_directional"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [0,2,0],
+          "scale": [0.1,0.1,0.1]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [0,-5,0]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        },
+        {
+          "type": "rigid_body",
+          "mass": 0.0
+        },
+        {
+          "type": "game_piece",
+          "speed": 5.0
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [0,0,0]
+        },
+        {
+          "type": "light_point",
+          "intensity": 50,
+          "color": [1,0,0],
+          "radius": 5
+        },
+        {
+          "type": "disco_light"
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/music.mp3",
+              "loop": true,
+              "volume": 0.04
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

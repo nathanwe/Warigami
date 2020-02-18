@@ -14,7 +14,8 @@ namespace components
 		dice = 36,
 		player = 37,
 		board_path_movement = 38,
-		hit_points = 39
+		hit_points = 39,
+		disco_light = 40
 	};
 }
 

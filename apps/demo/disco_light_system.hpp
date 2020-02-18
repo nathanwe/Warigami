@@ -4,6 +4,7 @@
 #include <transforms/transform.hpp>
 #include <rendering/light_point.hpp>
 #include <core/frame_timer.hpp>
+#include "components/disco_light.h"
 
 class disco_light : public ecs::system_base
 {
@@ -12,7 +13,10 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each< transforms::transform, rendering::light_point>([&](transforms::transform& transform, rendering::light_point& light_point)
+		r_state.each< transforms::transform, rendering::light_point, components::disco_light>([&](
+		        transforms::transform& transform,
+		        rendering::light_point& light_point,
+                components::disco_light& disco)
 		{
 			// Circles around center
 			angle += m_timer.smoothed_delta_secs();

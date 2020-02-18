@@ -34,6 +34,9 @@ void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_n
 	}
 	for (auto& child : asset_loader_node.children)
 	{
+	    auto child_id = child.entity_resource.entity.id();
+	    auto parent_id = entity.id();
+
 		auto& child_transform = child.entity_resource.entity.get_component<transform>();
 		child_transform.has_parent = true;
 		child_transform.parent = entity.id();
