@@ -5,8 +5,8 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 10, 0 ],
-          "scale": [2, 4, 2]
+          "position": [0, 10, 0 ],
+          "scale": [1, 1, 1]
         },
         {
           "type": "camera",
@@ -32,7 +32,7 @@
           "bottom": 0.5,
           "back": 0.5,
           "front": 0.5,
-          "relative": [ 0, -4, 0 ]
+          "relative": [0, -4, 0]
         },
         {
           "type": "rigid_body",
@@ -44,6 +44,32 @@
       "entity_id": 2,
       "components": [
         {
+          "type": "transform",
+          "position": [0, 0, 0],
+          "scale": [1, 1, 1]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 500,
+          "right": 500,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 500,
+          "front": 500,
+          "relative": [0, 1, 0]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/demoroom/demoroom.gltf",
+          "texture_diffuse": "assets/meshes/demoroom/wall.jpg"
+        }
+      ]
+    },
+
+    {
+      "entity_id": 3,
+      "components": [
+        {
           "type": "transform"
         },
         {
@@ -51,210 +77,62 @@
         }
       ]
     },
-    {
-      "entity_id": 3,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 0, 0, -6 ]
-        },
-        {
-          "type": "light_point",
-          "intensity": 100,
-          "color": [ 1, 0, 0 ],
-          "radius": 5
-        }
-      ]
-    },
+
     {
       "entity_id": 4,
-        "components": [
-            {
-                "type": "transform",
-                "position": [ 0, 0, -10 ],
-                "scale": [ 5, 5, 5 ]
-            },
-            {
-                "type": "AABB_collider",
-                "left": 1.0,
-                "right": 1.0,
-                "top": 1.0,
-                "bottom": 1.0,
-                "back": 1.0,
-                "front": 1.0,
-                "relative": [ 0, 0, 0 ]
-            },
-            {
-                "type": "renderable_mesh_static",
-                "mesh": "assets/meshes/cube/cube.obj",
-                "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-            }
-        ]
-    },
-    {
-      "entity_id": 5,
       "components": [
         {
           "type": "transform",
-          "position": [ 10, 0, -10 ],
-          "scale": [ 5, 5, 5 ]
+          "position": [0, 10, -10],
+          "scale": [1, 1, 1]
         },
         {
-          "type": "sphere_collider",
+          "type": "AABB_collider",
           "left": 1.0,
           "right": 1.0,
           "top": 1.0,
           "bottom": 1.0,
           "back": 1.0,
           "front": 1.0,
-          "relative": [ 0, 0, 0 ]
+          "relative": [0, 0, 0]
         },
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/cube/cube.obj",
           "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-        }
-      ]
-    },
-    {
-      "entity_id": 6,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 10, 0, -6 ]
         },
         {
-          "type": "light_point",
-          "intensity": 100,
-          "color": [ 0, 0, 1 ],
-          "radius": 5
-        }
-      ]
-    },
-    {
-      "entity_id": 8,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 40, 10, 40 ]
-        },
-        {
-          "type": "light_directional",
-          "intensity": 5,
-          "color": [ 1, 1, 1 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 10,
-        "components": [
+          "type": "audio_emitter",
+          "sounds": [
             {
-                "type": "transform",
-                "position": [ 1, 0, -5 ],
-                "scale": [ 5, 5, 5 ]
-            },
-            {
-                "type": "aabb_collider",
-                "left": 1.0,
-                "right": 1.0,
-                "top": 1.0,
-                "bottom": 1.0,
-                "back": 1.0,
-                "front": 1.0,
-                "relative": [ 0, 0, 0 ]
-            },
-            {
-                "type": "renderable_mesh_static",
-                "mesh": "assets/meshes/unit_orange/unit_orange.obj",
-                "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-            },
-            {
-                "type": "board_path_movement"
-            },
-            {
-                "type": "game_piece",
-                "succ": 7
+              "file": "assets/music.mp3",
+              "loop": true,
+              "volume": 0.08
             }
-        ]
-    },
-    {
-      "entity_id": 11,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 5, 5, -6 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 0.5,
-          "right": 0.5,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 0.5,
-          "front": 0.5,
-          "relative": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 13,
-      "prototype": "assets/prototypes/gameboard.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 40, 0, 40 ],
-          "scale": [ 6, 2, 6 ]
+          ]
         }
       ]
     },
 
-    {
-      "entity_id": 14,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 40, 0, 40 ],
-          "scale": [ 6, 2, 6 ]
-        }
-      ]
-    },
 
     {
-      "entity_id": 15,
-      "prototype": "assets/prototypes/game_piece.json",
+      "entity_id": 5,
       "components": [
         {
-          "type": "transform",
-          "position": [ 0, 10, 30 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 16,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 1, 0, -5 ],
-          "scale": [ 1, 1, 1 ]
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/DejaVu.mp3",
+              "loop": true,
+              "volume": 0.40
+            }
+          ]
         },
         {
-          "type": "sphere_collider",
-          "radius": 2.0
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/gltf_cube/cube.gltf",
-          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
-        }
-      ]
-    },
-    {
-      "entity_id": 17,
-      "components": [
-        {
           "type": "transform",
-          "position": [ -500, 0, -500 ],
-          "scale": [ 250, 1, 250 ]
+          "position": [-100,10,-100],
+          "scale": [1,1,1],
+          "rotation": [0,90,0]
         },
         {
           "type": "aabb_collider",
@@ -264,33 +142,7 @@
           "bottom": 0.5,
           "back": 0.5,
           "front": 0.5,
-          "relative": [ 0, 0, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/cube/cube.obj",
-          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-        }
-      ]
-    },
-    {
-      "entity_id": 18,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ -500, 10, -510 ],
-          "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, 90, 0 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 0.5,
-          "right": 0.5,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 0.5,
-          "front": 0.5,
-          "relative": [ 0, -5, 0 ]
+          "relative": [0, -5, 0]
         },
         {
           "type": "renderable_mesh_static",
@@ -306,45 +158,6 @@
           "speed": 5.0
         }
       ]
-    },
-
-
-
-    {
-      "entity_id": 20,
-      "components": [
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/DejaVu.mp3",
-              "loop": true,
-              "volume": 0.5
-            }
-          ]
-        },
-        {
-          "type": "transform",
-          "position": [ 0, 0, 0 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 500,
-          "right": 500,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 500,
-          "front": 500,
-          "relative": [ 0, 1, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/demoroom/demoroom.gltf",
-          "texture_diffuse": "assets/meshes/demoroom/wall.jpg"
-        }
-      ]
-
     }
   ]
 }

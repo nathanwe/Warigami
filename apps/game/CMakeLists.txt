@@ -25,5 +25,4 @@ endif ()
 
 
 
-set_target_properties(game PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
 cotire(game)

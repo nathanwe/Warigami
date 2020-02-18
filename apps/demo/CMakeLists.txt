@@ -1,5 +1,3 @@
-include(cotire)
-
 
 add_executable (demo main.cpp 
 				components/game_piece.cpp components/game_piece_loader.cpp 

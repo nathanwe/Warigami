@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 	rendering::asset_cache render_asset_cache(assets);
 
 	// init ecs systems
-	rendering::renderer renderer(window, window_view, is_debug, render_asset_cache, assets);
+	rendering::renderer renderer(window, window_view, is_debug, render_asset_cache, assets, timer);
 	test::spinner spinner(timer);
 	transforms::transformer transformer;
 	rendering::camera_updater camera_updater;

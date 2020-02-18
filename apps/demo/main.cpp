@@ -24,8 +24,6 @@
 #include "board_path_movement_system.hpp"
 
 
-
-
 int main(int argc, char** argv)
 {
 #ifndef NDEBUG
@@ -43,7 +41,7 @@ int main(int argc, char** argv)
     core::game_input_manager input(glfw.window());
     core::frame_timer timer;
 	core::cursor_state cursor(glfw.window());
-	EventManager events;
+	event::EventManager events;
 
     // init ecs state
     ecs::archetype_pools memory;
@@ -69,11 +67,12 @@ int main(int argc, char** argv)
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
     rendering::asset_cache render_asset_cache(assets);
-    rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets);
+    rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets, timer);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
-    audio::audio_system audio_system(strings);
-    fly_cam flycam(input, timer);
+    audio::audio_system audio_system(strings, assets);
+	spinner spinner(timer);
+    fly_cam flycam(input, timer, events);
     box_move boxmove(timer, input);
 	board_path_movement_system board_path_movement(timer);
 
@@ -109,14 +108,14 @@ int main(int argc, char** argv)
         });
 
 
-    engineui::developer_console console(window_view, events);
+    engineui::developer_console console(window_view, events, glfw.window());
     engineui::fps_display fps(window_view, timer);
     engineui::entities_view entities_view(window_view, events, state);
     engineui::imgui_overlay overlay(glfw.window(), input, cursor);
     rendering::debug_view render_debug_view(window_view, renderer);
     overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
-    cursor.disable();
+    //cursor.disable();
 
     printf("Hello, I'm the dev console!");
 
