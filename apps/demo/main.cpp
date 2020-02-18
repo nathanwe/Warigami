@@ -20,6 +20,7 @@
 #include "spinner.hpp"
 #include "fly_cam_system.hpp"
 #include "box_move_system.hpp"
+#include "disco_light_system.hpp"
 #include "util/boardgen.hpp"
 #include "board_path_movement_system.hpp"
 #include "health_damage_system.hpp"
@@ -72,6 +73,8 @@ int main(int argc, char** argv)
     rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets, timer);
     transforms::transformer transformer;
     rendering::camera_updater camera_updater;
+    ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &physics_update, &board_path_movement, &health_damage_system, &discolight });
+    disco_light discolight(timer, glm::vec3(0,3,0));
     audio::audio_system audio_system(strings, assets);
 	spinner spinner(timer);
     fly_cam flycam(input, timer, events);
@@ -84,7 +87,8 @@ int main(int argc, char** argv)
 
     audio::loader_emitter eloader(strings);
 
-    asset::scene scene("assets/scenes/scene.json", assets);
+    asset::json_cache cache;
+    asset::scene scene("assets/scenes/scene.json", cache);
     asset::scene_hydrater hydrater(state, scene);
     transforms::transform_loader transform_loader;
     rendering::loader_camera camera_loader(render_asset_cache);
