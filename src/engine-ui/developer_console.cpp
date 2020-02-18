@@ -41,6 +41,12 @@ void engineui::developer_console::draw()
         auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input), ImGuiInputTextFlags_EnterReturnsTrue);
         if (pressed && strcmp(_input, "exit") == 0)
             glfwSetWindowShouldClose(_window, true);
+        if (pressed && strcmp(_input, "noclip") == 0)
+        {
+            noclip triggeredEvent;
+            _events.BroadcastEvent(triggeredEvent);
+        }
+            
     }
         break;
     case 1:

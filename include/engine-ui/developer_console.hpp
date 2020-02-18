@@ -10,6 +10,12 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+class noclip : public event::Event
+{
+public:
+	noclip() : Event(event::EVENT_TYPE::TOGGLE_NOCLIP) {}
+};
+
 namespace engineui
 {
 

@@ -8,10 +8,22 @@
 #include <event/event_manager.hpp>
 
 
-class fly_cam : public ecs::system_base
+class fly_cam : public ecs::system_base, public event::Listener
 {
 public:
-	fly_cam(core::game_input_manager& input, core::frame_timer& timer) : m_input(input), m_timer(timer) {}
+	fly_cam(core::game_input_manager& input, core::frame_timer& timer, event::EventManager& _event_manager) : m_input(input), m_timer(timer), event_manager(_event_manager)
+	{
+		event_manager.Subscribe(this, event::EVENT_TYPE::TOGGLE_NOCLIP);
+	}
+
+	void HandleEvent(event::Event& event)
+	{
+		if (event.mType == event::EVENT_TYPE::TOGGLE_NOCLIP)
+		{
+			std::cerr << "Event recieved" << std::endl;
+			noclips = !noclips;
+		}
+	}
 
 	virtual void update(ecs::state& r_state) override
 	{
@@ -25,17 +37,23 @@ public:
 				// Non physics movement for the plebians
 				//transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 10.f;
 				//transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * 10.f;
-
-				// Chad physics flying
-				//rigid_body.forces += -m_input.forward() * fwd * 10.f;
-				//rigid_body.forces += -m_input.strafe() * right * 10.f;
-
-				// Semi-Chad physics walking
-				fwd.y = 0;
-				right.y = 0;
-				auto speed = 600.f;
-				rigid_body.forces += -m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
-				rigid_body.forces += -m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
+				if (noclips)
+				{
+					// Chad physics flying
+					rigid_body.grav_muliplier = 0;
+					rigid_body.forces += -m_input.forward() * fwd * 10.f;
+					rigid_body.forces += -m_input.strafe() * right * 10.f;
+				}
+				else
+				{
+					// Semi-Chad physics walking
+					rigid_body.grav_muliplier = 1;
+					fwd.y = 0;
+					right.y = 0;
+					auto speed = 600.f;
+					rigid_body.forces += -m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
+					rigid_body.forces += -m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
+				}
 
 				auto turn_speed = 2.f;
 				transform.rotation.y -= m_input.yaw() *  m_timer.smoothed_delta_secs() * turn_speed;
@@ -50,8 +68,6 @@ public:
 					JUMP_POWA = 0.f;
 				}
 
-
-
 			transform.is_matrix_dirty = true;
 			camera.is_view_dirty = true;
 		});
@@ -60,8 +76,10 @@ public:
 private:
 	float m_rotation_speed = .001f;
 	float JUMP_POWA = 0.0f;
+	bool noclips = false;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
+	event::EventManager& event_manager;
 };
 
 #endif

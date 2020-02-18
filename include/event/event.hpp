@@ -11,6 +11,7 @@ namespace event {
 	enum class EVENT_TYPE {
 		EXPLOSION, // Example event
 		CONSOLE_COMMAND,
+		TOGGLE_NOCLIP,
 		NUM
 	};
 

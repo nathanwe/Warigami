@@ -72,7 +72,7 @@ int main(int argc, char** argv)
     rendering::camera_updater camera_updater;
     audio::audio_system audio_system(strings, assets);
 	spinner spinner(timer);
-    fly_cam flycam(input, timer);
+    fly_cam flycam(input, timer, events);
     box_move boxmove(timer, input);
 	board_path_movement_system board_path_movement(timer);
     ecs::systems systems({ &transformer, &camera_updater, &renderer, &flycam, &boxmove, &audio_system, &spinner, &physics_update, &board_path_movement });
