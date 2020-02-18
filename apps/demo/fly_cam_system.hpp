@@ -37,25 +37,27 @@ public:
 				// Non physics movement for the plebians
 				//transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 10.f;
 				//transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * 10.f;
+
+				auto speed = 70.f;
+				
 				if (noclips)
 				{
 					// Chad physics flying
 					rigid_body.grav_muliplier = 0;
-					rigid_body.forces += -m_input.forward() * fwd * 500.f;
-					rigid_body.forces += -m_input.strafe() * right * 500.f;
+					rigid_body.forces += -m_input.forward() * fwd * speed;
+					rigid_body.forces += -m_input.strafe() * right * speed;
 				}
 				else
 				{
 					// Semi-Chad physics walking
 					rigid_body.grav_muliplier = 1;
 					fwd.y = 0;
-					right.y = 0;
-					auto speed = 60000.f;
-					rigid_body.forces += -m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
-					rigid_body.forces += -m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
+					right.y = 0;					
+					rigid_body.forces += -m_input.forward() * fwd * speed;
+					rigid_body.forces += -m_input.strafe() * right * speed;
 				}
 
-				auto turn_speed = 200.f;
+				auto turn_speed = 5.f;
 				transform.rotation.y -= m_input.yaw() *  m_timer.smoothed_delta_secs() * turn_speed;
 				transform.rotation.x -= m_input.pitch() * m_timer.smoothed_delta_secs() * turn_speed;
 
