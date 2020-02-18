@@ -41,7 +41,7 @@ int main(int argc, char** argv)
     core::game_input_manager input(glfw.window());
     core::frame_timer timer;
 	core::cursor_state cursor(glfw.window());
-	EventManager events;
+	event::EventManager events;
 
     // init ecs state
     ecs::archetype_pools memory;

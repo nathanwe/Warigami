@@ -7,7 +7,7 @@
 #include <imgui_impl_opengl3.h>
 
 
-engineui::entities_view::entities_view(core::viewport& viewport, EventManager& events, ecs::state& r_ecs_state) : 
+engineui::entities_view::entities_view(core::viewport& viewport, event::EventManager& events, ecs::state& r_ecs_state) : 
     view(viewport), _events(events), m_r_ecs_state(r_ecs_state), tree(m_r_ecs_state)
 {
 }

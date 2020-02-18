@@ -5,6 +5,7 @@
 #include <rendering/camera.hpp>
 #include <core/game_input_manager.hpp>
 #include <core/frame_timer.hpp>
+#include <event/event_manager.hpp>
 
 
 class fly_cam : public ecs::system_base

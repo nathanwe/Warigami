@@ -24,7 +24,7 @@ namespace engineui
 		static const std::uint32_t InspectorHeight = 200;
 
 	public:
-		entities_view(core::viewport& viewport, EventManager& events, ecs::state& r_ecs_state);
+		entities_view(core::viewport& viewport, event::EventManager& events, ecs::state& r_ecs_state);
 
 		void draw();
 
@@ -33,7 +33,7 @@ namespace engineui
 	private:
 		std::list<entity_id> _entities;
 
-		EventManager& _events;
+		event::EventManager& _events;
 
 		ecs::state& m_r_ecs_state;
 		transform_tree tree;

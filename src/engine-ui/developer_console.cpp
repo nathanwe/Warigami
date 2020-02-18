@@ -8,7 +8,7 @@
 
 
 
-engineui::developer_console::developer_console(core::viewport& viewport, EventManager& events, GLFWwindow* window) 
+engineui::developer_console::developer_console(core::viewport& viewport, event::EventManager& events, GLFWwindow* window) 
     : view(viewport)
     , _events(events)
     , _window(window)
