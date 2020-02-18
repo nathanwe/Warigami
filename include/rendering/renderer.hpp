@@ -2,6 +2,7 @@
 #define WIZARDPEOPLE_RENDERING_RENDERER_HPP
 
 #include "asset/asset_manager.hpp"
+#include "core/frame_timer.hpp"
 #include "core/viewport.hpp"
 #include "ecs/ecs_types.hpp"
 #include "ecs/state.hpp"
@@ -28,7 +29,7 @@ namespace rendering
 	class renderer : public ecs::system_base
 	{
 	public:
-		renderer(GLFWwindow* window, core::viewport window_view, bool is_de, asset_cache& cache, asset::asset_manager& assets);
+		renderer(GLFWwindow* window, core::viewport window_view, bool is_debug, asset_cache& cache, asset::asset_manager& assets, const core::frame_timer& time);
 
 	public:
 		virtual void update(ecs::state& state) override;
@@ -63,6 +64,7 @@ namespace rendering
 		void run_pass_debug_velocity(ecs::state& ecs_state, const camera& cam, entity_id active_camera_id);
 
 	private:
+		const core::frame_timer& _time;
 		bool _is_debug = false;
 		GLFWwindow* _window = nullptr;
 		core::viewport _window_view;
@@ -74,6 +76,8 @@ namespace rendering
 		mesh_static _mesh_arrow;
 		render_state _render_state;
 		glm::vec3 _debug_collider_color = glm::vec3(0, 1, 0);
+		float time_between_messages = 0.25f;
+		float last_message_time = 0.f;
 	};
 }
 
