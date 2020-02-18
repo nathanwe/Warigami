@@ -20,7 +20,7 @@ namespace engineui
 		static const std::uint32_t Height = 256;
 
 	public:
-		developer_console(core::viewport& viewport, EventManager& events, GLFWwindow* window);
+		developer_console(core::viewport& viewport, event::EventManager& events, GLFWwindow* window);
 		void draw();
 
 	private:
@@ -28,7 +28,7 @@ namespace engineui
 		static char _outbuf[BUFSIZ];
 		static char _errbuf[BUFSIZ];
 
-		EventManager& _events;
+		event::EventManager& _events;
 		GLFWwindow* _window;
 
 		char _command[BufSize]{ "" };
