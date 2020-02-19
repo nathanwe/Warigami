@@ -200,37 +200,40 @@
     },
     {
       "entity_id": 9,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 30, 10, 160 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/dude/dude.gltf",
-          "texture_diffuse": "assets/textures/dude/texture.png"
-        },
-        {
-          "type": "game_piece",
-          "succ": 7
-        },
-        {
-          "type": "hit_points"
-        },
-        {
-          "type": "audio_emitter",
-          "sounds": [
+        "components": [
             {
-              "file": "assets/Wilhelm.mp3",
-              "loop": false,
-              "volume": 0.035
+                "type": "transform",
+                "position": [ 30, 5, 160 ],
+                "scale": [ 1, 1, 1 ]
+            },
+            {
+                "type": "renderable_mesh_static",
+                "mesh": "assets/meshes/dude/dude.gltf",
+                "texture_diffuse": "assets/textures/dude/texture.png"
+            },
+            {
+                "type": "game_piece",
+                "succ": 7
+            },
+            {
+                "type": "hit_points"
+            },
+            {
+                "type": "board_path_movement"
+            },
+            {
+                "type": "audio_emitter",
+                "sounds": [
+                    {
+                        "file": "assets/Wilhelm.mp3",
+                        "loop": false,
+                        "volume": 0.035
+                    }
+                ]
             }
-          ]
-        }
 
 
-      ]
+        ]
     },
     {
       "entity_id": 8, 

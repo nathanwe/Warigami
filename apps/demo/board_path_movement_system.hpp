@@ -4,6 +4,7 @@
 #include <transforms/transform.hpp>
 #include <rendering/camera.hpp>
 #include <core/game_input_manager.hpp>
+
 #include <core/frame_timer.hpp>
 #include <collisions/collision_manager.hpp>
 #include "components/game_piece.hpp"
@@ -16,7 +17,7 @@
 class board_path_movement_system : public ecs::system_base
 {
 public:
-	board_path_movement_system(core::frame_timer& timer) : m_timer(timer) {}
+	board_path_movement_system(core::game_input_manager& input, core::frame_timer& timer) : m_input(input), m_timer(timer) {}
 
 	void add_path(ecs::state& r_state, int subject_id, std::list<glm::vec2> locations) {
 		glm::vec3 board_position, board_scale = { 0,0,0 };
@@ -32,14 +33,14 @@ public:
 			ecs::entity& foo = r_state.find_entity(subject_id);
 			if (foo.has<components::board_path_movement>()) {
 				components::board_path_movement& bp = foo.get_component< components::board_path_movement>();
-				assert(bp.path.size() == 0);
+				//assert(bp.path.size() == 0);
 
 				glm::vec3 true_location;
 				std::list<glm::vec2>::iterator it;
 				for (it = locations.begin(); it != locations.end(); it++) {
 					true_location.x = it->x * board_scale.x + board_position.x;
 					true_location.z = it->y * board_scale.z + board_position.z;
-					true_location.y = 5 * board_scale.y + board_position.y;
+					true_location.y = 3 * board_scale.y + board_position.y;
 					bp.path.push_back(true_location);
 				}
 
@@ -80,14 +81,19 @@ public:
 				
 			});
 		// move in loops systme
-		r_state.each< transforms::transform, components::board_path_movement>([&](transforms::transform& transform, components::board_path_movement& board_path)
+		r_state.each_id< transforms::transform, components::board_path_movement>([&](entity_id id, transforms::transform& transform, components::board_path_movement& board_path)
 			{
 				
 				
-				std::list<glm::vec2> locations = { { 3,1 }, { -2,0 }, { -2, 1 }, { -2, 3}, {-2, 0} };
-				if (board_path.path.size() == 0)
-				{
-					add_path(r_state, 10, locations);
+				const std::list<glm::vec2> locations1 = { { -3,4 }, { -3,1 }, { -2, 1 }, { -2, 4}, {-1, 4}, {-1, 1}, {0, 1}, {0, 0}, {-3, 4} };
+				const std::list<glm::vec2> locations2 = { { 3,-4 }, { 3,-1 }, { 2, -1 }, { 2, -4}, {1, -4}, {1, -1}, {0, -1}, {0, 0}, {3, -4} };
+				if (m_input.is_input_started(core::controls::ACTION4_CONTROL)){
+					if (id == 10) {
+						add_path(r_state, 10, locations1);
+					}
+					if (id == 9) {
+						add_path(r_state, 9, locations2);
+					}
 				}
 
 					
@@ -97,6 +103,7 @@ public:
 
 private:
 	core::frame_timer& m_timer;
+	core::game_input_manager& m_input;
 };
 
 #endif

@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
 
 
 	audio::audio_system audio_system(strings, assets);
-	board_path_movement_system board_path_movement(timer);
+	board_path_movement_system board_path_movement(input, timer);
 	box_move boxmove(timer, input);
 	collisions::collision_manager collision_manager;
 	disco_light discolight(timer, glm::vec3(0, 3, 0));
