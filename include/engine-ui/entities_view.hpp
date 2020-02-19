@@ -11,6 +11,7 @@
 #include "transforms/transform.hpp"
 #include <ecs/ecs_types.hpp>
 #include "engine-ui/transform_tree.hpp"
+#include <ecs/entity.hpp>
 
 namespace engineui
 {
@@ -37,6 +38,7 @@ namespace engineui
 
 		ecs::state& m_r_ecs_state;
 		transform_tree tree;
+		ecs::entity* _current_entity_selected;
 	};
 
 }
