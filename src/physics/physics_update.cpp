@@ -80,8 +80,8 @@ namespace physics
 			{
 				transform.prev_position = transform.position;
 
-				rigid_body.forces.y += GRAVITY * rigid_body.grav_muliplier;
 				rigid_body.acceleration = rigid_body.forces * rigid_body.inv_mass;
+				rigid_body.acceleration.y += GRAVITY * rigid_body.grav_muliplier;
 				rigid_body.forces = glm::vec3(0);
 
 				rigid_body.velocity *= rigid_body.lul_friction;
@@ -89,6 +89,7 @@ namespace physics
 				rigid_body.velocity += rigid_body.acceleration * frame_manager.smoothed_delta_secs();
 				transform.position += rigid_body.velocity * frame_manager.smoothed_delta_secs();
 
+				transform.is_matrix_dirty = true;
 			});
 	}
 }

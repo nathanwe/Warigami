@@ -12,7 +12,7 @@ void collisions::rigid_body_loader::load(asset::asset_loader_node& asset_loader_
 	rb.mass = json.value("mass", 0.f);
 	rb.grav_muliplier = json.value("gravity", 1.f);
 	rb.lul_friction = json.value("friction", 0.993f);
-	rb.inv_mass = -rb.mass;
+	rb.inv_mass = 1.f / rb.mass;
 
 	if (json.find("acceleration") != json.end())
 	{
