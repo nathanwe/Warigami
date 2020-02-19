@@ -24,15 +24,15 @@ namespace rendering
         asset::asset_manager& _assets;
         rendering::asset_cache& _render_cache;
 
-        void build_animation_component(aiScene* mesh, renderable_mesh_rigged& component);
-        animation_time tick_to_time(double ticks_per_second, double ticks) const;
+        void build_animation_component(const aiScene* mesh, renderable_mesh_rigged& component);
 
         void load_nodes_recurse(
             aiNode* ai_node, 
             skeleton_node* node, 
             renderable_mesh_rigged& mesh,
-            std::unordered_map<std::string, skeleton_node*>& name_to_node) const;
+            std::unordered_map<std::string, skeleton_node*>& name_to_node);
 
+        animation_time tick_to_time(double ticks_per_second, double ticks) const;
         glm::mat4 map_matrix(aiMatrix4x4& aimat) const;
         glm::vec3 map_vec3(aiVector3D& vec) const;
         glm::quat map_quat(aiQuaternion q) const;

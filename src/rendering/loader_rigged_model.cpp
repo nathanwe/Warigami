@@ -29,7 +29,7 @@ void rendering::loader_rigged_model::load(asset::asset_loader_node& asset_loader
     build_animation_component(ai_resource.assimp_scene, mesh);
 }
 
-void rendering::loader_rigged_model::build_animation_component(aiScene* scene, renderable_mesh_rigged& component)
+void rendering::loader_rigged_model::build_animation_component(const aiScene* scene, renderable_mesh_rigged& component)
 {
     std::unordered_map<std::string, skeleton_node*> name_to_node;
     auto* ai_root = scene->mRootNode;
@@ -60,7 +60,7 @@ void rendering::loader_rigged_model::build_animation_component(aiScene* scene, r
             {           
                 auto& pos_key = ai_bone->mPositionKeys[pos_i];
                 auto& pos = node->animations[animation_index].position;
-                pos.times[pos_i] = pos_key.mTime;
+                pos.times[pos_i] = animation_time(pos_key.mTime);
                 pos.values[pos_i] = map_vec3(pos_key.mValue);
             }
                         
@@ -68,7 +68,7 @@ void rendering::loader_rigged_model::build_animation_component(aiScene* scene, r
             {
                 auto& rot_key = ai_bone->mRotationKeys[rot_i];
                 auto& rot = node->animations[animation_index].rotation;
-                rot.times[rot_i] = rot_key.mTime;
+                rot.times[rot_i] = animation_time(rot_key.mTime);
                 rot.values[rot_i] = map_quat(rot_key.mValue);
             }
                         
@@ -76,7 +76,7 @@ void rendering::loader_rigged_model::build_animation_component(aiScene* scene, r
             {
                 auto& scl_key = ai_bone->mScalingKeys[scl_i];
                 auto& scl = node->animations[animation_index].scale;
-                scl.times[scl_i] = scl_key.mTime;
+                scl.times[scl_i] = animation_time(scl_key.mTime);
                 scl.values[scl_i] = map_vec3(scl_key.mValue);                
             }
         }
@@ -87,9 +87,9 @@ void rendering::loader_rigged_model::load_nodes_recurse(
     aiNode* ai_node, 
     skeleton_node* node, 
     renderable_mesh_rigged& mesh,
-    std::unordered_map<std::string, skeleton_node*>& name_to_node) const
+    std::unordered_map<std::string, skeleton_node*>& name_to_node)
 {
-    name_to_node.insert(std::make_pair(ai_node->mName, node));
+    name_to_node.insert(std::make_pair(ai_node->mName.data, node));
     node->base_transform = map_matrix(ai_node->mTransformation);
 
     for (size_t i = 0; i < ai_node->mNumChildren; ++i)
@@ -97,7 +97,7 @@ void rendering::loader_rigged_model::load_nodes_recurse(
         auto* ai_child = ai_node->mChildren[i];
         auto* child = mesh.allocate_node();        
         node->add_child(child);
-        load_nodes_recurse(ai_child, child, mesh);
+        load_nodes_recurse(ai_child, child, mesh, name_to_node);
     }
 }
 
@@ -114,8 +114,7 @@ component_bitset rendering::loader_rigged_model::components_to_load()
 glm::mat4 rendering::loader_rigged_model::map_matrix(aiMatrix4x4& source) const
 {
     // assume that matrix memory layour is the same everywhere...?
-    glm::mat4 target;
-    float* target = glm::value_ptr(node->base_transform);
+    glm::mat4 target;    
     for (size_t i = 0; i < 16; ++i)
         for (size_t j = 0; j < 16; ++j)
             target[i][j] = source[i][j];

@@ -11,15 +11,7 @@
 #include <glm/vec3.hpp>
 
 namespace rendering
-{
-    struct skeletal_animation_frame
-    {
-        glm::quat rotation;
-        glm::vec3 position {0.f};
-        animation_time t {0};
-        float scale {1.f};
-    };
-
+{ 
     template <typename T, std::uint32_t max_frames>
     struct keyframes
     {

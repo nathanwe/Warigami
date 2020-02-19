@@ -140,12 +140,13 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_point.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
      ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp     
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_rigged.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp 
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp      
      ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_rigged.cpp ../include/rendering/loader_rigged_model.hpp rendering/loader_rigged_model.cpp)
+     
+     rendering/loader_rigged_model.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST} )
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
