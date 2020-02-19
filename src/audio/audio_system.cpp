@@ -162,14 +162,14 @@ void audio::audio_system::handle_emitter_sound(
             emitter_sound.set_null();
             break;
         }
+        case sound_state::stopped:
+            break;
         case sound_state::playback_requested:
-        {
             play_sound_3d(emitter_sound);
-        }
         default:
         {
             if (emitter_sound.is_null()) break;
-            
+ 
             check_sound_stopped(emitter_sound);
 
             FMOD_VECTOR pos = { t_pos.x, t_pos.y, t_pos.z };
@@ -178,8 +178,6 @@ void audio::audio_system::handle_emitter_sound(
             emitter_sound.fmod_channel->setVolume(emitter_sound.volume);
         }
     }
-
-    emitter_sound.state = sound_state::unchanged;
 }
 
 void audio::audio_system::check_sound_stopped(emitter_sound& emitter_sound)

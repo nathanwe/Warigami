@@ -23,8 +23,16 @@ public:
 			components::card& card, 
 			audio::audio_emitter& emitter)
 			{
-				if (emitter.emitter_sounds[0].state != audio::playing)
+				if (card.timer <= 0.f)
+				{
+					rigid_body.forces.y += 20000.f;
 					emitter.set_sound_state(0, audio::playback_requested);
+					card.timer = 5.f;
+				}
+				else
+				{
+					card.timer -= m_timer.smoothed_delta_secs();
+				}
 				
 				transform.is_matrix_dirty = true;
 			});

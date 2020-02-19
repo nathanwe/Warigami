@@ -20,10 +20,6 @@ namespace components
 
 		float range = 10.0f;
 		float damage = 10.0f;
-
-		float time_since_last_scream = 0.0f;
-		float scream_delay = 1.0f;
-
 	};
 }
 

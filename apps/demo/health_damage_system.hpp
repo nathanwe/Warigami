@@ -18,12 +18,19 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each_id< transforms::transform, components::hit_points, audio::audio_emitter>([&](entity_id id1, transforms::transform& transform1, components::hit_points& hp1, audio::audio_emitter& emitter1)
+		r_state.each_id< transforms::transform, components::hit_points, audio::audio_emitter>([&](
+			entity_id id1, 
+			transforms::transform& transform1, 
+			components::hit_points& hp1, 
+			audio::audio_emitter& emitter1)
 			{
-				r_state.each_id< transforms::transform, components::hit_points, audio::audio_emitter>([&](entity_id id2, transforms::transform& transform2, components::hit_points& hp2, audio::audio_emitter& emitter2)
+				r_state.each_id< transforms::transform, components::hit_points, audio::audio_emitter>([&](
+					entity_id id2, 
+					transforms::transform& transform2, 
+					components::hit_points& hp2, 
+					audio::audio_emitter& emitter2)
 					{
-						if (id1 != id2) {
-							hp2.time_since_last_scream += m_timer.delta_secs();
+						if (id1 != id2) {							
 							glm::vec3 dist_vec = transform1.position - transform2.position;
 							float dist = glm::length(dist_vec);
 							if (dist <= hp1.range) {
@@ -33,10 +40,9 @@ public:
 									hp2.current_hp = 0;
 								}
 								
-								if (hp2.time_since_last_scream >= hp2.scream_delay) {
-									hp2.time_since_last_scream = 0;
+								auto can_play = emitter2.emitter_sounds[0].state != audio::playing;
+								if (can_play)
 									emitter2.set_sound_state(0, audio::playback_requested);
-								}
 							}
 						}
 					});
