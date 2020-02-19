@@ -34,18 +34,19 @@ public:
 				auto right = glm::vec3(camera_world[0]);
 				//auto up = glm::vec3(camera_world[1]);
 
-				// Non physics movement for the plebians
-				//transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * 10.f;
-				//transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * 10.f;
+				auto speed = 20.f;
+				/*
+				// Chad physics flying
+				rigid_body.forces += m_input.forward() * fwd * speed;
+				rigid_body.forces += m_input.strafe() * right * speed;
+				*/
 
-				auto speed = 70.f;
-				
 				if (noclips)
 				{
-					// Chad physics flying
+					// Non physics movement for the plebians
 					rigid_body.grav_muliplier = 0;
-					rigid_body.forces += m_input.forward() * fwd * speed;
-					rigid_body.forces += m_input.strafe() * right * speed;
+					transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
+					transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
 				}
 				else
 				{
@@ -57,9 +58,16 @@ public:
 					rigid_body.forces += m_input.strafe() * right * speed;
 				}
 
+				if (m_input.is_input_ended(core::controls::DEVELOPER_CONSOLE)) {
+					mouseToggle = !mouseToggle;
+				}
+
 				auto turn_speed = 5.f;
-				transform.rotation.y -= m_input.yaw() *  m_timer.smoothed_delta_secs() * turn_speed;
-				transform.rotation.x -= m_input.pitch() * m_timer.smoothed_delta_secs() * turn_speed;
+				if (mouseToggle)
+				{
+					transform.rotation.y -= m_input.yaw() * m_timer.smoothed_delta_secs() * turn_speed;
+					transform.rotation.x -= m_input.pitch() * m_timer.smoothed_delta_secs() * turn_speed;
+				}
 
 				if (m_input.is_input_active(core::controls::ACTION1_CONTROL) && JUMP_POWA <= 2000.f) {
 					JUMP_POWA += 50.f;
@@ -79,6 +87,7 @@ private:
 	float m_rotation_speed = .001f;
 	float JUMP_POWA = 0.0f;
 	bool noclips = false;
+	bool mouseToggle = true;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
