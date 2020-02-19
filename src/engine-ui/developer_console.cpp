@@ -36,21 +36,22 @@ void engineui::developer_console::draw()
 
     switch (output_type)
     {
-    case 0: {
-        ImGui::InputTextMultiline("##cmd", _command, IM_ARRAYSIZE(_command), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
+        case 0: {
+            ImGui::InputTextMultiline("##cmd", _command, IM_ARRAYSIZE(_command), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
 
-        ImGui::SetKeyboardFocusHere();
-        auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input), ImGuiInputTextFlags_EnterReturnsTrue);
-        if (pressed && strcmp(_input, "exit") == 0)
-            glfwSetWindowShouldClose(_window, true);
+            ImGui::SetKeyboardFocusHere();
+            auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input), ImGuiInputTextFlags_EnterReturnsTrue);
+            if (pressed && strcmp(_input, "exit") == 0)
+                glfwSetWindowShouldClose(_window, true);
 
-        if (pressed && strcmp(_input, "noclip") == 0)
-        {
-            noclip triggeredEvent;
-            _events.BroadcastEvent(triggeredEvent);
+            if (pressed && strcmp(_input, "noclip") == 0)
+            {
+                noclip triggeredEvent;
+                _events.BroadcastEvent(triggeredEvent);
+            }
+
         }
-            
-    }
+            break;
         break;
     case 1:
         write_buffer(_output, _outbuf);
