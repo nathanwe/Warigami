@@ -275,7 +275,7 @@
                 {
                     "type": "transform",
                     "position": [-54, 0, 33],
-                    "scale": [5, 5, 35]
+                    "scale": [5, 5, 5]
                 }
             ]
         }

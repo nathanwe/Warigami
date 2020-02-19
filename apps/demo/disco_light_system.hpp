@@ -9,7 +9,7 @@
 class disco_light : public ecs::system_base
 {
 public:
-	disco_light(core::frame_timer& timer, glm::vec3 center = glm::vec3(0,0,0)) : m_timer(timer), t(0), dir(1), color(0), angle(0), center(center) {}
+	disco_light(core::frame_timer& timer, glm::vec3 center = glm::vec3(0,0,0)) : m_timer(timer), t(0), dir(1), color(0), angle(0), center(0.f) {}
 
 	virtual void update(ecs::state& r_state) override
 	{
@@ -18,6 +18,9 @@ public:
 		        rendering::light_point& light_point,
                 components::disco_light& disco)
 		{
+		    if (center.x == 0 && center.y == 0 && center.z == 0)
+		        center = transform.local_to_world[3];
+
 			// Circles around center
 			angle += m_timer.smoothed_delta_secs();
 			transform.position = center + glm::vec3(sinf(angle), 0, cosf(angle));
