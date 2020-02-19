@@ -6,6 +6,8 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 
 engineui::entities_view::entities_view(core::viewport& viewport, event::EventManager& events, ecs::state& r_ecs_state) :
         view(viewport), _events(events), m_r_ecs_state(r_ecs_state), tree(m_r_ecs_state), _current_entity_selected(nullptr)
@@ -56,28 +58,22 @@ void engineui::entities_view::draw()
         ImGui::Text("Select an entity");
     }
     else {
+        auto archetype = _current_entity_selected->archetype_id();
+        transforms::transform* tr = &_current_entity_selected->get_component<transforms::transform>();
+
         ImGui::Text("Entity %s", std::to_string(_current_entity_selected->id()).c_str());
         ImGui::Indent();
-        auto archetype = _current_entity_selected->archetype_id();
         ImGui::Text("Archetype id: %llu", archetype);
-        /*ImGui::Text("Components:");
-        ImGui::Indent();*/
         ImGui::Text("Transform:");
-        transforms::transform* tr = &_current_entity_selected->get_component<transforms::transform>();
+
         if (tr != nullptr) {
             ImGui::Indent();
-            ImGui::Text("x: %.2f", tr->position.x);
-            ImGui::Text("y: %.2f", tr->position.y);
-            ImGui::Text("z: %.2f", tr->position.z);
-            ImGui::Text("rotation x: %.2f", tr->rotation.x);
-            ImGui::Text("rotation y: %.2f", tr->rotation.y);
-            ImGui::Text("rotation z: %.2f", tr->rotation.z);
-            ImGui::Text("scale x: %.2f", tr->scale.x);
-            ImGui::Text("scale y: %.2f", tr->scale.y);
-            ImGui::Text("scale z: %.2f", tr->scale.z);
+            ImGui::InputFloat3("pos", glm::value_ptr(tr->position));
+            ImGui::InputFloat3("rot", glm::value_ptr(tr->rotation));
+            ImGui::InputFloat3("scl", glm::value_ptr(tr->scale));
             ImGui::Unindent();
         }
-        //ImGui::Unindent();
+
     }
 
     ImGui::Unindent();

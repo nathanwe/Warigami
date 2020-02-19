@@ -39,7 +39,7 @@ public:
 				for (it = locations.begin(); it != locations.end(); it++) {
 					true_location.x = it->x * board_scale.x + board_position.x;
 					true_location.z = it->y * board_scale.z + board_position.z;
-					true_location.y = 0 * board_scale.y + board_position.y;
+					true_location.y = 5 * board_scale.y + board_position.y;
 					bp.path.push_back(true_location);
 				}
 

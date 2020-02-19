@@ -53,8 +53,8 @@ public:
 					rigid_body.grav_muliplier = 1;
 					fwd.y = 0;
 					right.y = 0;					
-					rigid_body.forces += -m_input.forward() * fwd * speed;
-					rigid_body.forces += -m_input.strafe() * right * speed;
+					rigid_body.forces += m_input.forward() * fwd * speed;
+					rigid_body.forces += m_input.strafe() * right * speed;
 				}
 
 				auto turn_speed = 5.f;
@@ -66,12 +66,9 @@ public:
 				}
 
 				if (m_input.is_input_ended(core::controls::ACTION1_CONTROL)) {
-					rigid_body.forces.y -= JUMP_POWA * 0.5f;
+					rigid_body.forces.y += JUMP_POWA * 0.5f;
 					JUMP_POWA = 0.f;
 				}
-
-
-				std::cout << "x:" << transform.position.x << "  z:" << transform.position.z << "  y:" << transform.position.y << std::endl;
 
 			transform.is_matrix_dirty = true;
 			camera.is_view_dirty = true;

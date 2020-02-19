@@ -15,9 +15,34 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each< transforms::transform, collisions::AABB_collider, collisions::rigid_body, components::game_piece>([&](transforms::transform& transform, collisions::AABB_collider& aabb_collider, collisions::rigid_body& rigid_body, components::game_piece& game_piece)
+		r_state.each< transforms::transform, collisions::AABB_collider, collisions::rigid_body, components::card, audio::audio_emitter>
+		([&](transforms::transform& transform, collisions::AABB_collider& aabb_collider, collisions::rigid_body& rigid_body, components::card& card, audio::audio_emitter& emitter)
 			{
-				if (m_input.is_input_active(core::controls::ACTION2_CONTROL))
+				if (card.timer <= 0.f) 
+				{
+					rigid_body.forces.y += 20000.f;
+					emitter.set_sound_state(0, audio::playback_requested);
+					card.timer = 5.f;
+				} 
+				else
+				{
+					card.timer -= m_timer.smoothed_delta_secs();
+				}
+				transform.is_matrix_dirty = true;
+			});
+	}
+
+private:
+	glm::vec4 dir;
+	int lap = 0;
+	core::frame_timer& m_timer;
+	core::game_input_manager& m_input;
+};
+
+#endif
+
+/*
+if (m_input.is_input_active(core::controls::ACTION2_CONTROL))
 				{
 					if (lap == 0 && transform.rotation.y >= glm::radians(360.f))
 					{
@@ -45,15 +70,4 @@ public:
 
 					rigid_body.forces += 20.f * glm::vec3(dir);
 				}
-				transform.is_matrix_dirty = true;
-			});
-	}
-
-private:
-	glm::vec4 dir;
-	int lap = 0;
-	core::frame_timer& m_timer;
-	core::game_input_manager& m_input;
-};
-
-#endif
+*/

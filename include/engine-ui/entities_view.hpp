@@ -21,8 +21,8 @@ namespace engineui
 		static const std::uint32_t Width = 200;
 		static const std::uint32_t Height = 200;
 
-		static const std::uint32_t InspectorWidth = 200;
-		static const std::uint32_t InspectorHeight = 200;
+		static const std::uint32_t InspectorWidth = 264;
+		static const std::uint32_t InspectorHeight = 300;
 
 	public:
 		entities_view(core::viewport& viewport, event::EventManager& events, ecs::state& r_ecs_state);

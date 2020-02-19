@@ -17,7 +17,7 @@ namespace components
 	{
 		// Tracking board-state
 		//glm::vec2 foo = { 1,1 };
-		std::list<glm::vec3> path = { {3,3,3},{-3,3,3},{-3,-3,3},{3,-3,3},{3,-3,-3}, {0,0,0} };
+		std::list<glm::vec3> path = { };
 		float speed = 10.0f; // squares/sec
 		
 	};

@@ -16,6 +16,7 @@ namespace components
 		float armor = 0.f;
 		float health = 0.f;
 		float cost = 0.f;
+		float timer = 5.0f;
 	};
 }
 
