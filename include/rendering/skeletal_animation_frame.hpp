@@ -12,11 +12,10 @@ namespace rendering
 {
     struct skeletal_animation_frame
     {
-        float t {0};
-        float scale {1.f};
         glm::quat rotation;
         glm::vec3 position {0.f};
-
+        float t {0};
+        float scale {1.f};
     };
 }
 

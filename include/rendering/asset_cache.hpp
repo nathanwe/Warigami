@@ -26,7 +26,10 @@ namespace rendering
 		asset::asset_manager& _assets;
 		std::map<std::string, cube_map> _cube_maps;
 		std::map<std::string, mesh_static> _mesh_statics;
-		std::map<std::string, texture> _textures;		
+		std::map<std::string, texture> _textures;
+
+		void make_static_mesh(mesh_static& mesh, asset::proto_mesh& proto);
+		void make_rigged_mesh(mesh_static& mesh, asset::proto_mesh& proto);
 	};
 
 	template <>

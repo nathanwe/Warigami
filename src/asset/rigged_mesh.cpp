@@ -3,15 +3,14 @@
 #include <asset/rigged_mesh.hpp>
 
 
-
-asset::rigged_mesh::rigged_mesh(aiScene* scene)
+asset::rigged_mesh::rigged_mesh(aiMesh *assimp_mesh)
 {
-    auto assimp_mesh = scene->mMeshes[0];
-
+    build_vertices(assimp_mesh);
 
 }
 
-std::vector<asset::rigged_vertex> asset::rigged_mesh::build_vertices(aiMesh *assimp_mesh) {
+void asset::rigged_mesh::build_vertices(aiMesh *assimp_mesh)
+{
     // Reorganize data into array of struct instead of separate arrays
     std::vector<rigged_vertex> vertices;
     std::vector<uint32_t> indices;
@@ -51,5 +50,29 @@ std::vector<asset::rigged_vertex> asset::rigged_mesh::build_vertices(aiMesh *ass
         indices.emplace_back(assimp_mesh->mFaces[i].mIndices[2]);
     }
     _num_indices = indices.size();
-    return vertices;
+}
+
+void asset::rigged_mesh::set_bone_weights(aiMesh *mesh)
+{
+    for (std::uint32_t bone_index = 0; bone_index < mesh->mNumBones; ++bone_index)
+    {
+        auto& bone = mesh->mBones[bone_index];
+
+        for (std::uint32_t weight_index = 0; weight_index < bone->mNumWeights; ++weight_index)
+        {
+            auto& weight = bone->mWeights[weight_index];
+            auto& vertex = _vertices[weight.mVertexId];
+            vertex.add_weight(bone_index, weight.mWeight);
+        }
+    }
+}
+
+std::vector<asset::rigged_vertex> &asset::rigged_mesh::vertices()
+{
+    return _vertices;
+}
+
+std::vector<std::uint32_t > &asset::rigged_mesh::indices()
+{
+    return _indices;
 }

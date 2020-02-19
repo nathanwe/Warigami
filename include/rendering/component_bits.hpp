@@ -10,7 +10,8 @@ namespace rendering
 		camera                 = 1,
 		light_directional      = 2,
 		light_point            = 3,
-		renderable_mesh_static = 4
+		renderable_mesh_static = 4,
+        renderable_mesh_rigged = 5
 	};
 }
 

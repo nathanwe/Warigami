@@ -19,6 +19,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <asset/rigged_mesh.hpp>
 
 namespace rendering
 {
@@ -64,7 +65,7 @@ namespace rendering
 		glDeleteBuffers(buffers.size(), &buffers[0]);
 	}
 
-	template <>
+    template <>
 	cube_map& asset_cache::get<cube_map>(std::array<std::string, 6> const& filepaths)
 	{
 		using namespace gl;
@@ -148,80 +149,128 @@ namespace rendering
 	template <>
 	mesh_static& asset_cache::get<mesh_static>(std::string const& filepath)
 	{
-		using namespace gl;
 
 		auto& r_mesh = _mesh_statics[filepath];
 		if (r_mesh.vao == 0)
 		{
 			asset::proto_mesh& proto = _assets.get_proto_mesh(filepath);
 
-			// Reorganize data into array of struct instead of separate arrays
-			std::vector<vertex> vertices;
-			std::vector<uint32_t> indices;
-			vertex swap_vertex;
-			for (size_t i = 0; i < proto.assimp_mesh->mNumVertices; i++)
-			{
-				swap_vertex.position.x = proto.assimp_mesh->mVertices[i].x;
-				swap_vertex.position.y = proto.assimp_mesh->mVertices[i].y;
-				swap_vertex.position.z = proto.assimp_mesh->mVertices[i].z;
-				if (proto.assimp_mesh->HasNormals())
-				{
-					swap_vertex.normal.x = proto.assimp_mesh->mNormals[i].x;
-					swap_vertex.normal.y = proto.assimp_mesh->mNormals[i].y;
-					swap_vertex.normal.z = proto.assimp_mesh->mNormals[i].z;
-				}
-				if (proto.assimp_mesh->HasTextureCoords(0))
-				{
-					swap_vertex.tex_coord.x = proto.assimp_mesh->mTextureCoords[0][i].x;
-					swap_vertex.tex_coord.y = proto.assimp_mesh->mTextureCoords[0][i].y;
-				}
-				if (proto.assimp_mesh->HasTangentsAndBitangents())
-				{
-					swap_vertex.tangent.x = proto.assimp_mesh->mTangents[i].x;
-					swap_vertex.tangent.y = proto.assimp_mesh->mTangents[i].y;
-					swap_vertex.tangent.z = proto.assimp_mesh->mTangents[i].z;
-					swap_vertex.bitangent.x = proto.assimp_mesh->mBitangents[i].x;
-					swap_vertex.bitangent.y = proto.assimp_mesh->mBitangents[i].y;
-					swap_vertex.bitangent.z = proto.assimp_mesh->mBitangents[i].z;
-				}
-				vertices.push_back(swap_vertex);
-			}
-			for (size_t i = 0; i < proto.assimp_mesh->mNumFaces; i++)
-			{
-				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[0]);
-				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[1]);
-				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[2]);
-			}
-			r_mesh.num_indices = indices.size();
-
-			// Create OpenGL representation
-			glGenVertexArrays(1, &r_mesh.vao);
-			glGenBuffers(1, &r_mesh.vbo);
-			glGenBuffers(1, &r_mesh.ebo);
-
-			// Copy data to VRAM
-			glBindVertexArray(r_mesh.vao);
-			glBindBuffer(GL_ARRAY_BUFFER, r_mesh.vbo);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_mesh.ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
-
-			// Register data layout
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, position));
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, normal));
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tex_coord));
-			glEnableVertexAttribArray(3);
-			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tangent));
-			glEnableVertexAttribArray(4);
-			glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, bitangent));
-
-			glBindVertexArray(0);
+			if (proto.assimp_mesh->mNumBones > 0)
+			    make_rigged_mesh(r_mesh, proto);
+            else
+                make_static_mesh(r_mesh, proto);
 
 			_assets.unload_proto_mesh(filepath);
 		}
 		return r_mesh;
 	}
+
+    void asset_cache::make_static_mesh(mesh_static& r_mesh, asset::proto_mesh& proto)
+    {
+        using namespace gl;
+
+        // Reorganize data into array of struct instead of separate arrays
+        std::vector<vertex> vertices;
+        std::vector<uint32_t> indices;
+        vertex swap_vertex;
+        for (size_t i = 0; i < proto.assimp_mesh->mNumVertices; i++)
+        {
+            swap_vertex.position.x = proto.assimp_mesh->mVertices[i].x;
+            swap_vertex.position.y = proto.assimp_mesh->mVertices[i].y;
+            swap_vertex.position.z = proto.assimp_mesh->mVertices[i].z;
+            if (proto.assimp_mesh->HasNormals())
+            {
+                swap_vertex.normal.x = proto.assimp_mesh->mNormals[i].x;
+                swap_vertex.normal.y = proto.assimp_mesh->mNormals[i].y;
+                swap_vertex.normal.z = proto.assimp_mesh->mNormals[i].z;
+            }
+            if (proto.assimp_mesh->HasTextureCoords(0))
+            {
+                swap_vertex.tex_coord.x = proto.assimp_mesh->mTextureCoords[0][i].x;
+                swap_vertex.tex_coord.y = proto.assimp_mesh->mTextureCoords[0][i].y;
+            }
+            if (proto.assimp_mesh->HasTangentsAndBitangents())
+            {
+                swap_vertex.tangent.x = proto.assimp_mesh->mTangents[i].x;
+                swap_vertex.tangent.y = proto.assimp_mesh->mTangents[i].y;
+                swap_vertex.tangent.z = proto.assimp_mesh->mTangents[i].z;
+                swap_vertex.bitangent.x = proto.assimp_mesh->mBitangents[i].x;
+                swap_vertex.bitangent.y = proto.assimp_mesh->mBitangents[i].y;
+                swap_vertex.bitangent.z = proto.assimp_mesh->mBitangents[i].z;
+            }
+            vertices.push_back(swap_vertex);
+        }
+        for (size_t i = 0; i < proto.assimp_mesh->mNumFaces; i++)
+        {
+            indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[0]);
+            indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[1]);
+            indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[2]);
+        }
+        r_mesh.num_indices = indices.size();
+
+        // Create OpenGL representation
+        glGenVertexArrays(1, &r_mesh.vao);
+        glGenBuffers(1, &r_mesh.vbo);
+        glGenBuffers(1, &r_mesh.ebo);
+
+        // Copy data to VRAM
+        glBindVertexArray(r_mesh.vao);
+        glBindBuffer(GL_ARRAY_BUFFER, r_mesh.vbo);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_mesh.ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
+
+        // Register data layout
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, position));
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, normal));
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tex_coord));
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tangent));
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, bitangent));
+
+        glBindVertexArray(0);
+
+    }
+
+    void asset_cache::make_rigged_mesh(mesh_static &r_mesh, asset::proto_mesh& proto)
+    {
+        using namespace gl;
+        asset::rigged_mesh ai_mesh(proto.assimp_mesh);
+        auto& vertices = ai_mesh.vertices();
+        auto& indices = ai_mesh.indices();
+
+        // Create OpenGL representation
+        glGenVertexArrays(1, &r_mesh.vao);
+        glGenBuffers(1, &r_mesh.vbo);
+        glGenBuffers(1, &r_mesh.ebo);
+
+        // Copy data to VRAM
+        glBindVertexArray(r_mesh.vao);
+        glBindBuffer(GL_ARRAY_BUFFER, r_mesh.vbo);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_mesh.ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
+
+        // Register data layout
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, position));
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, normal));
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, tex_coord));
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, tangent));
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, bitangent));
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_INT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, bone_ids));
+        glEnableVertexAttribArray(6);
+        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, weights));
+
+        glBindVertexArray(0);
+    }
 }
