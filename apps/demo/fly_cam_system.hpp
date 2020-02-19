@@ -44,8 +44,8 @@ public:
 				{
 					// Chad physics flying
 					rigid_body.grav_muliplier = 0;
-					rigid_body.forces += -m_input.forward() * fwd * speed;
-					rigid_body.forces += -m_input.strafe() * right * speed;
+					rigid_body.forces += m_input.forward() * fwd * speed;
+					rigid_body.forces += m_input.strafe() * right * speed;
 				}
 				else
 				{

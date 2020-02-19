@@ -22,7 +22,6 @@ namespace engineui
 	class developer_console : public view
 	{
 		static const std::uint16_t BufSize = 4096;
-		static const std::uint16_t InputBufSize = 2048;
 		static const std::uint32_t Height = 256;
 
 	public:
@@ -40,7 +39,9 @@ namespace engineui
 		char _command[BufSize]{ "" };
 		char _output[BufSize]{ "" };
 		char _error[BufSize]{ "" };
-		char _input[InputBufSize]{ "" };
+		char _input[BufSize]{ "" };
+
+		void handle_command();
 
 		void write_buffer(char* output, char* buffer);
 	};

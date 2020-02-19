@@ -46,16 +46,8 @@ void engineui::developer_console::draw()
                 focus_set = true;
             }
 
-            auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input), ImGuiInputTextFlags_EnterReturnsTrue);
-            if (pressed && strcmp(_input, "exit") == 0)
-                glfwSetWindowShouldClose(_window, true);
-
-            if (pressed && strcmp(_input, "noclip") == 0)
-            {
-                noclip triggeredEvent;
-                _events.BroadcastEvent(triggeredEvent);
-            }
-
+            auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input)-1, ImGuiInputTextFlags_EnterReturnsTrue);
+            if (pressed) handle_command();
         }
             break;
         break;
@@ -71,6 +63,23 @@ void engineui::developer_console::draw()
         
     ImGui::PopItemWidth();
     ImGui::End();
+}
+
+void engineui::developer_console::handle_command()
+{
+    if (strcmp(_input, "exit") == 0)
+        glfwSetWindowShouldClose(_window, true);
+
+    if (strcmp(_input, "noclip") == 0)
+    {
+        noclip triggeredEvent;
+        _events.BroadcastEvent(triggeredEvent);
+    }
+    
+    write_buffer(_command, "> ");
+    write_buffer(_command, _input);
+    write_buffer(_command, "\n");
+    _input[0] = '\0';    
 }
 
 void engineui::developer_console::write_buffer(char* output, char* buffer)
