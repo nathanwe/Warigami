@@ -15,11 +15,13 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each< transforms::transform, collisions::AABB_collider, collisions::rigid_body, components::card>([&](transforms::transform& transform, collisions::AABB_collider& aabb_collider, collisions::rigid_body& rigid_body, components::card& card)
+		r_state.each< transforms::transform, collisions::AABB_collider, collisions::rigid_body, components::card, audio::audio_emitter>
+		([&](transforms::transform& transform, collisions::AABB_collider& aabb_collider, collisions::rigid_body& rigid_body, components::card& card, audio::audio_emitter& emitter)
 			{
 				if (card.timer <= 0.f) 
 				{
 					rigid_body.forces.y += 20000.f;
+					emitter.set_sound_state(0, audio::playback_requested);
 					card.timer = 5.f;
 				} 
 				else

@@ -214,6 +214,16 @@
           "gravity": 1.0
         },
         {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/Wilhelm.mp3",
+              "loop": false,
+              "volume": 0.035
+            }
+          ]
+        },
+        {
           "type": "card"
         }
       ]
@@ -247,6 +257,16 @@
           "gravity": 1.0
         },
         {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/Wilhelm.mp3",
+              "loop": false,
+              "volume": 0.035
+            }
+          ]
+        },
+        {
           "type": "card"
         }
       ]
@@ -278,6 +298,16 @@
           "type": "rigid_body",
           "mass": 25.0,
           "gravity": 1.0
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/Wilhelm.mp3",
+              "loop": false,
+              "volume": 0.035
+            }
+          ]
         },
         {
           "type": "card"
