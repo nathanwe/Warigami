@@ -1,301 +1,292 @@
 {
-    "entities": [
+  "entities": [
+    {
+      "entity_id": 1,
+      "components": [
         {
-            "entity_id": 1,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 10, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "camera",
-                    "field_of_view": 1.2,
-                    "clear_setting": "sky_box",
-                    "clear_sky_box": [
-                        "assets/cubemaps/beach/env/px.hdr",
-                        "assets/cubemaps/beach/env/nx.hdr",
-                        "assets/cubemaps/beach/env/py.hdr",
-                        "assets/cubemaps/beach/env/ny.hdr",
-                        "assets/cubemaps/beach/env/pz.hdr",
-                        "assets/cubemaps/beach/env/nz.hdr"
-                    ]
-                },
-                {
-                    "type": "audio_listener"
-                },
-                {
-                    "type": "aabb_collider",
-                    "left": 0.5,
-                    "right": 0.5,
-                    "top": 0.5,
-                    "bottom": 0.5,
-                    "back": 0.5,
-                    "front": 0.5,
-                    "relative": [ 0, -4, 0 ]
-                },
-                {
-                    "type": "rigid_body",
-                    "mass": 1.0
-                }
-            ]
+          "type": "transform",
+          "position": [ 0, 10, 0 ],
+          "scale": [ 1, 1, 1 ]
         },
         {
-            "entity_id": 2,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "aabb_collider",
-                    "left": 500,
-                    "right": 500,
-                    "top": 0.5,
-                    "bottom": 0.5,
-                    "back": 500,
-                    "front": 500,
-                    "relative": [ 0, 1, 0 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/demoroom/demoroom.gltf",
-                    "texture_diffuse": "assets/meshes/demoroom/wall.jpg"
-                }
-            ]
-        },
-
-        {
-            "entity_id": 3,
-            "components": [
-                {
-                    "type": "transform"
-                },
-                {
-                    "type": "light_directional"
-                }
-            ]
-        },
-
-        {
-            "entity_id": 4,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 10, -10 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "AABB_collider",
-                    "left": 1.0,
-                    "right": 1.0,
-                    "top": 1.0,
-                    "bottom": 1.0,
-                    "back": 1.0,
-                    "front": 1.0,
-                    "relative": [ 0, 0, 0 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/cube/cube.obj",
-                    "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
-                },
-                {
-                    "type": "audio_emitter",
-                    "sounds": [
-                        {
-                            "file": "assets/music.mp3",
-                            "loop": true,
-                            "volume": 0.08
-                        }
-                    ]
-                }
-            ]
-        },
-
-
-        {
-            "entity_id": 5,
-            "components": [
-                {
-                    "type": "audio_emitter",
-                    "sounds": [
-                        {
-                            "file": "assets/DejaVu.mp3",
-                            "loop": true,
-                            "volume": 0.1
-                        }
-                    ]
-                },
-                {
-                    "type": "transform",
-                    "position": [ -100, 10, -100 ],
-                    "scale": [ 1, 1, 1 ],
-                    "rotation": [ 0, 90, 0 ]
-                },
-                {
-                    "type": "aabb_collider",
-                    "left": 0.5,
-                    "right": 0.5,
-                    "top": 0.5,
-                    "bottom": 0.5,
-                    "back": 0.5,
-                    "front": 0.5,
-                    "relative": [ 0, -5, 0 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/dude/dude.gltf",
-                    "texture_diffuse": "assets/textures/dude/texture.png"
-                },
-                {
-                    "type": "rigid_body",
-                    "mass": 1.0
-                },
-                {
-                    "type": "game_piece",
-                    "speed": 5.0
-                }
-            ]
-        },
-
-        {
-            "entity_id": 6,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 30, 0 ]
-                },
-                {
-                    "type": "light_point",
-                    "intensity": 900
-                }
-            ]
-        },
-
-        {
-            "entity_id": 7,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 30, 140 ]
-                },
-                {
-                    "type": "light_point",
-                    "intensity": 900
-                }
-            ]
-        },
-
-        {
-            "entity_id": 8,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 50, 30, 50 ]
-                },
-                {
-                    "type": "light_point",
-                    "intensity": 900
-                }
-            ]
-        },
-
-
-        {
-            "entity_id": 9,
-            "prototype": "assets/prototypes/gameboard.json",
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 50, 0, 50 ],
-                    "scale": [ 6, 2, 6 ]
-                }
-            ]
-        },
-
-
-        {
-            "entity_id": 10,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 20, 0, 20 ],
-                    "scale": [ 1, 2, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/dude/dude.gltf",
-                    "texture_diffuse": "assets/textures/dude/texture.png"
-                },
-                {
-                    "type": "board_path_movement"
-                },
-                {
-                    "type": "game_piece",
-                    "succ": 7
-                },
-                {
-                    "type": "hit_points"
-                }
-
-
-            ]
+          "type": "camera",
+          "field_of_view": 1.2,
+          "clear_setting": "sky_box",
+          "clear_sky_box": [
+            "assets/cubemaps/beach/env/px.hdr",
+            "assets/cubemaps/beach/env/nx.hdr",
+            "assets/cubemaps/beach/env/py.hdr",
+            "assets/cubemaps/beach/env/ny.hdr",
+            "assets/cubemaps/beach/env/pz.hdr",
+            "assets/cubemaps/beach/env/nz.hdr"
+          ]
         },
         {
-            "entity_id": 11,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 40, 5, 50 ],
-                    "scale": [ 1, 2, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/dude/dude.gltf",
-                    "texture_diffuse": "assets/textures/dude/texture.png"
-                },
-                {
-                    "type": "game_piece",
-                    "succ": 7
-                },
-                {
-                    "type": "hit_points"
-                }
-
-
-            ]
+          "type": "audio_listener"
         },
-      {
-        "entity_id": 12,
-        "prototype": "assets/prototypes/disco.json",
-        "components": [
-          {
-            "type": "transform",
-            "position": [ -54, 55, 33 ]
-          }
-        ]
-      },
-      {
-        "entity_id": 13,
-        "prototype": "assets/prototypes/physics.json",
-        "components": [
-          {
-            "type": "transform",
-            "position":  [25, 10, 25]
-          }
-        ]
-      }
-
         {
-            "entity_id": 12,
-            "prototype": "assets/prototypes/disco.json",
-            "components": [
-                {
-                    "type": "transform",
-                    "scale": [5, 5, 5]
-                    "position": [-54, 0, 33],
-                }
-    ]
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, -4, 0 ]
+        },
+        {
+          "type": "rigid_body",
+          "mass": 1.0
+        }
+      ]
+    },
+    {
+      "entity_id": 2,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 500,
+          "right": 500,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 500,
+          "front": 500,
+          "relative": [ 0, 1, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/demoroom/demoroom.gltf",
+          "texture_diffuse": "assets/meshes/demoroom/wall.jpg"
+        }
+      ]
+    },
+
+    {
+      "entity_id": 3,
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "light_directional"
+        }
+      ]
+    },
+
+    {
+      "entity_id": 4,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 10, -10 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "AABB_collider",
+          "left": 1.0,
+          "right": 1.0,
+          "top": 1.0,
+          "bottom": 1.0,
+          "back": 1.0,
+          "front": 1.0,
+          "relative": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/music.mp3",
+              "loop": true,
+              "volume": 0.08
+            }
+          ]
+        }
+      ]
+    },
+
+
+    {
+      "entity_id": 5,
+      "components": [
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/DejaVu.mp3",
+              "loop": true,
+              "volume": 0.1
+            }
+          ]
+        },
+        {
+          "type": "transform",
+          "position": [ -100, 10, -100 ],
+          "scale": [ 1, 1, 1 ],
+          "rotation": [ 0, 90, 0 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, -5, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        },
+        {
+          "type": "rigid_body",
+          "mass": 1.0
+        },
+        {
+          "type": "game_piece",
+          "speed": 5.0
+        }
+      ]
+    },
+
+    {
+      "entity_id": 6,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 30, 0 ]
+        },
+        {
+          "type": "light_point",
+          "intensity": 900
+        }
+      ]
+    },
+
+    {
+      "entity_id": 7,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 30, 140 ]
+        },
+        {
+          "type": "light_point",
+          "intensity": 900
+        }
+      ]
+    },
+
+    {
+      "entity_id": 8,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 50, 30, 50 ]
+        },
+        {
+          "type": "light_point",
+          "intensity": 900
+        }
+      ]
+    },
+
+
+    {
+      "entity_id": 9,
+      "prototype": "assets/prototypes/gameboard.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 50, 0, 50 ],
+          "scale": [ 6, 2, 6 ]
+        }
+      ]
+    },
+
+
+    {
+      "entity_id": 10,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 20, 0, 20 ],
+          "scale": [ 1, 2, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        },
+        {
+          "type": "board_path_movement"
+        },
+        {
+          "type": "game_piece",
+          "succ": 7
+        },
+        {
+          "type": "hit_points"
+        }
+
+
+      ]
+    },
+    {
+      "entity_id": 11,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 40, 5, 50 ],
+          "scale": [ 1, 2, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        },
+        {
+          "type": "game_piece",
+          "succ": 7
+        },
+        {
+          "type": "hit_points"
+        }
+
+
+      ]
+    },
+    {
+      "entity_id": 12,
+      "prototype": "assets/prototypes/disco.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -58, 1, 42 ],
+          "scale": [8, 8, 8]
+        }
+      ]
+    },
+    {
+      "entity_id": 13,
+      "prototype": "assets/prototypes/physics.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 25, 10, 25 ]
+        }
+      ]
+    }
+  ]
 }

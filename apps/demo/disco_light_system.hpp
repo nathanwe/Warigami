@@ -26,7 +26,7 @@ public:
 			transform.position = center + glm::vec3(sinf(angle), 0, cosf(angle));
 
 			// Glowy in R, G, B, and white
-			t += dir * m_timer.smoothed_delta_secs() * 0.5;
+			t += dir * m_timer.smoothed_delta_secs() * 1.5;
 			// t goes up and down smoothly
 			if (dir == 1 && t >= 0.8) {
 				dir = -dir;
