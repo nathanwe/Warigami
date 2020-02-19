@@ -8,7 +8,7 @@ add_executable (demo main.cpp
 				components/player.cpp components/player_loader.cpp
 				components/board_path_movement.cpp components/board_path_movement_loader.cpp
 				components/hit_points.cpp
-				util/boardgen.cpp components/disco_light.cpp components/disco_light.h)
+				util/boardgen.cpp components/disco_light.cpp)
 
 target_link_libraries(demo PRIVATE
 	ecs

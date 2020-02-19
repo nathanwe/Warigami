@@ -267,6 +267,26 @@
 
             ]
         },
+      {
+        "entity_id": 12,
+        "prototype": "assets/prototypes/disco.json",
+        "components": [
+          {
+            "type": "transform",
+            "position": [ -54, 55, 33 ]
+          }
+        ]
+      },
+      {
+        "entity_id": 13,
+        "prototype": "assets/prototypes/physics.json",
+        "components": [
+          {
+            "type": "transform",
+            "position":  [25, 10, 25]
+          }
+        ]
+      }
 
         {
             "entity_id": 12,
@@ -274,11 +294,8 @@
             "components": [
                 {
                     "type": "transform",
-                    "position": [-54, 0, 33],
                     "scale": [5, 5, 5]
+                    "position": [-54, 0, 33],
                 }
-            ]
-        }
-
     ]
 }

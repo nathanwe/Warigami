@@ -1,0 +1,111 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ],
+        "rotation": [ 0, 0, 0 ]
+      }
+    ]
+  },
+  "children": [
+    {
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "light_directional"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, -4 ],
+          "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/gltf_cube/cube.gltf",
+          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
+        },
+        {
+          "type": "rigid_body",
+          "mass": 1.0,
+          "gravity": 1.0
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "scale": [ 1.0, 1.0, 1.0 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/gltf_cube/cube.gltf",
+          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
+        },
+        {
+          "type": "rigid_body",
+          "mass": 10.0,
+          "gravity": 10.0
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 4 ],
+          "scale": [ 1.5, 1.5, 1.5 ]
+        },
+        {
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/gltf_cube/cube.gltf",
+          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
+        },
+        {
+          "type": "rigid_body",
+          "mass": 100.0,
+          "gravity": 100.0
+        }
+      ]
+    }
+  ]
+}

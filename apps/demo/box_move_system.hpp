@@ -15,7 +15,7 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each< transforms::transform, collisions::AABB_collider, collisions::rigid_body, components::game_piece>([&](transforms::transform& transform, collisions::AABB_collider& sphere_collider, collisions::rigid_body& rigid_body, components::game_piece& game_piece)
+		r_state.each< transforms::transform, collisions::AABB_collider, collisions::rigid_body, components::game_piece>([&](transforms::transform& transform, collisions::AABB_collider& aabb_collider, collisions::rigid_body& rigid_body, components::game_piece& game_piece)
 			{
 				if (m_input.is_input_active(core::controls::ACTION2_CONTROL))
 				{
