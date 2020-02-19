@@ -184,12 +184,10 @@ void audio::audio_system::check_sound_stopped(emitter_sound& emitter_sound)
 {
     bool is_playing;
     auto fmod_call_success = emitter_sound.fmod_channel->isPlaying(&is_playing) == FMOD_OK;
-    if (fmod_call_success && !is_playing && emitter_sound.state == playing)
+    if (!fmod_call_success || (!is_playing && emitter_sound.state == playing))
     {
-        emitter_sound.state = stopped;        
+        emitter_sound.state = stopped;
     }
-    else if (!fmod_call_success)
-        std::cerr << "FMOD failed to check if sound is playing." << std::endl;
 }
 
 

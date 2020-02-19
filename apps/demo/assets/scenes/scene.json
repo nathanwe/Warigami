@@ -233,7 +233,7 @@
       ]
     },
     {
-      "entity_id": 10,
+      "entity_id": 10, 
       "components": [
         {
           "type": "transform"
@@ -277,7 +277,7 @@
             {
               "file": "assets/Wilhelm.mp3",
               "loop": false,
-              "volume": 0.035
+              "volume": 0.045
             }
           ]
         },
@@ -320,7 +320,7 @@
             {
               "file": "assets/Wilhelm.mp3",
               "loop": false,
-              "volume": 0.035
+              "volume": 0.045
             }
           ]
         },
@@ -363,7 +363,7 @@
             {
               "file": "assets/Wilhelm.mp3",
               "loop": false,
-              "volume": 0.035
+              "volume": 0.045
             }
           ]
         },
@@ -374,6 +374,64 @@
     },
     {
       "entity_id": 14,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -80, 3, 170 ],
+          "scale": [ 1, 1, 1 ],
+          "rotation": [ 0, 0, 0 ]
+        },
+        {
+          "type": "model",
+          "path": "assets/models/secret/secret.obj"
+        }
+      ]
+    },
+    {
+      "entity_id": 15,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -80, 6, 190 ],
+          "scale": [ 1, 1, 1 ],
+          "rotation": [ 0, 0, 0 ]
+        },
+        {
+          "type": "model",
+          "path": "assets/models/tower/tower.obj"
+        }
+      ]
+    },
+    {
+      "entity_id": 16,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -80, 1, 150 ],
+          "scale": [ 1, 1, 1 ],
+          "rotation": [ 0, 90, 0 ]
+        },
+        {
+          "type": "model",
+          "path": "assets/models/nanosuit/nanosuit.obj"
+        }
+      ]
+    },
+    {
+      "entity_id": 17,
+      "components": [
+        {
+          "type": "transform",
+          "position": [100, 50, 0]
+        },
+        {
+          "type": "light_directional",
+          "intensity": 3
+        }
+      ]
+    },
+    {
+      "entity_id": 18,
       "prototype": "assets/prototypes/disco.json",
       "components": [
         {
@@ -384,7 +442,7 @@
       ]
     },
     {
-      "entity_id": 15,
+      "entity_id": 19,
       "prototype": "assets/prototypes/gameboard.json",
       "components": [
         {

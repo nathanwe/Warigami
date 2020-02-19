@@ -315,6 +315,8 @@ namespace rendering
 
 	void renderer::default_bind_sub_model(const transforms::transform& transform, const sub_model& sub)
 	{
+		_pass_default->set_mat4(0, transform.local_to_world);
+
 		_pass_default->set_texture(0, sub.material.texture_diffuse);
 		_pass_default->set_texture(1, sub.material.texture_metalness);
 		_pass_default->set_texture(2, sub.material.texture_normal);
