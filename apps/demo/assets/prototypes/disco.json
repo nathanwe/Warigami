@@ -11,17 +11,7 @@
   },
   "children": [
     {
-      "prototype": "assets/prototypes/gameboard.json"
-    },
-    {
-      "components": [
-        {
-          "type": "transform"
-        },
-        {
-          "type": "light_directional"
-        }
-      ]
+      "prototype": "assets/prototypes/disco_floor.json"
     },
     {
       "components": [
@@ -63,7 +53,7 @@
         },
         {
           "type": "light_point",
-          "intensity": 50,
+          "intensity": 550,
           "color": [1,0,0],
           "radius": 5
         },
