@@ -11,6 +11,7 @@
 #include <rendering/camera.hpp>
 #include <collisions/rigid_body.hpp>
 
+
 bool succeededOrWarn(const std::string &message, FMOD_RESULT result);
 FMOD_RESULT F_CALLBACK channelGroupCallback(FMOD_CHANNELCONTROL *channelControl,
                                             FMOD_CHANNELCONTROL_TYPE controlType,
@@ -115,7 +116,6 @@ FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
         FMOD::Sound *sound = nullptr;
         auto& track = _app_strings[hash];
         sound = _assets.get_sound(track, _system, mode);
-        //_system->createSound(track.c_str(), mode, nullptr, &sound);
         _sounds.insert({hash, sound});
     }
 
@@ -187,7 +187,11 @@ void audio::audio_system::check_sound_stopped(emitter_sound& emitter_sound)
     bool is_playing;
     auto fmod_call_success = emitter_sound.fmod_channel->isPlaying(&is_playing) == FMOD_OK;
     if (fmod_call_success && !is_playing && emitter_sound.state == playing)
-        emitter_sound.state = stopped;
+    {
+        emitter_sound.state = stopped;        
+    }
+    else if (!fmod_call_success)
+        std::cerr << "FMOD failed to check if sound is playing." << std::endl;
 }
 
 
