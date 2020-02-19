@@ -5,19 +5,29 @@
 #ifndef WIZARDENGINE_SKELETON_NODE_HPP
 #define WIZARDENGINE_SKELETON_NODE_HPP
 
-
+#include <cstdint>
 #include <vector>
 #include <rendering/skeleton_animation.hpp>
+#include <glm/mat4x4.hpp>
 
 namespace rendering
 {
 
     struct skeleton_node
     {
+        static const std::uint32_t MaxChildren = 16;
         static const std::uint32_t MaxAnimations = 16;
 
-        std::vector<skeletal_animation> animations {};
-        std::uint32_t animation_count {0};
+        glm::mat4 base_transform;
+        glm::mat4 calculated_transform;
+        skeletal_animation animations[MaxAnimations];        
+        skeleton_node* children[MaxChildren];
+        std::uint8_t child_count{ 0 };        
+
+        inline void add_child(skeleton_node* node)
+        {
+            children[child_count++] = node;
+        }
     };
 
 }

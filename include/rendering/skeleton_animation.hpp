@@ -13,10 +13,11 @@ namespace rendering
 {
     struct skeletal_animation
     {
-        static const std::uint32_t MaxAnimationFrames = 256;
+        constexpr static const std::uint32_t MaxAnimationFrames = 256;
 
-        skeletal_animation_frame frames[MaxAnimationFrames];
-        std::uint32_t frame_count {0};
+        keyframes<glm::quat, MaxAnimationFrames> rotation;
+        keyframes<glm::vec3, MaxAnimationFrames> position;
+        keyframes <float, MaxAnimationFrames> scale{ 1.f };
     };
 }
 

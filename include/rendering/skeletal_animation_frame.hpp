@@ -5,6 +5,8 @@
 #ifndef WIZARDENGINE_SKELETAL_ANIMATION_FRAME_HPP
 #define WIZARDENGINE_SKELETAL_ANIMATION_FRAME_HPP
 
+#include <rendering/animation_time.hpp>
+
 #include <glm/gtc/quaternion.hpp>
 #include <glm/vec3.hpp>
 
@@ -14,8 +16,15 @@ namespace rendering
     {
         glm::quat rotation;
         glm::vec3 position {0.f};
-        float t {0};
+        animation_time t {0};
         float scale {1.f};
+    };
+
+    template <typename T, std::uint32_t max_frames>
+    struct keyframes
+    {
+        T values[max_frames];
+        animation_time times[max_frames];
     };
 }
 

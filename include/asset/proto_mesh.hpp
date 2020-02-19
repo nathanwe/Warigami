@@ -10,6 +10,7 @@ namespace asset
 	{
 		Assimp::Importer importer;
 		aiMesh* assimp_mesh;
+		const aiScene* assimp_scene;
 	};
 }
 
