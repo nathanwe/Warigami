@@ -30,7 +30,7 @@
           "left": 0.5,
           "right": 0.5,
           "top": 0.5,
-          "bottom": 0.5,
+          "bottom": 5.5,
           "back": 0.5,
           "front": 0.5,
           "relative": [ 0, -4, 0 ]
@@ -164,7 +164,7 @@
       ]
     },
     {
-      "entity_id": 8,
+      "entity_id": 10,
       "components": [
         {
           "type": "transform",
@@ -233,7 +233,7 @@
       ]
     },
     {
-      "entity_id": 10, 
+      "entity_id": 8, 
       "components": [
         {
           "type": "transform"
