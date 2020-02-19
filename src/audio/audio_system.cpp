@@ -105,7 +105,7 @@ void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
     auto mode = FMOD_3D;
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
     auto fmod_sound = get_sound(sound.path_hash, mode);
-    play_sound(fmod_sound, sound);
+    play_sound(fmod_sound, sound);    
 }
 
 FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
@@ -130,7 +130,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     FMOD::Channel *channel = nullptr;
     result = _system->playSound(sound, nullptr, false, &channel);
     if (!succeededOrWarn("FMOD: Failed to play sound_wrapper", result))
-        throw;
+        return;
 
     channel->setVolume(emitter_sound.volume);
     channel->set3DMinMaxDistance(emitter_sound.volume * 30.f, 100000.f);
@@ -138,12 +138,13 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     // Assign the channel to the group.
     result = channel->setChannelGroup(_channelGroup);
     if (!succeededOrWarn("FMOD: Failed to set channel group on", result))
-        throw;
+        return;
 
     channel->setCallback(&channelGroupCallback);
     if (!succeededOrWarn("FMOD: Failed to set callback for sound_wrapper", result))
-        throw;
-
+        return;
+    
+    emitter_sound.state = playing;
     emitter_sound.fmod_channel = channel;
     emitter_sound.fmod_sound = sound;
 }
@@ -168,6 +169,8 @@ void audio::audio_system::handle_emitter_sound(
         default:
         {
             if (emitter_sound.is_null()) break;
+            
+            check_sound_stopped(emitter_sound);
 
             FMOD_VECTOR pos = { t_pos.x, t_pos.y, t_pos.z };
             FMOD_VECTOR vel = { velocity.x, velocity.y, velocity.z };
@@ -177,6 +180,14 @@ void audio::audio_system::handle_emitter_sound(
     }
 
     emitter_sound.state = sound_state::unchanged;
+}
+
+void audio::audio_system::check_sound_stopped(emitter_sound& emitter_sound)
+{
+    bool is_playing;
+    auto fmod_call_success = emitter_sound.fmod_channel->isPlaying(&is_playing) == FMOD_OK;
+    if (fmod_call_success && !is_playing && emitter_sound.state == playing)
+        emitter_sound.state = stopped;
 }
 
 

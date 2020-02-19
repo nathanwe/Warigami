@@ -20,7 +20,9 @@ namespace audio
         unchanged = 1,
         started,
         playback_requested,
-        stop_requested
+        stop_requested,
+        playing,
+        stopped
     };
 
     struct emitter_sound
