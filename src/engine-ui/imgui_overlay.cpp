@@ -30,7 +30,11 @@ void engineui::imgui_overlay::update()
 	{
 		_visible = !_visible;		
 
-		if (_visible) _cursor.push_enable();
+		if (_visible)
+		{
+			_cursor.push_enable();
+			for (auto* v : _views) v->on_show();
+		}
 		else _cursor.pop();
 	}
 

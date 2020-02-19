@@ -27,6 +27,7 @@ namespace engineui
 	public:
 		developer_console(core::viewport& viewport, event::EventManager& events, GLFWwindow* window);
 		void draw();
+		void on_show() override;
 
 	private:
 		// keep these static
@@ -40,6 +41,8 @@ namespace engineui
 		char _output[BufSize]{ "" };
 		char _error[BufSize]{ "" };
 		char _input[BufSize]{ "" };
+
+		bool _should_grab_focus{ true };
 
 		void handle_command();
 

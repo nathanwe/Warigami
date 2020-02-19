@@ -30,21 +30,19 @@ public:
 					components::hit_points& hp2, 
 					audio::audio_emitter& emitter2)
 					{
-						if (id1 != id2) {							
-							glm::vec3 dist_vec = transform1.position - transform2.position;
-							float dist = glm::length(dist_vec);
-							if (dist <= hp1.range) {
+						if (id1 == id2) return;
+						
+						glm::vec3 dist_vec = transform1.position - transform2.position;
+						float dist = glm::length(dist_vec);
+						if (dist > hp1.range) return;
+
+
+						hp2.current_hp -= hp1.damage * m_timer.delta_secs();
+						if (hp2.current_hp < 0)
+							hp2.current_hp = 0;								
 								
-								hp2.current_hp -= hp1.damage * m_timer.delta_secs();
-								if (hp2.current_hp < 0) {
-									hp2.current_hp = 0;
-								}
-								
-								auto can_play = emitter2.emitter_sounds[0].state != audio::playing;
-								if (can_play)
-									emitter2.set_sound_state(0, audio::playback_requested);
-							}
-						}
+						if (emitter2.emitter_sounds[0].state != audio::playing)
+							emitter2.set_sound_state(0, audio::playback_requested);
 					});
 
 				transform1.scale.y = hp1.current_hp / hp1.max_hp;

@@ -8,94 +8,99 @@
 
 
 
-engineui::developer_console::developer_console(core::viewport& viewport, event::EventManager& events, GLFWwindow* window) 
-    : view(viewport)
-    , _events(events)
-    , _window(window)
+engineui::developer_console::developer_console(core::viewport& viewport, event::EventManager& events, GLFWwindow* window)
+	: view(viewport)
+	, _events(events)
+	, _window(window)
 {
-    setvbuf(stdout, _outbuf, _IOFBF, BUFSIZ);
-    setvbuf(stderr, _errbuf, _IOFBF, BUFSIZ);
-} 
+	setvbuf(stdout, _outbuf, _IOFBF, BUFSIZ);
+	setvbuf(stderr, _errbuf, _IOFBF, BUFSIZ);
+}
 
 void engineui::developer_console::draw()
 {
-    ImGui::SetNextWindowSize({ (float)_viewport.width, Height }, ImGuiCond_Always);
-    ImGui::Begin("DevConsole");
-       
-    if (ImGui::IsWindowCollapsed())        
-        ImGui::SetWindowPos({ 0, (float)_viewport.height - ImGui::GetWindowHeight() }, ImGuiCond_Always);
-    else        
-        ImGui::SetWindowPos({ 0, (float)_viewport.height - Height }, ImGuiCond_Always);
+	ImGui::SetNextWindowSize({ (float)_viewport.width, Height }, ImGuiCond_Always);
+	ImGui::Begin("DevConsole");
 
-    static int output_type = 0;
-    ImGui::RadioButton("command", &output_type, 0); ImGui::SameLine();
-    ImGui::RadioButton("stdout", &output_type, 1); ImGui::SameLine();
-    ImGui::RadioButton("stderr", &output_type, 2);
+	if (ImGui::IsWindowCollapsed())
+		ImGui::SetWindowPos({ 0, (float)_viewport.height - ImGui::GetWindowHeight() }, ImGuiCond_Always);
+	else
+		ImGui::SetWindowPos({ 0, (float)_viewport.height - Height }, ImGuiCond_Always);
 
-    ImGui::PushItemWidth(-1);
+	static int output_type = 0;
+	ImGui::RadioButton("command", &output_type, 0); ImGui::SameLine();
+	ImGui::RadioButton("stdout", &output_type, 1); ImGui::SameLine();
+	ImGui::RadioButton("stderr", &output_type, 2);
 
-    switch (output_type)
-    {
-        case 0: {
-            ImGui::InputTextMultiline("##cmd", _command, IM_ARRAYSIZE(_command), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
+	ImGui::PushItemWidth(-1);
 
-            static bool focus_set = false;
-            if (!focus_set)
-            {
-                ImGui::SetKeyboardFocusHere();
-                focus_set = true;
-            }
+	switch (output_type)
+	{
+	case 0:
+	{
+		ImGui::InputTextMultiline("##cmd", _command, IM_ARRAYSIZE(_command), { 0, Height - 85 }, ImGuiInputTextFlags_ReadOnly);
 
-            auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input)-1, ImGuiInputTextFlags_EnterReturnsTrue);
-            if (pressed) handle_command();
-        }
-            break;
-        break;
-    case 1:
-        write_buffer(_output, _outbuf);
-        ImGui::InputTextMultiline("##out", _output, IM_ARRAYSIZE(_output), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
-        break;
-    case 2:
-        write_buffer(_error, _errbuf);
-        ImGui::InputTextMultiline("##err", _error, IM_ARRAYSIZE(_error), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
-        break;
-    }
-        
-    ImGui::PopItemWidth();
-    ImGui::End();
+		if (_should_grab_focus)
+		{
+			ImGui::SetKeyboardFocusHere();
+			_should_grab_focus = false;
+		}
+
+		auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input) - 1, ImGuiInputTextFlags_EnterReturnsTrue);
+		if (pressed) handle_command();
+		break;
+	}
+	case 1:
+		write_buffer(_output, _outbuf);
+		ImGui::InputTextMultiline("##out", _output, IM_ARRAYSIZE(_output), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
+		break;
+	case 2:
+		write_buffer(_error, _errbuf);
+		ImGui::InputTextMultiline("##err", _error, IM_ARRAYSIZE(_error), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
+		break;
+	}
+
+	ImGui::PopItemWidth();
+	ImGui::End();
 }
 
 void engineui::developer_console::handle_command()
 {
-    if (strcmp(_input, "exit") == 0)
-        glfwSetWindowShouldClose(_window, true);
+	if (strcmp(_input, "exit") == 0)
+		glfwSetWindowShouldClose(_window, true);
 
-    if (strcmp(_input, "noclip") == 0)
-    {
-        noclip triggeredEvent;
-        _events.BroadcastEvent(triggeredEvent);
-    }
-    
-    write_buffer(_command, "> ");
-    write_buffer(_command, _input);
-    write_buffer(_command, "\n");
-    _input[0] = '\0';    
+	if (strcmp(_input, "noclip") == 0)
+	{
+		noclip triggeredEvent;
+		_events.BroadcastEvent(triggeredEvent);
+	}
+
+	write_buffer(_command, "> ");
+	write_buffer(_command, _input);
+	write_buffer(_command, "\n");
+	_input[0] = '\0';
 }
 
 void engineui::developer_console::write_buffer(char* output, char* buffer)
 {
-    auto buflen = strlen(buffer);
-    auto outlen = strlen(output);
+	auto buflen = strlen(buffer);
+	auto outlen = strlen(output);
 
-    if (outlen + buflen > BufSize)
-    {
-        auto overflow = (outlen + buflen) - BufSize + 1;
-        auto writelen = outlen - overflow;
-        memcpy(output, output + overflow, writelen);
-        outlen -= overflow;
-    }
+	if (outlen + buflen > BufSize)
+	{
+		auto overflow = (outlen + buflen) - BufSize + 1;
+		auto writelen = outlen - overflow;
+		memcpy(output, output + overflow, writelen);
+		outlen -= overflow;
+	}
 
-    memcpy(output + outlen, buffer, buflen);
+	memcpy(output + outlen, buffer, buflen);
+}
+
+void engineui::developer_console::on_show()
+{
+	_should_grab_focus = true;
+	_input[0] = '\0';
 }
 
 char engineui::developer_console::_outbuf[BUFSIZ]{ "" };
