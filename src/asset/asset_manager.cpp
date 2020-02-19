@@ -29,7 +29,7 @@ namespace asset
 	proto_mesh& asset_manager::get_proto_mesh(std::string const& filepath)
 	{
 		validate_path(filepath);
-		proto_mesh& proto = _mesh_cache[filepath];
+		auto& proto = _mesh_cache[filepath];
 
 		const aiScene* scene = proto.importer.ReadFile(filepath,
 			aiProcess_ValidateDataStructure |
@@ -47,7 +47,30 @@ namespace asset
 
 		// Only take the first mesh from the file
 		proto.assimp_mesh = scene->mMeshes[0];
-		return _mesh_cache[filepath];
+		return proto;
+	}
+
+	proto_model& asset_manager::get_proto_model(std::string const& filepath)
+	{
+		validate_path(filepath);
+		auto& proto = _model_cache[filepath];
+
+		const aiScene* scene = proto.importer.ReadFile(filepath,
+			aiProcess_ValidateDataStructure |
+			aiProcess_Triangulate |
+			aiProcess_FlipUVs |
+			aiProcess_GenSmoothNormals |
+			aiProcess_OptimizeMeshes |
+			aiProcess_OptimizeGraph |
+			aiProcess_CalcTangentSpace);
+		if (!scene || !scene->HasMeshes() || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
+		{
+			std::cout << "Error: Assimp failed to load mesh from file. " << proto.importer.GetErrorString() << std::endl;
+			assert(false);
+		}
+		proto.aiscene = scene;
+
+		return proto;
 	}
 
 	proto_shader& asset_manager::get_proto_shader(std::string const& filepath)
@@ -115,7 +138,6 @@ namespace asset
 		system->createSound(filepath.c_str(), mode, nullptr, &sound);
 		return sound;
 	}
-
 
 	void asset_manager::unload_json(std::string const& filepath)
 	{

@@ -1,6 +1,7 @@
 #include "rendering/asset_cache.hpp"
 
 #include "asset/proto_mesh.hpp"
+#include "asset/proto_model.hpp"
 #include "asset/proto_shader.hpp"
 #include "asset/proto_texture.hpp"
 #include "asset/proto_texture_hdr.hpp"
@@ -15,10 +16,11 @@
 #include <array>
 #include <vector>
 
-
 #include <iostream>
 #include <fstream>
 #include <string>
+
+using namespace gl;
 
 namespace rendering
 {
@@ -62,6 +64,16 @@ namespace rendering
 		}
 		glDeleteVertexArrays(vertex_arrays.size(), &vertex_arrays[0]);
 		glDeleteBuffers(buffers.size(), &buffers[0]);
+
+		/*
+		for (auto it : _models)
+		{
+			for (auto& mesh : it.second.sub_models)
+			{
+
+			}
+		}
+		*/
 	}
 
 	template <>
@@ -154,74 +166,139 @@ namespace rendering
 		if (r_mesh.vao == 0)
 		{
 			asset::proto_mesh& proto = _assets.get_proto_mesh(filepath);
+			r_mesh = mesh_from_aimesh(proto.assimp_mesh);
 
-			// Reorganize data into array of struct instead of separate arrays
-			std::vector<vertex> vertices;
-			std::vector<uint32_t> indices;
-			vertex swap_vertex;
-			for (size_t i = 0; i < proto.assimp_mesh->mNumVertices; i++)
-			{
-				swap_vertex.position.x = proto.assimp_mesh->mVertices[i].x;
-				swap_vertex.position.y = proto.assimp_mesh->mVertices[i].y;
-				swap_vertex.position.z = proto.assimp_mesh->mVertices[i].z;
-				if (proto.assimp_mesh->HasNormals())
-				{
-					swap_vertex.normal.x = proto.assimp_mesh->mNormals[i].x;
-					swap_vertex.normal.y = proto.assimp_mesh->mNormals[i].y;
-					swap_vertex.normal.z = proto.assimp_mesh->mNormals[i].z;
-				}
-				if (proto.assimp_mesh->HasTextureCoords(0))
-				{
-					swap_vertex.tex_coord.x = proto.assimp_mesh->mTextureCoords[0][i].x;
-					swap_vertex.tex_coord.y = proto.assimp_mesh->mTextureCoords[0][i].y;
-				}
-				if (proto.assimp_mesh->HasTangentsAndBitangents())
-				{
-					swap_vertex.tangent.x = proto.assimp_mesh->mTangents[i].x;
-					swap_vertex.tangent.y = proto.assimp_mesh->mTangents[i].y;
-					swap_vertex.tangent.z = proto.assimp_mesh->mTangents[i].z;
-					swap_vertex.bitangent.x = proto.assimp_mesh->mBitangents[i].x;
-					swap_vertex.bitangent.y = proto.assimp_mesh->mBitangents[i].y;
-					swap_vertex.bitangent.z = proto.assimp_mesh->mBitangents[i].z;
-				}
-				vertices.push_back(swap_vertex);
-			}
-			for (size_t i = 0; i < proto.assimp_mesh->mNumFaces; i++)
-			{
-				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[0]);
-				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[1]);
-				indices.emplace_back(proto.assimp_mesh->mFaces[i].mIndices[2]);
-			}
-			r_mesh.num_indices = indices.size();
-
-			// Create OpenGL representation
-			glGenVertexArrays(1, &r_mesh.vao);
-			glGenBuffers(1, &r_mesh.vbo);
-			glGenBuffers(1, &r_mesh.ebo);
-
-			// Copy data to VRAM
-			glBindVertexArray(r_mesh.vao);
-			glBindBuffer(GL_ARRAY_BUFFER, r_mesh.vbo);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_mesh.ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
-
-			// Register data layout
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, position));
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, normal));
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tex_coord));
-			glEnableVertexAttribArray(3);
-			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tangent));
-			glEnableVertexAttribArray(4);
-			glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, bitangent));
-
-			glBindVertexArray(0);
-
-			_assets.unload_proto_mesh(filepath);
+			_assets.unload_proto_mesh(filepath); // 
 		}
 		return r_mesh;
+	}
+
+	template <>
+	model& asset_cache::get<model>(std::string const& filepath)
+	{
+		auto& m = _models[filepath];
+		if (m.sub_models.size() == 0)
+		{
+			auto& proto = _assets.get_proto_model(filepath);
+			auto directory = filepath.substr(0, filepath.find_last_of('/')) + '/';
+			m = model_from_aiscene(directory, proto.aiscene, proto.aiscene->mRootNode);
+		}
+		return m;
+	}
+
+	mesh_static asset_cache::mesh_from_aimesh(aiMesh* aimesh)
+	{
+		mesh_static r_mesh;
+
+		// Reorganize data into array of struct instead of separate arrays
+		std::vector<vertex> vertices;
+		std::vector<uint32_t> indices;
+		vertex swap_vertex;
+		for (size_t i = 0; i < aimesh->mNumVertices; i++)
+		{
+			swap_vertex.position.x = aimesh->mVertices[i].x;
+			swap_vertex.position.y = aimesh->mVertices[i].y;
+			swap_vertex.position.z = aimesh->mVertices[i].z;
+			if (aimesh->HasNormals())
+			{
+				swap_vertex.normal.x = aimesh->mNormals[i].x;
+				swap_vertex.normal.y = aimesh->mNormals[i].y;
+				swap_vertex.normal.z = aimesh->mNormals[i].z;
+			}
+			if (aimesh->HasTextureCoords(0))
+			{
+				swap_vertex.tex_coord.x = aimesh->mTextureCoords[0][i].x;
+				swap_vertex.tex_coord.y = aimesh->mTextureCoords[0][i].y;
+			}
+			if (aimesh->HasTangentsAndBitangents())
+			{
+				swap_vertex.tangent.x = aimesh->mTangents[i].x;
+				swap_vertex.tangent.y = aimesh->mTangents[i].y;
+				swap_vertex.tangent.z = aimesh->mTangents[i].z;
+				swap_vertex.bitangent.x = aimesh->mBitangents[i].x;
+				swap_vertex.bitangent.y = aimesh->mBitangents[i].y;
+				swap_vertex.bitangent.z = aimesh->mBitangents[i].z;
+			}
+			vertices.push_back(swap_vertex);
+		}
+		for (size_t i = 0; i < aimesh->mNumFaces; i++)
+		{
+			indices.emplace_back(aimesh->mFaces[i].mIndices[0]);
+			indices.emplace_back(aimesh->mFaces[i].mIndices[1]);
+			indices.emplace_back(aimesh->mFaces[i].mIndices[2]);
+		}
+		r_mesh.num_indices = indices.size();
+
+		// Create OpenGL representation
+		glGenVertexArrays(1, &r_mesh.vao);
+		glGenBuffers(1, &r_mesh.vbo);
+		glGenBuffers(1, &r_mesh.ebo);
+
+		// Copy data to VRAM
+		glBindVertexArray(r_mesh.vao);
+		glBindBuffer(GL_ARRAY_BUFFER, r_mesh.vbo);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_mesh.ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
+
+		// Register data layout
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, position));
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, normal));
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tex_coord));
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, tangent));
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(vertex), (void*)offsetof(vertex, bitangent));
+
+		glBindVertexArray(0);
+
+		return r_mesh;
+	}
+
+	void asset_cache::texture_from_assimp(unsigned int& out, const std::string& directory, aiMaterial* aimat, aiTextureType type, unsigned int i)
+	{
+		if (aimat->GetTextureCount(type) <= 0)
+		{
+			return;
+		}
+
+		aiString filename;
+		aimat->GetTexture(type, i, &filename);
+		out = get<texture>(directory + std::string(filename.C_Str())).id;
+	}
+
+	material_pbr asset_cache::material_from_aimesh(const std::string& directory, aiMesh* aimesh, const aiScene* aiscene)
+	{
+		aiMaterial* aimat = aiscene->mMaterials[aimesh->mMaterialIndex];
+		material_pbr mat;
+		texture_from_assimp(mat.texture_diffuse          , directory, aimat, aiTextureType_DIFFUSE, 0);
+		texture_from_assimp(mat.texture_metalness        , directory, aimat, aiTextureType_SPECULAR, 0);
+		texture_from_assimp(mat.texture_roughness        , directory, aimat, aiTextureType_SHININESS, 0);
+		texture_from_assimp(mat.texture_normal           , directory, aimat, aiTextureType_NORMALS, 0);
+		texture_from_assimp(mat.texture_ambient_occlusion, directory, aimat, aiTextureType_AMBIENT_OCCLUSION, 0);
+		return mat;
+	}
+
+	sub_model asset_cache::sub_model_from_aimesh(const std::string& directory, aiMesh* aimesh, const aiScene* aiscene)
+	{
+		sub_model sub;
+		sub.mesh = mesh_from_aimesh(aimesh);
+		sub.material = material_from_aimesh(directory, aimesh, aiscene);
+		return sub;
+	}
+
+	model asset_cache::model_from_aiscene(const std::string& directory, const aiScene* aiscene, aiNode* ainode)
+	{
+		model m;
+		for (unsigned int i = 0; i < ainode->mNumMeshes; ++i)
+		{
+			auto aimesh = aiscene->mMeshes[ainode->mMeshes[i]];
+			sub_model sub = sub_model_from_aimesh(directory, aimesh, aiscene);
+			m.sub_models.push_back(sub);
+		}
+		return m;
 	}
 }

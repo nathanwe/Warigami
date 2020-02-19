@@ -7,10 +7,11 @@ namespace rendering
 {
 	enum class component_bits : component_shift
 	{
-		camera                 = 1,
-		light_directional      = 2,
-		light_point            = 3,
-		renderable_mesh_static = 4
+		camera                  = 1,
+		light_directional       = 2,
+		light_point             = 3,
+		renderable_mesh_static  = 4,
+		renderable_model_static = 5
 	};
 }
 

@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "asset/proto_mesh.hpp"
+#include "asset/proto_model.hpp"
 #include "asset/proto_shader.hpp"
 #include "asset/proto_texture_hdr.hpp"
 #include "asset/proto_texture.hpp"
@@ -29,6 +30,7 @@ namespace asset
 	public:
 		nlohmann::json& get_json(std::string const& filepath);
 		proto_mesh& get_proto_mesh(std::string const& filepath);
+		proto_model& get_proto_model(std::string const& filepath);
 		proto_shader& get_proto_shader(std::string const& filepath);
 		proto_texture& get_proto_texture(std::string const& filepath);
 		proto_texture_hdr& get_proto_texture_hdr(std::string const& filepath);
@@ -45,6 +47,7 @@ namespace asset
 
 	private:
 		std::map<std::string, proto_mesh> _mesh_cache;
+		std::map<std::string, proto_model> _model_cache;
 		std::map<std::string, proto_shader> _shader_cache;
 		std::map<std::string, proto_texture> _texture_cache;
 		std::map<std::string, proto_texture_hdr> _texture_hdr_cache;

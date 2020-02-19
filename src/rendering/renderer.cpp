@@ -2,6 +2,8 @@
 
 #include "collisions/collider.hpp"
 #include "collisions/rigid_body.hpp"
+#include "rendering/model.hpp"
+#include "rendering/renderable_model_static.hpp"
 
 #include <util/debounce.hpp>
 
@@ -251,6 +253,16 @@ namespace rendering
 			draw_mesh_static(renderable.mesh);
 			default_unbind_renderable();
 		});
+
+		ecs_state.each<transforms::transform, renderable_model_static>([&](auto& transform, auto& renderable)
+		{
+			for (auto& sub : renderable.model_.sub_models)
+			{
+				default_bind_sub_model(transform, sub);
+				draw_mesh_static(sub.mesh);
+				default_unbind_renderable();
+			}
+		});
 	}
 
 	void renderer::default_bind_camera(const transforms::transform& transform, const camera& cam)
@@ -300,6 +312,29 @@ namespace rendering
 		_pass_default->set_float(16, renderable.material.param_metalness);
 		_pass_default->set_float(17, renderable.material.param_roughness);
 	}
+
+	void renderer::default_bind_sub_model(const transforms::transform& transform, const sub_model& sub)
+	{
+		_pass_default->set_texture(0, sub.material.texture_diffuse);
+		_pass_default->set_texture(1, sub.material.texture_metalness);
+		_pass_default->set_texture(2, sub.material.texture_normal);
+		_pass_default->set_texture(3, sub.material.texture_roughness);
+		_pass_default->set_texture(4, sub.material.texture_ambient_occlusion);
+
+		_pass_default->set_float2(8, sub.material.texture_scale);
+		_pass_default->set_float2(9, sub.material.texture_offset);
+
+		_pass_default->set_bool(10, sub.material.texture_diffuse != 0);
+		_pass_default->set_bool(11, sub.material.texture_metalness != 0);
+		_pass_default->set_bool(12, sub.material.texture_normal != 0);
+		_pass_default->set_bool(13, sub.material.texture_roughness != 0);
+		_pass_default->set_bool(14, sub.material.texture_ambient_occlusion != 0);
+
+		_pass_default->set_float3(15, sub.material.param_diffuse);
+		_pass_default->set_float(16, sub.material.param_metalness);
+		_pass_default->set_float(17, sub.material.param_roughness);
+	}
+
 
 	void renderer::default_unbind_renderable()
 	{

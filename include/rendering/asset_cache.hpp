@@ -4,6 +4,7 @@
 #include "asset/asset_manager.hpp"
 #include "rendering/cube_map.hpp"
 #include "rendering/mesh_static.hpp"
+#include "rendering/model.hpp"
 #include "rendering/texture.hpp"
 
 #include <map>
@@ -23,10 +24,18 @@ namespace rendering
 		TAsset& get(TPath const& filepath);
 
 	private:
+		mesh_static mesh_from_aimesh(aiMesh* aimesh);
+		void texture_from_assimp(unsigned int& out, const std::string& filepath, aiMaterial* aimat, aiTextureType type, unsigned int i);
+		material_pbr material_from_aimesh(const std::string& filepath, aiMesh* aimesh, const aiScene* aiscene);
+		sub_model sub_model_from_aimesh(const std::string& filepath, aiMesh* aimesh, const aiScene* aiscene);
+		model model_from_aiscene(const std::string& filepath, const aiScene* aiscene, aiNode* ainode);
+
+	private:
 		asset::asset_manager& _assets;
 		std::map<std::string, cube_map> _cube_maps;
 		std::map<std::string, mesh_static> _mesh_statics;
-		std::map<std::string, texture> _textures;		
+		std::map<std::string, model> _models;
+		std::map<std::string, texture> _textures;	
 	};
 
 	template <>
@@ -37,6 +46,9 @@ namespace rendering
 
 	template <>
 	mesh_static& asset_cache::get<mesh_static>(std::string const& filepath);
+
+	template <>
+	model& asset_cache::get<model>(std::string const& filepath);
 }
 
 #endif

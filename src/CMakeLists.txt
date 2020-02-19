@@ -137,9 +137,11 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_camera.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_directional.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_light_point.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_model.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
      ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_model_static.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
      rendering/renderable_mesh_static.cpp rendering/camera.cpp)

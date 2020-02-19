@@ -287,6 +287,30 @@
           "position": [ 25, 10, 25 ]
         }
       ]
+    },
+    {
+      "entity_id": 14,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 20, 0 ],
+          "scale": [ 10, 10, 10 ]
+        },
+        {
+          "type": "model",
+          "path": "assets/models/nanosuit/nanosuit.obj"
+        },
+        {
+          "type": "aabb_collider",
+          "left": 0.5,
+          "right": 0.5,
+          "top": 0.5,
+          "bottom": 0.5,
+          "back": 0.5,
+          "front": 0.5,
+          "relative": [ 0, 0, 0 ]
+        }
+      ]
     }
   ]
 }

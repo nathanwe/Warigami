@@ -60,7 +60,8 @@ int main(int argc, char **argv) {
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
     ecs::register_component<rendering::light_point>("light_point");
-    ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
+	ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
+	ecs::register_component<rendering::renderable_model_static>("model");
     ecs::register_component<audio::audio_emitter>("audio_emitter");
     ecs::register_component<audio::audio_listener>("audio_listener");
     ecs::register_component<collisions::sphere_collider>("sphere_collider");
@@ -104,7 +105,8 @@ int main(int argc, char **argv) {
     transforms::transform_loader transform_loader;
     rendering::loader_camera camera_loader(render_asset_cache);
     rendering::loader_light_directional dir_light_loader;
-    rendering::loader_light_point point_light_loader;
+	rendering::loader_light_point point_light_loader;
+	rendering::loader_model model_loader(render_asset_cache);
     rendering::render_loader render_loader(render_asset_cache);
     components::game_piece_loader game_piece_loader;
     components::board_loader board_loader;
@@ -133,7 +135,8 @@ int main(int argc, char **argv) {
             &render_loader,
             &rigid_body_loader,
             &sphere_collider_loader,
-            &transform_loader);
+            &transform_loader,
+            &model_loader);
 
     hydrater.load();
 

@@ -13,6 +13,7 @@
 #include "rendering/light_point.hpp"
 #include "rendering/mesh_static.hpp"
 #include "rendering/renderable_mesh_static.hpp"
+#include "rendering/renderable_model_static.hpp"
 #include "rendering/render_pass.hpp"
 #include "rendering/render_state.hpp"
 #include "transforms/transform.hpp"
@@ -53,6 +54,7 @@ namespace rendering
 		void default_bind_light(const transforms::transform& transform, const light_directional& light);
 		void default_bind_light(const transforms::transform& transform, const light_point& light, int i);
 		void default_bind_renderable(const transforms::transform& transform, const renderable_mesh_static& renderable);
+		void default_bind_sub_model(const transforms::transform& transform, const sub_model& sub);
 		void default_unbind_renderable();
 
 		void run_pass_cubemap(const camera& cam);

@@ -25,8 +25,10 @@
 #include <rendering/loader_camera.hpp>
 #include <rendering/loader_light_directional.hpp>
 #include <rendering/loader_light_point.hpp>
+#include <rendering/loader_model.hpp>
 #include <rendering/render_loader.hpp>
 #include <rendering/renderable_mesh_static.hpp>
+#include <rendering/renderable_model_static.hpp>
 #include <rendering/renderer.hpp>
 #include <transforms/transform_loader.hpp>
 #include <transforms/transform.hpp>
