@@ -402,7 +402,7 @@
         },
         {
           "type": "model",
-          "path": "assets/models/tower/tower.obj"
+          "path": "assets/models/tower/towers.obj"
         }
       ]
     },
