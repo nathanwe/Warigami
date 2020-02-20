@@ -85,14 +85,14 @@ public:
 			{
 				
 				
-				const std::list<glm::vec2> locations1 = { { -3,4 }, { -3,1 }, { -2, 1 }, { -2, 4}, {-1, 4}, {-1, 1}, {0, 1}, {0, 0}, {-3, 4} };
-				const std::list<glm::vec2> locations2 = { { 3,-4 }, { 3,-1 }, { 2, -1 }, { 2, -4}, {1, -4}, {1, -1}, {0, -1}, {0, 0}, {3, -4} };
+				const std::list<glm::vec2> locations1 = { { -2,3 }, { -2,1 }, { 0, 1 }, { -3, 1}, {-2, 3} };
+				const std::list<glm::vec2> locations2 = { { -2,-2 }, { -2,0 }, { 0, 0 }, { -3, 0}, {-2, -2} };
 				if (m_input.is_input_started(core::controls::ACTION4_CONTROL)){
-					if (id == 10) {
-						add_path(r_state, 10, locations1);
-					}
 					if (id == 9) {
-						add_path(r_state, 9, locations2);
+						add_path(r_state, 9, locations1);
+					}
+					if (id == 10) {
+						add_path(r_state, 10, locations2);
 					}
 				}
 

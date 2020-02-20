@@ -168,7 +168,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 20, 0, 120 ],
+          "position": [ 38, 6, 138 ],
           "scale": [ 1, 1, 1 ]
         },
         {
@@ -203,8 +203,9 @@
         "components": [
             {
                 "type": "transform",
-                "position": [ 30, 5, 160 ],
-                "scale": [ 1, 1, 1 ]
+                "position": [ 38, 6, 168 ],
+                "scale": [ 1, 1, 1 ],
+                "rotation": [ 0, 180, 0 ]
             },
             {
                 "type": "renderable_mesh_static",

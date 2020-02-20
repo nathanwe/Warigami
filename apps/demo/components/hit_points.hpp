@@ -19,7 +19,7 @@ namespace components
 		float current_hp = 100.0f;
 
 		float range = 10.0f;
-		float damage = 10.0f;
+		float damage = 20.0f;
 	};
 }
 
