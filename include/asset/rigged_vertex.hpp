@@ -38,7 +38,7 @@ namespace asset
             }
         }
 
-    private:
+    //private:
         std::uint32_t _weight_count {0};
 
         void replace_smallest_weight(std::uint32_t bone_index, float weight)

@@ -9,6 +9,8 @@
 #include <asset/asset_loader_node.hpp>
 #include <rendering/asset_cache.hpp>
 #include <chrono>
+#include <asset/bone_flattener.hpp>
+#include "renderable_mesh_rigged.hpp"
 
 namespace rendering
 {
@@ -25,17 +27,15 @@ namespace rendering
         rendering::asset_cache& _render_cache;
 
         void build_animation_component(const aiScene* mesh, renderable_mesh_rigged& component);
+        void load_animation_data(
+                const aiScene* mesh,
+                renderable_mesh_rigged& component,
+                asset::bone_flattener<skeleton_node>& flattener);
 
-        void load_nodes_recurse(
-            aiNode* ai_node, 
-            skeleton_node* node, 
-            renderable_mesh_rigged& mesh,
-            std::unordered_map<std::string, skeleton_node*>& name_to_node);
-
-        animation_time tick_to_time(double ticks_per_second, double ticks) const;
-        glm::mat4 map_matrix(aiMatrix4x4& aimat) const;
+        [[nodiscard]] animation_time tick_to_time(double ticks_per_second, double ticks) const;
+        [[nodiscard]] glm::mat4 map_matrix(const aiMatrix4x4& mat) const;
         glm::vec3 map_vec3(aiVector3D& vec) const;
-        glm::quat map_quat(aiQuaternion q) const;
+        [[nodiscard]] glm::quat map_quat(aiQuaternion q) const;
     };
 }
 

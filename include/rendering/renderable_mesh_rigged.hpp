@@ -8,7 +8,7 @@
 #include <cstdint>
 
 #include <rendering/skeleton_node.hpp>
-#include <rendering/mesh_static.hpp>>
+#include <rendering/mesh_static.hpp>
 #include <rendering/material_pbr.hpp>
 #include <ecs/component.hpp>
 
@@ -17,7 +17,7 @@ namespace rendering
 
 struct renderable_mesh_rigged : ecs::component<renderable_mesh_rigged>
 {
-    static const std::uint32_t MaxBones = 64;
+    static const std::uint32_t MaxBones = 32;
 
     mesh_static mesh;
     material_pbr material;    
@@ -25,9 +25,6 @@ struct renderable_mesh_rigged : ecs::component<renderable_mesh_rigged>
     skeleton_node* root { nullptr };
     std::uint32_t animation_count{ 0 };
 
-    skeleton_node* allocate_node();
-
-private:
     skeleton_node bones[MaxBones];
     std::uint32_t bone_count{ 0 };
 };

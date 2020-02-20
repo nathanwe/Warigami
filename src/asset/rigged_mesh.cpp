@@ -1,19 +1,37 @@
 #include <vector>
 
 #include <asset/rigged_mesh.hpp>
+#include <asset/bone_flattener.hpp>
 
 
-asset::rigged_mesh::rigged_mesh(aiMesh *assimp_mesh)
+void count_nodes(aiNode* node, size_t& accumulator)
 {
-    build_vertices(assimp_mesh);
-
+    accumulator++;
+    for (size_t i = 0; i < node->mNumChildren; ++i)
+        count_nodes(node->mChildren[i], accumulator);
 }
 
-void asset::rigged_mesh::build_vertices(aiMesh *assimp_mesh)
+
+asset::rigged_mesh::rigged_mesh(proto_mesh& proto)
+{
+    size_t num_nodes = 0;
+    count_nodes(proto.assimp_scene->mRootNode, num_nodes);
+    _bones_buffer.resize(num_nodes);
+    asset::bone_flattener<std::string> flattener(
+            proto.assimp_scene,
+            _bones_buffer.data(),
+            num_nodes,
+            [&] (const aiNode* ai_node, std::string* node, std::string* parent) {
+
+            });
+
+    build_vertices(proto.assimp_mesh, flattener);
+    set_bone_weights(proto.assimp_mesh, flattener);
+}
+
+void asset::rigged_mesh::build_vertices(aiMesh *assimp_mesh, asset::bone_flattener<std::string>& flattener)
 {
     // Reorganize data into array of struct instead of separate arrays
-    std::vector<rigged_vertex> vertices;
-    std::vector<uint32_t> indices;
     rigged_vertex swap_vertex;
     for (size_t i = 0; i < assimp_mesh->mNumVertices; i++)
     {
@@ -41,28 +59,30 @@ void asset::rigged_mesh::build_vertices(aiMesh *assimp_mesh)
             swap_vertex.bitangent.y = assimp_mesh->mBitangents[i].y;
             swap_vertex.bitangent.z = assimp_mesh->mBitangents[i].z;
         }
-        vertices.push_back(swap_vertex);
+        _vertices.push_back(swap_vertex);
     }
     for (size_t i = 0; i < assimp_mesh->mNumFaces; i++)
     {
-        indices.emplace_back(assimp_mesh->mFaces[i].mIndices[0]);
-        indices.emplace_back(assimp_mesh->mFaces[i].mIndices[1]);
-        indices.emplace_back(assimp_mesh->mFaces[i].mIndices[2]);
+        _indices.emplace_back(assimp_mesh->mFaces[i].mIndices[0]);
+        _indices.emplace_back(assimp_mesh->mFaces[i].mIndices[1]);
+        _indices.emplace_back(assimp_mesh->mFaces[i].mIndices[2]);
     }
-    _num_indices = indices.size();
+    _num_indices = _indices.size();
 }
 
-void asset::rigged_mesh::set_bone_weights(aiMesh *mesh)
+void asset::rigged_mesh::set_bone_weights(aiMesh *mesh, asset::bone_flattener<std::string>& flattener)
 {
     for (std::uint32_t bone_index = 0; bone_index < mesh->mNumBones; ++bone_index)
     {
         auto& bone = mesh->mBones[bone_index];
+        std::string bone_name = bone->mName.data;
+        auto bone_id = flattener.find_node_index(bone_name);
 
         for (std::uint32_t weight_index = 0; weight_index < bone->mNumWeights; ++weight_index)
         {
             auto& weight = bone->mWeights[weight_index];
             auto& vertex = _vertices[weight.mVertexId];
-            vertex.add_weight(bone_index, weight.mWeight);
+            vertex.add_weight(bone_id, weight.mWeight);
         }
     }
 }

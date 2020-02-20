@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
     // init ecs state
     ecs::archetype_pools memory;
-    ecs::state state(memory);    
+    ecs::state state(memory);
     ecs::register_component<transforms::transform>("transform");
     ecs::register_component<rendering::camera>("camera");
     ecs::register_component<rendering::light_directional>("light_directional");
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
 	rendering::asset_cache render_asset_cache(assets);
 	rendering::camera_updater camera_updater;
-	rendering::renderer renderer(glfw.window(), window_view, true, render_asset_cache, assets, timer);	
+	rendering::renderer renderer(glfw.window(), window_view, true, render_asset_cache, assets, timer);
 	transforms::transformer transformer;
 
 	ecs::systems systems({
@@ -49,12 +49,13 @@ int main(int argc, char** argv)
 	rendering::render_loader render_loader(render_asset_cache);
 	rendering::loader_rigged_model rigged_model_loader(assets, render_asset_cache);
 
-	hydrater.register_loaders(		
+	hydrater.register_loaders(
 		&camera_loader,
 		&dir_light_loader,
 		&point_light_loader,
 		&render_loader,
-		&transform_loader);
+		&transform_loader,
+		&rigged_model_loader);
 
 	hydrater.load();
 

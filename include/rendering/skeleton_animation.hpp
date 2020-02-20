@@ -13,8 +13,9 @@ namespace rendering
 {
     struct skeletal_animation
     {
-        static const std::uint32_t MaxAnimationFrames = 256;
+        static const std::uint32_t MaxAnimationFrames = 128;
 
+        animation_time duration {0};
         keyframes<glm::quat, MaxAnimationFrames> rotation;
         keyframes<glm::vec3, MaxAnimationFrames> position;
         keyframes<glm::vec3, MaxAnimationFrames> scale;

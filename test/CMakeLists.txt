@@ -61,6 +61,7 @@ add_executable(skeletal_test skeletal/skeletal.cpp)
 target_link_libraries(skeletal_test
         asset
         core
+        audio
         rendering
         transforms)
 target_compile_features(skeletal_test PUBLIC cxx_std_17)

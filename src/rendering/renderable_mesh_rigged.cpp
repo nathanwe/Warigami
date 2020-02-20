@@ -13,16 +13,3 @@
 template<> const component_shift ecs::component<rendering::renderable_mesh_rigged>::component_bitshift =
     (component_shift)rendering::component_bits::renderable_mesh_rigged;
 
-
-rendering::skeleton_node* rendering::renderable_mesh_rigged::allocate_node()
-{
-    if (bone_count == MaxBones)
-    {
-        std::cerr << "Could not allocate bone - out of space." << std::endl;
-        return nullptr;
-    }
-
-    auto* ptr = bones + bone_count;
-    bone_count++;
-    return ptr;
-}

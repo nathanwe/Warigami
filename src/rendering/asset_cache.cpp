@@ -1,14 +1,10 @@
 #include "rendering/asset_cache.hpp"
 
 #include "asset/proto_mesh.hpp"
-#include "asset/proto_shader.hpp"
 #include "asset/proto_texture.hpp"
 #include "asset/proto_texture_hdr.hpp"
 #include "rendering/vertex.hpp"
 
-#include "assimp/Importer.hpp"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
 #include "stb/stb_image.h"
 #include "glbinding/gl/gl.h"
 
@@ -17,7 +13,6 @@
 
 
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <asset/rigged_mesh.hpp>
 
@@ -28,14 +23,14 @@ namespace rendering
 		using namespace gl;
 
 		std::vector<uint32_t> textures;
-		for (auto it : _cube_maps)
+		for (const auto& it : _cube_maps)
 		{
 			if (it.second.id != 0)
 			{
 				textures.push_back(it.second.id);
 			}
 		}
-		for (auto it : _textures)
+		for (const auto& it : _textures)
 		{
 			if (it.second.id != 0)
 			{
@@ -46,7 +41,7 @@ namespace rendering
 
 		std::vector<uint32_t> vertex_arrays;
 		std::vector<uint32_t> buffers;
-		for (auto it : _mesh_statics)
+		for (const auto& it : _mesh_statics)
 		{
 			if (it.second.vao != 0)
 			{
@@ -156,12 +151,16 @@ namespace rendering
 			asset::proto_mesh& proto = _assets.get_proto_mesh(filepath);
 
 			if (proto.assimp_mesh->mNumBones > 0)
-			    make_rigged_mesh(r_mesh, proto);
-            else
+            {
+                make_rigged_mesh(r_mesh, proto);
+            } else
+            {
                 make_static_mesh(r_mesh, proto);
+            }
 
 			_assets.unload_proto_mesh(filepath);
 		}
+
 		return r_mesh;
 	}
 
@@ -239,7 +238,7 @@ namespace rendering
     void asset_cache::make_rigged_mesh(mesh_static &r_mesh, asset::proto_mesh& proto)
     {
         using namespace gl;
-        asset::rigged_mesh ai_mesh(proto.assimp_mesh);
+        asset::rigged_mesh ai_mesh(proto);
         auto& vertices = ai_mesh.vertices();
         auto& indices = ai_mesh.indices();
 
@@ -251,7 +250,7 @@ namespace rendering
         // Copy data to VRAM
         glBindVertexArray(r_mesh.vao);
         glBindBuffer(GL_ARRAY_BUFFER, r_mesh.vbo);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex), &vertices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(asset::rigged_vertex), &vertices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r_mesh.ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
 

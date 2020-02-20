@@ -10,6 +10,8 @@
 #include <rendering/loader_rigged_model.hpp>
 #include <rendering/renderable_mesh_rigged.hpp>
 
+#include <asset/bone_flattener.hpp>
+
 
 rendering::loader_rigged_model::loader_rigged_model(asset::asset_manager& assets, rendering::asset_cache& render_cache) 
     : _assets(assets)
@@ -22,20 +24,36 @@ void rendering::loader_rigged_model::load(asset::asset_loader_node& asset_loader
     auto& entity = asset_loader_node.entity_resource.entity;
     auto& entity_data = asset_loader_node.entity_resource.entity_data;
     auto& json = entity_data.component_data(rendering::renderable_mesh_rigged::component_bitshift);
-    auto& mesh = entity.get_component<rendering::renderable_mesh_rigged>();
+    auto& component = entity.get_component<rendering::renderable_mesh_rigged>();
 
     auto& ai_resource = _assets.get_proto_mesh(json["mesh"].get<std::string>());
-    
-    build_animation_component(ai_resource.assimp_scene, mesh);
+    component.mesh = _render_cache.get<mesh_static>(json["mesh"].get<std::string>());
+
+    build_animation_component(ai_resource.assimp_scene, component);
 }
 
 void rendering::loader_rigged_model::build_animation_component(const aiScene* scene, renderable_mesh_rigged& component)
 {
-    std::unordered_map<std::string, skeleton_node*> name_to_node;
-    auto* ai_root = scene->mRootNode;
-    auto* root = component.allocate_node();
-    load_nodes_recurse(ai_root, root, component, name_to_node);
+    asset::bone_flattener<skeleton_node> flattener(
+            scene,
+            component.bones,
+            rendering::renderable_mesh_rigged::MaxBones,
+            [&] (const aiNode* ai_node, skeleton_node* node, skeleton_node* parent) {
+                if (parent) parent->add_child(node);
+                node->base_transform = map_matrix(ai_node->mTransformation);
+                node->bone_id = flattener.name_to_index().find(ai_node->mName.data)->second;
+            });
 
+    load_animation_data(scene, component, flattener);
+
+}
+
+
+void rendering::loader_rigged_model::load_animation_data(
+        const aiScene *scene,
+        rendering::renderable_mesh_rigged &component,
+        asset::bone_flattener<skeleton_node>& flattener)
+{
     if (scene->mNumAnimations > skeleton_node::MaxAnimations)
     {
         std::cerr << "Animation limit exceeded." << std::endl;
@@ -43,7 +61,7 @@ void rendering::loader_rigged_model::build_animation_component(const aiScene* sc
     }
 
     component.animation_count = scene->mNumAnimations;
-    
+
     for (size_t animation_index = 0; animation_index < scene->mNumAnimations; ++animation_index)
     {
         auto* animation = scene->mAnimations[animation_index];
@@ -54,16 +72,18 @@ void rendering::loader_rigged_model::build_animation_component(const aiScene* sc
         {
             auto* ai_bone = animation->mChannels[bone_index];
             std::string name(ai_bone->mNodeName.data);
-            auto* node = name_to_node.find(name)->second;            
-                        
+            auto* node = flattener.find_node(name);
+
+            node->animations[animation_index].duration = duration;
+
             for (size_t pos_i = 0; pos_i < ai_bone->mNumPositionKeys; ++pos_i)
-            {           
+            {
                 auto& pos_key = ai_bone->mPositionKeys[pos_i];
                 auto& pos = node->animations[animation_index].position;
                 pos.times[pos_i] = animation_time(pos_key.mTime);
                 pos.values[pos_i] = map_vec3(pos_key.mValue);
             }
-                        
+
             for (size_t rot_i = 0; rot_i < ai_bone->mNumRotationKeys; ++rot_i)
             {
                 auto& rot_key = ai_bone->mRotationKeys[rot_i];
@@ -71,35 +91,18 @@ void rendering::loader_rigged_model::build_animation_component(const aiScene* sc
                 rot.times[rot_i] = animation_time(rot_key.mTime);
                 rot.values[rot_i] = map_quat(rot_key.mValue);
             }
-                        
+
             for (size_t scl_i = 0; scl_i < ai_bone->mNumScalingKeys; ++scl_i)
             {
                 auto& scl_key = ai_bone->mScalingKeys[scl_i];
                 auto& scl = node->animations[animation_index].scale;
                 scl.times[scl_i] = animation_time(scl_key.mTime);
-                scl.values[scl_i] = map_vec3(scl_key.mValue);                
+                scl.values[scl_i] = map_vec3(scl_key.mValue);
             }
         }
     }
 }
 
-void rendering::loader_rigged_model::load_nodes_recurse(
-    aiNode* ai_node, 
-    skeleton_node* node, 
-    renderable_mesh_rigged& mesh,
-    std::unordered_map<std::string, skeleton_node*>& name_to_node)
-{
-    name_to_node.insert(std::make_pair(ai_node->mName.data, node));
-    node->base_transform = map_matrix(ai_node->mTransformation);
-
-    for (size_t i = 0; i < ai_node->mNumChildren; ++i)
-    {
-        auto* ai_child = ai_node->mChildren[i];
-        auto* child = mesh.allocate_node();        
-        node->add_child(child);
-        load_nodes_recurse(ai_child, child, mesh, name_to_node);
-    }
-}
 
 rendering::animation_time rendering::loader_rigged_model::tick_to_time(double ticks_per_second, double ticks) const
 {
@@ -111,12 +114,12 @@ component_bitset rendering::loader_rigged_model::components_to_load()
     return rendering::renderable_mesh_rigged::archetype_bit;
 }
 
-glm::mat4 rendering::loader_rigged_model::map_matrix(aiMatrix4x4& source) const
+glm::mat4 rendering::loader_rigged_model::map_matrix(const aiMatrix4x4& source) const
 {
-    // assume that matrix memory layour is the same everywhere...?
+    // assume that matrix memory layout is the same everywhere...?
     glm::mat4 target;    
-    for (size_t i = 0; i < 16; ++i)
-        for (size_t j = 0; j < 16; ++j)
+    for (size_t i = 0; i < 4; ++i)
+        for (size_t j = 0; j < 4; ++j)
             target[i][j] = source[i][j];
     return target;
 }
@@ -130,3 +133,4 @@ glm::quat rendering::loader_rigged_model::map_quat(aiQuaternion q) const
 {
     return glm::quat(q.w, q.x, q.y, q.z);
 }
+

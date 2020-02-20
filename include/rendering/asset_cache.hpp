@@ -28,8 +28,8 @@ namespace rendering
 		std::map<std::string, mesh_static> _mesh_statics;
 		std::map<std::string, texture> _textures;
 
-		void make_static_mesh(mesh_static& mesh, asset::proto_mesh& proto);
-		void make_rigged_mesh(mesh_static& mesh, asset::proto_mesh& proto);
+		static void make_static_mesh(mesh_static& mesh, asset::proto_mesh& proto);
+		static void make_rigged_mesh(mesh_static& mesh, asset::proto_mesh& proto);
 	};
 
 	template <>
