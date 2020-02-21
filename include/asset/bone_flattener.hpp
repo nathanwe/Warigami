@@ -18,10 +18,10 @@ namespace asset
      * of the model loading code.
      *
      * The ultimate goal is to have the bone's index in an array be the bone id.
-     * @tparam T
+     * @tparam T bone type to map to
      */
     template<typename T>
-    class bone_flattener
+    class bone_flattener // _\m/
     {
     public:
         /**
@@ -37,7 +37,7 @@ namespace asset
                 const aiScene* scene,
                 T* storage,
                 size_t storage_size,
-                std::function<void(const aiNode*, T*, T*)> mapper) //void (*mapper)(aiNode*, T*, T*))
+                std::function<void(const aiNode*, T*, T*, bone_flattener<T>&)> mapper) 
                 : _storage(storage)
                 , _storage_size(storage_size)
                 , _mapper(mapper)
@@ -50,13 +50,15 @@ namespace asset
         const std::unordered_map<std::string, size_t>& name_to_index() const { return _name_to_index; };
         T* find_node(const std::string& name) { return _name_to_node.find(name)->second; }
         size_t find_node_index(const std::string& name) { return _name_to_index.find(name)->second; }
+        T* root() { return _root; }
 
     private:
         size_t _bone_count{0};
 
         T* _storage;
+        T* _root;
         size_t _storage_size;
-        std::function<void(const aiNode*, T*, T*)> _mapper;
+        std::function<void(const aiNode*, T*, T*, bone_flattener<T>&)> _mapper;
 
         std::unordered_map<std::string, T*> _name_to_node;
         std::unordered_map<std::string, size_t> _name_to_index;
@@ -64,6 +66,9 @@ namespace asset
         void load_nodes_recurse(const aiNode* ai_node, T* parent = nullptr)
         {
             T* user_node = allocate_and_map_to(ai_node, parent);
+
+            if (parent == nullptr)
+                _root = user_node;
 
             for (size_t i = 0; i < ai_node->mNumChildren; ++i)
             {
@@ -83,7 +88,7 @@ namespace asset
             auto* user_node = _storage + _bone_count;
             _name_to_node.insert(std::make_pair(ai_node->mName.data, user_node));
             _name_to_index.insert(std::make_pair(ai_node->mName.data, _bone_count++));
-            _mapper(ai_node, user_node, parent);
+            _mapper(ai_node, user_node, parent, *this);
             return user_node;
         }
     };

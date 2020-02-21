@@ -21,7 +21,11 @@ asset::rigged_mesh::rigged_mesh(proto_mesh& proto)
             proto.assimp_scene,
             _bones_buffer.data(),
             num_nodes,
-            [&] (const aiNode* ai_node, std::string* node, std::string* parent) {
+            [&] (
+                const aiNode* ai_node,
+                std::string* node,
+                std::string* parent,
+                bone_flattener<std::string>& flattener) {
 
             });
 

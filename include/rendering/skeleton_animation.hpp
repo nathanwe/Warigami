@@ -7,7 +7,9 @@
 
 #include <vector>
 #include <cstdint>
+#include <glm/mat4x4.hpp>
 #include <rendering/skeletal_animation_frame.hpp>
+
 
 namespace rendering
 {
@@ -19,6 +21,8 @@ namespace rendering
         keyframes<glm::quat, MaxAnimationFrames> rotation;
         keyframes<glm::vec3, MaxAnimationFrames> position;
         keyframes<glm::vec3, MaxAnimationFrames> scale;
+
+        glm::mat4 eval(animation_time t);
     };
 }
 

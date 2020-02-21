@@ -17,6 +17,7 @@ namespace rendering
     {
         T values[max_frames];
         animation_time times[max_frames];
+        std::uint16_t frame_count{ 0 };
     };
 }
 

@@ -156,9 +156,8 @@ namespace rendering
             } else
             {
                 make_static_mesh(r_mesh, proto);
+				_assets.unload_proto_mesh(filepath);
             }
-
-			_assets.unload_proto_mesh(filepath);
 		}
 
 		return r_mesh;

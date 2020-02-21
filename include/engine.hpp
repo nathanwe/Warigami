@@ -17,6 +17,7 @@
 #include <ecs/state.hpp>
 #include <ecs/world.hpp>
 #include <physics/physics_update.hpp>
+#include <rendering/animator.hpp>
 #include <rendering/camera_updater.hpp>
 #include <rendering/camera.hpp>
 #include <rendering/debug_view.hpp>

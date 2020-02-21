@@ -28,14 +28,16 @@ int main(int argc, char** argv)
     ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
     ecs::register_component<rendering::renderable_mesh_rigged>("renderable_mesh_rigged");
 
+	transforms::transformer transformer;
 	rendering::asset_cache render_asset_cache(assets);
 	rendering::camera_updater camera_updater;
 	rendering::renderer renderer(glfw.window(), window_view, true, render_asset_cache, assets, timer);
-	transforms::transformer transformer;
+	rendering::animator animator(timer);
 
 	ecs::systems systems({
 		&transformer,
 		&camera_updater,
+		&animator,
 		&renderer});
 
 	ecs::world world(systems, state);

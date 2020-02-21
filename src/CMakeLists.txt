@@ -145,8 +145,10 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp      
      ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
-     
-     rendering/loader_rigged_model.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/animator.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_rigged_model.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_node.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_animation.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST} )
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
