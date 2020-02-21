@@ -9,7 +9,7 @@ void rendering::skeleton_node::compute_transform(const glm::mat4& frame, animati
 		children[i]->compute_transform(calculated_transform, t, animation_index);
 }
 
-inline void rendering::skeleton_node::add_child(rendering::skeleton_node* node)
+void rendering::skeleton_node::add_child(rendering::skeleton_node* node)
 {
     children[child_count++] = node;
 }

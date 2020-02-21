@@ -10,9 +10,8 @@ namespace rendering
 	class animator : public ecs::system_base
 	{
 	public:
-		animator(core::frame_timer& timer);
-		
-		void update(ecs::state& state);
+		explicit animator(core::frame_timer& timer);
+		void update(ecs::state& state) override;
 
 	private:
 		core::frame_timer& _timer;

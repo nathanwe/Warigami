@@ -26,7 +26,7 @@ namespace rendering
         std::uint16_t bone_id;
         std::uint8_t child_count{ 0 };        
 
-        inline void add_child(skeleton_node* node);
+        void add_child(skeleton_node* node);
         void compute_transform(const glm::mat4& frame, animation_time t, std::uint16_t animation_index);
     };
 
