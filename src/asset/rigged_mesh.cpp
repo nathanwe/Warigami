@@ -4,18 +4,12 @@
 #include <asset/bone_flattener.hpp>
 
 
-void count_nodes(aiNode* node, size_t& accumulator)
-{
-    accumulator++;
-    for (size_t i = 0; i < node->mNumChildren; ++i)
-        count_nodes(node->mChildren[i], accumulator);
-}
 
 
 asset::rigged_mesh::rigged_mesh(proto_mesh& proto)
 {
     size_t num_nodes = 0;
-    count_nodes(proto.assimp_scene->mRootNode, num_nodes);
+    bone_flattener<std::string>::count_nodes(proto.assimp_scene->mRootNode, num_nodes);
     _bones_buffer.resize(num_nodes);
     asset::bone_flattener<std::string> flattener(
             proto.assimp_scene,

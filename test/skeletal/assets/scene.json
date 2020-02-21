@@ -50,8 +50,8 @@
         },
         {
           "type": "renderable_mesh_rigged",
-          "mesh": "assets/bendything.gltf",
-          "texture_diffuse": "assets/texture.png"
+          "mesh": "assets/Bee.glb"
+            
         }
       ]
     }

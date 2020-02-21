@@ -3,20 +3,29 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+
 glm::mat4 rendering::skeletal_animation::eval(animation_time time)
 {
+	if (time == animation_time(0))
+	{
+		glm::mat4 t = glm::translate(glm::mat4(1.f), position.values[0]);
+		glm::mat4 r = glm::mat4_cast(rotation.values[0]);
+		glm::mat4 s = glm::scale(glm::mat4(1.f), scale.values[0]);
+		return t * r * s;
+	}
+
     if (time > duration)
         time = time - duration;
 
-	std::uint32_t pos_ind{ 0 };
+	std::uint16_t pos_ind{ 0 };
 	while (time < position.times[pos_ind])
 		pos_ind++;
 
-	std::uint32_t rotation_ind{ 0 };
+	std::uint16_t rotation_ind{ 0 };
 	while (time < rotation.times[rotation_ind])
 		rotation_ind++;
 
-	std::uint32_t scale_ind{ 0 };
+	std::uint16_t scale_ind{ 0 };
 	while (time < scale.times[scale_ind])
 		scale_ind++;	
 		

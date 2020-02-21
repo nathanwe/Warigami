@@ -1,6 +1,6 @@
 #version 450 core
 
-const int MAX_BONES = 100;
+const int MAX_BONES = 128;
 
 
 layout(location = 0) in vec3 vs_in_position_local;

@@ -15,8 +15,8 @@ namespace rendering
 
     struct skeleton_node
     {
-        static const std::uint32_t MaxChildren = 16;
-        static const std::uint32_t MaxAnimations = 8;
+        static const std::uint32_t MaxChildren = 32;
+        static const std::uint32_t MaxAnimations = 16;
 
 
         glm::mat4 base_transform;

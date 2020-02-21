@@ -46,6 +46,14 @@ namespace asset
             load_nodes_recurse(root);
         }
 
+        static void count_nodes(const aiNode* node, size_t& accumulator)
+        {
+            accumulator++;
+            for (size_t i = 0; i < node->mNumChildren; ++i)
+                count_nodes(node->mChildren[i], accumulator);
+        }
+
+
         const std::unordered_map<std::string, T*>& name_to_node() const { return _name_to_node; }
         const std::unordered_map<std::string, size_t>& name_to_index() const { return _name_to_index; };
         T* find_node(const std::string& name) { return _name_to_node.find(name)->second; }

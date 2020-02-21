@@ -5,6 +5,7 @@
 #ifndef WIZARDENGINE_RENDERABLE_MESH_RIGGED_HPP
 #define WIZARDENGINE_RENDERABLE_MESH_RIGGED_HPP
 
+#include <vector>
 #include <cstdint>
 
 #include <rendering/skeleton_node.hpp>
@@ -17,9 +18,10 @@ namespace rendering
 
     struct renderable_mesh_rigged : ecs::component<renderable_mesh_rigged>
     {
-        static const std::uint32_t MaxBones = 32;
+        static const std::uint32_t MaxBones = 64;
 
-        skeleton_node bones[MaxBones];
+        //skeleton_node bones[MaxBones];
+        std::vector<skeleton_node> bones;
         mesh_static mesh;
         material_pbr material;
         animation_time t{ 0 };

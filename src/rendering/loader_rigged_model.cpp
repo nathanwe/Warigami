@@ -32,10 +32,14 @@ void rendering::loader_rigged_model::load(asset::asset_loader_node& asset_loader
 
 void rendering::loader_rigged_model::build_animation_component(const aiScene* scene, renderable_mesh_rigged& component)
 {
+    size_t count{ 0 };
+    asset::bone_flattener<skeleton_node>::count_nodes(scene->mRootNode, count);
+    component.bones.resize(count);
+
     asset::bone_flattener<skeleton_node> f(
             scene,
-            component.bones,
-            rendering::renderable_mesh_rigged::MaxBones,
+            component.bones.data(),
+            count,
             [&] (
                 const aiNode* ai_node, 
                 skeleton_node* node, 
@@ -62,8 +66,7 @@ void rendering::loader_rigged_model::load_animation_data(
     }
 
     component.root = flattener.root();    
-    component.animation_count = scene->mNumAnimations;
-    component.bone_count = flattener.bone_count();
+    component.animation_count = scene->mNumAnimations;    
 
     for (size_t animation_index = 0; animation_index < scene->mNumAnimations; ++animation_index)
     {
