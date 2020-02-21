@@ -51,6 +51,7 @@ namespace asset
         T* find_node(const std::string& name) { return _name_to_node.find(name)->second; }
         size_t find_node_index(const std::string& name) { return _name_to_index.find(name)->second; }
         T* root() { return _root; }
+        size_t bone_count() const { return _bone_count; }
 
     private:
         size_t _bone_count{0};

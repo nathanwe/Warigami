@@ -63,6 +63,7 @@ void rendering::loader_rigged_model::load_animation_data(
 
     component.root = flattener.root();    
     component.animation_count = scene->mNumAnimations;
+    component.bone_count = flattener.bone_count();
 
     for (size_t animation_index = 0; animation_index < scene->mNumAnimations; ++animation_index)
     {
@@ -87,7 +88,6 @@ void rendering::loader_rigged_model::load_animation_data(
                 auto& pos = animation.position;
                 pos.times[pos_i] = animation_time(pos_key.mTime);
                 pos.values[pos_i] = map_vec3(pos_key.mValue);
-                pos.frame_count = pos_i+1;
             }
 
             for (size_t rot_i = 0; rot_i < ai_bone->mNumRotationKeys; ++rot_i)
@@ -96,7 +96,6 @@ void rendering::loader_rigged_model::load_animation_data(
                 auto& rot = animation.rotation;
                 rot.times[rot_i] = animation_time(rot_key.mTime);
                 rot.values[rot_i] = map_quat(rot_key.mValue);
-                rot.frame_count = rot_i+1;
             }
 
             for (size_t scl_i = 0; scl_i < ai_bone->mNumScalingKeys; ++scl_i)
@@ -105,7 +104,6 @@ void rendering::loader_rigged_model::load_animation_data(
                 auto& scl = animation.scale;
                 scl.times[scl_i] = animation_time(scl_key.mTime);
                 scl.values[scl_i] = map_vec3(scl_key.mValue);
-                scl.frame_count = scl_i+1;
             }
         }
     }

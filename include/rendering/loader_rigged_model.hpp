@@ -26,7 +26,10 @@ namespace rendering
         asset::asset_manager& _assets;
         rendering::asset_cache& _render_cache;
 
-        void build_animation_component(const aiScene* mesh, renderable_mesh_rigged& component);
+        void build_animation_component(
+            const aiScene* mesh, 
+            renderable_mesh_rigged& component);
+
         void load_animation_data(
                 const aiScene* mesh,
                 renderable_mesh_rigged& component,
@@ -34,7 +37,7 @@ namespace rendering
 
         [[nodiscard]] animation_time tick_to_time(double ticks_per_second, double ticks) const;
         [[nodiscard]] glm::mat4 map_matrix(const aiMatrix4x4& mat) const;
-        glm::vec3 map_vec3(aiVector3D& vec) const;
+        [[nodiscard]] glm::vec3 map_vec3(aiVector3D& vec) const;
         [[nodiscard]] glm::quat map_quat(aiQuaternion q) const;
     };
 }
