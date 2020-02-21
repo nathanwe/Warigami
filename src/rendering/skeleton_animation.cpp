@@ -5,7 +5,8 @@
 
 glm::mat4 rendering::skeletal_animation::eval(animation_time time)
 {
-	time = time % duration;
+    if (time > duration)
+        time = time - duration;
 
 	std::uint32_t pos_ind;
 	while (time < position.times[pos_ind])
