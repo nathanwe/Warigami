@@ -15,7 +15,7 @@ void rendering::animator::update(ecs::state& state)
 		if (component.t > anim_duration)
 			component.t = component.t - anim_duration;
 
-		// update matrices
-		component.root->compute_transform(glm::mat4(1.f), component.t, component.animation_index);
+		// update matrices. or not - it actually makes sense to do this in renderer
+		//component.root->compute_transform(glm::mat4(1.f), component.t, component.animation_index);
 	});
 }

@@ -22,15 +22,14 @@ namespace rendering
 
         //skeleton_node bones[MaxBones];
         std::vector<skeleton_node> bones;
+
         mesh_static mesh;
         material_pbr material;
         animation_time t{ 0 };
         skeleton_node* root{ nullptr };
         std::uint32_t animation_count{ 0 }; // possibly unneeded
-        std::uint32_t bone_count{ 0 };
         std::uint16_t animation_index{ 0 };
     };
-
 }
 
 

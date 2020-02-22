@@ -66,7 +66,7 @@ void rendering::loader_rigged_model::load_animation_data(
     }
 
     component.root = flattener.root();    
-    component.animation_count = scene->mNumAnimations;    
+    component.animation_count = scene->mNumAnimations;
 
     for (size_t animation_index = 0; animation_index < scene->mNumAnimations; ++animation_index)
     {

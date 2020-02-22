@@ -13,7 +13,7 @@ layout(location = 6) in vec4 vs_weights;
 
 layout(location = 0) uniform mat4 u_world_from_local;
 layout(location = 4) uniform mat4 u_clip_from_world;
-layout(location = 5) uniform mat4 u_bones[MAX_BONES];
+layout(location = 45) uniform mat4 u_bones[MAX_BONES];
 
 out Vs_Out
 {
@@ -40,7 +40,8 @@ void main()
 		vs_weights[3] * u_bones[vs_bone_ids[3]];
 	
 	vec4 position_local = bone_matrix * vec4(vs_in_position_local, 1);
-	vec4 position_world = u_world_from_local * position_local;
+	//vec4 position_world = u_world_from_local * position_local;
+	vec4 position_world = u_world_from_local * vec4(vs_in_position_local, 1);
 	mat4 transpose_inverse_world = transpose(inverse(u_world_from_local));
 
 	vs_out.position_world     = position_world.xyz;

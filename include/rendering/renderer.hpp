@@ -13,6 +13,7 @@
 #include "rendering/light_point.hpp"
 #include "rendering/mesh_static.hpp"
 #include "rendering/renderable_mesh_static.hpp"
+#include "rendering/renderable_mesh_rigged.hpp"
 #include "rendering/render_pass.hpp"
 #include "rendering/render_state.hpp"
 #include "transforms/transform.hpp"
@@ -52,7 +53,7 @@ namespace rendering
 		void default_bind_camera(const transforms::transform& transform, const camera& cam);
 		void default_bind_light(const transforms::transform& transform, const light_directional& light);
 		void default_bind_light(const transforms::transform& transform, const light_point& light, int i);
-		void default_bind_renderable(const transforms::transform& transform, const renderable_mesh_static& renderable);
+		void default_bind_renderable(const transforms::transform& transform, const material_pbr& renderable);
 		void default_unbind_renderable();
 
 		void run_pass_cubemap(const camera& cam);
@@ -63,12 +64,16 @@ namespace rendering
 
 		void run_pass_debug_velocity(ecs::state& ecs_state, const camera& cam, entity_id active_camera_id);
 
+		void run_pass_animated(ecs::state &ecs_state, const transforms::transform& camera_transform, const camera &cam);
+        void bind_bones(renderable_mesh_rigged& component);
+
 	private:
 		const core::frame_timer& _time;
 		bool _is_debug = false;
 		GLFWwindow* _window = nullptr;
 		core::viewport _window_view;
 		std::unique_ptr<render_pass> _pass_default;
+        std::unique_ptr<render_pass> _pass_animated;
 		std::unique_ptr<render_pass> _pass_cubemap;
 		std::unique_ptr<render_pass> _pass_debug;
 		mesh_static _mesh_cube;
@@ -78,6 +83,8 @@ namespace rendering
 		glm::vec3 _debug_collider_color = glm::vec3(0, 1, 0);
 		float time_between_messages = 0.25f;
 		float last_message_time = 0.f;
+
+		std::vector<glm::mat4> _bone_buffer;
 	};
 }
 

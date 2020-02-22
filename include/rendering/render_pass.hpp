@@ -44,6 +44,7 @@ namespace rendering
 		void set_mat2(int const location, glm::mat2 const& value) const;
 		void set_mat3(int const location, glm::mat3 const& value) const;
 		void set_mat4(int const location, glm::mat4 const& value) const;
+        void set_mat4_array(int const location, const std::vector<glm::mat4>& array) const;
 		void set_texture(int const binding, int value) const;
 		void set_cubemap(int const binding, int value) const;
 		void set_ubo(unsigned int const binding, std::string const& name) const;

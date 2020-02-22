@@ -240,6 +240,8 @@ namespace rendering
         asset::rigged_mesh ai_mesh(proto);
         auto& vertices = ai_mesh.vertices();
         auto& indices = ai_mesh.indices();
+        r_mesh.num_indices = ai_mesh.indices().size();
+
 
         // Create OpenGL representation
         glGenVertexArrays(1, &r_mesh.vao);
