@@ -472,7 +472,7 @@ namespace rendering
                 component.animation_index,
                 _bone_buffer.data());
 
-        _pass_animated->set_mat4_array(45, _bone_buffer);
+        _pass_animated->set_mat4_array(64, _bone_buffer);
     }
 
     void draw_mesh_static(const mesh_static &mesh)

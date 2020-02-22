@@ -5,7 +5,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 0, 15 ],
+          "position": [ 0, 0, 3 ],
           "scale": [ 1, 1, 1 ]
         },
         {
@@ -46,13 +46,13 @@
         {
           "type": "transform",
           "position": [ 0, 0, 0 ],
-          "scale": [ 0.5, 0.5, 0.5 ]
+          "scale": [ 1.0, 1.0, 1.0 ],
+          "rotation": [ -90, 50, 50 ]
         },
         {
           "type": "renderable_mesh_rigged",
-          "mesh": "assets/Bee.glb",
-          "texture_diffuse": "assets/texture.png"
-
+          "mesh": "assets/cesium/CesiumMan.gltf",
+          "texture_diffuse": "assets/cesium/CesiumMan_img0.jpg"
         }
       ]
     }
