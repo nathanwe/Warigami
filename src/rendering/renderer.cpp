@@ -461,6 +461,8 @@ namespace rendering
         });
     }
 
+////////////////////////////////////
+///////////////////////////////
 #include <iostream>
 #include <fstream>
     void renderer::bind_bones(renderable_mesh_rigged &component)
@@ -479,6 +481,8 @@ namespace rendering
         }
         myfile.close();
     }
+////////////////////////////////
+////////////////////////////////////
 
     void draw_mesh_static(const mesh_static &mesh)
     {

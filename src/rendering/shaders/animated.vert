@@ -23,6 +23,7 @@ out Vs_Out
 	layout(location = 2) vec2 tex_coord;
 	layout(location = 3) mat3 world_from_tangent;
 	layout(location = 8) vec3 debug_color;
+	layout(location = 9) mat4 bone_mat;
 } vs_out;
 
 mat3 make_world_from_tangent(mat4 transpose_inverse_transform, vec3 t, vec3 b, vec3 n)
@@ -35,12 +36,12 @@ mat3 make_world_from_tangent(mat4 transpose_inverse_transform, vec3 t, vec3 b, v
 
 void main()
 {
+	int index_x = vs_bone_ids.x;
 	mat4 bone_matrix =
-		vs_weights[0] * u_bones[vs_bone_ids[0]] +
-		vs_weights[1] * u_bones[vs_bone_ids[1]] +
-		vs_weights[2] * u_bones[vs_bone_ids[2]] +
-		vs_weights[3] * u_bones[vs_bone_ids[3]];
-
+		u_bones[0] * vs_weights[0] +
+		u_bones[1] * vs_weights[1] +
+		u_bones[2] * vs_weights[2] +
+		u_bones[3] * vs_weights[3];
 	
 	vec4 position_local = bone_matrix * vec4(vs_in_position_local, 1);
 	//vec4 position_world = u_world_from_local * position_local;
@@ -52,7 +53,8 @@ void main()
 	vs_out.tex_coord          = vs_in_tex_coord;
 	vs_out.world_from_tangent = make_world_from_tangent(transpose_inverse_world, vs_in_tangent_local, vs_in_bitangent_local, vs_in_normal_local);
 
-	vs_out.debug_color = bone_matrix[0].rgb;
+	vs_out.debug_color = vec3(float(vs_bone_ids.x),  float(vs_bone_ids.y), float(vs_bone_ids.z));
+	vs_out.bone_mat =  bone_matrix;
 
 	gl_Position = u_clip_from_world * position_world;
 }

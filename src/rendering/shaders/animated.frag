@@ -8,6 +8,7 @@ in Vs_Out
 	layout(location = 2) vec2 tex_coord;
 	layout(location = 3) mat3 world_from_tangent;
 	layout(location = 8) vec3 debug_color;
+	layout(location = 9) mat4 bone_mat;
 
 } vs_out;
 
@@ -138,7 +139,7 @@ void main()
 		*/
 	}
 
-	fs_out = vs_out.debug_color; //pixel_color;
+	fs_out = mat3(vs_out.bone_mat) * vs_out.debug_color; //pixel_color;
 }
 
 #undef NUM_LIGHT_POINTS

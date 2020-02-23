@@ -109,8 +109,7 @@ namespace asset
         std::unordered_map<const aiNode*, T*> _node_to_parent;
 
         void load_nodes_recurse(const aiNode* ai_node, T* parent = nullptr)
-        {
-            _node_to_parent[ai_node] = parent;
+        {            
             T* user_node = allocate_and_map_to(ai_node, parent);
 
             if (parent == nullptr)
@@ -147,7 +146,8 @@ namespace asset
             auto* user_node = _storage + _bone_count;
             _name_to_node.insert(std::make_pair(ai_node->mName.data, user_node));
             _name_to_ai_node.insert(std::make_pair(ai_node->mName.data, ai_node));
-            _name_to_index.insert(std::make_pair(ai_node->mName.data, _bone_count++));            
+            _node_to_parent[ai_node] = parent;
+            _name_to_index.insert(std::make_pair(ai_node->mName.data, _bone_count++));
             return user_node;
         }
     };
