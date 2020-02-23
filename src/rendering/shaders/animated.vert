@@ -1,6 +1,7 @@
 #version 450 core
 
 const int MAX_BONES = 128;
+const float EPS = 0.00001;
 
 
 layout(location = 0) in vec3 vs_in_position_local;
@@ -34,8 +35,6 @@ mat3 make_world_from_tangent(mat4 transpose_inverse_transform, vec3 t, vec3 b, v
 
 void main()
 {
-	int all_t = 0;
-
 	mat4 bone_matrix =
 		vs_weights[0] * u_bones[vs_bone_ids[0]] +
 		vs_weights[1] * u_bones[vs_bone_ids[1]] +
@@ -53,15 +52,7 @@ void main()
 	vs_out.tex_coord          = vs_in_tex_coord;
 	vs_out.world_from_tangent = make_world_from_tangent(transpose_inverse_world, vs_in_tangent_local, vs_in_bitangent_local, vs_in_normal_local);
 
-	float r = vs_weights[0] == 0 ? 0 : vs_bone_ids[0];
-	float g = vs_weights[0] == 0 ? 0 : vs_bone_ids[1];
-	float b = vs_weights[0] == 0 ? 0 : vs_bone_ids[2];
-
-	vs_out.debug_color = vec3(
-		r / 21.0,
-		g / 21.0,
-		b / 21.0
-	);
+	vs_out.debug_color = bone_matrix[3].rgb;
 
 	gl_Position = u_clip_from_world * position_world;
 }

@@ -19,6 +19,8 @@ namespace rendering
         static const std::uint32_t MaxAnimations = 16;
 
         glm::mat4 base_transform;
+        glm::mat4 offset;
+
         skeletal_animation animations[MaxAnimations];        
         skeleton_node* children[MaxChildren];
         std::uint16_t bone_id;
@@ -28,13 +30,14 @@ namespace rendering
 
         /**
          * Fills a buffer of bone matrices
-         * @param frame
+         * @param parent_transform: the parent space, which is calculated at each frame of the recursion stack
          * @param t
          * @param animation_index
          * @param buffer
          */
         void compute_transform(
-                const glm::mat4& frame,
+                glm::mat4& base_inverse,
+                const glm::mat4& parent_transform,
                 animation_time t,
                 std::uint16_t animation_index,
                 glm::mat4* buffer);

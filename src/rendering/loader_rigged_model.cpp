@@ -46,7 +46,9 @@ void rendering::loader_rigged_model::build_animation_component(const aiScene* sc
                 skeleton_node* parent, 
                 asset::bone_flattener<skeleton_node>& flattener) {
                 if (parent) parent->add_child(node);
+                
                 node->base_transform = map_matrix(ai_node->mTransformation);
+                node->offset = flattener.find_offset_for_bone(ai_node->mName.data);
                 node->bone_id = flattener.name_to_index().find(ai_node->mName.data)->second;
             });
 
@@ -67,6 +69,7 @@ void rendering::loader_rigged_model::load_animation_data(
 
     component.root = flattener.root();    
     component.animation_count = scene->mNumAnimations;
+    component.base_inverse = flattener.base_inverse();
 
     for (size_t animation_index = 0; animation_index < scene->mNumAnimations; ++animation_index)
     {

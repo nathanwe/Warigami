@@ -23,6 +23,8 @@ namespace rendering
         keyframes<glm::vec3, MaxAnimationFrames> scale;
 
         glm::mat4 eval(animation_time t);
+
+        bool is_blank() const { return duration == animation_time::zero(); }
     };
 }
 

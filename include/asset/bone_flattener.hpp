@@ -9,6 +9,8 @@
 #include <vector>
 #include <cstdint>
 #include <assimp/scene.h>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace asset
 {
@@ -43,7 +45,25 @@ namespace asset
                 , _mapper(mapper)
         {
             const auto* root = scene->mRootNode;
+
+            auto base_transform = root->mTransformation;
+            auto glmmat = glm::make_mat4(&base_transform.a1);
+            _base_inverse = glm::transpose(glmmat);
+
             load_nodes_recurse(root);
+
+
+            for (size_t mesh_i = 0; mesh_i < scene->mNumMeshes; ++mesh_i)
+            {
+                auto& mesh = scene->mMeshes[mesh_i];
+                for (size_t bone_i = 0; bone_i < mesh->mNumBones; ++bone_i)
+                {
+                    auto* bone = mesh->mBones[bone_i];
+                    _name_to_bone[bone->mName.data] = bone;
+                }
+            }
+
+            map_recurse(root);
         }
 
         static void count_nodes(const aiNode* node, size_t& accumulator)
@@ -60,6 +80,17 @@ namespace asset
         size_t find_node_index(const std::string& name) { return _name_to_index.find(name)->second; }
         T* root() { return _root; }
         size_t bone_count() const { return _bone_count; }
+        glm::mat4 base_inverse() { return _base_inverse; }
+
+        glm::mat4 find_offset_for_bone(std::string name) 
+        {
+            if (_name_to_bone.find(name) == _name_to_bone.end())
+                return glm::mat4(1.f);
+
+            auto& source = _name_to_bone.find(name)->second->mOffsetMatrix;
+            return glm::transpose(glm::make_mat4(&source.a1)); 
+        }
+
 
     private:
         size_t _bone_count{0};
@@ -69,11 +100,17 @@ namespace asset
         size_t _storage_size;
         std::function<void(const aiNode*, T*, T*, bone_flattener<T>&)> _mapper;
 
+        glm::mat4 _base_inverse;
+
         std::unordered_map<std::string, T*> _name_to_node;
+        std::unordered_map<std::string, const aiNode*> _name_to_ai_node;      
+        std::unordered_map<std::string, aiBone*> _name_to_bone;
         std::unordered_map<std::string, size_t> _name_to_index;
+        std::unordered_map<const aiNode*, T*> _node_to_parent;
 
         void load_nodes_recurse(const aiNode* ai_node, T* parent = nullptr)
         {
+            _node_to_parent[ai_node] = parent;
             T* user_node = allocate_and_map_to(ai_node, parent);
 
             if (parent == nullptr)
@@ -86,6 +123,19 @@ namespace asset
             }
         }
 
+        void map_recurse(const aiNode* ai_node)
+        {
+            T* user_node = find_node(ai_node->mName.data);
+            T* parent = _node_to_parent[ai_node];
+            _mapper(ai_node, user_node, parent, *this);
+
+            for (size_t i = 0; i < ai_node->mNumChildren; ++i)
+            {
+                auto* ai_child = ai_node->mChildren[i];
+                map_recurse(ai_child);
+            }
+        }
+
         T* allocate_and_map_to(const aiNode* ai_node, T* parent)
         {
             if (_bone_count == _storage_size)
@@ -93,11 +143,11 @@ namespace asset
                 std::cerr << "Could not allocate bone - out of space." << std::endl;
                 return nullptr;
             }
-
+            
             auto* user_node = _storage + _bone_count;
             _name_to_node.insert(std::make_pair(ai_node->mName.data, user_node));
-            _name_to_index.insert(std::make_pair(ai_node->mName.data, _bone_count++));
-            _mapper(ai_node, user_node, parent, *this);
+            _name_to_ai_node.insert(std::make_pair(ai_node->mName.data, ai_node));
+            _name_to_index.insert(std::make_pair(ai_node->mName.data, _bone_count++));            
             return user_node;
         }
     };

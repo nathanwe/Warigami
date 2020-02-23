@@ -468,12 +468,7 @@ namespace rendering
         if (_bone_buffer.size() < component.bones.size())
             _bone_buffer.resize(component.bones.size());
 
-        component.root->compute_transform(
-                glm::mat4(1.f),
-                component.t,
-                component.animation_index,
-                _bone_buffer.data());
-
+        component.compute_transform(_bone_buffer.data());
         _pass_animated->set_mat4_array(64, _bone_buffer);
 
         std::ofstream myfile;
