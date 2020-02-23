@@ -469,7 +469,7 @@ namespace rendering
             _bone_buffer.resize(component.bones.size());
 
         component.compute_transform(_bone_buffer.data());
-        _pass_animated->set_mat4_array(64, _bone_buffer);
+        _pass_animated->set_mat4_array(45, _bone_buffer);
 
         std::ofstream myfile;
         myfile.open ("bones.txt");

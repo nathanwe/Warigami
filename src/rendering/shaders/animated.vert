@@ -14,7 +14,7 @@ layout(location = 6) in vec4 vs_weights;
 
 layout(location = 0) uniform mat4 u_world_from_local;
 layout(location = 4) uniform mat4 u_clip_from_world;
-layout(location = 64) uniform mat4 u_bones[MAX_BONES];
+layout(location = 45) uniform mat4 u_bones[MAX_BONES];
 
 out Vs_Out
 {
@@ -43,8 +43,8 @@ void main()
 
 	
 	vec4 position_local = bone_matrix * vec4(vs_in_position_local, 1);
-	vec4 position_world = u_world_from_local * position_local;
-	//vec4 position_world = u_world_from_local * vec4(vs_in_position_local, 1);
+	//vec4 position_world = u_world_from_local * position_local;
+	vec4 position_world = u_world_from_local * vec4(vs_in_position_local, 1);
 	mat4 transpose_inverse_world = transpose(inverse(u_world_from_local));
 
 	vs_out.position_world     = position_world.xyz;
@@ -52,7 +52,7 @@ void main()
 	vs_out.tex_coord          = vs_in_tex_coord;
 	vs_out.world_from_tangent = make_world_from_tangent(transpose_inverse_world, vs_in_tangent_local, vs_in_bitangent_local, vs_in_normal_local);
 
-	vs_out.debug_color = bone_matrix[3].rgb;
+	vs_out.debug_color = bone_matrix[0].rgb;
 
 	gl_Position = u_clip_from_world * position_world;
 }
