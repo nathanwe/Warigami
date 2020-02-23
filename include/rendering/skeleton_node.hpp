@@ -36,7 +36,7 @@ namespace rendering
          * @param buffer
          */
         void compute_transform(
-                glm::mat4& base_inverse,
+                glm::mat4& global_inverse,
                 const glm::mat4& parent_transform,
                 animation_time t,
                 std::uint16_t animation_index,

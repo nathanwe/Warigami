@@ -1,27 +1,27 @@
 #include <rendering/skeleton_node.hpp>
 
 void rendering::skeleton_node::compute_transform(
-		glm::mat4& base_inverse,
+		glm::mat4& global_inverse,
         const glm::mat4& parent_transform,
         animation_time t,
         std::uint16_t animation_index,
         glm::mat4* buffer)
-{	
+{
+    //t = animation_time(1);
+
 	auto& calculated_transform = buffer[bone_id];
 	auto& animation = animations[animation_index];
 
-	auto node_transform = glm::inverse(base_transform);
+	auto node_transform = animation.is_blank()
+	        ? base_transform
+	        : animation.eval(t);
 
-	if (!animation.is_blank())
-		node_transform = animation.eval(t);
-	
-	auto global_transform = parent_transform * node_transform;		
-	calculated_transform = global_transform * offset;
+	auto global_transform = parent_transform * node_transform;
+	calculated_transform = global_inverse * global_transform * offset;
 
-	
-	calculated_transform = glm::mat4(1.f);
+	//calculated_transform = glm::mat4(1.f);
 	for (std::uint16_t i = 0; i < child_count; ++i)
-		children[i]->compute_transform(base_inverse, global_transform, t, animation_index, buffer);
+		children[i]->compute_transform(global_inverse, global_transform, t, animation_index, buffer);
 }
 
 void rendering::skeleton_node::add_child(rendering::skeleton_node* node)

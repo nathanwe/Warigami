@@ -45,7 +45,8 @@ void rendering::loader_rigged_model::build_animation_component(const aiScene* sc
                 skeleton_node* node, 
                 skeleton_node* parent, 
                 asset::bone_flattener<skeleton_node>& flattener) {
-                if (parent) parent->add_child(node);
+                if (parent)
+                    parent->add_child(node);
                 
                 node->base_transform = map_matrix(ai_node->mTransformation);
                 node->offset = flattener.find_offset_for_bone(ai_node->mName.data);
@@ -69,12 +70,13 @@ void rendering::loader_rigged_model::load_animation_data(
 
     component.root = flattener.root();    
     component.animation_count = scene->mNumAnimations;
-    component.base_inverse = flattener.base_inverse();
+    component.global_inverse = flattener.base_inverse();
 
     for (size_t animation_index = 0; animation_index < scene->mNumAnimations; ++animation_index)
     {
+        auto speedup = 1000.f; // ms to s
         auto* animation = scene->mAnimations[animation_index];
-        auto duration = tick_to_time(animation->mTicksPerSecond, animation->mDuration);
+        auto duration = tick_to_time(animation->mTicksPerSecond, animation->mDuration) / speedup;
 
         // channels are the bones
         for (size_t bone_index = 0; bone_index < animation->mNumChannels; ++bone_index)
@@ -84,31 +86,41 @@ void rendering::loader_rigged_model::load_animation_data(
             auto* node = flattener.find_node(name);
             auto bone_id = flattener.find_node_index(name);
             auto& component_animation = node->animations[animation_index];
-            component_animation.duration = duration;
-            component_animation.position.frame_count = ai_bone->mNumPositionKeys;
-            component_animation.rotation.frame_count = ai_bone->mNumRotationKeys;
-            component_animation.scale.frame_count = ai_bone->mNumScalingKeys;
-            
+
             for (size_t pos_i = 0; pos_i < ai_bone->mNumPositionKeys; ++pos_i)
             {
                 auto& pos_key = ai_bone->mPositionKeys[pos_i];
-                component_animation.position.times[pos_i] = animation_time(pos_key.mTime);
+                component_animation.position.times[pos_i] = animation_time(pos_key.mTime / speedup);
                 component_animation.position.values[pos_i] = map_vec3(pos_key.mValue);
+
+                if (component_animation.position.times[pos_i] > duration)
+                    duration = component_animation.position.times[pos_i];
             }
 
             for (size_t rot_i = 0; rot_i < ai_bone->mNumRotationKeys; ++rot_i)
             {
                 auto& rot_key = ai_bone->mRotationKeys[rot_i];
-                component_animation.rotation.times[rot_i] = animation_time(rot_key.mTime);
+                component_animation.rotation.times[rot_i] = animation_time(rot_key.mTime / speedup);
                 component_animation.rotation.values[rot_i] = map_quat(rot_key.mValue);
+
+                if (component_animation.rotation.times[rot_i] > duration)
+                    duration = component_animation.rotation.times[rot_i];
             }
 
             for (size_t scl_i = 0; scl_i < ai_bone->mNumScalingKeys; ++scl_i)
             {
                 auto& scl_key = ai_bone->mScalingKeys[scl_i];
-                component_animation.scale.times[scl_i] = animation_time(scl_key.mTime);
+                component_animation.scale.times[scl_i] = animation_time(scl_key.mTime / speedup);
                 component_animation.scale.values[scl_i] = map_vec3(scl_key.mValue);
+
+                if (component_animation.scale.times[scl_i] > duration)
+                    duration = component_animation.scale.times[scl_i];
             }
+
+            component_animation.duration = duration;
+            component_animation.position.frame_count = ai_bone->mNumPositionKeys;
+            component_animation.rotation.frame_count = ai_bone->mNumRotationKeys;
+            component_animation.scale.frame_count = ai_bone->mNumScalingKeys;
         }
     }
 }

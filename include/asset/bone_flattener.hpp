@@ -106,7 +106,7 @@ namespace asset
         std::unordered_map<std::string, const aiNode*> _name_to_ai_node;      
         std::unordered_map<std::string, aiBone*> _name_to_bone;
         std::unordered_map<std::string, size_t> _name_to_index;
-        std::unordered_map<const aiNode*, T*> _node_to_parent;
+        std::unordered_map<std::string, T*> _name_to_parent;
 
         void load_nodes_recurse(const aiNode* ai_node, T* parent = nullptr)
         {            
@@ -125,7 +125,7 @@ namespace asset
         void map_recurse(const aiNode* ai_node)
         {
             T* user_node = find_node(ai_node->mName.data);
-            T* parent = _node_to_parent[ai_node];
+            T* parent = _name_to_parent[ai_node->mName.data];
             _mapper(ai_node, user_node, parent, *this);
 
             for (size_t i = 0; i < ai_node->mNumChildren; ++i)
@@ -146,7 +146,7 @@ namespace asset
             auto* user_node = _storage + _bone_count;
             _name_to_node.insert(std::make_pair(ai_node->mName.data, user_node));
             _name_to_ai_node.insert(std::make_pair(ai_node->mName.data, ai_node));
-            _node_to_parent[ai_node] = parent;
+            _name_to_parent.insert(std::make_pair(ai_node->mName.data, parent));     //[ai_node->mName.data] = parent;
             _name_to_index.insert(std::make_pair(ai_node->mName.data, _bone_count++));
             return user_node;
         }

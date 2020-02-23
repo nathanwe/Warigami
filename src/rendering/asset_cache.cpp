@@ -267,7 +267,7 @@ namespace rendering
         glEnableVertexAttribArray(4);
         glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, bitangent));
         glEnableVertexAttribArray(5);
-        glVertexAttribPointer(5, 4, GL_INT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, bone_ids));
+        glVertexAttribIPointer(5, 4, GL_INT, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, bone_ids));
         glEnableVertexAttribArray(6);
         glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(asset::rigged_vertex), (void*)offsetof(asset::rigged_vertex, weights));
 

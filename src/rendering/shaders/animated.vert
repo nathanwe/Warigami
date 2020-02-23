@@ -36,16 +36,15 @@ mat3 make_world_from_tangent(mat4 transpose_inverse_transform, vec3 t, vec3 b, v
 
 void main()
 {
-	int index_x = vs_bone_ids.x;
 	mat4 bone_matrix =
-		u_bones[0] * vs_weights[0] +
-		u_bones[1] * vs_weights[1] +
-		u_bones[2] * vs_weights[2] +
-		u_bones[3] * vs_weights[3];
+		u_bones[vs_bone_ids.x] * vs_weights.x +
+		u_bones[vs_bone_ids.y] * vs_weights.y +
+		u_bones[vs_bone_ids.z] * vs_weights.z +
+		u_bones[vs_bone_ids.w] * vs_weights.w;
 	
 	vec4 position_local = bone_matrix * vec4(vs_in_position_local, 1);
-	//vec4 position_world = u_world_from_local * position_local;
-	vec4 position_world = u_world_from_local * vec4(vs_in_position_local, 1);
+	vec4 position_world = u_world_from_local * position_local;
+	//vec4 position_world = u_world_from_local * vec4(vs_in_position_local, 1);
 	mat4 transpose_inverse_world = transpose(inverse(u_world_from_local));
 
 	vs_out.position_world     = position_world.xyz;

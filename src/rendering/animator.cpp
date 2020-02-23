@@ -12,7 +12,7 @@ void rendering::animator::update(ecs::state& state)
 		if (component.bones.empty()) return;
 
 		// update time
-		auto anim_duration = animation_time(83);
+		auto anim_duration = component.find_animation_duration(component.animation_index);
 
 		component.t += _timer.smoothed_delta();
 		if (component.t > anim_duration)
