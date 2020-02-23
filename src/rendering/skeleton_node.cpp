@@ -8,7 +8,7 @@ void rendering::skeleton_node::compute_transform(
 {
 	auto& animation = animations[animation_index];
 	auto& calculated_transform = buffer[bone_id];
-	calculated_transform = frame * animation.eval(t) * base_transform;
+	calculated_transform = frame * animation.eval(t) * glm::mat4(1.f);
 		
 	for (std::uint16_t i = 0; i < child_count; ++i)
 		children[i]->compute_transform(calculated_transform, t, animation_index, buffer);

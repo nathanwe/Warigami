@@ -7,6 +7,8 @@ in Vs_Out
 	layout(location = 1) vec3 normal_world;
 	layout(location = 2) vec2 tex_coord;
 	layout(location = 3) mat3 world_from_tangent;
+	layout(location = 8) vec3 debug_color;
+
 } vs_out;
 
 layout(binding = 0) uniform sampler2D u_tex_diffuse;
@@ -136,7 +138,7 @@ void main()
 		*/
 	}
 
-	fs_out = pixel_color;
+	fs_out = vs_out.debug_color; //pixel_color;
 }
 
 #undef NUM_LIGHT_POINTS

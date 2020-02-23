@@ -53,12 +53,12 @@ namespace asset
                     min_ind = i;
                     min = weights[i];
                 }
+            }
 
-                if (weight > min)
-                {
-                    weights[min_ind] = weight;
-                    bone_ids[min_ind] = bone_index;
-                }
+            if (weight > min)
+            {
+                weights[min_ind] = weight;
+                bone_ids[min_ind] = bone_index;
             }
         }
     };

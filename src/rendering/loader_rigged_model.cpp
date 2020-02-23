@@ -123,12 +123,7 @@ component_bitset rendering::loader_rigged_model::components_to_load()
 
 glm::mat4 rendering::loader_rigged_model::map_matrix(const aiMatrix4x4& source) const
 {
-    // assume that matrix memory layout is the same everywhere...?
-    glm::mat4 target;    
-    for (size_t i = 0; i < 4; ++i)
-        for (size_t j = 0; j < 4; ++j)
-            target[i][j] = source[i][j];
-    return target;
+    return glm::transpose(glm::make_mat4(&source.a1));
 }
 
 glm::vec3 rendering::loader_rigged_model::map_vec3(aiVector3D& vec) const

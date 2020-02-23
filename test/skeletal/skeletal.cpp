@@ -4,6 +4,7 @@
 
 #include <engine.hpp>
 
+#include "fly_cam_system.hpp"
 
 int main(int argc, char** argv)
 {
@@ -33,12 +34,14 @@ int main(int argc, char** argv)
 	rendering::camera_updater camera_updater;
 	rendering::renderer renderer(glfw.window(), window_view, true, render_asset_cache, assets, timer);
 	rendering::animator animator(timer);
+	fly_cam flycam(input, timer, events);
 
 	ecs::systems systems({
 		&transformer,
 		&camera_updater,
 		&animator,
-		&renderer});
+		&renderer,
+		&flycam });
 
 	ecs::world world(systems, state);
 
