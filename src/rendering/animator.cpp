@@ -1,5 +1,7 @@
 #include <rendering/animator.hpp>
 
+#include <iostream>
+
 rendering::animator::animator(core::frame_timer& timer) : _timer(timer)
 {
 }
@@ -14,8 +16,5 @@ void rendering::animator::update(ecs::state& state)
 		component.t += _timer.smoothed_delta();
 		if (component.t > anim_duration)
 			component.t = component.t - anim_duration;
-
-		// update matrices. or not - it actually makes sense to do this in renderer
-		//component.root->compute_transform(glm::mat4(1.f), component.t, component.animation_index);
 	});
 }

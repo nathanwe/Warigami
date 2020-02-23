@@ -33,11 +33,12 @@ mat3 make_world_from_tangent(mat4 transpose_inverse_transform, vec3 t, vec3 b, v
 
 void main()
 {
-	mat4 bone_matrix = 
+	mat4 bone_matrix =
 		vs_weights[0] * u_bones[vs_bone_ids[0]] +
 		vs_weights[1] * u_bones[vs_bone_ids[1]] +
 		vs_weights[2] * u_bones[vs_bone_ids[2]] +
 		vs_weights[3] * u_bones[vs_bone_ids[3]];
+
 	
 	vec4 position_local = bone_matrix * vec4(vs_in_position_local, 1);
 	vec4 position_world = u_world_from_local * position_local;

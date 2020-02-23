@@ -74,7 +74,8 @@ void asset::rigged_mesh::set_bone_weights(aiMesh *mesh, asset::bone_flattener<st
     {
         auto& bone = mesh->mBones[bone_index];
         std::string bone_name = bone->mName.data;
-        auto bone_id = flattener.find_node_index(bone_name);
+        auto bone_id =1; // flattener.find_node_index(bone_name);
+
 
         for (std::uint32_t weight_index = 0; weight_index < bone->mNumWeights; ++weight_index)
         {

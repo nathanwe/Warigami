@@ -6,7 +6,12 @@
 
 glm::mat4 rendering::skeletal_animation::eval(animation_time time)
 {
-	if (time == animation_time(0))
+    if (duration == animation_time::zero())
+    {
+        return glm::mat4(1.f);
+    }
+
+	if (time == animation_time::zero())
 	{
 		glm::mat4 t = glm::translate(glm::mat4(1.f), position.values[0]);
 		glm::mat4 r = glm::mat4_cast(rotation.values[0]);

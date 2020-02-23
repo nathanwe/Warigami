@@ -79,34 +79,32 @@ void rendering::loader_rigged_model::load_animation_data(
             auto* ai_bone = animation->mChannels[bone_index];
             std::string name(ai_bone->mNodeName.data);
             auto* node = flattener.find_node(name);
-            auto& animation = node->animations[animation_index];
-            animation.duration = duration;
-            animation.position.frame_count = ai_bone->mNumPositionKeys;
-            animation.rotation.frame_count = ai_bone->mNumRotationKeys;
-            animation.scale.frame_count = ai_bone->mNumScalingKeys;
+            auto bone_id = flattener.find_node_index(name);
+            auto& component_animation = node->animations[animation_index];
+            component_animation.duration = duration;
+            component_animation.position.frame_count = ai_bone->mNumPositionKeys;
+            component_animation.rotation.frame_count = ai_bone->mNumRotationKeys;
+            component_animation.scale.frame_count = ai_bone->mNumScalingKeys;
             
             for (size_t pos_i = 0; pos_i < ai_bone->mNumPositionKeys; ++pos_i)
             {
                 auto& pos_key = ai_bone->mPositionKeys[pos_i];
-                auto& pos = animation.position;
-                pos.times[pos_i] = animation_time(pos_key.mTime);
-                pos.values[pos_i] = map_vec3(pos_key.mValue);
+                component_animation.position.times[pos_i] = animation_time(pos_key.mTime);
+                component_animation.position.values[pos_i] = map_vec3(pos_key.mValue);
             }
 
             for (size_t rot_i = 0; rot_i < ai_bone->mNumRotationKeys; ++rot_i)
             {
                 auto& rot_key = ai_bone->mRotationKeys[rot_i];
-                auto& rot = animation.rotation;
-                rot.times[rot_i] = animation_time(rot_key.mTime);
-                rot.values[rot_i] = map_quat(rot_key.mValue);
+                component_animation.rotation.times[rot_i] = animation_time(rot_key.mTime);
+                component_animation.rotation.values[rot_i] = map_quat(rot_key.mValue);
             }
 
             for (size_t scl_i = 0; scl_i < ai_bone->mNumScalingKeys; ++scl_i)
             {
                 auto& scl_key = ai_bone->mScalingKeys[scl_i];
-                auto& scl = animation.scale;
-                scl.times[scl_i] = animation_time(scl_key.mTime);
-                scl.values[scl_i] = map_vec3(scl_key.mValue);
+                component_animation.scale.times[scl_i] = animation_time(scl_key.mTime);
+                component_animation.scale.values[scl_i] = map_vec3(scl_key.mValue);
             }
         }
     }
