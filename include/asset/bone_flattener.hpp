@@ -48,7 +48,7 @@ namespace asset
 
             auto base_transform = root->mTransformation;
             auto glmmat = glm::make_mat4(&base_transform.a1);
-            _base_inverse = glm::transpose(glmmat);
+            _base_inverse = glm::inverse(glm::transpose(glmmat));
 
             load_nodes_recurse(root);
 

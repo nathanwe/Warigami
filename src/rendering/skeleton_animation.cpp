@@ -20,15 +20,15 @@ glm::mat4 rendering::skeletal_animation::eval(animation_time time)
 	}
 
 	std::uint16_t pos_ind{ 0 };
-	while (time > position.times[pos_ind] && pos_ind < MaxAnimationFrames)
+	while (time > position.times[pos_ind] && pos_ind < position.frame_count)
 		pos_ind++;
 
 	std::uint16_t rotation_ind{ 0 };
-	while (time > rotation.times[rotation_ind] && rotation_ind < MaxAnimationFrames)
+	while (time > rotation.times[rotation_ind] && rotation_ind < rotation.frame_count)
 		rotation_ind++;
 
 	std::uint16_t scale_ind{ 0 };
-	while (time > scale.times[scale_ind] && scale_ind < MaxAnimationFrames)
+	while (time > scale.times[scale_ind] && scale_ind < scale.frame_count)
 		scale_ind++;
 
 	///// skip interpolation for debugging

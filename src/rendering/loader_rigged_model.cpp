@@ -49,7 +49,7 @@ void rendering::loader_rigged_model::build_animation_component(const aiScene* sc
                 if (parent)
                     parent->add_child(node);
                 
-                node->base_transform = glm::inverse(map_matrix(ai_node->mTransformation));
+                node->base_transform = map_matrix(ai_node->mTransformation);
                 node->offset = flattener.find_offset_for_bone(ai_node->mName.data);
                 node->bone_id = flattener.name_to_index().find(ai_node->mName.data)->second;
             });
