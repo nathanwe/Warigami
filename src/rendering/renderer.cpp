@@ -461,10 +461,6 @@ namespace rendering
         });
     }
 
-////////////////////////////////////
-///////////////////////////////
-#include <iostream>
-#include <fstream>
     void renderer::bind_bones(renderable_mesh_rigged &component)
     {
         if (_bone_buffer.size() < component.bones.size())
@@ -472,17 +468,7 @@ namespace rendering
 
         component.compute_transform(_bone_buffer.data());
         _pass_animated->set_mat4_array(45, _bone_buffer);
-
-        std::ofstream myfile;
-        myfile.open ("bones.txt");
-        for (auto& b : _bone_buffer)
-        {
-            myfile << glm::to_string(b) << std::endl;
-        }
-        myfile.close();
     }
-////////////////////////////////
-////////////////////////////////////
 
     void draw_mesh_static(const mesh_static &mesh)
     {

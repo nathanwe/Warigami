@@ -7,9 +7,7 @@ void rendering::skeleton_node::compute_transform(
         std::uint16_t animation_index,
         glm::mat4* buffer)
 {
-    //t = animation_time(1);
-
-	auto& calculated_transform = buffer[bone_id];
+    auto& calculated_transform = buffer[bone_id];
 	auto& animation = animations[animation_index];
 
 	auto node_transform = animation.is_blank()
@@ -17,9 +15,8 @@ void rendering::skeleton_node::compute_transform(
 	        : animation.eval(t);
 
 	auto global_transform = parent_transform * node_transform;
-	calculated_transform = global_inverse * global_transform * offset;
+	calculated_transform = global_transform * offset;
 
-	//calculated_transform = glm::mat4(1.f);
 	for (std::uint16_t i = 0; i < child_count; ++i)
 		children[i]->compute_transform(global_inverse, global_transform, t, animation_index, buffer);
 }

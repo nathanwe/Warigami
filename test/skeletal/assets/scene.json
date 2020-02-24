@@ -47,7 +47,7 @@
           "type": "transform",
           "position": [ 0, 0, 0 ],
           "scale": [ 1.0, 1.0, 1.0 ],
-          "rotation": [ -90, 50, 50 ]
+          "rotation": [ 0, 0, 0 ]
         },
         {
           "type": "renderable_mesh_rigged",
