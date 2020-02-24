@@ -39,6 +39,8 @@ namespace rendering
         [[nodiscard]] glm::mat4 map_matrix(const aiMatrix4x4& mat) const;
         [[nodiscard]] glm::vec3 map_vec3(aiVector3D& vec) const;
         [[nodiscard]] glm::quat map_quat(aiQuaternion q) const;
+
+        void handle_material(renderable_mesh_rigged& component, const json& resource) const;
     };
 }
 
