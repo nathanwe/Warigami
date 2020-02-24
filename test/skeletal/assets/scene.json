@@ -45,14 +45,39 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 0, 0 ],
-          "scale": [ 1.0, 1.0, 1.0 ],
-          "rotation": [ 0, 0, 0 ]
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
         },
         {
           "type": "renderable_mesh_rigged",
           "mesh": "assets/cesium/CesiumMan.gltf",
           "texture_diffuse": "assets/cesium/CesiumMan_img0.jpg"
+        }
+      ]
+    },
+
+
+    {
+      "entity_id": 3,
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "light_directional"
         }
       ]
     }

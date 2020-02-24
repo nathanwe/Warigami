@@ -139,7 +139,7 @@ void main()
 		*/
 	}
 
-	fs_out = mat3(vs_out.bone_mat) * vs_out.debug_color; //pixel_color;
+	fs_out = pixel_color;
 }
 
 #undef NUM_LIGHT_POINTS

@@ -27,7 +27,52 @@ void rendering::loader_rigged_model::load(asset::asset_loader_node& asset_loader
     auto& component = entity.get_component<rendering::renderable_mesh_rigged>();
     auto& ai_resource = _assets.get_proto_mesh(json["mesh"].get<std::string>());
     component.mesh = _render_cache.get<mesh_static>(json["mesh"].get<std::string>());
-    build_animation_component(ai_resource.assimp_scene, component);    
+    build_animation_component(ai_resource.assimp_scene, component);
+
+    if (auto it = json.find("texture_diffuse"); it != json.end())
+    {
+        component.material.texture_diffuse = _render_cache.get<texture>(it->get<std::string>()).id;
+    }
+    if (auto it = json.find("texture_metalness"); it != json.end())
+    {
+        component.material.texture_metalness = _render_cache.get<texture>(it->get<std::string>()).id;
+    }
+    if (auto it = json.find("texture_roughness"); it != json.end())
+    {
+        component.material.texture_roughness = _render_cache.get<texture>(it->get<std::string>()).id;
+    }
+    if (auto it = json.find("texture_normal"); it != json.end())
+    {
+        component.material.texture_normal = _render_cache.get<texture>(it->get<std::string>()).id;
+    }
+    if (auto it = json.find("texture_ambient_occlusion"); it != json.end())
+    {
+        component.material.texture_ambient_occlusion = _render_cache.get<texture>(it->get<std::string>()).id;
+    }
+    if (auto it = json.find("texture_scale"); it != json.end())
+    {
+        component.material.texture_scale.x = it->operator[](0).get<float>();
+        component.material.texture_scale.y = it->operator[](1).get<float>();
+    }
+    if (auto it = json.find("texture_offset"); it != json.end())
+    {
+        component.material.texture_offset.x = it->operator[](0).get<float>();
+        component.material.texture_offset.y = it->operator[](1).get<float>();
+    }
+    if (auto it = json.find("param_diffuse"); it != json.end())
+    {
+        component.material.param_diffuse.x = it->operator[](0).get<float>();
+        component.material.param_diffuse.y = it->operator[](1).get<float>();
+        component.material.param_diffuse.z = it->operator[](2).get<float>();
+    }
+    if (auto it = json.find("param_metalness"); it != json.end())
+    {
+        component.material.param_metalness = it->get<float>();
+    }
+    if (auto it = json.find("param_roughness"); it != json.end())
+    {
+        component.material.param_roughness = it->get<float>();
+    }
 }
 
 void rendering::loader_rigged_model::build_animation_component(const aiScene* scene, renderable_mesh_rigged& component)

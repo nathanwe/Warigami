@@ -31,7 +31,6 @@ glm::mat4 rendering::skeletal_animation::eval(animation_time time)
 	while (time > scale.times[scale_ind] && scale_ind < MaxAnimationFrames)
 		scale_ind++;
 
-
 	///// skip interpolation for debugging
 //    glm::mat4 t = glm::translate(glm::mat4(1.f), position.values[pos_ind]);
 //    glm::mat4 r = glm::mat4_cast(rotation.values[rotation_ind]);
