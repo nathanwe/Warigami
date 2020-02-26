@@ -24,18 +24,21 @@ namespace rendering
 		TAsset& get(TPath const& filepath);
 
 	private:
-		mesh_static mesh_from_aimesh(aiMesh* aimesh);
+		mesh_static mesh_from_aimesh(const aiScene* scene, aiMesh* mesh);
 		void texture_from_assimp(unsigned int& out, const std::string& filepath, aiMaterial* aimat, aiTextureType type, unsigned int i);
 		material_pbr material_from_aimesh(const std::string& filepath, aiMesh* aimesh, const aiScene* aiscene);
-		sub_model sub_model_from_aimesh(const std::string& filepath, aiMesh* aimesh, const aiScene* aiscene);
+		sub_model sub_model_from_aimesh(const std::string& directory, aiMesh* aimesh, const aiScene* aiscene);
 		model model_from_aiscene(const std::string& filepath, const aiScene* aiscene, aiNode* ainode);
 
 	private:
 		asset::asset_manager& _assets;
 		std::map<std::string, cube_map> _cube_maps;
 		std::map<std::string, mesh_static> _mesh_statics;
-		std::map<std::string, model> _models;
-		std::map<std::string, texture> _textures;	
+		std::map<std::string, texture> _textures;
+        std::map<std::string, model> _models;
+
+		static void make_static_mesh(mesh_static& mesh, aiMesh* aimesh);
+		static void make_rigged_mesh(mesh_static &r_mesh, const aiScene* scene, aiMesh* mesh);
 	};
 
 	template <>

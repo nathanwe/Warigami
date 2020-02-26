@@ -1,5 +1,3 @@
-message("-- Linking lua51")
-
 if (WIN32)
 
     #Windows-specific example of imported library

@@ -47,7 +47,8 @@ namespace asset
 
 		// Only take the first mesh from the file
 		proto.assimp_mesh = scene->mMeshes[0];
-		return proto;
+		proto.assimp_scene = scene;
+		return _mesh_cache[filepath];
 	}
 
 	proto_model& asset_manager::get_proto_model(std::string const& filepath)

@@ -141,10 +141,9 @@ int main(int argc, char** argv) {
 	hydrater.load();
 
 	state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
-		if (e.emitter_sounds[0].path_hash != 0xAABAAD56BF74CE6F)
+		if (e.emitter_sounds[0].path_hash != 0xB017CC3CF235881B)
 			e.set_sound_state(0, audio::playback_requested);
 	});
-
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);

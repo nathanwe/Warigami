@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace gl;
 
@@ -292,4 +293,9 @@ namespace rendering
 	{
 		glUniformBlockBinding(m_render_program_id, glGetUniformBlockIndex(m_render_program_id, r_name.c_str()), binding);
 	}
+
+    void render_pass::set_mat4_array(int const location, const std::vector<glm::mat4>& array) const
+    {
+        glUniformMatrix4fv(location, array.size(), GL_FALSE, glm::value_ptr(array[0]));
+    }
 }
