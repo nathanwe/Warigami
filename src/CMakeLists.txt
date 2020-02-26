@@ -42,7 +42,6 @@ add_library(core ${CORE_HEADERS} ${CORE_SOURCE_FILES})
 target_include_directories(core PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(core
         PUBLIC
-            asset
             nlohmann_json
             glm        
             platform
