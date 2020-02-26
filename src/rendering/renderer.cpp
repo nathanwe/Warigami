@@ -418,18 +418,6 @@ namespace rendering
     glm::mat4
     debug_cameras_velocity_transform(const camera &cam, const transforms::transform &transform, glm::vec3 &velocity)
     {
-        /*
-        glm::vec3 position = glm::vec4(0, 0.4f, -1, 1);
-        glm::mat4 translation = glm::translate(glm::mat4(1), position);
-
-        glm::quat from_up_to_velocity = glm::quat(glm::vec3(0, 1, 0), velocity);
-        glm::mat4 rotation = glm::toMat4(from_up_to_velocity);
-
-        glm::vec3 scale_factor = glm::vec3(0.25f) * glm::length(velocity);
-        glm::mat4 scale = glm::scale(glm::mat4(1), scale_factor);
-
-        return cam.projection * translation * rotation * scale;
-        */
         glm::vec3 position = glm::vec3(transform.local_to_world * glm::vec4(0, 0, 0, 1));
         glm::mat4 translation = glm::translate(glm::mat4(1), position);
 
