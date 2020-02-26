@@ -14,6 +14,7 @@ using namespace gl;
 #include <core/system_info.hpp>
 #include <core/input_manager.hpp>
 #include <core/game_input_manager.hpp>
+#include <asset/asset_manager.hpp>
 
 #include "sample_mgui.hpp"
 
@@ -30,7 +31,7 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
 int main() {
 
     asset::asset_manager assets;
-    core::startup_config conf(assets);
+    core::startup_config conf;
 
     glfwSetErrorCallback(glfw_error_callback);
 

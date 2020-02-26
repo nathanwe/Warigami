@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 #endif
 
 	asset::asset_manager assets;
-	core::startup_config config(assets);
+	core::startup_config config;
 	core::glfw_context glfw(config);
 
 	util::string_table strings;

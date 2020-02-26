@@ -3,6 +3,7 @@ include(cotire)
 add_executable (game game.cpp)
 
 target_link_libraries(game PRIVATE    
+    asset
     ecs
     transforms
     rendering
