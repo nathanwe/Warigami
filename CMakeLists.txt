@@ -28,6 +28,7 @@ add_subdirectory(thirdparty/stb)
 add_subdirectory(src)
 add_subdirectory(apps/game)
 add_subdirectory(apps/demo)
+add_subdirectory(apps/prototype_one)
 
 # Tests
 add_subdirectory(test)

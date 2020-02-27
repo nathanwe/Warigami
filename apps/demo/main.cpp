@@ -1,5 +1,7 @@
 #include <engine.hpp>
 
+#include "core/frame_limiter.hpp"
+
 // Components
 #include "components/game_piece.hpp"
 #include "components/game_piece_loader.hpp"
@@ -41,6 +43,7 @@ int main(int argc, char** argv) {
 	core::viewport window_view{ 0, 0, config.width(), config.height() };
 	core::game_input_manager input(glfw.window());
 	core::frame_timer timer;
+	core::frame_limiter limiter(timer, 60);
 	core::cursor_state cursor(glfw.window());
 	event::EventManager events;
 
@@ -169,6 +172,7 @@ int main(int argc, char** argv) {
 		overlay.update();
 
 		glfw.swap_buffers();
+		limiter.wait_remainder();
 		timer.end();
 	}
 }
