@@ -1,13 +1,11 @@
 #ifndef __STARTUP_CONFIG_H_
 #define __STARTUP_CONFIG_H_
 
-#include "asset/asset_manager.hpp"
 #include <platform/user_data_paths.hpp>
 
 #include <string>
 
 #include <nlohmann/json.hpp>
-
 using json = nlohmann::json;
 
 namespace core
@@ -19,10 +17,9 @@ private:
     json config_json;
 
 public:
-    startup_config(asset::asset_manager& assets)
-        : config_json(make_default())
+    startup_config()
     {
-        load(assets);
+        load();
     }
 
 
@@ -38,7 +35,7 @@ public:
 
 private:
     json make_default() const;
-    void load(asset::asset_manager& assets);
+    void load();
 
 };
 } // namespace core

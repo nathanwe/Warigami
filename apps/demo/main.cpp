@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 #endif
 
 	asset::asset_manager assets;
-	core::startup_config config(assets);
+	core::startup_config config;
 	core::glfw_context glfw(config);
 
 	util::string_table strings;
@@ -144,10 +144,9 @@ int main(int argc, char** argv) {
 	hydrater.load();
 
 	state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
-		if (e.emitter_sounds[0].path_hash != 0xAABAAD56BF74CE6F)
+		if (e.emitter_sounds[0].path_hash != 0xB017CC3CF235881B)
 			e.set_sound_state(0, audio::playback_requested);
 	});
-
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);
@@ -156,9 +155,7 @@ int main(int argc, char** argv) {
 	rendering::debug_view render_debug_view(window_view, renderer);
 	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
-	//cursor.disable();
-
-	printf("Hello, I'm the dev console!");
+	cursor.disable();
 
 	//game loop
 	while (!glfwWindowShouldClose(glfw.window())) {

@@ -1,6 +1,7 @@
 #ifndef __GLFW_CONTEXT_HPP_
 #define __GLFW_CONTEXT_HPP_
 
+#include <iostream>
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>

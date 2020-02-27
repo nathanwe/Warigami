@@ -42,7 +42,6 @@ add_library(core ${CORE_HEADERS} ${CORE_SOURCE_FILES})
 target_include_directories(core PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(core
         PUBLIC
-            asset
             nlohmann_json
             glm        
             platform
@@ -107,7 +106,8 @@ set (ASSET_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/asset/scene_entity.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/resource_id.cpp
         ${PROJECT_SOURCE_DIR}/src/asset/scene_hydrater.cpp
-        ${PROJECT_SOURCE_DIR}/src/asset/model_loader.cpp)
+        ${PROJECT_SOURCE_DIR}/src/asset/model_loader.cpp
+        ${PROJECT_SOURCE_DIR}/src/asset/rigged_mesh.cpp)
 
 add_library(asset STATIC ${ASSET_SOURCE_LIST})
 target_include_directories(asset PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -142,11 +142,16 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/render_pass.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_static.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderable_model_static.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_mesh_rigged.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderer.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp 
-     rendering/renderable_mesh_static.cpp rendering/camera.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/render_loader.cpp      
+     ${PROJECT_SOURCE_DIR}/src/rendering/camera.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/animator.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/loader_rigged_model.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_node.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_animation.cpp)
 
-add_library(rendering STATIC ${RENDERING_SOURCE_LIST})
+add_library(rendering STATIC ${RENDERING_SOURCE_LIST} )
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(rendering PUBLIC cxx_std_17)
 target_link_libraries(rendering PUBLIC     
@@ -201,6 +206,7 @@ target_include_directories(physics PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(physics PUBLIC glm asset)
 
 
+
 ##### AUDIO #####
 set (AUDIO_SOURCE_LIST
         ${PROJECT_SOURCE_DIR}/src/audio/audio_system.cpp
@@ -239,3 +245,4 @@ target_link_libraries(audio PUBLIC collisions ecs transforms rendering asset fmo
 #cotire(rendering)
 #cotire(engineui)
 #cotire(audio)
+

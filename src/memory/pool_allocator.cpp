@@ -12,6 +12,11 @@ allocators::pool_allocator::pool_allocator(
     if (_alignment < alignof(void*))
         _alignment = alignof(void*);
 
+    if (_chunk_size * chunk_count > MaxAllocSize)
+    {
+        _next_expand = MaxAllocSize / _chunk_size;
+    }
+
     // for an 8 chunk block, we will allocate new block when trying to get the penultimate chunk.
     // have the pool grab one extra chunk to actually have chunk_count capacity, before an allocation
     // is triggered.
@@ -34,7 +39,9 @@ void *allocators::pool_allocator::allocate()
     {
         linked_expand(_next_expand);
         next = _memory_blocks.back().aligned_pointer();
-        _next_expand *= ExpandGrowFactor;
+
+        if ((_next_expand * _chunk_size) < MaxAllocSize)
+            _next_expand *= ExpandGrowFactor;
     }
 
     std::uint8_t *current_block = _head;

@@ -16,6 +16,7 @@ namespace allocators
     {
         // *really* don't want to expand too often.
         const static int ExpandGrowFactor = 3;
+        const static int MaxAllocSize = 4194304;
 
     public:
         pool_allocator(std::uint32_t chunk_size, std::uint32_t chunk_count, uintptr_t alignment);

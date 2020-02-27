@@ -6,7 +6,7 @@
 #include <array>
 #include <string>
 
-namespace assets
+namespace asset
 {
 	struct proto_texture
 	{
