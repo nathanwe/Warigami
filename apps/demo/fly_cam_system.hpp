@@ -20,7 +20,7 @@ public:
 	{
 		if (event.mType == event::EVENT_TYPE::TOGGLE_NOCLIP)
 		{
-			std::cerr << "Event recieved" << std::endl;
+			std::cerr << "Event recieved foooo" << std::endl;
 			noclips = !noclips;
 		}
 	}

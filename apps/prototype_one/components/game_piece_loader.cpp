@@ -14,9 +14,9 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 	{
 		gp.speed = json["speed"].get<float>();
 	}
-	if (json.find("power") != json.end())
+	if (json.find("damage") != json.end())
 	{
-		gp.power = json["power"].get<float>();
+		gp.damage = json["damage"].get<float>();
 	}
 	if (json.find("health") != json.end())
 	{

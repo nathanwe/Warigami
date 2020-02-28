@@ -12,6 +12,8 @@ namespace event {
 		EXPLOSION, // Example event
 		CONSOLE_COMMAND,
 		TOGGLE_NOCLIP,
+		UNIT_SPAWN,
+		UNIT_DEATH,
 		NUM
 	};
 
