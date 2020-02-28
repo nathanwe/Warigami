@@ -103,8 +103,9 @@ void audio::audio_system::stop_sound(audio::emitter_sound& sound)
 
 void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
 {
-    auto mode = FMOD_3D;
+    auto mode = sound.is_3d ? FMOD_3D : 0;
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
+
     auto fmod_sound = get_sound(sound.path_hash, mode);
     play_sound(fmod_sound, sound);    
 }
@@ -144,7 +145,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     if (!succeededOrWarn("FMOD: Failed to set callback for sound_wrapper", result))
         return;
     
-    emitter_sound.state = playing;
+    emitter_sound.state = sound_state::playing;
     emitter_sound.fmod_channel = channel;
     emitter_sound.fmod_sound = sound;
 }
@@ -184,9 +185,9 @@ void audio::audio_system::check_sound_stopped(emitter_sound& emitter_sound)
 {
     bool is_playing;
     auto fmod_call_success = emitter_sound.fmod_channel->isPlaying(&is_playing) == FMOD_OK;
-    if (!fmod_call_success || (!is_playing && emitter_sound.state == playing))
+    if (!fmod_call_success || (!is_playing && emitter_sound.state == sound_state::playing))
     {
-        emitter_sound.state = stopped;
+        emitter_sound.state = sound_state::stopped;
     }
 }
 

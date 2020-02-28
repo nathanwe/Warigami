@@ -78,22 +78,7 @@ set (ECS_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/ecs/component_meta.cpp
      ${PROJECT_SOURCE_DIR}/src/ecs/query_cache.cpp)
 
-set (ECS_HEADER_LIST
-     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_chunk_component.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_id.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_pool.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/chunk_component_accessor.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/component_meta.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/component.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/ecs_types.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/archetype_pools.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/state.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/world.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/entity.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/behavior.hpp
-     ${PROJECT_SOURCE_DIR}/include/ecs/register_component.hpp)
-
-add_library(ecs STATIC ${ECS_SOURCE_LIST} ${ECS_HEADER_LIST})
+add_library(ecs STATIC ${ECS_SOURCE_LIST})
 target_include_directories(ecs PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(ecs PUBLIC cxx_std_17)
 target_link_libraries(ecs PUBLIC core PRIVATE memory)
