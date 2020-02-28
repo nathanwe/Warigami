@@ -14,7 +14,7 @@ namespace audio
 {
     const std::uint32_t MaxSounds = 16;
 
-    enum sound_state
+    enum class sound_state
     {
         uninitialized = 0,
         unchanged = 1,
@@ -30,7 +30,8 @@ namespace audio
         size_t path_hash {};
         bool loop { false };
         float volume{ 1.f };
-        sound_state state { uninitialized };       
+        sound_state state { sound_state::uninitialized };
+        bool is_3d{ true };
 
         // fmod
         FMOD::Sound * fmod_sound{};

@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 #endif
 
 	asset::asset_manager assets;
-	core::startup_config config(assets);
+	core::startup_config config;
 	core::glfw_context glfw(config);
 
 	util::string_table strings;
@@ -145,7 +145,7 @@ int main(int argc, char** argv) {
 
 	state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
 		if (e.emitter_sounds[0].path_hash != 0xAABAAD56BF74CE6F)
-			e.set_sound_state(0, audio::playback_requested);
+			e.set_sound_state(0, audio::sound_state::playback_requested);
 	});
 
 
