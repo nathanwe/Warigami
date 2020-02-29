@@ -42,9 +42,6 @@ void core::game_input_manager::update() {
 
 	memcpy(_prev_game_state, _current_game_state, sizeof(_prev_game_state));
 
-	GLFWgamepadstate state;
-	glfwGetGamepadState(0, &state);
-
 	// Update pitch and yaw axis states
 	_pitch = _input.get_gamepad()->engaged_Rstick_position().second;
 	_yaw = _input.get_gamepad()->engaged_Rstick_position().first;
