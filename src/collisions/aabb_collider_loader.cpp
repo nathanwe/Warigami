@@ -5,11 +5,11 @@ void collisions::aabb_collider_loader::load(asset::asset_loader_node& asset_load
 {
 	auto& entity = asset_loader_node.entity_resource.entity;
 	auto& entity_data = asset_loader_node.entity_resource.entity_data;
-	auto& json = entity_data.component_data(collisions::AABB_collider::component_bitshift);
-	auto& json2 = entity_data.component_data(transforms::transform::component_bitshift);
-	auto& c = entity.get_component<AABB_collider>();
+	auto& json = entity_data->component_data(collisions::AABB_collider::component_bitshift);
+	auto& json2 = entity_data->component_data(transforms::transform::component_bitshift);
+	auto& c = entity->get_component<AABB_collider>();
 
-	c.owner_id = entity.id();
+	c.owner_id = entity->id();
 
 	c.local_left = json.value("left", 0.5f);
 	c.local_right = json.value("right", 0.5f);

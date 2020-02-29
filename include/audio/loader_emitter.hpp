@@ -18,10 +18,10 @@ namespace audio
 
         void load(asset::asset_loader_node& node)
         {
-            auto& entity = node.entity_resource.entity;
-            auto& entity_data = node.entity_resource.entity_data;
-            auto& json = node.entity_resource.entity_data.component_data(audio_emitter::component_bitshift);
-            auto& emitter = entity.get_component<audio_emitter>();
+            auto entity = node.entity_resource.entity;
+            auto entity_data = node.entity_resource.entity_data;
+            auto& json = node.entity_resource.entity_data->component_data(audio_emitter::component_bitshift);
+            auto& emitter = entity->get_component<audio_emitter>();
 
             emitter.sound_count = 0;
             for (auto& s : json["sounds"])

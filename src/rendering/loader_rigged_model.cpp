@@ -21,10 +21,10 @@ rendering::loader_rigged_model::loader_rigged_model(asset::asset_manager& assets
 
 void rendering::loader_rigged_model::load(asset::asset_loader_node& asset_loader_node)
 {
-    auto& entity = asset_loader_node.entity_resource.entity;
-    auto& entity_data = asset_loader_node.entity_resource.entity_data;
-    auto& json = entity_data.component_data(rendering::renderable_mesh_rigged::component_bitshift);
-    auto& component = entity.get_component<rendering::renderable_mesh_rigged>();
+    auto entity = asset_loader_node.entity_resource.entity;
+    auto entity_data = asset_loader_node.entity_resource.entity_data;
+    auto& json = entity_data->component_data(rendering::renderable_mesh_rigged::component_bitshift);
+    auto& component = entity->get_component<rendering::renderable_mesh_rigged>();
     auto& ai_resource = _assets.get_proto_mesh(json["mesh"].get<std::string>());
     component.mesh = _render_cache.get<mesh_static>(json["mesh"].get<std::string>());
     build_animation_component(ai_resource.assimp_scene, component);

@@ -2,12 +2,10 @@
 
 void components::board_loader::load(asset::asset_loader_node& asset_loader_node)
 {
-	auto& entity = asset_loader_node.entity_resource.entity;
-	auto& entity_data = asset_loader_node.entity_resource.entity_data;
-
-	auto& json = asset_loader_node.entity_resource.entity_data.component_data(components::board::component_bitshift);
-
-	auto& b = entity.get_component<board>();
+	auto entity = asset_loader_node.entity_resource.entity;
+	auto entity_data = asset_loader_node.entity_resource.entity_data;
+	auto& json = entity_data->component_data(components::board::component_bitshift);
+	auto& b = entity->get_component<board>();
 	
 	std::vector<ecs::entity*> new_entities;
 
@@ -32,9 +30,9 @@ void components::board_loader::load(asset::asset_loader_node& asset_loader_node)
 
 void components::board_loader::find_ids(asset::asset_loader_node& asset_loader_node, std::vector<ecs::entity*> entities)
 {
-	if (asset_loader_node.entity_resource.entity.has<components::board_square>())
+	if (asset_loader_node.entity_resource.entity->has<components::board_square>())
 	{
-		entities.push_back(&asset_loader_node.entity_resource.entity);
+		entities.push_back(asset_loader_node.entity_resource.entity);
 	}
 	for (auto& child : asset_loader_node.children)
 	{

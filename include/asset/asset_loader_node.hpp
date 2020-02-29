@@ -8,13 +8,13 @@ namespace asset
 {
 	struct entity_ref_pair
 	{
-		ecs::entity& entity;
-		const asset::scene_entity& entity_data;
+		ecs::entity* entity;
+		const asset::scene_entity* entity_data;
 	};
 
 	struct asset_loader_node
 	{
-		asset_loader_node(ecs::entity& e, const asset::scene_entity& se) : entity_resource({ e, se }) {}
+		asset_loader_node(ecs::entity& e, const asset::scene_entity& se) : entity_resource({ &e, &se }) {}
 
 		entity_ref_pair entity_resource;
 		std::vector<asset_loader_node> children{};

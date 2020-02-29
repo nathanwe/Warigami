@@ -16,7 +16,7 @@ asset::scene_hydrater::scene_hydrater(ecs::state &ecs_state, asset::scene &scene
 
 void asset::scene_hydrater::hydrate_recurse(asset_loader_node &graph_entity)
 {
-    for (auto &c : graph_entity.entity_resource.entity_data.children())
+    for (auto &c : graph_entity.entity_resource.entity_data->children())
     {
         auto &ecs_entity = c.has_id()
                            ? _ecs_state.add_entity(c.archetype_id(), c.id())
@@ -33,7 +33,7 @@ void asset::scene_hydrater::load_recurse(asset_loader_node &entity)
     {
         auto arch = loader->components_to_load();
         auto &entity_r = entity.entity_resource.entity_data;
-        auto entity_arch = entity.entity_resource.entity.archetype_id();
+        auto entity_arch = entity.entity_resource.entity->archetype_id();
 
         if ((arch & entity_arch) == arch)
             loader->load(entity);
@@ -57,13 +57,12 @@ void asset::scene_hydrater::remove_entity(ecs::entity &entity)
 {
     _ecs_state.remove_entity(entity);
 
-    // TODO
-//    auto removal = std::remove_if(
-//            _entity_refs.begin(),
-//            _entity_refs.end(),
-//            [&](const asset_loader_node &n) { return entity.id() == n.entity_resource.entity.id(); });
-//
-//    _entity_refs.erase(removal, _entity_refs.end());
+    auto removal = std::remove_if(
+            _entity_refs.begin(),
+            _entity_refs.end(),
+            [&](const asset_loader_node &n) { return entity.id() == n.entity_resource.entity->id(); });
+
+    _entity_refs.erase(removal, _entity_refs.end());
 }
 
 void asset::scene_hydrater::remove_entity(entity_id id)

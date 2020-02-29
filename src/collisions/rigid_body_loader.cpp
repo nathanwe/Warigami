@@ -2,12 +2,11 @@
 
 void collisions::rigid_body_loader::load(asset::asset_loader_node& asset_loader_node)
 {
-	auto& entity = asset_loader_node.entity_resource.entity;
-	auto& entity_data = asset_loader_node.entity_resource.entity_data;
+	auto entity = asset_loader_node.entity_resource.entity;
+	auto entity_data = asset_loader_node.entity_resource.entity_data;
 
-	auto& json = asset_loader_node.entity_resource.entity_data.component_data(collisions::rigid_body::component_bitshift);
-
-	auto& rb = entity.get_component<rigid_body>();
+	auto& json = entity_data->component_data(collisions::rigid_body::component_bitshift);
+	auto& rb = entity->get_component<rigid_body>();
 
 	rb.mass = json.value("mass", 0.f);
 	rb.grav_muliplier = json.value("gravity", 1.f);

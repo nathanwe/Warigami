@@ -3,12 +3,11 @@
 
 void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_node)
 {
-	auto& entity = asset_loader_node.entity_resource.entity;
-	auto& entity_data = asset_loader_node.entity_resource.entity_data;
+	auto entity = asset_loader_node.entity_resource.entity;
+	auto entity_data = asset_loader_node.entity_resource.entity_data;
 
-	auto& json = asset_loader_node.entity_resource.entity_data.component_data(components::game_piece::component_bitshift);
-
-	auto& gp = entity.get_component<game_piece>();
+	auto& json = entity_data->component_data(components::game_piece::component_bitshift);
+	auto& gp = entity->get_component<game_piece>();
 
 	gp.speed = json.value("speed", 1.f);
 	gp.damage = json.value("damage", 1.f);

@@ -12,8 +12,8 @@ void rendering::render_loader::load(asset::asset_loader_node& asset_loader_node)
 {
 	auto& entity = asset_loader_node.entity_resource.entity;
 	auto& entity_data = asset_loader_node.entity_resource.entity_data;
-	auto& json = entity_data.component_data(renderable_mesh_static::component_bitshift);
-	auto& renderable = entity.get_component<renderable_mesh_static>();
+	auto& json = entity_data->component_data(renderable_mesh_static::component_bitshift);
+	auto& renderable = entity->get_component<renderable_mesh_static>();
 
 	if (auto it = json.find("mesh"); it != json.end())
 	{

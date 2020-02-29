@@ -12,10 +12,10 @@ namespace rendering
 
 	void loader_camera::load(asset::asset_loader_node& asset_loader_node)
 	{
-		auto& entity = asset_loader_node.entity_resource.entity;
-		auto& entity_data = asset_loader_node.entity_resource.entity_data;
-		auto& json = entity_data.component_data(camera::component_bitshift);
-		auto& cam = entity.get_component<camera>();
+		auto entity = asset_loader_node.entity_resource.entity;
+		auto entity_data = asset_loader_node.entity_resource.entity_data;
+		auto& json = entity_data->component_data(camera::component_bitshift);
+		auto& cam = entity->get_component<camera>();
 
 		if (auto it = json.find("field_of_view"); it != json.end())
 		{

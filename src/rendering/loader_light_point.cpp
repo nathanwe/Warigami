@@ -10,8 +10,8 @@ namespace rendering
 	{
 		auto& entity = asset_loader_node.entity_resource.entity;
 		auto& entity_data = asset_loader_node.entity_resource.entity_data;
-		auto& json = entity_data.component_data(light_point::component_bitshift);
-		auto& light = entity.get_component<light_point>();
+		auto& json = entity_data->component_data(light_point::component_bitshift);
+		auto& light = entity->get_component<light_point>();
 
 		if (auto it = json.find("intensity"); it != json.end())
 		{

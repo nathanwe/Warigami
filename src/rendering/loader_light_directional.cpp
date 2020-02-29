@@ -11,8 +11,8 @@ namespace rendering
 	{
 		auto& entity = asset_loader_node.entity_resource.entity;
 		auto& entity_data = asset_loader_node.entity_resource.entity_data;
-		auto& json = entity_data.component_data(light_directional::component_bitshift);
-		auto& light = entity.get_component<light_directional>();
+		auto& json = entity_data->component_data(light_directional::component_bitshift);
+		auto& light = entity->get_component<light_directional>();
 
 		if (auto it = json.find("intensity"); it != json.end())
 		{

@@ -156,6 +156,8 @@ public:
 
             // A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
 
+            std::cerr << "One: " << std::endl;
+
             // Update states to either attack or move depending on current board state
             r_state.each_id<components::game_piece, transforms::transform>(
                     [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
@@ -175,6 +177,8 @@ public:
                         }
                     });
 
+            std::cerr << "Two: " << std::endl;
+
             // If a unit can attack, attack now
             r_state.each_id<components::game_piece, transforms::transform>(
                     [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
@@ -187,6 +191,10 @@ public:
                             std::cerr << "Unit: " << id << " attacking" << std::endl;
                         }
                     });
+
+
+            std::cerr << "Three: " << std::endl;
+
 
             // If a unit is still alive after attacks and has a move state, check for legality and then move
             r_state.each_id<components::game_piece, transforms::transform>(
@@ -215,8 +223,12 @@ public:
                     });
         }
 
+
+
         // If a unit made it through the last state update with a move state, move the unit until the next update
         r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
+            std::cerr << "Four: " << std::endl;
+
             r_state.each_id<transforms::transform, components::game_piece>([&](entity_id unit_id, auto& unit_t, auto& unit) {
                 if (unit.state == components::UNIT_STATE::MOVE)
                 {
@@ -232,6 +244,9 @@ public:
                 }
             });
         });
+
+        std::cerr << "Five: " << std::endl;
+
     }
 
 private:

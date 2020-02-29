@@ -4,12 +4,12 @@
 
 void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_node)
 {
-	auto& entity = asset_loader_node.entity_resource.entity;
-	auto& entity_data = asset_loader_node.entity_resource.entity_data;
+	auto entity = asset_loader_node.entity_resource.entity;
+	auto entity_data = asset_loader_node.entity_resource.entity_data;
 
-	auto& json = asset_loader_node.entity_resource.entity_data.component_data(transform::component_bitshift);
+	auto& json = entity_data->component_data(transform::component_bitshift);
 
-	auto& t = entity.get_component<transform>();
+	auto& t = entity->get_component<transform>();
 
 	if (json.find("position") != json.end())
 	{
@@ -34,12 +34,12 @@ void transforms::transform_loader::load(asset::asset_loader_node& asset_loader_n
 	}
 	for (auto& child : asset_loader_node.children)
 	{
-	    auto child_id = child.entity_resource.entity.id();
-	    auto parent_id = entity.id();
+	    auto child_id = child.entity_resource.entity->id();
+	    auto parent_id = entity->id();
 
-		auto& child_transform = child.entity_resource.entity.get_component<transform>();
+		auto& child_transform = child.entity_resource.entity->get_component<transform>();
 		child_transform.has_parent = true;
-		child_transform.parent = entity.id();
+		child_transform.parent = entity->id();
 	}
 }
 
