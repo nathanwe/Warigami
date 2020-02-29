@@ -16,7 +16,7 @@ namespace boardgen {
 		fileStream << "\",\n";
 	}
 
-	void writeSquare(std::fstream& fileStream, std::string proto, int x, int y, int z)
+	void writeSquare(std::fstream& fileStream, std::string proto, int x, int y, int z, int maxX, int maxY)
 	{
 		writeTab(fileStream, 2);
 		fileStream << "{\n";
@@ -34,7 +34,17 @@ namespace boardgen {
 		fileStream << "\"position\": [";
 		fileStream << x << ", " << y << ", " << z << " ]\n";
 		writeTab(fileStream, 4);
-		fileStream << "}";
+		fileStream << "},\n";
+		writeTab(fileStream, 4);
+		fileStream << "{\n";
+		writeTab(fileStream, 5);
+		writeType(fileStream, "board_square");
+		writeTab(fileStream, 5);
+		fileStream << "\"x\": " << x + maxX << ",\n";
+		writeTab(fileStream, 5);
+		fileStream << "\"y\": " << z + maxY << "\n";
+		writeTab(fileStream, 4);
+		fileStream << "}\n";
 		writeTab(fileStream, 3);
 		fileStream << "]\n";
 		writeTab(fileStream, 2);
@@ -90,18 +100,18 @@ namespace boardgen {
 			for (int j = maxY; j >= -maxY; j--) {
 				if (i % 2 != 0) {
 					if (j % 2 == 0) {
-						writeSquare(f, squareProto, i, 1, j);
+						writeSquare(f, squareProto, i, 1, j, maxX, maxY);
 					}
 					else {
-						writeSquare(f, squareProto2, i, 1, j);
+						writeSquare(f, squareProto2, i, 1, j, maxX, maxY);
 					}
 				}
 				else {
 					if (j % 2 != 0) {
-						writeSquare(f, squareProto, i, 1, j);
+						writeSquare(f, squareProto, i, 1, j, maxX, maxY);
 					}
 					else {
-						writeSquare(f, squareProto2, i, 1, j);
+						writeSquare(f, squareProto2, i, 1, j, maxX, maxY);
 					}
 				}
 				

@@ -61,14 +61,15 @@ namespace components
 		// Needs a list of cards in hand and dice in pool
 		//const card_enum start_deck_array[] = { BASIC_FAST, BASIC_FAST, BASIC_MELE, BASIC_MELE, BASIC_RANGE, BASIC_RANGE };
 
-        row_t selected_row = -1;
+        row_t selected_row = 3;
         card_enum hand[MaxCards];
-        std::uint8_t card_count;
+        std::uint8_t card_count = 0;
 
 
 		std::vector<card_enum> deck = start_deck;
 
 		card_enum draw() {
+			card_count++;
 			if (!deck.empty()) {
 				card_enum temp = deck.back();
 				deck.pop_back();

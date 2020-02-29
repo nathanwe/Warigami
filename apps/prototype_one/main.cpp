@@ -19,10 +19,15 @@
 // Game systems
 #include "fly_cam_system.hpp"
 #include "board_update_system.hpp"
+#include "player_controller.hpp"
 #include "util/boardgen.hpp"
 
 
 int main(int argc, char** argv) {
+
+	// Absolute dank
+	//boardgen::generateBoardJson("newboard.json", "assets/prototypes/boardsquare.json", "assets/prototypes/boardsquare2.json", 3, 4);
+
 #ifndef NDEBUG
 	bool is_debug = true;
 #else
@@ -67,6 +72,7 @@ int main(int argc, char** argv) {
 
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events, hydrater);
+	player_controller player_control(input, timer, events, hydrater);
 	audio::audio_system audio_system(strings, assets);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
@@ -82,7 +88,8 @@ int main(int argc, char** argv) {
 		&flycam,
 		&audio_system,
 		&physics_update,
-		&board_updater });
+		&board_updater,
+		&player_control});
 
 	ecs::world world(systems, state);
 
