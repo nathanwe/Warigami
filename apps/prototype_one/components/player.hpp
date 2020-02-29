@@ -45,9 +45,15 @@ namespace components
 	struct player : ecs::component<player>
 	{
 	    static const std::uint8_t MaxCards = 4;
-
         using row_t = std::int16_t;
 
+        player()
+        {
+            regrow_deck();
+            shuffle();
+            for (auto & card_slot : hand)
+                card_slot = draw();
+        }
 
 		float energy = 0.f;
 		float health = 0.f;
@@ -57,7 +63,7 @@ namespace components
 
         row_t selected_row = -1;
         card_enum hand[MaxCards];
-        std::uint8_t card_count {0};
+        std::uint8_t card_count;
 
 
 		std::vector<card_enum> deck = start_deck;
@@ -77,7 +83,7 @@ namespace components
 			auto rng = std::default_random_engine{};
 			std::shuffle(std::begin(deck), std::end(deck), rng);
 		}
-		
+
 		void regrow_deck() {
 			deck = start_deck;
 		}

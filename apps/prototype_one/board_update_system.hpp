@@ -110,7 +110,7 @@ public:
                             {
                                 if (current_loc == game_piece.board_location.y)
                                 {
-                                    return ret;
+                                    return;
                                 } else
                                 {
                                     ret.y = current_loc;
@@ -131,7 +131,7 @@ public:
                             {
                                 if (current_loc == game_piece.board_location.y)
                                 {
-                                    return ret;
+                                    return;
                                 } else
                                 {
                                     ret.y = current_loc;
