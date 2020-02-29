@@ -208,7 +208,7 @@ public:
                                 std::cerr << "Unit: " << id << " waiting" << std::endl;
                             } else
                             {
-                                //move_unit(game_piece, movement);
+                                move_unit(game_piece, movement);
                                 std::cerr << "Unit: " << id << " moved to " << movement.x << ", " << movement.y
                                           << std::endl;
                                 if (game_piece.board_location.y < 0.f || game_piece.board_location.y > 9.f)
