@@ -15,17 +15,11 @@
 #include "components/dice_loader.hpp"
 #include "components/player.hpp"
 #include "components/player_loader.hpp"
-#include "components/board_path_movement.hpp"
-#include "components/board_path_movement_loader.hpp"
 
 // Game systems
-#include "spinner.hpp"
 #include "fly_cam_system.hpp"
-#include "box_move_system.hpp"
-#include "disco_light_system.hpp"
+#include "board_update_system.hpp"
 #include "util/boardgen.hpp"
-#include "board_path_movement_system.hpp"
-#include "health_damage_system.hpp"
 
 
 int main(int argc, char** argv) {
@@ -56,9 +50,6 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::card>("card");
 	ecs::register_component<components::dice>("dice");
 	ecs::register_component<components::player>("player");
-	ecs::register_component<components::board_path_movement>("board_path_movement");
-	ecs::register_component<components::hit_points>("hit_points");
-	ecs::register_component<components::disco_light>("disco_light");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -72,18 +63,14 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 
 
-	audio::audio_system audio_system(strings, assets);
-	board_path_movement_system board_path_movement(input, timer);
-	box_move boxmove(timer, input);
-	collisions::collision_manager collision_manager;
-	disco_light discolight(timer, glm::vec3(0, 3, 0));
 	fly_cam flycam(input, timer, events);
-	health_damage_system health_damage_system(timer);
+	board_update board_updater(input, timer, events);
+	audio::audio_system audio_system(strings, assets);
+	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
 	rendering::asset_cache render_asset_cache(assets);
 	rendering::camera_updater camera_updater;
 	rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets, timer);
-	spinner spinner(timer);
 	transforms::transformer transformer;
 
 	ecs::systems systems({
@@ -91,13 +78,9 @@ int main(int argc, char** argv) {
 		&camera_updater,
 		&renderer,
 		&flycam,
-		&boxmove,
 		&audio_system,
 		&physics_update,
-		&board_path_movement,
-		&health_damage_system,
-		&discolight,
-		&spinner});
+		&board_updater});
 
 	ecs::world world(systems, state);
 
@@ -117,7 +100,6 @@ int main(int argc, char** argv) {
 	components::card_loader card_loader;
 	components::dice_loader dice_loader;
 	components::player_loader player_loader;
-	components::board_path_movement_loader board_path_movement_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
@@ -125,7 +107,6 @@ int main(int argc, char** argv) {
 	hydrater.register_loaders(
 		&aabb_collider_loader,
 		&board_loader,
-		&board_path_movement_loader,
 		&board_square_loader,
 		&camera_loader,
 		&card_loader,

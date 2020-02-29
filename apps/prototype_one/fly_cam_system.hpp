@@ -86,7 +86,7 @@ public:
 private:
 	float m_rotation_speed = .001f;
 	float JUMP_POWA = 0.0f;
-	bool noclips = false;
+	bool noclips = true;
 	bool mouseToggle = true;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
