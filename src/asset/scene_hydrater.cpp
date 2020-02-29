@@ -65,3 +65,9 @@ void asset::scene_hydrater::remove_entity(ecs::entity &entity)
 //
 //    _entity_refs.erase(removal, _entity_refs.end());
 }
+
+void asset::scene_hydrater::remove_entity(entity_id id)
+{
+    auto& e = _ecs_state.find_entity(id);
+    remove_entity(e);
+}
