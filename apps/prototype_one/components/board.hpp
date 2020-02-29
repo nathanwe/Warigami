@@ -15,6 +15,8 @@ namespace components
 		std::vector< std::vector< std::pair< entity_id, entity_id > > > board_state; // 
 		int rows;
 		int columns;
+		float cell_width{ 1.f };
+		float cell_height{ 1.f };
 	};
 }
 

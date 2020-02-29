@@ -41,7 +41,7 @@ int main()
                 boardsquare_proto = "assets/prototypes/boardsquare2.json";
 
 
-            all["children"][i + j] = {
+            all["children"][i * j] = {
                 {"prototype",  boardsquare_proto},
                 {"components", {
                    {

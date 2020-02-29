@@ -42,12 +42,6 @@ public:
         }
     }
 
-    // Helper function for moving in world space
-    static void walk_unit(transforms::transform &transform, components::game_piece &game_piece, float delta)
-    {
-        transform.position += delta * game_piece.speed * game_piece.move_world;
-    }
-
     // Helper function for checking for legal attacks
     static bool check_attacks(glm::vec2 location, std::vector<glm::vec2> targets, float teammates, ecs::state &r_state)
     {
@@ -222,21 +216,22 @@ public:
         }
 
         // If a unit made it through the last state update with a move state, move the unit until the next update
-        r_state.each_id<transforms::transform, components::game_piece>(
-                [&](entity_id id, transforms::transform &transform, components::game_piece &game_piece) {
-                    if (game_piece.state == components::UNIT_STATE::MOVE)
-                    {
-                        // Walking animation here
-                        walk_unit(transform, game_piece, delta);
-                        transform.is_matrix_dirty = true;
-                    }
-                    if (game_piece.state == components::UNIT_STATE::DYING)
-                    {
-                        // Death animation here
-                        unit_death_event new_event(id);
-                        event_manager.BroadcastEvent(new_event);
-                    }
-                });
+        r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
+            r_state.each_id<transforms::transform, components::game_piece>([&](entity_id unit_id, auto& unit_t, auto& unit) {
+                if (unit.state == components::UNIT_STATE::MOVE)
+                {
+                    // Walking animation here
+                    walk_unit(unit, delta);
+                    handle_unit_transform(board_t, unit_t, unit, board, board_id);
+                }
+                if (unit.state == components::UNIT_STATE::DYING)
+                {
+                    // Death animation here
+                    unit_death_event new_event(unit_id);
+                    event_manager.BroadcastEvent(new_event);
+                }
+            });
+        });
     }
 
 private:
@@ -245,6 +240,42 @@ private:
     core::frame_timer &m_timer;
     event::EventManager &event_manager;
     asset::scene_hydrater &hydrater;
+
+
+
+    // Helper function for moving in board space
+    static void walk_unit(components::game_piece& game_piece, float delta)
+    {
+        game_piece.board_location += delta * game_piece.speed * game_piece.move_board;
+        if (game_piece.board_location.y < 0) game_piece.board_location.y = 0;
+        if (game_piece.board_location.y > 9) game_piece.board_location.y = 9;
+    }
+
+    static void handle_unit_transform(
+        transforms::transform& board_t,
+        transforms::transform& unit_t,
+        components::game_piece& game_piece,
+        components::board& board,
+        entity_id board_id)
+    {
+        unit_t.has_parent = true;
+        unit_t.parent = board_id;
+        unit_t.position = grid_to_world(game_piece.board_location, board, board_t);
+        unit_t.is_matrix_dirty = true;
+    }
+
+    static glm::vec3 grid_to_world(glm::vec2& grid, components::board& board, transforms::transform& board_t)
+    {
+        auto width_scaled = board_t.scale.x * board.cell_width;
+        auto height_scaled = board_t.scale.y * board.cell_height;
+
+        auto half_w = board.rows * width_scaled / 2.f;
+        auto half_h = board.columns * height_scaled / 2.f;
+
+        return 
+            glm::vec3(grid.x * width_scaled, 1, grid.y * height_scaled) 
+            - glm::vec3(half_w, 0, half_h);
+    }
 };
 
 #endif
