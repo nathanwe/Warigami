@@ -30,9 +30,13 @@ namespace asset
                 e.traverse(func);
         }
 
-        const std::vector<scene_entity>& entities() const { return _entities; }
+        scene_entity& add_from_prototype(const std::string& path);
+
+        [[nodiscard]] const std::vector<scene_entity>& entities() const { return _entities; }
 
     private:
+        asset_manager& _assets;
+
         std::vector<scene_entity> _entities {};
     };
 

@@ -7,7 +7,7 @@
 #include <asset/scene.hpp>
 #include <asset/resource_id.hpp>
 
-asset::scene::scene(std::string file_path, asset_manager& assets)
+asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(assets)
 {
 	// read a JSON file
 	auto j = assets.get_json(file_path);
@@ -58,4 +58,10 @@ asset::scene::scene(std::string file_path, asset_manager& assets)
 
         if (no_change) break;
     }
+}
+
+asset::scene_entity& asset::scene::add_from_prototype(const std::string& file_path)
+{
+    auto j = _assets.get_json(file_path);
+    return _entities.emplace_back(j, _assets);
 }

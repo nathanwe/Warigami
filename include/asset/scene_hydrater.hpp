@@ -1,6 +1,8 @@
 #ifndef __SCHENE_ENTITY_TREE_HPP_
 #define __SCHENE_ENTITY_TREE_HPP_
 
+#include <string>
+
 #include <asset/scene.hpp>
 #include <ecs/state.hpp>
 #include <ecs/entity.hpp>
@@ -27,6 +29,8 @@ namespace asset
 				load_recurse(e);
 		}
 
+		ecs::entity& add_from_prototype(const std::string& path);
+
 
 	private:
 		ecs::state& _ecs_state;
@@ -34,7 +38,7 @@ namespace asset
 		std::vector<asset_loader_node> _entity_refs;
 		std::vector<component_loader*> _component_loaders;
 
-		void hydrate_recurse(const scene_entity& entity, asset_loader_node& graph_entity, ecs::state& ecs_state);
+		void hydrate_recurse(asset_loader_node& graph_entity);
 		void load_recurse(asset_loader_node& entity);
 	};
 
