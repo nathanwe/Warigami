@@ -18,8 +18,16 @@ namespace components
 		BASIC_RANGE = 2,
 		BASIC_FAST = 3
 	};
-	const static std::vector<card_enum> start_deck = { card_enum::BASIC_FAST,
-			card_enum::BASIC_FAST, card_enum::BASIC_MELE, card_enum::BASIC_MELE, card_enum::BASIC_RANGE, card_enum::BASIC_RANGE };
+
+	const static std::vector<card_enum> start_deck = {
+	        card_enum::BASIC_FAST,
+			card_enum::BASIC_FAST,
+			card_enum::BASIC_MELE,
+			card_enum::BASIC_MELE,
+			card_enum::BASIC_RANGE,
+			card_enum::BASIC_RANGE
+	};
+
 	enum class dice_nets {
 		T = 1,
 		SEVEN = 2,
@@ -33,8 +41,11 @@ namespace components
 		X = 10,
 		I = 11
 	};
+
 	struct player : ecs::component<player>
 	{
+	    static const std::uint8_t MaxCards = 4;
+
         using row_t = std::int16_t;
 
 
@@ -45,6 +56,9 @@ namespace components
 		//const card_enum start_deck_array[] = { BASIC_FAST, BASIC_FAST, BASIC_MELE, BASIC_MELE, BASIC_RANGE, BASIC_RANGE };
 
         row_t selected_row = -1;
+        card_enum hand[MaxCards];
+        std::uint8_t card_count {0};
+
 
 		std::vector<card_enum> deck = start_deck;
 
