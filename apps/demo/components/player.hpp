@@ -11,8 +11,13 @@ namespace components
 {
 	struct player : ecs::component<player>
 	{
+	    using row_t = std::int16_t;
+
 		float energy = 0.f;
 		float health = 0.f;
+		row_t selected_row = -1;
+
+
 		// Needs a list of cards in hand and dice in pool
 	};
 }
