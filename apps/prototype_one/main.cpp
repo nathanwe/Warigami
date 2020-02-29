@@ -20,6 +20,7 @@
 #include "fly_cam_system.hpp"
 #include "board_update_system.hpp"
 #include "util/boardgen.hpp"
+#include "card_test_system.hpp"
 
 
 int main(int argc, char** argv) {
@@ -65,6 +66,7 @@ int main(int argc, char** argv) {
 
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events);
+	card_test_system card_test_system(timer, input);
 	audio::audio_system audio_system(strings, assets);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
@@ -80,7 +82,8 @@ int main(int argc, char** argv) {
 		&flycam,
 		&audio_system,
 		&physics_update,
-		&board_updater});
+		&board_updater,
+		&card_test_system});
 
 	ecs::world world(systems, state);
 
@@ -139,7 +142,7 @@ int main(int argc, char** argv) {
 
 	//cursor.disable();
 
-	printf("Hello, I'm the dev console!");
+	//printf("Hello, I'm the dev console!");
 
 	//game loop
 	while (!glfwWindowShouldClose(glfw.window())) {
