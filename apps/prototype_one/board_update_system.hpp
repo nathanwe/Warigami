@@ -43,13 +43,16 @@ public:
     }
 
     // Helper function for checking for legal attacks
-    static bool check_attacks(glm::vec2 location, std::vector<glm::vec2> targets, float teammates, ecs::state &r_state)
+    static bool check_attacks(glm::ivec2 location, std::vector<glm::ivec2> targets, float teammates, ecs::state &r_state)
     {
         bool ret = false;
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
             for (auto &target : targets)
             {
-                glm::vec2 attack_location = location + target;
+                glm::ivec2 attack_location = location + target;
+
+                //std::cerr << glm::to_string(attack_location) << " vs " << glm::to_string(game_piece.board_location) << std::endl;
+
                 if (game_piece.board_location == attack_location && game_piece.team != teammates &&
                     game_piece.state != components::UNIT_STATE::DYING &&
                     game_piece.state != components::UNIT_STATE::DEAD)
@@ -64,8 +67,8 @@ public:
 
     // Helper function for attacking legal attacks
     static void attack_targets(
-            glm::vec2 location,
-            std::vector<glm::vec2> targets,
+            glm::ivec2 location,
+            std::vector<glm::ivec2> targets,
             float damage,
             float teammates,
             ecs::state &r_state)
@@ -156,8 +159,7 @@ public:
 
             // A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
 
-            std::cerr << "One: " << std::endl;
-
+            
             // Update states to either attack or move depending on current board state
             r_state.each_id<components::game_piece, transforms::transform>(
                     [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
@@ -177,8 +179,6 @@ public:
                         }
                     });
 
-            std::cerr << "Two: " << std::endl;
-
             // If a unit can attack, attack now
             r_state.each_id<components::game_piece, transforms::transform>(
                     [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
@@ -193,24 +193,22 @@ public:
                     });
 
 
-            std::cerr << "Three: " << std::endl;
-
-
             // If a unit is still alive after attacks and has a move state, check for legality and then move
             r_state.each_id<components::game_piece, transforms::transform>(
                     [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
                         if (game_piece.state == components::UNIT_STATE::MOVE)
                         {
-                            glm::vec2 movement = move_check(id, game_piece.board_location,
-                                                            game_piece.board_location + game_piece.move_board,
+                            glm::ivec2 movement = move_check(id, game_piece.board_location,
+                                                            glm::vec2(game_piece.board_location) + game_piece.move_board,
                                                             game_piece.team, r_state);
+
                             if (movement == game_piece.board_location)
                             {
                                 game_piece.state = components::UNIT_STATE::WAIT;
                                 std::cerr << "Unit: " << id << " waiting" << std::endl;
                             } else
                             {
-                                move_unit(game_piece, movement);
+                                //move_unit(game_piece, movement);
                                 std::cerr << "Unit: " << id << " moved to " << movement.x << ", " << movement.y
                                           << std::endl;
                                 if (game_piece.board_location.y < 0.f || game_piece.board_location.y > 9.f)
@@ -227,8 +225,6 @@ public:
 
         // If a unit made it through the last state update with a move state, move the unit until the next update
         r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
-            std::cerr << "Four: " << std::endl;
-
             r_state.each_id<transforms::transform, components::game_piece>([&](entity_id unit_id, auto& unit_t, auto& unit) {
                 if (unit.state == components::UNIT_STATE::MOVE)
                 {
@@ -244,9 +240,6 @@ public:
                 }
             });
         });
-
-        std::cerr << "Five: " << std::endl;
-
     }
 
 private:
@@ -261,9 +254,7 @@ private:
     // Helper function for moving in board space
     static void walk_unit(components::game_piece& game_piece, float delta)
     {
-        game_piece.board_location += delta * game_piece.speed * game_piece.move_board;
-        if (game_piece.board_location.y < 0) game_piece.board_location.y = 0;
-        if (game_piece.board_location.y > 9) game_piece.board_location.y = 9;
+        game_piece.continuous_board_location += delta * game_piece.speed * game_piece.move_board;
     }
 
     static void handle_unit_transform(
@@ -272,24 +263,34 @@ private:
         components::game_piece& game_piece,
         components::board& board,
         entity_id board_id)
-    {
+    {        
         unit_t.has_parent = true;
-        unit_t.parent = board_id;
-        unit_t.position = grid_to_world(game_piece.board_location, board, board_t);
+        unit_t.parent = board_id;        
+        unit_t.position = grid_to_board(game_piece.continuous_board_location, board, board_t, unit_t.position.y);
+        unit_t.scale = glm::vec3(0.2f);
         unit_t.is_matrix_dirty = true;
+
+        game_piece.board_location = glm::ivec2(
+            std::round(game_piece.continuous_board_location.x),
+            std::round(game_piece.continuous_board_location.y));
     }
 
-    static glm::vec3 grid_to_world(glm::vec2& grid, components::board& board, transforms::transform& board_t)
+    static glm::vec3 grid_to_board(
+        glm::vec2& grid, 
+        components::board& board, 
+        transforms::transform& board_t,
+        float y)
     {
-        auto width_scaled = board_t.scale.x * board.cell_width;
-        auto height_scaled = board_t.scale.y * board.cell_height;
+        auto width_scaled = board_t.scale.y * board.cell_width;
+        auto height_scaled = board_t.scale.z * board.cell_height;
 
-        auto half_w = board.rows * width_scaled / 2.f;
-        auto half_h = board.columns * height_scaled / 2.f;
+        float total_w = board.rows;
+        float total_h = board.columns;
+        
+        auto world_x = -grid.x + (total_h / 2.f) - 0.5f;
+        auto world_z = grid.y - (total_w / 2.f) + 0.5f;
 
-        return 
-            glm::vec3(grid.x * width_scaled, 1, grid.y * height_scaled) 
-            - glm::vec3(half_w, 0, half_h);
+        return glm::vec3(world_x, 1.5f, world_z);
     }
 };
 

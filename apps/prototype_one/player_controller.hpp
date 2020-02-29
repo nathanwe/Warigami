@@ -81,7 +81,7 @@ public:
 					std::vector<glm::vec2> new_attacks;
 					for (int i = 0; i < nerdP.attacks.size(); i++)
 					{
-						new_attacks.push_back(nerdP.attacks[i] * nerdP.team);
+						new_attacks.push_back(nerdP.attacks[i] * (int) nerdP.team);
 					}
 					
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transformer)

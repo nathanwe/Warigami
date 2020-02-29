@@ -55,18 +55,29 @@ ecs::entity &asset::scene_hydrater::add_from_prototype(const std::string &path)
 
 void asset::scene_hydrater::remove_entity(ecs::entity &entity)
 {
-    _ecs_state.remove_entity(entity);
-
     auto removal = std::remove_if(
             _entity_refs.begin(),
             _entity_refs.end(),
             [&](const asset_loader_node &n) { return entity.id() == n.entity_resource.entity->id(); });
 
     _entity_refs.erase(removal, _entity_refs.end());
+    _to_remove.push_back(&entity);
 }
 
 void asset::scene_hydrater::remove_entity(entity_id id)
 {
-    auto& e = _ecs_state.find_entity(id);
+    auto& e = _ecs_state.find_entity(id);    
     remove_entity(e);
+}
+
+void asset::scene_hydrater::flush_removed()
+{
+    std::sort(_to_remove.begin(), _to_remove.end()); 
+    auto last = std::unique(_to_remove.begin(), _to_remove.end());
+    _to_remove.erase(last, _to_remove.end());
+
+    for (auto* e : _to_remove)
+        _ecs_state.remove_entity(*e);
+    
+    _to_remove.clear();
 }

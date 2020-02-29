@@ -16,10 +16,13 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 
 	if (json.find("board_location") != json.end())
 	{
-		gp.board_location = glm::vec2(
+		gp.board_location = glm::ivec2(
 			json["board_location"][0].get<float>(),
 			json["board_location"][1].get<float>());
+
+		gp.continuous_board_location = gp.board_location;
 	}
+
 
 	if (json.find("move_board") != json.end())
 	{
@@ -42,7 +45,7 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 	{
 		for (auto& vec : json["attacks"])
 		{
-			gp.attacks.push_back(glm::vec2(vec[0], vec[1]) * gp.team);
+			gp.attacks.push_back(glm::ivec2(vec[0].get<int>(), vec[1].get<int>()) * (int)gp.team);
 		}
 	}
 }

@@ -131,12 +131,6 @@ int main(int argc, char** argv) {
 
 	hydrater.load();
 
-	state.each<audio::audio_emitter>([](audio::audio_emitter& e) {
-		if (e.emitter_sounds[0].path_hash != 0xAABAAD56BF74CE6F)
-			e.set_sound_state(0, audio::playback_requested);
-	});
-
-
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);
 	engineui::entities_view entities_view(window_view, events, state);
@@ -145,8 +139,7 @@ int main(int argc, char** argv) {
 	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
 	//cursor.disable();
-
-	//printf("Hello, I'm the dev console!");
+	
 
 	//game loop
 	while (!glfwWindowShouldClose(glfw.window())) {
@@ -161,6 +154,9 @@ int main(int argc, char** argv) {
 
 		glfw.swap_buffers();
 		limiter.wait_remainder();
+
+		hydrater.flush_removed();
+
 		timer.end();
 	}
 }

@@ -25,7 +25,7 @@ ecs::entity& ecs::state::add_entity(component_bitset archetype_id, entity_id id)
         if ((archetype_id & pair.first) == pair.first)
         {
             pair.second.accessors.emplace_back(new_entity.id(), new_entity.accessor(), new_entity.archetype_id());
-            pair.second.is_sorted = false;
+            pair.second.sort();
         }
     }
 
@@ -43,8 +43,13 @@ void ecs::state::remove_entity(entity& entity)
     _entity_pools.free_entity(entity);
 
     for (auto& pair : _caches)
+    {
         if ((archetype_id & pair.first) == pair.first)
+        {
             pair.second.remove(entity.id());
+            pair.second.sort();
+        }
+    }
 
     auto it = _entity_lookup.find(entity.id());
     _entity_lookup.erase(it);
@@ -74,6 +79,7 @@ ecs::query_cache& ecs::state::find_query_cache(component_bitset archetype)
 ecs::query_cache ecs::state::build_query_cache(component_bitset archetype)
 {
     query_cache cache{ archetype };
+
     for (auto& pair : _entity_lookup)
     {
         auto& e = pair.second;
@@ -81,6 +87,8 @@ ecs::query_cache ecs::state::build_query_cache(component_bitset archetype)
         if ((e.archetype_id() & archetype) == archetype)
             cache.accessors.emplace_back(e.id(), e.accessor(), e.archetype_id());
     }
+
+    cache.sort();
     return cache;
 }
 

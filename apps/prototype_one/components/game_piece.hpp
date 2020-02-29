@@ -28,9 +28,11 @@ namespace components
 		float damage; // How much damage a unit does per attack
 		float health; // How much damage a unit can take before dying
 		float team; // Which team the unit is a part of
-		glm::vec2 board_location; // A unit's board coordinates
+		glm::ivec2 board_location; // A unit's board coordinates
+		glm::vec2 continuous_board_location; // Interpolated position on board
+		glm::ivec2 board_tile; // A unit's discrete tile coordinates
 		components::UNIT_STATE state; // A unit's state of action
-		std::vector< glm::vec2 > attacks; // A list of offsets in board-space that the unit can attack from its own space
+		std::vector< glm::ivec2 > attacks; // A list of offsets in board-space that the unit can attack from its own space
 		glm::vec2 move_board; // A vector keeping track of which direction is forward for the unit in board-space
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space
 	};

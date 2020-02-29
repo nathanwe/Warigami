@@ -7,7 +7,9 @@
 				"scale": [ 1, 1, 1 ]
 			},
 			{
-				"type": "board"
+				"type": "board",
+				"rows": 9,
+				"columns": 7
 			}
 		]
 	},

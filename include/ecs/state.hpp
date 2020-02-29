@@ -43,8 +43,7 @@ namespace ecs
 		void each(TFunc callback)
 		{
 			auto arch_id = ecs::archetype_id<TComponents...>();
-			auto& cache = find_query_cache(arch_id);
-			cache.sort();
+			auto& cache = find_query_cache(arch_id);			
 
 			for (auto& a : cache.accessors)
 			{
@@ -56,8 +55,7 @@ namespace ecs
 		void each_id(TFunc callback)
 		{
 			auto arch_id = ecs::archetype_id<TComponents...>();
-			auto& cache = find_query_cache(arch_id);
-            cache.sort();
+			auto& cache = find_query_cache(arch_id);            
 
 			for (auto& a : cache.accessors)
 			{

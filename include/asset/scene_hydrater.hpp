@@ -32,12 +32,14 @@ namespace asset
 		ecs::entity& add_from_prototype(const std::string& path);
         void remove_entity(ecs::entity& entity);
         void remove_entity(entity_id id);
+		void flush_removed();
 
 	private:
 		ecs::state& _ecs_state;
 		scene& _scene;
 		std::vector<asset_loader_node> _entity_refs;
 		std::vector<component_loader*> _component_loaders;
+		std::vector<ecs::entity*> _to_remove;
 
 		void hydrate_recurse(asset_loader_node& graph_entity);
 		void load_recurse(asset_loader_node& entity);
