@@ -16,7 +16,8 @@ asset::scene_entity::scene_entity(json& entity_json, asset_manager& assets)
     , _archetype_id(0)
 {
     auto prototype = inflate_prototype(entity_json, assets);    
-       
+
+    std::string str = prototype.dump();
     for (auto& c : prototype["root"]["components"])
     {
         auto type = c["type"].get<std::string>();
@@ -88,7 +89,9 @@ json asset::scene_entity::inflate_prototype(json& entity_json, asset_manager& as
     auto entity_components = entity_json["components"];
     auto prototype_path_it = entity_json.find("prototype");
 
-    if (prototype_path_it == entity_json.end())
+    if (prototype_path_it == entity_json.end() && entity_json.find("root") != entity_json.end())
+        return entity_json;
+    else if (prototype_path_it == entity_json.end())
         return { {"root", entity_json}, {"children", json::array()} };
 
     auto prototype_path = prototype_path_it.value().get<std::string>();

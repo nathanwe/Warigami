@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
 	bool is_debug = false;
 #endif
 
+
 	asset::asset_manager assets;
 	core::startup_config config;
 	core::glfw_context glfw(config);
@@ -71,12 +72,14 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 
+    asset::scene scene("assets/scenes/scene.json", assets);
+    asset::scene_hydrater hydrater(state, scene);
 
 	audio::audio_system audio_system(strings, assets);
 	board_path_movement_system board_path_movement(input, timer);
 	box_move boxmove(timer, input);
 	collisions::collision_manager collision_manager;
-	disco_light discolight(timer, glm::vec3(0, 3, 0));
+	disco_light discolight(timer, hydrater, glm::vec3(0, 3, 0));
 	fly_cam flycam(input, timer, events);
 	health_damage_system health_damage_system(timer);
 	physics::physics_update physics_update(collision_manager, timer);
@@ -103,8 +106,6 @@ int main(int argc, char** argv) {
 
 	audio::loader_emitter eloader(strings);
 
-	asset::scene scene("assets/scenes/scene.json", assets);
-	asset::scene_hydrater hydrater(state, scene);
 	transforms::transform_loader transform_loader;
 	rendering::loader_camera camera_loader(render_asset_cache);
 	rendering::loader_light_directional dir_light_loader;
@@ -155,7 +156,7 @@ int main(int argc, char** argv) {
 	rendering::debug_view render_debug_view(window_view, renderer);
 	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
-	cursor.disable();
+	//cursor.disable();
 
 	//game loop
 	while (!glfwWindowShouldClose(glfw.window())) {

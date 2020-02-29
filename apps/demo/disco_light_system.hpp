@@ -9,10 +9,25 @@
 class disco_light : public ecs::system_base
 {
 public:
-	disco_light(core::frame_timer& timer, glm::vec3 center = glm::vec3(0,0,0)) : m_timer(timer), t(0), dir(1), color(0), angle(0), center(0.f) {}
+	disco_light(
+	        core::frame_timer& timer,
+            asset::scene_hydrater& hydrater,
+	        glm::vec3 center = glm::vec3(0,0,0))
+	        : m_timer(timer)
+	        , m_hydrater(hydrater)
+	        , t(0), dir(1)
+	        , color(0)
+	        , angle(0)
+	        , center(0.f) {}
 
 	virtual void update(ecs::state& r_state) override
 	{
+	    static bool added = false;
+	    if (!added)
+        {
+	        auto& entity = m_hydrater.add_from_prototype("assets/prototypes/disco.json");
+        }
+
 		r_state.each< transforms::transform, rendering::light_point, components::disco_light>([&](
 		        transforms::transform& transform,
 		        rendering::light_point& light_point,
@@ -59,6 +74,8 @@ public:
 
 private:
 	core::frame_timer& m_timer;
+    asset::scene_hydrater& m_hydrater;
+
 	float t;
 	int dir;
 	int color;
