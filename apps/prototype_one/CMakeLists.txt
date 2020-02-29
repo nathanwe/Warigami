@@ -6,9 +6,8 @@ add_executable (prototype_one main.cpp
 				components/card.cpp components/card_loader.cpp
 				components/dice.cpp components/dice_loader.cpp
 				components/player.cpp components/player_loader.cpp
-				components/board_path_movement.cpp components/board_path_movement_loader.cpp
-				components/hit_points.cpp
-				util/boardgen.cpp components/disco_light.cpp)
+				board_update_system.hpp
+				util/boardgen.cpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs

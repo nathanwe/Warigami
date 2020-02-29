@@ -5,9 +5,9 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 10, 0 ],
+          "position": [ -20, 10, 0 ],
           "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, 180, 0 ]
+          "rotation": [ 0, -90, -55 ]
         },
         {
           "type": "camera",
@@ -46,387 +46,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 0, 0 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 500,
-          "right": 500,
-          "top": 0.5,
-          "bottom": 200,
-          "back": 500,
-          "front": 500,
-          "relative": [ 0, 1, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/demoroom/demoroom.gltf",
-          "texture_diffuse": "assets/meshes/demoroom/wall.jpg"
-        }
-      ]
-    },
-
-    {
-      "entity_id": 3,
-      "components": [
-        {
-          "type": "transform"
-        },
-        {
-          "type": "light_directional"
-        }
-      ]
-    },
-    {
-      "entity_id": 4,
-      "components": [
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/DejaVu.mp3",
-              "loop": true,
-              "volume": 0.1
-            }
-          ]
-        },
-        {
-          "type": "transform",
-          "position": [ -100, 10, -100 ],
-          "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, 90, 0 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 0.5,
-          "right": 0.5,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 0.5,
-          "front": 0.5,
-          "relative": [ 0, -5, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/dude/dude.gltf",
-          "texture_diffuse": "assets/textures/dude/texture.png"
-        },
-        {
-          "type": "rigid_body",
-          "mass": 1.0
-        },
-        {
-          "type": "game_piece",
-          "speed": 5.0
-        }
-      ]
-    },
-    {
-      "entity_id": 5,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 0, 30, 0 ]
-        },
-        {
-          "type": "light_point",
-          "intensity": 900
-        }
-      ]
-    },
-
-    {
-      "entity_id": 6,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 0, 30, 140 ]
-        },
-        {
-          "type": "light_point",
-          "intensity": 900
-        }
-      ]
-    },
-
-    {
-      "entity_id": 7,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 50, 30, 50 ]
-        },
-        {
-          "type": "light_point",
-          "intensity": 900
-        }
-      ]
-    },
-    {
-      "entity_id": 10,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 38, 6, 138 ],
-          "scale": [ 1, 1, 1 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/dude/dude.gltf",
-          "texture_diffuse": "assets/textures/dude/texture.png"
-        },
-        {
-          "type": "board_path_movement"
-        },
-        {
-          "type": "game_piece",
-          "succ": 7
-        },
-        {
-          "type": "hit_points"
-        },
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/Wilhelm.mp3",
-              "loop": false,
-              "volume": 0.035
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "entity_id": 9,
-        "components": [
-            {
-                "type": "transform",
-                "position": [ 38, 6, 168 ],
-                "scale": [ 1, 1, 1 ],
-                "rotation": [ 0, 180, 0 ]
-            },
-            {
-                "type": "renderable_mesh_static",
-                "mesh": "assets/meshes/dude/dude.gltf",
-                "texture_diffuse": "assets/textures/dude/texture.png"
-            },
-            {
-                "type": "game_piece",
-                "succ": 7
-            },
-            {
-                "type": "hit_points"
-            },
-            {
-                "type": "board_path_movement"
-            },
-            {
-                "type": "audio_emitter",
-                "sounds": [
-                    {
-                        "file": "assets/Wilhelm.mp3",
-                        "loop": false,
-                        "volume": 0.035
-                    }
-                ]
-            }
-
-
-        ]
-    },
-    {
-      "entity_id": 8, 
-      "components": [
-        {
-          "type": "transform"
-        },
-        {
-          "type": "light_directional"
-        }
-      ]
-    },
-    {
-      "entity_id": 11,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 60, 20, 35 ],
-          "scale": [ 2.0, 2.0, 2.0 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 0.5,
-          "right": 0.5,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 0.5,
-          "front": 0.5,
-          "relative": [ 0, 0, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/gltf_cube/cube.gltf",
-          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
-        },
-        {
-          "type": "rigid_body",
-          "mass": 15.0,
-          "gravity": 1.0
-        },
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/Wilhelm.mp3",
-              "loop": false,
-              "volume": 0.045
-            }
-          ]
-        },
-        {
-          "type": "card"
-        }
-      ]
-    },
-    {
-      "entity_id": 12,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 60, 20, 45 ],
-          "scale": [ 3.0, 3.0, 3.0 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 0.5,
-          "right": 0.5,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 0.5,
-          "front": 0.5,
-          "relative": [ 0, 0, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/gltf_cube/cube.gltf",
-          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
-        },
-        {
-          "type": "rigid_body",
-          "mass": 20.0,
-          "gravity": 1.0
-        },
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/Wilhelm.mp3",
-              "loop": false,
-              "volume": 0.045
-            }
-          ]
-        },
-        {
-          "type": "card"
-        }
-      ]
-    },
-    {
-      "entity_id": 13,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 60, 20, 55 ],
-          "scale": [ 4.0, 4.0, 4.0 ]
-        },
-        {
-          "type": "aabb_collider",
-          "left": 0.5,
-          "right": 0.5,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 0.5,
-          "front": 0.5,
-          "relative": [ 0, 0, 0 ]
-        },
-        {
-          "type": "renderable_mesh_static",
-          "mesh": "assets/meshes/gltf_cube/cube.gltf",
-          "texture_diffuse": "assets/meshes/gltf_cube/cube.png"
-        },
-        {
-          "type": "rigid_body",
-          "mass": 25.0,
-          "gravity": 1.0
-        },
-        {
-          "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/Wilhelm.mp3",
-              "loop": false,
-              "volume": 0.045
-            }
-          ]
-        },
-        {
-          "type": "card"
-        }
-      ]
-    },
-    {
-      "entity_id": 14,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ -80, 3, 170 ],
-          "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, 0, 0 ]
-        },
-        {
-          "type": "model",
-          "path": "assets/models/secret/secret.obj"
-        }
-      ]
-    },
-    {
-      "entity_id": 15,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ -80, 6, 190 ],
-          "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, 0, 0 ]
-        },
-        {
-          "type": "model",
-          "path": "assets/models/tower/towers.obj"
-        }
-      ]
-    },
-    {
-      "entity_id": 16,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ -80, 1, 150 ],
-          "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, 90, 0 ]
-        },
-        {
-          "type": "model",
-          "path": "assets/models/nanosuit/nanosuit.obj"
-        }
-      ]
-    },
-    {
-      "entity_id": 17,
-      "components": [
-        {
-          "type": "transform",
-          "position": [100, 50, 0]
+          "position": [ 0, 50, 0 ]
         },
         {
           "type": "light_directional",
@@ -435,24 +55,101 @@
       ]
     },
     {
-      "entity_id": 18,
-      "prototype": "assets/prototypes/disco.json",
+      "entity_id": 3,
+      "prototype": "assets/prototypes/basic_unit.json",
       "components": [
         {
           "type": "transform",
-          "position": [ -58, 1, 42 ],
-          "scale": [ 8, 8, 8 ]
+          "position": [ 0, -17, -20 ],
+          "rotation": [ 0, 180, 0 ],
+          "scale": [ 2, 2, 2 ]
+        },
+        {
+          "type": "game_piece",
+          "health": 2.0,
+          "team": 1.0,
+          "board_location": [ 3.0, 0.0 ]
         }
       ]
     },
     {
-      "entity_id": 19,
+      "entity_id": 4,
+      "prototype": "assets/prototypes/basic_unit.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, -17, 20 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 2, 2, 2 ]
+        },
+        {
+          "type": "game_piece",
+          "team": -1.0,
+          "board_location": [ 3.0, 8.0 ]
+        }
+      ]
+    },
+    {
+      "entity_id": 5,
+      "prototype": "assets/prototypes/basic_unit.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 5, -17, -20 ],
+          "rotation": [ 0, 180, 0 ],
+          "scale": [ 2, 2, 2 ]
+        },
+        {
+          "type": "game_piece",
+          "health": 1.0,
+          "team": 1.0,
+          "board_location": [ 4.0, 0.0 ]
+        }
+      ]
+    },
+    {
+      "entity_id": 6,
+      "prototype": "assets/prototypes/basic_unit.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 5, -17, 10 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 2, 2, 2 ]
+        },
+        {
+          "type": "game_piece",
+          "team": -1.0,
+          "board_location": [ 4.0, 6.0 ]
+        }
+      ]
+    },
+    {
+      "entity_id": 7,
+      "prototype": "assets/prototypes/basic_unit.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -10, -17, -20 ],
+          "rotation": [ 0, 180, 0 ],
+          "scale": [ 2, 2, 2 ]
+        },
+        {
+          "type": "game_piece",
+          "health": 1.0,
+          "team": 1.0,
+          "board_location": [ 1.0, 0.0 ]
+        }
+      ]
+    },
+    {
+      "entity_id": 69,
       "prototype": "assets/prototypes/gameboard.json",
       "components": [
         {
           "type": "transform",
-          "position": [ 50, 0, 150 ],
-          "scale": [ 6, 2, 6 ]
+          "position": [ 0, -20, 0 ],
+          "scale": [ 5, 2, 5 ]
         }
       ]
     }

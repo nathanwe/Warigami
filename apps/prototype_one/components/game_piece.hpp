@@ -18,6 +18,7 @@ namespace components
 		MOVE,
 		WAIT,
 		DYING,
+		DEAD,
 		NUM
 	};
 
@@ -27,8 +28,6 @@ namespace components
 		float damage; // How much damage a unit does per attack
 		float health; // How much damage a unit can take before dying
 		float team; // Which team the unit is a part of
-		float death_timer; // How long a unit takes to die
-		float wait_timer; // Arbitrary wait setting
 		glm::vec2 board_location; // A unit's board coordinates
 		components::UNIT_STATE state; // A unit's state of action
 		std::vector< glm::vec2 > attacks; // A list of offsets in board-space that the unit can attack from its own space

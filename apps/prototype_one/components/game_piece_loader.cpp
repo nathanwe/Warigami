@@ -10,19 +10,42 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 
 	auto& gp = entity.get_component<game_piece>();
 
-	if (json.find("speed") != json.end())
+	gp.speed = json.value("speed", 1.f);
+	gp.damage = json.value("damage", 1.f);
+	gp.health = json.value("health", 1.f);
+	gp.team = json.value("team", 1.f);
+
+	if (json.find("board_location") != json.end())
 	{
-		gp.speed = json["speed"].get<float>();
-	}
-	if (json.find("damage") != json.end())
-	{
-		gp.damage = json["damage"].get<float>();
-	}
-	if (json.find("health") != json.end())
-	{
-		gp.health = json["health"].get<float>();
+		gp.board_location = glm::vec2(
+			json["board_location"][0].get<float>(),
+			json["board_location"][1].get<float>());
 	}
 
+	if (json.find("move_board") != json.end())
+	{
+		gp.move_board = glm::vec2(
+			json["move_board"][0].get<float>(),
+			json["move_board"][1].get<float>());
+		gp.move_board = gp.move_board * gp.team;
+	}
+
+	if (json.find("move_world") != json.end())
+	{
+		gp.move_world = glm::vec3(
+			json["move_world"][0].get<float>(),
+			json["move_world"][1].get<float>(),
+			json["move_world"][2].get<float>());
+		gp.move_world = gp.move_world * gp.team;
+	}
+
+	if (json.find("attacks") != json.end())
+	{
+		for (auto& vec : json["attacks"])
+		{
+			gp.attacks.push_back(glm::vec2(vec[0], vec[1]) * gp.team);
+		}
+	}
 }
 
 component_bitset components::game_piece_loader::components_to_load()
