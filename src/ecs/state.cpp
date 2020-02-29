@@ -56,6 +56,7 @@ void ecs::state::free_all()
         _entity_pools.free_entity(pair.second);
 
     _entity_lookup.clear();
+    _caches.clear();
 }
 
 ecs::query_cache& ecs::state::find_query_cache(component_bitset archetype)
