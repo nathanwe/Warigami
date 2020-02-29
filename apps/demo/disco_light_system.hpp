@@ -26,6 +26,7 @@ public:
 	    if (!added)
         {
 	        auto& entity = m_hydrater.add_from_prototype("assets/prototypes/disco.json");
+	        added = true;
         }
 
 		r_state.each< transforms::transform, rendering::light_point, components::disco_light>([&](
