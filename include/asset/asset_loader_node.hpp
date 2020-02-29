@@ -15,11 +15,10 @@ namespace asset
 	struct asset_loader_node
 	{
 		asset_loader_node(ecs::entity& e, const asset::scene_entity& se) : entity_resource({ e, se }) {}
-	
+
 		entity_ref_pair entity_resource;
 		std::vector<asset_loader_node> children{};
 	};
-
 }
 
 #endif // !__ENTITY_REF_NODE_HPP_

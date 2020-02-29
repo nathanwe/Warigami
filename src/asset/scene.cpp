@@ -65,3 +65,4 @@ asset::scene_entity& asset::scene::add_from_prototype(const std::string& file_pa
     auto j = _assets.get_json(file_path);
     return _entities.emplace_back(j, _assets);
 }
+

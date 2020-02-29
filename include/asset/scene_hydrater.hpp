@@ -30,7 +30,7 @@ namespace asset
 		}
 
 		ecs::entity& add_from_prototype(const std::string& path);
-
+        void remove_entity(ecs::entity& entity);
 
 	private:
 		ecs::state& _ecs_state;
