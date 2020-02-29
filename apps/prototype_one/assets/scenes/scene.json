@@ -7,7 +7,7 @@
           "type": "transform",
           "position": [ -20, 10, 0 ],
           "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, -90, -55 ]
+          "rotation": [ 0, -90, 0 ]
         },
         {
           "type": "camera",
