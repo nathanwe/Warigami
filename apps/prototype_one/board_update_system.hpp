@@ -143,24 +143,6 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-
-		if (!didDisco)
-		{
-			ecs::entity& dude = hydrater.add_from_prototype("assets/prototypes/boardsquare.json");
-			transforms::transform& dudeT = dude.get_component<transforms::transform>();
-			dudeT.position.y = 0.0f;
-			dudeT.position.x = 10.f;
-			dudeT.scale.x = 10.f;
-			dudeT.scale.y = 10.f;
-			dudeT.scale.z = 10.f;
-			didDisco = true;
-		}
-
-		r_state.each_id<components::board_square, transforms::transform>([&](entity_id id, components::board_square& bs, transforms::transform& transform)
-			{
-				transform.is_matrix_dirty = true;
-			});
-
 		float delta = m_timer.smoothed_delta_secs();
 
 		// Do board combat every 1 second
@@ -220,7 +202,7 @@ public:
 						if (game_piece.board_location.y < 0.f || game_piece.board_location.y > 9.f)
 						{
 							std::cerr << "Unit: " << id << " scored" << std::endl;
-							game_piece.state == components::UNIT_STATE::DYING;
+							game_piece.state = components::UNIT_STATE::DYING;
 						}
 					}
 				}
@@ -247,7 +229,6 @@ public:
 
 private:
 	float timer = ROUND_TIME;
-	bool didDisco = false;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
