@@ -62,9 +62,11 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 
+	asset::scene scene("assets/scenes/scene.json", assets);
+	asset::scene_hydrater hydrater(state, scene);
 
 	fly_cam flycam(input, timer, events);
-	board_update board_updater(input, timer, events);
+	board_update board_updater(input, timer, events, hydrater);
 	audio::audio_system audio_system(strings, assets);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
@@ -86,8 +88,6 @@ int main(int argc, char** argv) {
 
 	audio::loader_emitter eloader(strings);
 
-	asset::scene scene("assets/scenes/scene.json", assets);
-	asset::scene_hydrater hydrater(state, scene);
 	transforms::transform_loader transform_loader;
 	rendering::loader_camera camera_loader(render_asset_cache);
 	rendering::loader_light_directional dir_light_loader;

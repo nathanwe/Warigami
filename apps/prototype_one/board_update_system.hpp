@@ -1,6 +1,8 @@
 #ifndef GAME_BOARD_UPDATE_SYSTEM_HPP
 #define GAME_BOARD_UPDATE_SYSTEM_HPP
 
+#define ROUND_TIME 1.0f
+
 #include "ecs/state.hpp"
 #include <transforms/transform.hpp>
 #include <core/game_input_manager.hpp>
@@ -20,14 +22,17 @@ class board_update : public ecs::system_base, public event::Listener
 {
 public:
 
-	board_update(core::game_input_manager& input, core::frame_timer& timer, event::EventManager& _event_manager) : m_input(input), m_timer(timer), event_manager(_event_manager)
+	board_update(core::game_input_manager& input, core::frame_timer& timer, event::EventManager& _event_manager, asset::scene_hydrater& _hydrater) : m_input(input), m_timer(timer), event_manager(_event_manager), hydrater(_hydrater)
 	{
-		// Add event subscriptions here
+		event_manager.Subscribe(this, event::EVENT_TYPE::UNIT_DEATH);
 	}
 
 	void HandleEvent(event::Event& event)
 	{
-		// Do nothing for now
+		if (event.mType == event::EVENT_TYPE::UNIT_DEATH)
+		{
+			hydrater.remove_entity(((unit_death_event&)event).id);
+		}
 	}
 
 	// Helper function for moving in world space
@@ -99,6 +104,10 @@ public:
 							ret.y = current_loc;
 						}
 					}
+					else
+					{
+						ret.y = current_loc;
+					}
 				});
 			}
 		}
@@ -134,13 +143,31 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
+
+		if (!didDisco)
+		{
+			ecs::entity& dude = hydrater.add_from_prototype("assets/prototypes/boardsquare.json");
+			transforms::transform& dudeT = dude.get_component<transforms::transform>();
+			dudeT.position.y = 0.0f;
+			dudeT.position.x = 10.f;
+			dudeT.scale.x = 10.f;
+			dudeT.scale.y = 10.f;
+			dudeT.scale.z = 10.f;
+			didDisco = true;
+		}
+
+		r_state.each_id<components::board_square, transforms::transform>([&](entity_id id, components::board_square& bs, transforms::transform& transform)
+			{
+				transform.is_matrix_dirty = true;
+			});
+
 		float delta = m_timer.smoothed_delta_secs();
 
 		// Do board combat every 1 second
 		timer -= delta;
 		if (timer <= 0.f)
 		{
-			timer = 1.f;
+			timer = ROUND_TIME;
 
 			// A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
 
@@ -219,10 +246,12 @@ public:
 	}
 
 private:
-	float timer = 1.f;
+	float timer = ROUND_TIME;
+	bool didDisco = false;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
+	asset::scene_hydrater& hydrater;
 };
 
 #endif
