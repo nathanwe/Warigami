@@ -72,10 +72,12 @@ namespace components
 				return card_enum::NO_CARD;
 			}
 		}
+
 		void shuffle() {
 			auto rng = std::default_random_engine{};
 			std::shuffle(std::begin(deck), std::end(deck), rng);
 		}
+		
 		void regrow_deck() {
 			deck = start_deck;
 		}
