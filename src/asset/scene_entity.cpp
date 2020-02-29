@@ -15,9 +15,12 @@ asset::scene_entity::scene_entity(json& entity_json, asset_manager& assets)
     , _entity_json(entity_json)
     , _archetype_id(0)
 {
+    std::string str0 = entity_json.dump();
+
     auto prototype = inflate_prototype(entity_json, assets);    
 
     std::string str = prototype.dump();
+
     for (auto& c : prototype["root"]["components"])
     {
         auto type = c["type"].get<std::string>();
@@ -86,7 +89,6 @@ const json& asset::scene_entity::component_data(component_bitset bit) const
 
 json asset::scene_entity::inflate_prototype(json& entity_json, asset_manager& assets)
 {
-    auto entity_components = entity_json["components"];
     auto prototype_path_it = entity_json.find("prototype");
 
     if (prototype_path_it == entity_json.end() && entity_json.find("root") != entity_json.end())
@@ -97,7 +99,7 @@ json asset::scene_entity::inflate_prototype(json& entity_json, asset_manager& as
     auto prototype_path = prototype_path_it.value().get<std::string>();
     json prototype_json = assets.get_json(prototype_path);
     merge_component_props(prototype_json["root"], entity_json);
-    return prototype_json;;
+    return prototype_json;
 }
 
 void asset::scene_entity::merge_component_props(json& target, json& source)
