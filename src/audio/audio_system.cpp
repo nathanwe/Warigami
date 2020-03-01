@@ -10,6 +10,7 @@
 #include <transforms/transform.hpp>
 #include <rendering/camera.hpp>
 #include <collisions/rigid_body.hpp>
+#include <audio/music_player.hpp>
 
 
 bool succeededOrWarn(const std::string &message, FMOD_RESULT result);
@@ -78,7 +79,10 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 
 void audio::audio_system::update_emitters(ecs::state &state)
 {
-    state.each_id<transforms::transform, audio_emitter>([&](entity_id id, transforms::transform& transform, audio_emitter& e)
+    state.each_id<transforms::transform, audio_emitter>([&](
+            entity_id id,
+            transforms::transform& transform,
+            audio_emitter& e)
     {
         auto t = transform.position;
         auto& entity = state.find_entity(id);
@@ -89,6 +93,17 @@ void audio::audio_system::update_emitters(ecs::state &state)
         {
             auto& emitter_sound = e.emitter_sounds[i];
             handle_emitter_sound(emitter_sound, t, velocity);
+        }
+    });
+
+    state.each<transforms::transform, music_player>([&](
+            transforms::transform& transform,
+            music_player& e)
+    {
+        for (std::uint32_t i = 0; i < e.track_count; ++i)
+        {
+            auto& track = e.tracks[i];
+            handle_music_sound(track);
         }
     });
 }
@@ -103,11 +118,20 @@ void audio::audio_system::stop_sound(audio::emitter_sound& sound)
 
 void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
 {
-    auto mode = sound.is_3d ? FMOD_3D : 0;
+    auto mode = FMOD_3D;
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
 
     auto fmod_sound = get_sound(sound.path_hash, mode);
     play_sound(fmod_sound, sound);    
+}
+
+void audio::audio_system::play_sound_non3d(audio::emitter_sound& sound)
+{
+    auto mode = 0;
+    if (sound.loop) mode |= FMOD_LOOP_NORMAL;
+
+    auto fmod_sound = get_sound(sound.path_hash, mode);
+    play_sound(fmod_sound, sound);
 }
 
 FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
@@ -177,6 +201,28 @@ void audio::audio_system::handle_emitter_sound(
             FMOD_VECTOR vel = { velocity.x, velocity.y, velocity.z };
             emitter_sound.fmod_channel->set3DAttributes(&pos, &vel);
             emitter_sound.fmod_channel->setVolume(emitter_sound.volume);
+        }
+    }
+}
+
+void audio::audio_system::handle_music_sound(audio::emitter_sound &emitter_sound)
+{
+    switch (emitter_sound.state)
+    {
+        case sound_state::stop_requested:
+        {
+            stop_sound(emitter_sound);
+            emitter_sound.set_null();
+            break;
+        }
+        case sound_state::stopped:
+            break;
+        case sound_state::playback_requested:
+            play_sound_non3d(emitter_sound);
+        default:
+        {
+            if (emitter_sound.is_null()) break;
+            check_sound_stopped(emitter_sound);
         }
     }
 }

@@ -35,8 +35,10 @@ namespace audio
         void update_emitters(ecs::state &state);
         void stop_sound(audio::emitter_sound& sound);
         void play_sound_3d(audio::emitter_sound& sound);
+        void play_sound_non3d(audio::emitter_sound& sound);
         void play_sound(FMOD::Sound *sound, audio::emitter_sound& emitter);
         void handle_emitter_sound(emitter_sound& sound, glm::vec3& t_pos, glm::vec3& velocity);
+        void handle_music_sound(emitter_sound& sound);
         void check_sound_stopped(emitter_sound& sound);
         FMOD::Sound *get_sound(size_t hash, FMOD_MODE mode);
     };
