@@ -37,11 +37,13 @@ public:
 
     void update(ecs::state& state)
     {
-        state.each<transforms::transform, audio::audio_emitter>([this](transforms::transform& t, audio::audio_emitter e)
+        state.each<transforms::transform, audio::audio_emitter>([this](transforms::transform& t, audio::audio_emitter& e)
         {
             auto secs = _timer.delta_secs();
-            glm::mat4 rotation = glm::eulerAngleZXY(t.rotation.z, t.rotation.x, secs * 0.75f);
-            t.local_to_world = rotation * t.local_to_world;
+            t.rotation.y += secs * 0.75f;
+            glm::mat4 rotation = glm::eulerAngleZXY(t.rotation.z, t.rotation.x, t.rotation.y);
+            glm::mat4 translation = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, -30.f));
+            t.local_to_world = rotation * translation;
         });
     }
 
@@ -72,24 +74,22 @@ int main()
     auto& music_player = music_entity.get_component<audio::music_player>();
     auto path_hash = strings.hash_and_store(SwishFile);
     auto song_path_hash = strings.hash_and_store(SongFile);
-
-    auto& t = e.get_component<transforms::transform>();
-    t.position = {0.f, 0.f, -50.f};
-
+    
     auto scene = assets.get_json("assets/scene.json");
     auto scene_entity = asset::scene_entity(scene["entities"][0], assets);
     auto loader_node = asset::asset_loader_node(e, scene_entity);
     audio::loader_emitter eloader(strings);
     audio::loader_music_player music_loader(strings);
     eloader.load(loader_node);
-
-        
-    //emitter.set_sound_state(0, audio::sound_state::playback_requested);
+    
     emitter.emitter_sounds[0].loop = true;
-
-    music_player.add_sound(song_path_hash);
-    music_player.set_sound_state(0, audio::sound_state::playback_requested);
+    
+    music_player.add_sound(song_path_hash);    
     music_player.tracks[0].loop = true;
+
+    emitter.set_sound_state(0, audio::sound_state::playback_requested);
+    //music_player.set_sound_state(0, audio::sound_state::playback_requested);
+
 
     core::frame_timer timer;
     transforms::transformer transformer;

@@ -51,6 +51,10 @@ void audio::audio_system::update(ecs::state &state)
     _system->update();
 }
 
+
+
+#include <glm/gtx/string_cast.hpp>
+#include <iostream>
 void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 {
     state.each_id<transforms::transform, audio_listener>(
@@ -63,7 +67,7 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 
             glm::mat3 ltw = glm::mat3(t.local_to_world);
 
-            l.listener_position = t.position;
+            l.listener_position = glm::vec3(t.local_to_world[3]);
             l.listener_velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
             l.listener_up = ltw[1];
             l.listener_forward = ltw[2];
@@ -84,7 +88,7 @@ void audio::audio_system::update_emitters(ecs::state &state)
             transforms::transform& transform,
             audio_emitter& e)
     {
-        auto t = transform.position;
+        auto position = glm::vec3(transform.local_to_world[3]);
         auto& entity = state.find_entity(id);
         auto rb_opt = entity.get_component_opt<collisions::rigid_body>();
         auto velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
@@ -92,7 +96,7 @@ void audio::audio_system::update_emitters(ecs::state &state)
         for (std::uint32_t i = 0; i < e.sound_count; ++i)
         {
             auto& emitter_sound = e.emitter_sounds[i];
-            handle_emitter_sound(emitter_sound, t, velocity);
+            handle_emitter_sound(emitter_sound, position, velocity);
         }
     });
 
@@ -196,6 +200,7 @@ void audio::audio_system::handle_emitter_sound(
             if (emitter_sound.is_null()) break;
  
             check_sound_stopped(emitter_sound);
+            std::cout << glm::to_string(t_pos) << std::endl;
 
             FMOD_VECTOR pos = { t_pos.x, t_pos.y, t_pos.z };
             FMOD_VECTOR vel = { velocity.x, velocity.y, velocity.z };
