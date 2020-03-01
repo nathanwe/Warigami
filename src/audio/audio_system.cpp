@@ -52,9 +52,6 @@ void audio::audio_system::update(ecs::state &state)
 }
 
 
-
-#include <glm/gtx/string_cast.hpp>
-#include <iostream>
 void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 {
     state.each_id<transforms::transform, audio_listener>(
@@ -200,7 +197,6 @@ void audio::audio_system::handle_emitter_sound(
             if (emitter_sound.is_null()) break;
  
             check_sound_stopped(emitter_sound);
-            std::cout << glm::to_string(t_pos) << std::endl;
 
             FMOD_VECTOR pos = { t_pos.x, t_pos.y, t_pos.z };
             FMOD_VECTOR vel = { velocity.x, velocity.y, velocity.z };
