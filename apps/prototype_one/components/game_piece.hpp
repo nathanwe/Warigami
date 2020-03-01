@@ -31,7 +31,7 @@ namespace components
 		glm::ivec2 board_location; // A unit's board coordinates
 		glm::vec2 continuous_board_location; // Interpolated position on board
 		glm::ivec2 board_tile; // A unit's discrete tile coordinates
-		components::UNIT_STATE state; // A unit's state of action
+		components::UNIT_STATE state = components::UNIT_STATE::MOVE; // A unit's state of action
 		std::vector< glm::ivec2 > attacks; // A list of offsets in board-space that the unit can attack from its own space
 		glm::vec2 move_board; // A vector keeping track of which direction is forward for the unit in board-space
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space

@@ -51,7 +51,7 @@ public:
             {
                 glm::ivec2 attack_location = location + target;
 
-                //std::cerr << glm::to_string(attack_location) << " vs " << glm::to_string(game_piece.board_location) << std::endl;
+                //std::cerr << glm::to_string(attack_location) << " from " << glm::to_string(location) << " on team " << teammates << std::endl;
 
                 if (game_piece.board_location == attack_location && game_piece.team != teammates &&
                     game_piece.state != components::UNIT_STATE::DYING &&
@@ -91,58 +91,36 @@ public:
     }
 
     // Helper function for checking for legal moves
-    static glm::vec2 move_check(entity_id id, glm::vec2 start, glm::vec2 end, float teammates, ecs::state &r_state)
+    static glm::ivec2 move_check(entity_id id, glm::ivec2 start, glm::ivec2 end, float teammates, ecs::state &r_state)
     {
-        int start_loc = static_cast<int>(start.y);
-        int end_loc = static_cast<int>(end.y);
-        glm::vec2 ret = start;
+        auto y_start = teammates == 1
+            ? std::numeric_limits<int>::max()
+            : std::numeric_limits<int>::min();
 
-        if (end_loc > start_loc)
+        glm::ivec2 ret = { start.x,  y_start};
+
+        r_state.each_id<components::game_piece>(
+        [&](entity_id id_two, components::game_piece &game_piece) 
         {
-            for (int current_loc = start_loc; current_loc <= end_loc; current_loc++)
-            {
-                r_state.each_id<components::game_piece>(
-                        [&](entity_id id_two, components::game_piece &game_piece) {
-                            if (game_piece.board_location.x == ret.x && id != id_two)
-                            {
-                                if (current_loc == game_piece.board_location.y)
-                                {
-                                    return;
-                                } else
-                                {
-                                    ret.y = current_loc;
-                                }
-                            } else
-                            {
-                                ret.y = current_loc;
-                            }
-                        });
-            }
-        } else
-        {
-            for (int current_loc = start_loc; current_loc >= end_loc; current_loc--)
-            {
-                r_state.each_id<components::game_piece>(
-                        [&](entity_id id_two, components::game_piece &game_piece) {
-                            if (game_piece.board_location.x == ret.x && id != id_two)
-                            {
-                                if (current_loc == game_piece.board_location.y)
-                                {
-                                    return;
-                                } else
-                                {
-                                    ret.y = current_loc;
-                                }
-                            }
-                        });
-            }
-        }
+                if (id_two == id) return;
+                if (teammates == 1 && start.y >= game_piece.board_location.y) return;
+                if (teammates == -1 && start.y <= game_piece.board_location.y) return;
+                if (game_piece.board_location.x != start.x) return;
+
+                ret.y = teammates == 1
+                    ? std::min(ret.y, game_piece.board_location.y) - 1
+                    : std::max(ret.y, game_piece.board_location.y) + 1;
+        });
+
+        ret.y = teammates == 1
+            ? std::min(ret.y, end.y)
+            : std::max(ret.y, end.y);
 
         return ret;
     }
 
     // Helper function for moving in board space
-    static void move_unit(components::game_piece &game_piece, glm::vec2 location)
+    static void move_unit(components::game_piece &game_piece, glm::ivec2 location)
     {
         game_piece.board_location = location;
     }
@@ -290,7 +268,7 @@ private:
         float total_w = board.rows;
         float total_h = board.columns;
         
-        auto world_x = -grid.x + (total_h / 2.f) - 0.5f;
+        auto world_x = grid.x - (total_h / 2.f) + 0.5f;
         auto world_z = grid.y - (total_w / 2.f) + 0.5f;
 
         return glm::vec3(world_x, 1.5f, world_z);

@@ -68,6 +68,24 @@ public:
 			}
 			else if (state == game::PLAYER_STATE::PLACEMENT)
 			{
+
+				r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform) 
+				{
+					if (square.y == 0)
+					{
+						if (square.x == player.selected_row)
+						{
+							transform.scale.y = 2;
+						}
+						else
+						{
+							transform.scale.y = 1;	
+						}
+						transform.is_matrix_dirty = true;
+					}
+
+				});
+
 				if (m_input.is_input_started(core::ACTION1_CONTROL))
 				{
 					ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
@@ -75,7 +93,8 @@ public:
 					components::game_piece& nerdP = nerd.get_component<components::game_piece>();
 					nerdP.board_location.x = player.selected_row;
 					nerdP.board_location.y = 0.f;
-					nerdP.team = -1.f;
+					nerdP.continuous_board_location = nerdP.board_location;
+					nerdP.team = 1.f;
 					nerdP.move_board = nerdP.move_board * nerdP.team;
 					nerdP.move_world = nerdP.move_world * nerdP.team;
 					std::vector<glm::vec2> new_attacks;
@@ -84,15 +103,11 @@ public:
 						new_attacks.push_back(nerdP.attacks[i] * (int) nerdP.team);
 					}
 					
-					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transformer)
+					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
-						if (square.y && square.x == player.selected_row)
-						{
-							nerdT.position = transformer.position;
-							nerdT.position.y = 17;
-						}
+						transform.scale.y = 1;
+						transform.is_matrix_dirty = true;
 					});
-					nerdT.is_matrix_dirty = true;
 					state = game::PLAYER_STATE::BASE;
 				}
 				else if (m_input.is_input_started(core::ACTION2_CONTROL))
@@ -102,10 +117,10 @@ public:
 				}
 				else if (m_input.forward() > .4f)
 				{
-					if (player.selected_row < 8 && row_select_delay <= 0.f)
+					if (player.selected_row > 0 && row_select_delay <= 0.f)
 					{
-						row_select_delay = .3f;
-						player.selected_row++;
+						row_select_delay = .1f;
+						player.selected_row--;
 						std::cerr << "Selected Row: " << player.selected_row << std::endl;
 					}
 					else
@@ -115,10 +130,10 @@ public:
 				}
 				else if (m_input.forward() < -.4f)
 				{
-					if (player.selected_row > 0 && row_select_delay <= 0.f)
+					if (player.selected_row < 6 && row_select_delay <= 0.f)
 					{
-						row_select_delay = .3f;
-						player.selected_row--;
+						row_select_delay = .1f;
+						player.selected_row++;
 						std::cerr << "Selected Row: " << player.selected_row << std::endl;
 					}
 					else
@@ -132,7 +147,7 @@ public:
 
 private:
 	components::card_enum selected_card;
-	float row_select_delay = .3f;
+	float row_select_delay = .1f;
 	game::PLAYER_STATE state = game::PLAYER_STATE::BASE;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
