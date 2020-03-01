@@ -26,7 +26,7 @@ public:
 				if (card.timer <= 0.f)
 				{
 					rigid_body.forces.y += 20000.f;
-					emitter.set_sound_state(0, audio::playback_requested);
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
 					card.timer = 5.f;
 				}
 				else

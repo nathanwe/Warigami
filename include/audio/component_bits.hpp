@@ -12,7 +12,8 @@ namespace audio
     enum class component_bits : component_shift
     {
         audio_emitter = 17,
-        audio_listener = 18
+        audio_listener = 18,
+        music_player = 19
     };
 }
 

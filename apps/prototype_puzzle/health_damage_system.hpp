@@ -41,8 +41,8 @@ public:
 						if (hp2.current_hp < 0)
 							hp2.current_hp = 0;								
 								
-						if (emitter2.emitter_sounds[0].state != audio::playing)
-							emitter2.set_sound_state(0, audio::playback_requested);
+						if (emitter2.emitter_sounds[0].state != audio::sound_state::playing)
+							emitter2.set_sound_state(0, audio::sound_state::playback_requested);
 					});
 
 				transform1.scale.y = hp1.current_hp / hp1.max_hp;
