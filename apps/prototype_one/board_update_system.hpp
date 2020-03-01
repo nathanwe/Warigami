@@ -198,9 +198,12 @@ public:
                     [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
                         if (game_piece.state == components::UNIT_STATE::MOVE)
                         {
-                            glm::ivec2 movement = move_check(id, game_piece.board_location,
-                                                            glm::vec2(game_piece.board_location) + game_piece.move_board,
-                                                            game_piece.team, r_state);
+                            glm::ivec2 movement = move_check(
+                                    id,
+                                    game_piece.board_location,
+                                    glm::vec2(game_piece.board_location) + game_piece.move_board,
+                                    game_piece.team,
+                                    r_state);
 
                             if (movement == game_piece.board_location)
                             {
