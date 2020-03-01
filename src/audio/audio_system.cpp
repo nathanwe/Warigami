@@ -118,7 +118,7 @@ void audio::audio_system::stop_sound(audio::emitter_sound& sound)
 
 void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
 {
-    auto mode = FMOD_3D;
+    auto mode = sound.is_3d ? FMOD_3D : 0;
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
 
     auto fmod_sound = get_sound(sound.path_hash, mode);
