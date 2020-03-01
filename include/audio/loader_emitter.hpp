@@ -27,10 +27,11 @@ namespace audio
             for (auto& s : json["sounds"])
             {
                 auto path = s["file"].get<std::string>();
-                auto loop = s.find("loop") == s.end() ? false : s["loop"].get<bool>();
-                auto volume = s.find("volume") == s.end() ? false : s["volume"].get<float>();
-                auto hash = _hashes.hash_and_store(path);
-                emitter.emitter_sounds[emitter.sound_count++] = { hash, loop, volume };
+                emitter.emitter_sounds[emitter.sound_count++] = { 
+                    _hashes.hash_and_store(path),
+                    s.value("loop", false), 
+                    s.value("volume", 1.f) 
+                };
             }
         }
 
