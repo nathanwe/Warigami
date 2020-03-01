@@ -10,6 +10,7 @@
 #include <transforms/transform.hpp>
 #include <rendering/camera.hpp>
 #include <collisions/rigid_body.hpp>
+#include <audio/music_player.hpp>
 
 
 bool succeededOrWarn(const std::string &message, FMOD_RESULT result);
@@ -50,6 +51,7 @@ void audio::audio_system::update(ecs::state &state)
     _system->update();
 }
 
+
 void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 {
     state.each_id<transforms::transform, audio_listener>(
@@ -62,7 +64,7 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 
             glm::mat3 ltw = glm::mat3(t.local_to_world);
 
-            l.listener_position = t.position;
+            l.listener_position = glm::vec3(t.local_to_world[3]);
             l.listener_velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
             l.listener_up = ltw[1];
             l.listener_forward = ltw[2];
@@ -78,9 +80,12 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 
 void audio::audio_system::update_emitters(ecs::state &state)
 {
-    state.each_id<transforms::transform, audio_emitter>([&](entity_id id, transforms::transform& transform, audio_emitter& e)
+    state.each_id<transforms::transform, audio_emitter>([&](
+            entity_id id,
+            transforms::transform& transform,
+            audio_emitter& e)
     {
-        auto t = transform.position;
+        auto position = glm::vec3(transform.local_to_world[3]);
         auto& entity = state.find_entity(id);
         auto rb_opt = entity.get_component_opt<collisions::rigid_body>();
         auto velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
@@ -88,7 +93,18 @@ void audio::audio_system::update_emitters(ecs::state &state)
         for (std::uint32_t i = 0; i < e.sound_count; ++i)
         {
             auto& emitter_sound = e.emitter_sounds[i];
-            handle_emitter_sound(emitter_sound, t, velocity);
+            handle_emitter_sound(emitter_sound, position, velocity);
+        }
+    });
+
+    state.each<transforms::transform, music_player>([&](
+            transforms::transform& transform,
+            music_player& e)
+    {
+        for (std::uint32_t i = 0; i < e.track_count; ++i)
+        {
+            auto& track = e.tracks[i];
+            handle_music_sound(track);
         }
     });
 }
@@ -105,8 +121,18 @@ void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
 {
     auto mode = FMOD_3D;
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
+
     auto fmod_sound = get_sound(sound.path_hash, mode);
     play_sound(fmod_sound, sound);    
+}
+
+void audio::audio_system::play_sound_non3d(audio::emitter_sound& sound)
+{
+    auto mode = 0;
+    if (sound.loop) mode |= FMOD_LOOP_NORMAL;
+
+    auto fmod_sound = get_sound(sound.path_hash, mode);
+    play_sound(fmod_sound, sound);
 }
 
 FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
@@ -144,7 +170,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     if (!succeededOrWarn("FMOD: Failed to set callback for sound_wrapper", result))
         return;
     
-    emitter_sound.state = playing;
+    emitter_sound.state = sound_state::playing;
     emitter_sound.fmod_channel = channel;
     emitter_sound.fmod_sound = sound;
 }
@@ -180,13 +206,35 @@ void audio::audio_system::handle_emitter_sound(
     }
 }
 
+void audio::audio_system::handle_music_sound(audio::emitter_sound &emitter_sound)
+{
+    switch (emitter_sound.state)
+    {
+        case sound_state::stop_requested:
+        {
+            stop_sound(emitter_sound);
+            emitter_sound.set_null();
+            break;
+        }
+        case sound_state::stopped:
+            break;
+        case sound_state::playback_requested:
+            play_sound_non3d(emitter_sound);
+        default:
+        {
+            if (emitter_sound.is_null()) break;
+            check_sound_stopped(emitter_sound);
+        }
+    }
+}
+
 void audio::audio_system::check_sound_stopped(emitter_sound& emitter_sound)
 {
     bool is_playing;
     auto fmod_call_success = emitter_sound.fmod_channel->isPlaying(&is_playing) == FMOD_OK;
-    if (!fmod_call_success || (!is_playing && emitter_sound.state == playing))
+    if (!fmod_call_success || (!is_playing && emitter_sound.state == sound_state::playing))
     {
-        emitter_sound.state = stopped;
+        emitter_sound.state = sound_state::stopped;
     }
 }
 

@@ -33,6 +33,7 @@ build:
     - make -j2 ecs_tests
     - make -j2 asset_tests
     - make -j2 audio_tests
+    - make -j2 prototype_one
 
   #artifacts:
    # paths:

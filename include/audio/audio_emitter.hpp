@@ -6,47 +6,16 @@
 #define WIZARDENGINE_AUDIO_EMITTER_HPP
 
 #include <cstdint>
-
-#include <ecs/component.hpp>
 #include <fmod.hpp>
+
+#include <audio/sound_state.hpp>
+#include <audio/emitter_sound.hpp>
+#include <ecs/component.hpp>
+
 
 namespace audio
 {
     const std::uint32_t MaxSounds = 16;
-
-    enum sound_state
-    {
-        uninitialized = 0,
-        unchanged = 1,
-        started,
-        playback_requested,
-        stop_requested,
-        playing,
-        stopped
-    };
-
-    struct emitter_sound
-    {
-        size_t path_hash {};
-        bool loop { false };
-        float volume{ 1.f };
-        sound_state state { uninitialized };       
-
-        // fmod
-        FMOD::Sound * fmod_sound{};
-        FMOD::Channel * fmod_channel{};
-
-        void set_null()
-        {
-            fmod_sound = nullptr;
-            fmod_channel = nullptr;
-        }
-
-        bool is_null()
-        {
-            return fmod_sound == nullptr || fmod_channel == nullptr;
-        }
-    };
 
     struct audio_emitter : ecs::component<audio_emitter>
     {
