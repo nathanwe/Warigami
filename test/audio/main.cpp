@@ -86,9 +86,10 @@ int main()
     
     music_player.add_sound(song_path_hash);    
     music_player.tracks[0].loop = true;
+    music_player.tracks[0].volume = 0.5f;
 
-    emitter.set_sound_state(0, audio::sound_state::playback_requested);
-    //music_player.set_sound_state(0, audio::sound_state::playback_requested);
+    //emitter.set_sound_state(0, audio::sound_state::playback_requested);
+    music_player.set_sound_state(0, audio::sound_state::playback_requested);
 
 
     core::frame_timer timer;
