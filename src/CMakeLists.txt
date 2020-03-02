@@ -15,14 +15,10 @@ target_link_libraries(platform PUBLIC
 
 
 ##### EVENT #####
-set (EVENT_HEADERS
-        ${PROJECT_SOURCE_DIR}/include/event/event.hpp
-        ${PROJECT_SOURCE_DIR}/include/event/event_manager.hpp)
-
 set (EVENT_SOURCE_FILES
         ${PROJECT_SOURCE_DIR}/src/event/event_manager.cpp)
 
-add_library(event ${EVENT_HEADERS} ${EVENT_SOURCE_FILES})
+add_library(event ${EVENT_SOURCE_FILES})
 target_include_directories(event PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 
@@ -50,18 +46,12 @@ target_link_libraries(core
 
 
 ##### MEMORY #####
-set(MEMORY_HEADER_LIST
-    ${PROJECT_SOURCE_DIR}/include/memory/alignment.hpp
-    ${PROJECT_SOURCE_DIR}/include/memory/pool_allocator.hpp
-    ${PROJECT_SOURCE_DIR}/include/memory/pool_memory_block.hpp
-    ${PROJECT_SOURCE_DIR}/include/memory/typed_pool_allocator.hpp)
-
 set(MEMORY_SOURCE_LIST
     ${PROJECT_SOURCE_DIR}/src/memory/alignment.cpp
     ${PROJECT_SOURCE_DIR}/src/memory/pool_allocator.cpp
     ${PROJECT_SOURCE_DIR}/src/memory/pool_memory_block.cpp)
 
-add_library(memory ${MEMORY_SOURCE_LIST} ${MEMORY_HEADER_LIST})
+add_library(memory ${MEMORY_SOURCE_LIST})
 target_include_directories(memory PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_compile_features(memory PUBLIC cxx_std_17)
 
