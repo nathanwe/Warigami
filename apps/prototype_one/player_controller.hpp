@@ -91,6 +91,7 @@ public:
 					ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
 					transforms::transform& nerdT = nerd.get_component<transforms::transform>();
 					components::game_piece& nerdP = nerd.get_component<components::game_piece>();
+					nerdT.rotation.y = AI_MATH_PI;
 					nerdP.board_location.x = player.selected_row;
 					nerdP.board_location.y = 0.f;
 					nerdP.continuous_board_location = nerdP.board_location;
