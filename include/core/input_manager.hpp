@@ -124,7 +124,7 @@ namespace core
 
         const glm::vec2 mouse_delta() { return _mouse_delta.average(); }
 
-        std::vector<core::gamepad*> get_gamepads();
+        std::vector<core::gamepad*>& get_gamepads();
 
     private:
         GLFWwindow *_window;
