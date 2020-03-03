@@ -36,10 +36,10 @@ public:
 					components::board_square& board_square,
 					transforms::transform& transform)
 					{
-						if (id % 7 == 0) {
+						/*if (id % 7 == 0) {
 							board_square.terrain_type = terrain::fire;
 							create_fire_graphic(transform.position, board_id);
-						}
+						}*/
 					});
 				});
 		}

@@ -5,13 +5,13 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -20, 10, 0 ],
+          "position": [ -36, 13, 0 ],
           "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, -90, 0 ]
+          "rotation": [ 0, -90, -40 ]
         },
         {
           "type": "camera",
-          "field_of_view": 1.2,
+          "field_of_view": 0.785,
           "clear_setting": "sky_box",
           "clear_sky_box": [
             "assets/cubemaps/beach/env/px.hdr",
@@ -24,20 +24,14 @@
         },
         {
           "type": "audio_listener"
-        },
+        }
+      ]
+    },
+    {
+      "entity_id": 2,
+      "components": [
         {
-          "type": "aabb_collider",
-          "left": 0.5,
-          "right": 0.5,
-          "top": 0.5,
-          "bottom": 0.5,
-          "back": 0.5,
-          "front": 0.5,
-          "relative": [ 0, -4, 0 ]
-        },
-        {
-          "type": "rigid_body",
-          "mass": 1.0
+          "type": "transform"
         },
         {
           "type": "player",
@@ -46,7 +40,19 @@
       ]
     },
     {
-      "entity_id": 2,
+      "entity_id": 3,
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "player",
+          "team": -1.0
+        }
+      ]
+    },
+    {
+      "entity_id": 4,
       "components": [
         {
           "type": "transform",
@@ -55,93 +61,6 @@
         {
           "type": "light_directional",
           "intensity": 3
-        }
-      ]
-    },
-    {
-      "entity_id": 3,
-      "prototype": "assets/prototypes/basic_unit.json",
-      "components": [
-        {
-          "type": "transform",
-          "rotation": [ 0, 180, 0 ]
-        },
-        {
-          "type": "game_piece",
-          "health": 2.0,
-          "team": 1.0,
-          "board_location": [ 3.0, 0.0 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 4,
-      "prototype": "assets/prototypes/basic_unit.json",
-      "components": [
-        {
-          "type": "transform",
-          "rotation": [ 0, 0, 0 ]
-        },
-        {
-          "type": "game_piece",
-          "team": -1.0,
-          "board_location": [ 3.0, 8.0 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 5,
-      "prototype": "assets/prototypes/basic_unit.json",
-      "components": [
-        {
-          "type": "transform",
-          "rotation": [ 0, 180, 0 ]
-        },
-        {
-          "type": "game_piece",
-          "health": 1.0,
-          "team": 1.0,
-          "board_location": [ 4.0, 0.0 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 6,
-      "prototype": "assets/prototypes/basic_unit.json",
-      "components": [
-        {
-          "type": "transform",
-          "rotation": [ 0, 0, 0 ]
-        },
-        {
-          "type": "game_piece",
-          "team": -1.0,
-          "board_location": [ 4.0, 5.0 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 7,
-      "prototype": "assets/prototypes/basic_unit.json",
-      "components": [
-        {
-          "type": "transform",
-          "rotation": [ 0, 180, 0 ]
-        },
-        {
-          "type": "game_piece",
-          "health": 1.0,
-          "team": 1.0,
-          "board_location": [ 1.0, 0.0 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 8,
-      "components": [
-        {
-          "type": "player",
-          "team": -1.0
         }
       ]
     },

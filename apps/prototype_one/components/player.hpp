@@ -55,7 +55,7 @@ namespace components
                 card_slot = draw();
         }
 
-		float energy = 0.f;
+		int energy = 0;
 		float health = 0.f;
 		int bonus_dice = 0;
 		float team = 0.0f;

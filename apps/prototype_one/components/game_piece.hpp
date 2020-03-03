@@ -24,16 +24,16 @@ namespace components
 
 	struct game_piece : ecs::component<game_piece>
 	{
-		float speed; // How many squares a unit moves per second
-		float damage; // How much damage a unit does per attack
-		float health; // How much damage a unit can take before dying
-		float team; // Which team the unit is a part of
+		int speed; // How many squares a unit moves per second
+		int damage; // How much damage a unit does per attack
+		int health; // How much damage a unit can take before dying
+		int team; // Which team the unit is a part of
 		glm::ivec2 board_location; // A unit's board coordinates
 		glm::vec2 continuous_board_location; // Interpolated position on board
 		glm::ivec2 board_tile; // A unit's discrete tile coordinates
 		components::UNIT_STATE state = components::UNIT_STATE::MOVE; // A unit's state of action
 		std::vector< glm::ivec2 > attacks; // A list of offsets in board-space that the unit can attack from its own space
-		glm::vec2 move_board; // A vector keeping track of which direction is forward for the unit in board-space
+		glm::ivec2 move_board; // A vector keeping track of which direction is forward for the unit in board-space
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space
 	};
 }

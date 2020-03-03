@@ -29,7 +29,7 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
-		r_state.each< transforms::transform, rendering::camera, collisions::rigid_body>([&](transforms::transform& transform, rendering::camera& camera, collisions::rigid_body& rigid_body)
+		r_state.each< transforms::transform, rendering::camera>([&](transforms::transform& transform, rendering::camera& camera)
 			{
 				auto camera_world = camera.inverse_view;
 				auto fwd = glm::vec3(camera_world[2]);
@@ -43,7 +43,7 @@ public:
 				rigid_body.forces += m_input.strafe() * right * speed;
 				*/
 
-				if (noclips)
+				/*if (noclips)
 				{
 					// Non physics movement for the plebians
 					rigid_body.grav_muliplier = 0;
@@ -58,18 +58,18 @@ public:
 					right.y = 0;					
 					rigid_body.forces += m_input.forward() * fwd * speed;
 					rigid_body.forces += m_input.strafe() * right * speed;
-				}
+				}*/
 
 				if (m_input.is_input_ended(core::controls::DEVELOPER_CONSOLE)) {
 					mouseToggle = !mouseToggle;
 				}
 
 				auto turn_speed = 5.f;
-				if (mouseToggle)
+				/*if (mouseToggle)
 				{
 					transform.rotation.y -= m_input.yaw() * m_timer.smoothed_delta_secs() * turn_speed;
 					transform.rotation.x -= m_input.pitch() * m_timer.smoothed_delta_secs() * turn_speed;
-				}
+				}*/
 
 				/*if (m_input.is_input_active(core::controls::ACTION1_CONTROL) && JUMP_POWA <= 2000.f) {
 					JUMP_POWA += 50.f;
@@ -89,7 +89,7 @@ private:
 	float m_rotation_speed = .001f;
 	float JUMP_POWA = 0.0f;
 	bool noclips = true;
-	bool mouseToggle = true;
+	bool mouseToggle = false;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;

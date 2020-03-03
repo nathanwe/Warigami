@@ -47,22 +47,16 @@ public:
     static bool check_attacks(glm::ivec2 location, std::vector<glm::ivec2> targets, float teammates, ecs::state &r_state)
     {
         bool ret = false;
-        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
-            for (auto &target : targets)
+        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
+            for (auto& target : targets)
             {
                 glm::ivec2 attack_location = location + target;
-
-                //std::cerr << glm::to_string(attack_location) << " from " << glm::to_string(location) << " on team " << teammates << std::endl;
-
-                if (game_piece.board_location == attack_location && game_piece.team != teammates &&
-                    game_piece.state != components::UNIT_STATE::DYING &&
-                    game_piece.state != components::UNIT_STATE::DEAD)
+                if (game_piece.board_location == attack_location && game_piece.team != teammates)
                 {
                     ret = true;
                 }
             }
         });
-
         return ret;
     }
 
@@ -70,19 +64,18 @@ public:
     static void attack_targets(
             glm::ivec2 location,
             std::vector<glm::ivec2> targets,
-            float damage,
-            float teammates,
+            int damage,
+            int teammates,
             ecs::state &r_state)
     {
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
             for (auto &target : targets)
             {
-                if (game_piece.board_location == location + target &&
-                    game_piece.state != components::UNIT_STATE::DYING && game_piece.team != teammates)
+                if (game_piece.board_location == location + target && game_piece.team != teammates)
                 {
                     game_piece.health -= damage;
 
-                    if (game_piece.health <= 0.f)
+                    if (game_piece.health <= 0)
                     {
                         game_piece.state = components::UNIT_STATE::DYING;
                     }
@@ -131,6 +124,45 @@ public:
         });
     }
 
+    // Helper function for moving in board space
+    static void walk_unit(components::game_piece& game_piece, float delta)
+    {
+        game_piece.continuous_board_location += delta * game_piece.speed * glm::vec2(game_piece.move_board);
+    }
+
+    static void handle_unit_transform(
+        transforms::transform& board_t,
+        transforms::transform& unit_t,
+        components::game_piece& game_piece,
+        components::board& board,
+        entity_id board_id)
+    {
+        unit_t.has_parent = true;
+        unit_t.parent = board_id;
+        unit_t.position = grid_to_board(game_piece.continuous_board_location, board, board_t);
+        unit_t.scale = glm::vec3(0.2f);
+        unit_t.is_matrix_dirty = true;
+
+        game_piece.board_location = glm::ivec2(
+            std::round(game_piece.continuous_board_location.x),
+            std::round(game_piece.continuous_board_location.y));
+    }
+
+    // Helper function for mapping transforms to board space
+    static glm::vec3 grid_to_board(
+        glm::vec2& grid,
+        components::board& board,
+        transforms::transform& board_t)
+    {
+        float total_w = board.rows;
+        float total_h = board.columns;
+
+        auto world_x = grid.x - (total_h / 2.f) + 0.5f;
+        auto world_z = grid.y - (total_w / 2.f) + 0.5f;
+
+        return glm::vec3(world_x, 1.5f, world_z);
+    }
+
     void update(ecs::state &r_state) override
     {
         float delta = m_timer.smoothed_delta_secs();
@@ -142,24 +174,16 @@ public:
             timer = ROUND_TIME;
 
             // A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
-
-            
             // Update states to either attack or move depending on current board state
             r_state.each_id<components::game_piece, transforms::transform>(
-                    [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
-                        if (game_piece.state == components::UNIT_STATE::DYING ||
-                            game_piece.state == components::UNIT_STATE::DEAD)
+                    [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) 
+                    {
+                        if (check_attacks(game_piece.board_location, game_piece.attacks, game_piece.team, r_state))
                         {
-                            game_piece.state = components::UNIT_STATE::DEAD;
+                            game_piece.state = components::UNIT_STATE::ATTACK;
                         } else
                         {
-                            if (check_attacks(game_piece.board_location, game_piece.attacks, game_piece.team, r_state))
-                            {
-                                game_piece.state = components::UNIT_STATE::ATTACK;
-                            } else
-                            {
-                                game_piece.state = components::UNIT_STATE::MOVE;
-                            }
+                            game_piece.state = components::UNIT_STATE::MOVE;
                         }
                     });
 
@@ -177,7 +201,7 @@ public:
                     });
 
             // If a unit is standing in fire, it takes damage;
-            r_state.each_id<components::game_piece, transforms::transform>(
+            /*r_state.each_id<components::game_piece, transforms::transform>(
                 [&](entity_id id, components::game_piece& game_piece, transforms::transform& transform) {
 
                     auto square_e = get_square_id_with_loaction(r_state, game_piece.board_location);
@@ -194,6 +218,7 @@ public:
                         }
                     }                    
                 });
+                */
 
 
             // If a unit is still alive after attacks and has a move state, check for legality and then move
@@ -204,7 +229,7 @@ public:
                             glm::ivec2 movement = move_check(
                                     id,
                                     game_piece.board_location,
-                                    glm::vec2(game_piece.board_location) + game_piece.move_board,
+                                    game_piece.board_location + game_piece.move_board,
                                     game_piece.team,
                                     r_state);
 
@@ -254,46 +279,6 @@ private:
     core::frame_timer &m_timer;
     event::EventManager &event_manager;
     asset::scene_hydrater &hydrater;
-
-
-
-    // Helper function for moving in board space
-    static void walk_unit(components::game_piece& game_piece, float delta)
-    {
-        game_piece.continuous_board_location += delta * game_piece.speed * game_piece.move_board;
-    }
-
-    static void handle_unit_transform(
-        transforms::transform& board_t,
-        transforms::transform& unit_t,
-        components::game_piece& game_piece,
-        components::board& board,
-        entity_id board_id)
-    {        
-        unit_t.has_parent = true;
-        unit_t.parent = board_id;        
-        unit_t.position = grid_to_board(game_piece.continuous_board_location, board, board_t);
-        unit_t.scale = glm::vec3(0.2f);
-        unit_t.is_matrix_dirty = true;
-
-        game_piece.board_location = glm::ivec2(
-            std::round(game_piece.continuous_board_location.x),
-            std::round(game_piece.continuous_board_location.y));
-    }
-
-    static glm::vec3 grid_to_board(
-        glm::vec2& grid, 
-        components::board& board, 
-        transforms::transform& board_t)
-    {
-        float total_w = board.rows;
-        float total_h = board.columns;
-        
-        auto world_x = grid.x - (total_h / 2.f) + 0.5f;
-        auto world_z = grid.y - (total_w / 2.f) + 0.5f;
-
-        return glm::vec3(world_x, 1.5f, world_z);
-    }
 };
 
 #endif

@@ -9,10 +9,10 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 	auto& json = entity_data->component_data(components::game_piece::component_bitshift);
 	auto& gp = entity->get_component<game_piece>();
 
-	gp.speed = json.value("speed", 1.f);
-	gp.damage = json.value("damage", 1.f);
-	gp.health = json.value("health", 1.f);
-	gp.team = json.value("team", 1.f);
+	gp.speed = json.value("speed", 1);
+	gp.damage = json.value("damage", 1);
+	gp.health = json.value("health", 1);
+	gp.team = json.value("team", 1);
 
 	if (json.find("board_location") != json.end())
 	{
@@ -38,7 +38,7 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 			json["move_world"][0].get<float>(),
 			json["move_world"][1].get<float>(),
 			json["move_world"][2].get<float>());
-		gp.move_world = gp.move_world * gp.team;
+		gp.move_world = gp.move_world * (float)gp.team;
 	}
 
 	if (json.find("attacks") != json.end())
