@@ -10,6 +10,7 @@
 #include <event/event_manager.hpp>
 #include "components/game_piece.hpp"
 #include "components/board.hpp"
+#include "components/board_square.hpp"
 
 class unit_death_event : public event::Event
 {
@@ -123,6 +124,29 @@ public:
     {
         game_piece.board_location = location;
     }
+    //Helper function for getting a board_square
+    entity_id get_square_id_with_loaction(ecs::state r_state, glm::ivec2 loc) {
+        /*
+        components::board_square& return_square;
+        r_state.each_id<components::board_square>(
+            [&](entity_id id, components::board_square& board_square) {
+                if (board_square.x == loc.x && board_square.y == loc.y) {
+                    return_square = board_square;
+                }
+            });
+        return return_square;
+        */
+        
+        entity_id return_id = 0;
+        r_state.each_id<components::board_square>(
+            [&](entity_id id, components::board_square& board_square) {
+                if (board_square.x == loc.x && board_square.y == loc.y) {
+                    return_id = id;
+                }
+            });
+
+        return return_id;
+    }
 
     void update(ecs::state &r_state) override
     {
@@ -168,6 +192,25 @@ public:
                             std::cerr << "Unit: " << id << " attacking" << std::endl;
                         }
                     });
+
+            // If a unit is standing in fire, it takes damage;
+            r_state.each_id<components::game_piece, transforms::transform>(
+                [&](entity_id id, components::game_piece& game_piece, transforms::transform& transform) {
+                    entity_id get_id = get_square_id_with_loaction(r_state, game_piece.board_location);
+                    if (get_id != 0) {
+                        components::board_square& square = r_state.find_entity(get_id).get_component<components::board_square>();
+                        if (square.terrain_type == terrain::fire) {
+                            game_piece.health -= 1; //hardcoded damage, fix
+                            std::cerr << "Unit: " << id << " on fire" << std::endl;
+                            if (game_piece.health <= 0.f)
+                            {
+                                game_piece.state = components::UNIT_STATE::DYING;
+                            }
+                        }
+                    }
+                    
+                    
+                });
 
 
             // If a unit is still alive after attacks and has a move state, check for legality and then move
