@@ -54,7 +54,8 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::board_square>("board_square");
 	ecs::register_component<components::card>("card");
 	ecs::register_component<components::dice>("dice");
-	ecs::register_component<components::player>("player");
+	ecs::register_component<components::player>("player1");
+	ecs::register_component<components::player>("player2");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");

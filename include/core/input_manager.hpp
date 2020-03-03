@@ -125,7 +125,7 @@ namespace core
 
         const glm::vec2 mouse_delta() { return _mouse_delta.average(); }
 
-        gamepad* get_gamepad();
+        std::vector<core::gamepad*> get_gamepads();
 
     private:
         GLFWwindow *_window;
@@ -145,7 +145,8 @@ namespace core
 
         glm::vec2 _last_click_position;
 
-        gamepad* _gamepad;
+        std::vector<gamepad*> _gamepads;
+        int _lastGamepadIndex;
 
         static void (*build_mouse_callback(input_manager& r))(GLFWwindow* window, int, int, int)
         {
