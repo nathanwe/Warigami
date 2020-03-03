@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-//core::XINPUT_button_ids Xbuttons;
-
 core::XINPUT_button_ids::XINPUT_button_ids() {
     A = GLFW_GAMEPAD_BUTTON_A; 
     B = GLFW_GAMEPAD_BUTTON_B; 
@@ -210,7 +208,8 @@ void core::input_manager::update()
     _last_x = x;
     _last_y = y;
 
-    _gamepad->update();
+    _gamepads[0]->update();
+    _gamepads[1]->update();
 }
 
 core::input_manager::input_manager(GLFWwindow *window) :
@@ -369,9 +368,11 @@ core::input_manager::input_manager(GLFWwindow *window) :
     _last_x = x;
     _last_y = y;
         
-    _gamepad = new gamepad(0);
+    // We know there will always be at most two controllers in this game
+    _gamepads.push_back(new gamepad(0));
+    _gamepads.push_back(new gamepad(1));
 }
 
-core::gamepad* core::input_manager::get_gamepad() {
-    return _gamepad;
+std::vector<core::gamepad*>& core::input_manager::get_gamepads() {
+    return _gamepads;
 }

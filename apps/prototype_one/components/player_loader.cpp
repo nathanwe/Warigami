@@ -8,6 +8,7 @@ void components::player_loader::load(asset::asset_loader_node& asset_loader_node
 	auto& p = entity->get_component<player>();
 	p.energy = json.value("energy", 0.f);
 	p.health = json.value("health", 0.0f);
+	p.team = json.value("team", 1.0f);
 }
 
 component_bitset components::player_loader::components_to_load()

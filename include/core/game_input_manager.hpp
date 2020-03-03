@@ -10,16 +10,27 @@ namespace core {
 		DOWN_CONTROL,
 		LEFT_CONTROL,
 		RIGHT_CONTROL,
+		CARD1_CONTROL,
+		CARD2_CONTROL,
+		CARD3_CONTROL,
+		CARD4_CONTROL,
+		DIE1_CONTROL,
+		DIE2_CONTROL,
+
+		UP_CONTROL_PLAYER2,
+		DOWN_CONTROL_PLAYER2,
+		LEFT_CONTROL_PLAYER2,
+		RIGHT_CONTROL_PLAYER2,
+		CARD1_CONTROL_PLAYER2,
+		CARD2_CONTROL_PLAYER2,
+		CARD3_CONTROL_PLAYER2,
+		CARD4_CONTROL_PLAYER2,
+		DIE1_CONTROL_PLAYER2,
+		DIE2_CONTROL_PLAYER2,
+
 		MENU_CONTROL,
 		CONFIRM_CONTROL,
 		BACK_CONTROL,
-		ACTION1_CONTROL,
-		ACTION2_CONTROL,
-		ACTION3_CONTROL,
-		ACTION4_CONTROL,
-		DESCEND_CONTROL,
-		ASCEND_CONTROL,
-		INTERACT_CONTROL,		
 		DEVELOPER_CONSOLE,
 		CONTROL_COUNT
 	};
@@ -42,14 +53,25 @@ namespace core {
 		input_axis strafe() { return _strafe; }
 		view_axis pitch() { return _pitch; }
 		view_axis yaw() { return _yaw; }
+
+		input_axis forward_player2() { return _forward_player2; }
+		input_axis strafe_player2() { return _strafe_player2; }
+		view_axis pitch_player2() { return _pitch_player2; }
+		view_axis yaw_player2() { return _yaw_player2; }
 	private:
 		input_manager _input;
 		bool _prev_game_state[CONTROL_COUNT];
 		bool _current_game_state[CONTROL_COUNT];
+
 		input_axis _forward{ 0 };
 		input_axis _strafe{ 0 };
 		view_axis _pitch{ 0 };
 		view_axis _yaw{ 0 };
+
+		input_axis _forward_player2{ 0 };
+		input_axis _strafe_player2{ 0 };
+		view_axis _pitch_player2{ 0 };
+		view_axis _yaw_player2{ 0 };
 	};
 }
 

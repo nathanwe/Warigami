@@ -35,9 +35,9 @@ public:
 
 	}
 
-	components::card_enum card_select(components::player& player, int num)
+	components::card_enum card_select(components::player& player, game::PLAYER_STATE* playerState, int num)
 	{
-		state = game::PLAYER_STATE::PLACEMENT;
+		*playerState = game::PLAYER_STATE::PLACEMENT;
 		return player.hand[num];
 	}
 
@@ -75,68 +75,124 @@ public:
 	{
 		r_state.each<components::player>([&](components::player& player)
 		{
-			if (state == game::PLAYER_STATE::BASE)
-			{
-				if (m_input.is_input_started(core::ACTION1_CONTROL)) 
-					selected_card = card_select(player, 0);
-				else if (m_input.is_input_started(core::ACTION2_CONTROL))
-					selected_card = card_select(player, 1);
-				else if (m_input.is_input_started(core::ACTION3_CONTROL))
-					selected_card = card_select(player, 2);
-				else if (m_input.is_input_started(core::ACTION4_CONTROL))
-					selected_card = card_select(player, 3);
-			}
-			else if (state == game::PLAYER_STATE::PLACEMENT)
-			{
-				r_state.each<components::board_square, transforms::transform>([&](	components::board_square& square, 
-																					transforms::transform& transform) 
+			if (player.team == 1.0f) {
+				if (state_p1 == game::PLAYER_STATE::BASE)
 				{
-					if (1/*player.team >= 0*/)
-						square.y == 0 && square.x == player.selected_row ? row_select(transform, 2) : row_select(transform, 1);
-					else
-						square.y == 8 && square.x == player.selected_row ? row_select(transform, 2) : row_select(transform, 1);
-				});
-
-				if (m_input.is_input_started(core::ACTION1_CONTROL))
+					if (m_input.is_input_started(core::CARD1_CONTROL)) 
+						selected_card_p1 = card_select(player, &state_p1, 0);
+					else if (m_input.is_input_started(core::CARD2_CONTROL))
+						selected_card_p1 = card_select(player, &state_p1, 1);
+					else if (m_input.is_input_started(core::CARD3_CONTROL))
+						selected_card_p1 = card_select(player, &state_p1, 2);
+					else if (m_input.is_input_started(core::CARD4_CONTROL))
+						selected_card_p1 = card_select(player, &state_p1, 3);
+				}
+				else if (state_p1 == game::PLAYER_STATE::PLACEMENT)
 				{
-					spawn_unit(player.selected_row, 1/*player.team*/);
-					
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
-						transform.scale.y = 1;
-						transform.is_matrix_dirty = true;
+						square.y == 0 && square.x == player.selected_row ? row_select(transform, 2) : row_select(transform, 1);
 					});
 
-					state = game::PLAYER_STATE::BASE;
-				}
-				else if (m_input.is_input_started(core::ACTION2_CONTROL))
-				{
-					state = game::PLAYER_STATE::BASE;
-				}
-				else if (m_input.forward() > .4f)
-				{
-					if (player.selected_row > 0 && row_select_delay <= 0.f)
+					if (m_input.is_input_started(core::CARD1_CONTROL))
 					{
-						row_select_delay = .05f;
-						player.selected_row--;
-						std::cerr << "Selected Row: " << player.selected_row << std::endl;
+						spawn_unit(player.selected_row, player.team);
+						
+						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+						{
+							transform.scale.y = 1;
+							transform.is_matrix_dirty = true;
+						});
+
+						state_p1 = game::PLAYER_STATE::BASE;
 					}
-					else
+					else if (m_input.is_input_started(core::CARD2_CONTROL))
 					{
-						row_select_delay -= m_timer.smoothed_delta_secs();
+						state_p1 = game::PLAYER_STATE::BASE;
+					}
+					else if (m_input.forward() > .4f)
+					{
+						if (player.selected_row > 0 && row_select_delay <= 0.f)
+						{
+							row_select_delay = 0.05f;
+							player.selected_row--;
+						}
+						else
+						{
+							row_select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+					else if (m_input.forward() < -.4f)
+					{
+						if (player.selected_row < 6 && row_select_delay <= 0.f)
+						{
+							row_select_delay = 0.05f;
+							player.selected_row++;
+						}
+						else
+						{
+							row_select_delay -= m_timer.smoothed_delta_secs();
+						}
 					}
 				}
-				else if (m_input.forward() < -.4f)
+			} else if (player.team == -1.0f) {
+				if (state_p2 == game::PLAYER_STATE::BASE)
 				{
-					if (player.selected_row < 6 && row_select_delay <= 0.f)
+					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2)) 
+						selected_card_p2 = card_select(player, &state_p2, 0);
+					else if (m_input.is_input_started(core::CARD2_CONTROL_PLAYER2))
+						selected_card_p2 = card_select(player, &state_p2, 1);
+					else if (m_input.is_input_started(core::CARD3_CONTROL_PLAYER2))
+						selected_card_p2 = card_select(player, &state_p2, 2);
+					else if (m_input.is_input_started(core::CARD4_CONTROL_PLAYER2))
+						selected_card_p2 = card_select(player, &state_p2, 3);
+				}
+				else if (state_p2 == game::PLAYER_STATE::PLACEMENT)
+				{
+					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
-						row_select_delay = .05f;
-						player.selected_row++;
-						std::cerr << "Selected Row: " << player.selected_row << std::endl;
+						square.y == 8 && square.x == player.selected_row ? row_select(transform, 2) : row_select(transform, 1);
+					});
+
+					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
+					{
+						spawn_unit(player.selected_row, player.team);
+						
+						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+						{
+							transform.scale.y = 1;
+							transform.is_matrix_dirty = true;
+						});
+
+						state_p2 = game::PLAYER_STATE::BASE;
 					}
-					else
+					else if (m_input.is_input_started(core::CARD2_CONTROL_PLAYER2))
 					{
-						row_select_delay -= m_timer.smoothed_delta_secs();
+						state_p2 = game::PLAYER_STATE::BASE;
+					}
+					else if (m_input.forward_player2() > .4f)
+					{
+						if (player.selected_row > 0 && row_select_delay <= 0.f)
+						{
+							row_select_delay = 0.05f;
+							player.selected_row--;
+						}
+						else
+						{
+							row_select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+					else if (m_input.forward_player2() < -.4f)
+					{
+						if (player.selected_row < 6 && row_select_delay <= 0.f)
+						{
+							row_select_delay = 0.05f;
+							player.selected_row++;
+						}
+						else
+						{
+							row_select_delay -= m_timer.smoothed_delta_secs();
+						}
 					}
 				}
 			}
@@ -144,9 +200,11 @@ public:
 	}
 
 private:
-	components::card_enum selected_card;
+	components::card_enum selected_card_p1;
+	components::card_enum selected_card_p2;
 	float row_select_delay = .1f;
-	game::PLAYER_STATE state = game::PLAYER_STATE::BASE;
+	game::PLAYER_STATE state_p1 = game::PLAYER_STATE::BASE;
+	game::PLAYER_STATE state_p2 = game::PLAYER_STATE::BASE;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
