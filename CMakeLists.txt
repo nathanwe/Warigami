@@ -27,9 +27,7 @@ add_subdirectory(thirdparty/stb)
 # Main build targets
 add_subdirectory(src)
 add_subdirectory(apps/game)
-add_subdirectory(apps/demo)
 add_subdirectory(apps/prototype_one)
-add_subdirectory(apps/prototype_puzzle)
 add_subdirectory(apps/boardgen)
 
 
