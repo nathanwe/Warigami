@@ -99,17 +99,16 @@ public:
 
         glm::ivec2 ret = { start.x,  y_start};
 
-        r_state.each_id<components::game_piece>(
-        [&](entity_id id_two, components::game_piece &game_piece) 
+        r_state.each_id<components::game_piece>([&](entity_id id_two, auto& game_piece) 
         {
-                if (id_two == id) return;
-                if (teammates == 1 && start.y >= game_piece.board_location.y) return;
-                if (teammates == -1 && start.y <= game_piece.board_location.y) return;
-                if (game_piece.board_location.x != start.x) return;
+            if (id_two == id) return;
+            if (teammates == 1 && start.y >= game_piece.board_location.y) return;
+            if (teammates == -1 && start.y <= game_piece.board_location.y) return;
+            if (game_piece.board_location.x != start.x) return;
 
-                ret.y = teammates == 1
-                    ? std::min(ret.y, game_piece.board_location.y) - 1
-                    : std::max(ret.y, game_piece.board_location.y) + 1;
+            ret.y = teammates == 1
+                ? std::min(ret.y, game_piece.board_location.y) - 1
+                : std::max(ret.y, game_piece.board_location.y) + 1;
         });
 
         ret.y = teammates == 1
