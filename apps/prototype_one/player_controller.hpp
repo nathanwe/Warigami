@@ -177,7 +177,7 @@ public:
 
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
-						if (square.y == 0)
+						if (square.y == 8)
 						{
 							if (square.x == player.selected_row)
 							{
@@ -197,7 +197,7 @@ public:
 						transforms::transform& nerdT = nerd.get_component<transforms::transform>();
 						components::game_piece& nerdP = nerd.get_component<components::game_piece>();
 						nerdP.board_location.x = player.selected_row;
-						nerdP.board_location.y = 0.f;
+						nerdP.board_location.y = 8.f;
 						nerdP.continuous_board_location = nerdP.board_location;
 						nerdP.team = player.team;
 						nerdP.move_board = nerdP.move_board * nerdP.team;
