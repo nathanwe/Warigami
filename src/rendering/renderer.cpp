@@ -507,25 +507,25 @@ namespace rendering
         glBindVertexArray(0);
     }
 
-    void
-    gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message,
-                      const void *user_parameter)
+    void gl_debug_callback(
+        GLenum source, 
+        GLenum type, 
+        GLuint id, 
+        GLenum severity, 
+        GLsizei length, 
+        const GLchar *message,
+        const void *user_parameter)
     {
-        static debounce<GLenum, GLenum, const GLchar *> print_debounce(
-                std::chrono::duration<float>(1.f),
-                [](GLenum type, GLenum severity, const GLchar *message) {
-                    fprintf(stdout, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
-                            (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-                            type, severity, message);
-                });
+        static auto print_msg = [](GLenum type, GLenum severity, const GLchar* message) {
+            fprintf(stdout, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
+                (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+                type, severity, message); 
+        };
 
-        print_debounce(type, severity, message);
+        static debounce<GLenum, GLenum, const GLchar *> print_debounce(float_second(1.f), print_msg);
 
-        if (severity > GL_DEBUG_SEVERITY_MEDIUM)
-        {
-            fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n\n",
-                    (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-                    type, severity, message);
-        }
+        print_debounce(type, severity, message);        
+        if (severity > GL_DEBUG_SEVERITY_MEDIUM) 
+            print_msg(type, severity, message);
     }
 }

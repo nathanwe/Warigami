@@ -47,8 +47,8 @@ public:
 				{
 					// Non physics movement for the plebians
 					rigid_body.grav_muliplier = 0;
-					transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
-					transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
+					//transform.position += m_input.forward() * fwd * m_timer.smoothed_delta_secs() * speed;
+					//transform.position += m_input.strafe() * right * m_timer.smoothed_delta_secs() * speed;
 				}
 				else
 				{

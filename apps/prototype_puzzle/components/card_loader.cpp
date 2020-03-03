@@ -2,10 +2,10 @@
 
 void components::card_loader::load(asset::asset_loader_node& asset_loader_node)
 {
-	auto& entity = asset_loader_node.entity_resource.entity;
-	auto& entity_data = asset_loader_node.entity_resource.entity_data;
-	auto& json = entity_data.component_data(components::card::component_bitshift);
-	auto& c = entity.get_component<card>();
+	auto entity = asset_loader_node.entity_resource.entity;
+	auto entity_data = asset_loader_node.entity_resource.entity_data;
+	auto& json = entity_data->component_data(components::card::component_bitshift);
+	auto& c = entity->get_component<card>();
 
 	c.speed = json.value("speed", 0.f);
 	c.power = json.value("power", 0.f);

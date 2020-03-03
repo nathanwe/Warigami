@@ -35,93 +35,87 @@ public:
 
 	}
 
+	components::card_enum card_select(components::player& player, game::PLAYER_STATE* playerState, int num)
+	{
+		*playerState = game::PLAYER_STATE::PLACEMENT;
+		return player.hand[num];
+	}
+
+	void row_select(transforms::transform& transform, int num)
+	{
+		transform.scale.y = num;
+		transform.is_matrix_dirty = true;
+	}
+
+	void spawn_unit(int lane, int team)
+	{
+		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
+		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
+		components::game_piece& nerdP = nerd.get_component<components::game_piece>();
+		
+		nerdP.team = team;
+		nerdP.board_location.x = lane;
+		nerdP.team >= 0 ? nerdP.board_location.y = 0 : nerdP.board_location.y = 8;
+		
+		if (nerdP.team >= 0)
+			nerdT.rotation.y = AI_MATH_PI;
+
+		nerdP.continuous_board_location = nerdP.board_location;
+		nerdP.move_board = nerdP.move_board * nerdP.team;
+		nerdP.move_world = nerdP.move_world * nerdP.team;
+
+		std::vector<glm::ivec2> new_attacks;
+		for (int i = 0; i < nerdP.attacks.size(); i++)
+		{
+			new_attacks.push_back(nerdP.attacks[i] * (int)nerdP.team);
+		}
+	}
+
 	virtual void update(ecs::state& r_state) override
 	{
 		r_state.each<components::player>([&](components::player& player)
 		{
-			// Player 1
 			if (player.team == 1.0f) {
 				if (state_p1 == game::PLAYER_STATE::BASE)
 				{
-					if (m_input.is_input_started(core::CARD1_CONTROL))
-					{
-						selected_card_p1 = player.hand[0];
-						state_p1 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 0 SELECTED" << std::endl;
-					}
+					if (m_input.is_input_started(core::CARD1_CONTROL)) 
+						selected_card_p1 = card_select(player, &state_p1, 0);
 					else if (m_input.is_input_started(core::CARD2_CONTROL))
-					{
-						selected_card_p1 = player.hand[1];
-						state_p1 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 1 SELECTED" << std::endl;
-					}
+						selected_card_p1 = card_select(player, &state_p1, 1);
 					else if (m_input.is_input_started(core::CARD3_CONTROL))
-					{
-						selected_card_p1 = player.hand[2];
-						state_p1 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 2 SELECTED" << std::endl;
-					}
+						selected_card_p1 = card_select(player, &state_p1, 2);
 					else if (m_input.is_input_started(core::CARD4_CONTROL))
-					{
-						selected_card_p1 = player.hand[3];
-						state_p1 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 3 SELECTED" << std::endl;
-					}
+						selected_card_p1 = card_select(player, &state_p1, 3);
 				}
 				else if (state_p1 == game::PLAYER_STATE::PLACEMENT)
 				{
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
-						if (square.y == 0)
-						{
-							if (square.x == player.selected_row)
-							{
-								transform.scale.y = 2;
-							}
-							else
-							{
-								transform.scale.y = 1;
-							}
-							transform.is_matrix_dirty = true;
-						}
+						square.y == 0 && square.x == player.selected_row ? row_select(transform, 2) : row_select(transform, 1);
 					});
 
 					if (m_input.is_input_started(core::CARD1_CONTROL))
 					{
-						ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
-						transforms::transform& nerdT = nerd.get_component<transforms::transform>();
-						components::game_piece& nerdP = nerd.get_component<components::game_piece>();
-						nerdP.board_location.x = player.selected_row;
-						nerdP.board_location.y = 0.f;
-						nerdP.continuous_board_location = nerdP.board_location;
-						nerdP.team = player.team;
-						nerdP.move_board = nerdP.move_board * nerdP.team;
-						nerdP.move_world = nerdP.move_world * nerdP.team;
-						std::vector<glm::vec2> new_attacks;
-						for (int i = 0; i < nerdP.attacks.size(); i++)
-						{
-							new_attacks.push_back(nerdP.attacks[i] * (int)nerdP.team);
-						}
-
+						spawn_unit(player.selected_row, player.team);
+						
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 						{
 							transform.scale.y = 1;
 							transform.is_matrix_dirty = true;
 						});
+
 						state_p1 = game::PLAYER_STATE::BASE;
 					}
 					else if (m_input.is_input_started(core::CARD2_CONTROL))
 					{
-						std::cerr << "PLACEMENT CANCELLED" << std::endl;
 						state_p1 = game::PLAYER_STATE::BASE;
 					}
 					else if (m_input.forward() > .4f)
 					{
 						if (player.selected_row > 0 && row_select_delay <= 0.f)
 						{
-							row_select_delay = .1f;
+							row_select_delay = 0.05f;
 							player.selected_row--;
-							std::cerr << "Selected Row: " << player.selected_row << std::endl;
 						}
 						else
 						{
@@ -132,9 +126,8 @@ public:
 					{
 						if (player.selected_row < 6 && row_select_delay <= 0.f)
 						{
-							row_select_delay = .1f;
+							row_select_delay = 0.05f;
 							player.selected_row++;
-							std::cerr << "Selected Row: " << player.selected_row << std::endl;
 						}
 						else
 						{
@@ -142,91 +135,47 @@ public:
 						}
 					}
 				}
-			}
-			else if (player.team == -1.0f) {
-				// Player 2
+			} else if (player.team == -1.0f) {
 				if (state_p2 == game::PLAYER_STATE::BASE)
 				{
-					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = player.hand[0];
-						state_p2 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 0 SELECTED PLAYER2" << std::endl;
-					}
+					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2)) 
+						selected_card_p2 = card_select(player, &state_p2, 0);
 					else if (m_input.is_input_started(core::CARD2_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = player.hand[1];
-						state_p2 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 1 SELECTED PLAYER2" << std::endl;
-					}
+						selected_card_p2 = card_select(player, &state_p2, 1);
 					else if (m_input.is_input_started(core::CARD3_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = player.hand[2];
-						state_p2 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 2 SELECTED PLAYER2" << std::endl;
-					}
+						selected_card_p2 = card_select(player, &state_p2, 2);
 					else if (m_input.is_input_started(core::CARD4_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = player.hand[3];
-						state_p2 = game::PLAYER_STATE::PLACEMENT;
-						std::cerr << "CARD 3 SELECTED PLAYER2" << std::endl;
-					}
+						selected_card_p2 = card_select(player, &state_p2, 3);
 				}
 				else if (state_p2 == game::PLAYER_STATE::PLACEMENT)
 				{
-
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
-						if (square.y == 8)
-						{
-							if (square.x == player.selected_row)
-							{
-								transform.scale.y = 2;
-							}
-							else
-							{
-								transform.scale.y = 1;
-							}
-							transform.is_matrix_dirty = true;
-						}
+						square.y == 8 && square.x == player.selected_row ? row_select(transform, 2) : row_select(transform, 1);
 					});
 
 					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
 					{
-						ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
-						transforms::transform& nerdT = nerd.get_component<transforms::transform>();
-						components::game_piece& nerdP = nerd.get_component<components::game_piece>();
-						nerdP.board_location.x = player.selected_row;
-						nerdP.board_location.y = 8.f;
-						nerdP.continuous_board_location = nerdP.board_location;
-						nerdP.team = player.team;
-						nerdP.move_board = nerdP.move_board * nerdP.team;
-						nerdP.move_world = nerdP.move_world * nerdP.team;
-						std::vector<glm::vec2> new_attacks;
-						for (int i = 0; i < nerdP.attacks.size(); i++)
-						{
-							new_attacks.push_back(nerdP.attacks[i] * (int)nerdP.team);
-						}
-
+						spawn_unit(player.selected_row, player.team);
+						
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 						{
 							transform.scale.y = 1;
 							transform.is_matrix_dirty = true;
 						});
+
 						state_p2 = game::PLAYER_STATE::BASE;
 					}
 					else if (m_input.is_input_started(core::CARD2_CONTROL_PLAYER2))
 					{
-						std::cerr << "PLACEMENT CANCELLED" << std::endl;
 						state_p2 = game::PLAYER_STATE::BASE;
 					}
 					else if (m_input.forward_player2() > .4f)
 					{
 						if (player.selected_row > 0 && row_select_delay <= 0.f)
 						{
-							row_select_delay = .1f;
+							row_select_delay = 0.05f;
 							player.selected_row--;
-							std::cerr << "Selected Row: " << player.selected_row << std::endl;
 						}
 						else
 						{
@@ -237,9 +186,8 @@ public:
 					{
 						if (player.selected_row < 6 && row_select_delay <= 0.f)
 						{
-							row_select_delay = .1f;
+							row_select_delay = 0.05f;
 							player.selected_row++;
-							std::cerr << "Selected Row: " << player.selected_row << std::endl;
 						}
 						else
 						{
