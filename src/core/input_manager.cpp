@@ -373,6 +373,6 @@ core::input_manager::input_manager(GLFWwindow *window) :
     _gamepads.push_back(new gamepad(1));
 }
 
-std::vector<core::gamepad*> core::input_manager::get_gamepads() {
+std::vector<core::gamepad*>& core::input_manager::get_gamepads() {
     return _gamepads;
 }
