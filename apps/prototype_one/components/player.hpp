@@ -80,6 +80,15 @@ namespace components
 				return card_enum::NO_CARD;
 			}
 		}
+		card_enum safe_draw() {
+			card_enum ret = draw();
+			if (ret == card_enum::NO_CARD) {
+				regrow_deck();
+				shuffle();
+				ret = draw();
+			}
+			return ret;
+		}
 
 		void shuffle() {
 			auto rng = std::default_random_engine{};
