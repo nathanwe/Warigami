@@ -52,14 +52,16 @@ namespace ecs
 		}
 
 		template <typename... TComponents, typename TFunc>
-		ecs::entity& first(TFunc predicate)
+		ecs::entity* first(TFunc predicate)
 		{
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
 
 			for (auto& a : cache.accessors)
 				if (predicate((*(a.accessor.template get_component<TComponents>()))...))
-					return find_entity(a.entity);
+					return &(find_entity(a.entity));
+
+			return nullptr;
 		}
 
 		template <typename... TComponents, typename TFunc>
