@@ -286,9 +286,6 @@ private:
         components::board& board, 
         transforms::transform& board_t)
     {
-        auto width_scaled = board_t.scale.y * board.cell_width;
-        auto height_scaled = board_t.scale.z * board.cell_height;
-
         float total_w = board.rows;
         float total_h = board.columns;
         
