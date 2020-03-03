@@ -192,9 +192,7 @@ public:
                                 game_piece.state = components::UNIT_STATE::DYING;
                             }
                         }
-                    }
-                    
-                    
+                    }                    
                 });
 
 
@@ -274,7 +272,7 @@ private:
     {        
         unit_t.has_parent = true;
         unit_t.parent = board_id;        
-        unit_t.position = grid_to_board(game_piece.continuous_board_location, board, board_t, unit_t.position.y);
+        unit_t.position = grid_to_board(game_piece.continuous_board_location, board, board_t);
         unit_t.scale = glm::vec3(0.2f);
         unit_t.is_matrix_dirty = true;
 
@@ -286,8 +284,7 @@ private:
     static glm::vec3 grid_to_board(
         glm::vec2& grid, 
         components::board& board, 
-        transforms::transform& board_t,
-        float y)
+        transforms::transform& board_t)
     {
         auto width_scaled = board_t.scale.y * board.cell_width;
         auto height_scaled = board_t.scale.z * board.cell_height;
