@@ -86,10 +86,6 @@ void run_game(GLFWwindow* window, uint32_t window_width, uint32_t window_height,
         input.update();
         game_controls.update();
 
-        if (game_controls.is_input_active(core::controls::DESCEND_CONTROL)) std::cout << "Descending\n";
-        if (game_controls.is_input_active(core::controls::ASCEND_CONTROL)) std::cout << "Ascending\n";
-        if (game_controls.is_input_started(core::controls::INTERACT_CONTROL)) std::cout << "Interacted\n";
-
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);

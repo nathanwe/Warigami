@@ -36,11 +36,12 @@
           "relative": [ 0, -4, 0 ]
         },
         {
-            "type": "rigid_body",
-            "mass": 1.0
+          "type": "rigid_body",
+          "mass": 1.0
         },
-        {           
-            "type": "player"
+        {
+          "type": "player",
+          "team": 1.0
         }
       ]
     },
@@ -66,10 +67,10 @@
           "rotation": [ 0, 180, 0 ]
         },
         {
-            "type": "game_piece",
-            "health": 2.0,
-            "team": 1.0,
-            "board_location": [ 3.0, 0.0 ]
+          "type": "game_piece",
+          "health": 2.0,
+          "team": 1.0,
+          "board_location": [ 3.0, 0.0 ]
         }
       ]
     },
@@ -93,7 +94,7 @@
       "prototype": "assets/prototypes/basic_unit.json",
       "components": [
         {
-          "type": "transform",          
+          "type": "transform",
           "rotation": [ 0, 180, 0 ]
         },
         {
@@ -124,7 +125,7 @@
       "prototype": "assets/prototypes/basic_unit.json",
       "components": [
         {
-          "type": "transform",          
+          "type": "transform",
           "rotation": [ 0, 180, 0 ]
         },
         {
@@ -132,6 +133,15 @@
           "health": 1.0,
           "team": 1.0,
           "board_location": [ 1.0, 0.0 ]
+        }
+      ]
+    },
+    {
+      "entity_id": 8,
+      "components": [
+        {
+          "type": "player",
+          "team": -1.0
         }
       ]
     },
