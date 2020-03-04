@@ -81,14 +81,26 @@ public:
 			if (player.team == 1.0f) {
 				if (state_p1 == game::PLAYER_STATE::BASE)
 				{
-					if (m_input.is_input_started(core::CARD1_CONTROL)) 
+					if (m_input.is_input_started(core::CARD1_CONTROL))
+					{
 						selected_card_p1 = card_select(player, &state_p1, 0);
+						selected_card_location_p1 = 0;
+					}
 					else if (m_input.is_input_started(core::CARD2_CONTROL))
+					{
 						selected_card_p1 = card_select(player, &state_p1, 1);
+						selected_card_location_p1 = 1;
+					}
 					else if (m_input.is_input_started(core::CARD3_CONTROL))
+					{
 						selected_card_p1 = card_select(player, &state_p1, 2);
+						selected_card_location_p1 = 2;
+					}
 					else if (m_input.is_input_started(core::CARD4_CONTROL))
+					{
 						selected_card_p1 = card_select(player, &state_p1, 3);
+						selected_card_location_p1 = 3;
+					}
 				}
 				else if (state_p1 == game::PLAYER_STATE::PLACEMENT)
 				{
@@ -103,6 +115,7 @@ public:
 					if (m_input.is_input_started(core::CARD1_CONTROL))
 					{
 						spawn_unit(player.selected_row, player.team);
+						player.hand[selected_card_location_p1] = player.safe_draw();
 						
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 						{
@@ -144,14 +157,26 @@ public:
 			} else if (player.team == -1.0f) {
 				if (state_p2 == game::PLAYER_STATE::BASE)
 				{
-					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2)) 
+					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
+					{
 						selected_card_p2 = card_select(player, &state_p2, 0);
+						selected_card_location_p2 = 0;
+					}
 					else if (m_input.is_input_started(core::CARD2_CONTROL_PLAYER2))
+					{
 						selected_card_p2 = card_select(player, &state_p2, 1);
+						selected_card_location_p2 = 1;
+					}
 					else if (m_input.is_input_started(core::CARD3_CONTROL_PLAYER2))
+					{
 						selected_card_p2 = card_select(player, &state_p2, 2);
+						selected_card_location_p2 = 2;
+					}
 					else if (m_input.is_input_started(core::CARD4_CONTROL_PLAYER2))
+					{
 						selected_card_p2 = card_select(player, &state_p2, 3);
+						selected_card_location_p2 = 3;
+					}
 				}
 				else if (state_p2 == game::PLAYER_STATE::PLACEMENT)
 				{
@@ -166,6 +191,7 @@ public:
 					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
 					{
 						spawn_unit(player.selected_row, player.team);
+						player.hand[selected_card_location_p2] = player.safe_draw();
 						
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 						{
@@ -210,7 +236,9 @@ public:
 
 private:
 	components::card_enum selected_card_p1;
+	int selected_card_location_p1;
 	components::card_enum selected_card_p2;
+	int selected_card_location_p2;
 	float row_select_delay = .1f;
 	float row_select_delay_two = .1f;
 	game::PLAYER_STATE state_p1 = game::PLAYER_STATE::BASE;
