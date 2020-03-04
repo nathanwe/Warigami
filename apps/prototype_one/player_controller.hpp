@@ -47,7 +47,7 @@ public:
 		transform.is_matrix_dirty = true;
 	}
 
-	void spawn_unit(int lane, int team)
+	void spawn_unit(int lane, int team, ecs::state& r_state)
 	{
 		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
 		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
@@ -72,6 +72,16 @@ public:
 			new_attacks.push_back(nerdP.attacks[i] * nerdP.team);
 		}
 		nerdP.attacks = new_attacks;
+
+		nerdT.scale = glm::vec3(0.5);
+
+		r_state.each_id<components::board, transforms::transform>([&](entity_id id, components::board& board, transforms::transform& transform)
+		{
+			nerdT.has_parent = true;
+			nerdT.parent = id;
+
+			nerdT.position = board.grid_to_board(nerdP.continuous_board_location, transform);
+		});
 	}
 
 	virtual void update(ecs::state& r_state) override
@@ -114,7 +124,7 @@ public:
 
 					if (m_input.is_input_started(core::CARD1_CONTROL))
 					{
-						spawn_unit(player.selected_row, player.team);
+						spawn_unit(player.selected_row, player.team, r_state);
 						player.hand[selected_card_location_p1] = player.safe_draw();
 						
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
@@ -190,7 +200,7 @@ public:
 
 					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
 					{
-						spawn_unit(player.selected_row, player.team);
+						spawn_unit(player.selected_row, player.team, r_state);
 						player.hand[selected_card_location_p2] = player.safe_draw();
 						
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)

@@ -5,6 +5,7 @@
 #include "ecs/ecs_types.hpp"
 #include "component_bits.hpp"
 #include "board_square.hpp"
+#include "transforms/transform.hpp"
 
 #include <glm/glm.hpp>
 
@@ -17,6 +18,18 @@ namespace components
 		int columns;
 		float cell_width{ 1.f };
 		float cell_height{ 1.f };
+
+        // Helper function for mapping transforms to board space
+        glm::vec3 grid_to_board(glm::vec2& coordinates, transforms::transform& board_t)
+        {
+            float total_w = rows;
+            float total_h = columns;
+
+            auto world_x = coordinates.x - (total_h / 2.f) + 0.5f;
+            auto world_z = coordinates.y - (total_w / 2.f) + 0.5f;
+
+            return glm::vec3(world_x, 1.5f, world_z);
+        }
 	};
 }
 
