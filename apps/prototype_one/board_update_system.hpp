@@ -170,9 +170,8 @@ public:
     // Helper function for moving in board space
     static void walk_unit(components::game_piece& game_piece, float ticker_t)
     {
-        auto src = glm::vec2(game_piece.board_source);
-        auto dst = glm::vec2(game_piece.board_source + game_piece.speed * game_piece.move_board);
-        glm::vec2 interpolated = src + ticker_t * (dst - src);
+        glm::vec2 to_dst = game_piece.board_destination - game_piece.board_source;
+        glm::vec2 interpolated = glm::vec2(game_piece.board_destination) + ticker_t * to_dst;
         game_piece.continuous_board_location = interpolated;
     }
 
