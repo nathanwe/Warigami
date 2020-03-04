@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 	core::glfw_context glfw(config);
 
 	util::string_table strings;
-	core::viewport window_view{ 0, 0, config.width(), config.height() };
+	core::viewport window_view{ 0, 0, glfw.width(), glfw.height() };
 	core::game_input_manager input(glfw.window());
 	core::frame_timer timer;
 	core::frame_limiter limiter(timer, 60);

@@ -32,10 +32,14 @@ core::glfw_context::glfw_context(startup_config& conf) : _conf(conf)
     if (conf.fullscreen())
     {
         const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        _window = glfwCreateWindow(mode->width, mode->height, "RunShoot", glfwGetPrimaryMonitor(), NULL);
+        _window = glfwCreateWindow(mode->width, mode->height, conf.window_title().c_str(), glfwGetPrimaryMonitor(), NULL);
+		_width = mode->width;
+		_height = mode->height;
     } else
     {
-        _window = glfwCreateWindow(conf.width(), conf.height(), "RunShoot", nullptr, nullptr);
+        _window = glfwCreateWindow(conf.width(), conf.height(), conf.window_title().c_str(), nullptr, nullptr);
+		_width = conf.width();
+		_height = conf.height();
     }
 
 	if (!_window)
@@ -66,3 +70,12 @@ void core::glfw_context::swap_buffers()
 	glfwSwapBuffers(_window);
 }
 
+std::uint32_t core::glfw_context::width() const
+{
+	return _width;
+}
+
+std::uint32_t core::glfw_context::height() const
+{
+	return _height;
+}

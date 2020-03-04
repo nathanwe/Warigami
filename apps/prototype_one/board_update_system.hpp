@@ -260,23 +260,19 @@ public:
             generate_new_board_state(r_state);
 
             // If a unit is standing in fire, it takes damage;
-           /* r_state.each_id<components::game_piece, transforms::transform>(
-            [&](entity_id id, components::game_piece& game_piece, transforms::transform& transform) {
-
+            r_state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
                 auto square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
-
                 if (square_e) {
                     components::board_square& square = square_e->get_component<components::board_square>();
                     if (square.terrain_type == terrain::fire) {
-                        game_piece.health -= 1; //hardcoded damage, fix
-                        std::cerr << "Unit: " << id << " on fire" << std::endl;
+                        game_piece.health -= 1; //hardcoded damage, fix                        
                         if (game_piece.health <= 0.f)
                         {
                             game_piece.state = components::UNIT_STATE::DYING;
                         }
                     }
-                }                    
-            });*/
+                }
+            });
 
             r_state.each<components::game_piece>([&](components::game_piece& game_piece)
             {
