@@ -59,17 +59,29 @@ public:
             {
                 board.board_state[piece.board_source.x][piece.board_source.y] = piece.team;
                 piece.remaining_speed = piece.speed;
+                piece.board_destination = piece.board_source;
             });
            
-            r_state.each<components::game_piece>([&](components::game_piece& piece)
+            bool changed = true;
+            while (changed) 
             {
-                glm::ivec2 next_pos = piece.board_source + piece.move_board;
-                if ()
+                changed = false;
+                r_state.each<components::game_piece>([&](components::game_piece& piece)
                 {
-
-                }
-            });
-
+                    if(piece.remaining_speed > 0)
+                    { 
+                        glm::ivec2 next_pos = piece.board_source + piece.move_board;
+                        if (board.board_state[next_pos.x][next_pos.y] == 0)
+                        {
+                            board.board_state[piece.board_destination.x][piece.board_destination.y] = 0;
+                            board.board_state[next_pos.x][next_pos.y] = piece.team;
+                            piece.board_destination = next_pos;
+                            piece.remaining_speed -= 1;
+                            changed = true;
+                        }
+                    }
+                });
+            }
         });
     }
 
