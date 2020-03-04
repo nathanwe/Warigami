@@ -15,7 +15,7 @@ void components::board_loader::load(asset::asset_loader_node& asset_loader_node)
 
 	for (int i = 0; i < b.board_state.size(); i++)
 	{
-		b.board_state[i].resize(b.rows);
+		b.board_state[i].resize(b.rows, 0);
 	}
 }
 

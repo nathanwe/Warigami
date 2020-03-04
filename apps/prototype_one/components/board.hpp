@@ -38,15 +38,22 @@ namespace components
                 for (int j = 0; j < board_state[i].size(); j++)
                 {
                     if (board_state[i][j] > 0)
-                        std::cout << board_state[i][j] << " ";
+                        std::cout << board_state[i][j] << "\t";
                     else
-                        std::cout << board_state[i][j] << " ";
+                        std::cout << board_state[i][j] << "\t";
                 }
 
                 std::cout << std::endl;
             }
 
             std::cout << std::endl;
+        }
+
+        void clear_state()
+        {
+            for (auto& row : board_state)
+                for (auto& cell : row)
+                    cell = 0;
         }
 	};
 }

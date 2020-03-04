@@ -45,22 +45,16 @@ public:
 
     void generate_new_board_state(ecs::state& r_state)
     {
-        r_state.each<components::board>([&](components::board& board) {
-           
-            for (auto& row : board.board_state)
-            {
-                for (auto& column : row)
-                {
-                    column = 0;
-                }
-            }
+        r_state.each<components::board>([&](components::board& board) {            
+            board.clear_state();
 
-            // clean up units that have reached the end of the board, and cannot proceed.
             r_state.each<components::game_piece>([&](components::game_piece& piece)
             {
-                if (piece.board_source.y <= 0 && piece.team == -1)
-                    piece.state = components::UNIT_STATE::DYING;
-                if (piece.board_source.y >= 8 && piece.team == 1)
+                auto out_of_bounds = 
+                    (piece.board_source.y <= 0 && piece.team == -1) ||
+                    (piece.board_source.y >= 8 && piece.team == 1);
+
+                if (out_of_bounds) 
                     piece.state = components::UNIT_STATE::DYING;
             });
             
@@ -71,45 +65,44 @@ public:
                 piece.board_destination = piece.board_source;
             });
            
-            bool changed = true;
-            while (changed) 
-            {
-                changed = false;
-                r_state.each<components::game_piece>([&](components::game_piece& piece)
-                {
-                    if(piece.remaining_speed > 0)
-                    { 
-                        glm::ivec2 next_pos = piece.board_destination + piece.move_board;
-                        if (next_pos.y < 0)
-                        {
-                            piece.remaining_speed = 0;
-                            next_pos.y = 0;
-                            piece.board_destination = next_pos;
-                        }
-                        if (next_pos.y > 8)
-                        {
-                            piece.remaining_speed = 0;
-                            next_pos.y = 8;
-                            piece.board_destination = next_pos;
-                        }
-                        else
-                        {
-                            if (board.board_state[next_pos.x][next_pos.y] == 0)
-                            {
-                                board.board_state[piece.board_destination.x][piece.board_destination.y] = 0;
-                                board.board_state[next_pos.x][next_pos.y] = piece.team;
-                                piece.board_destination = next_pos;
-                                piece.remaining_speed -= 1;
-                                changed = true;
-                            }
-                        }
-                    }
-                });
-            }
-            
+            reconcile_movement_intervals(r_state, board);            
             board.print();
-
         });        
+    }
+
+    void reconcile_movement_intervals(ecs::state& r_state, components::board& board)
+    {
+        bool changed = true;
+        while (changed)
+        {
+            changed = false;
+            r_state.each<components::game_piece>([&](components::game_piece& piece)
+            {
+                if (piece.remaining_speed <= 0) return;
+
+                glm::ivec2 next_pos = piece.board_destination + piece.move_board;
+                if (next_pos.y < 0)
+                {
+                    piece.remaining_speed = 0;
+                    next_pos.y = 0;
+                    piece.board_destination = next_pos;
+                }
+                else if (next_pos.y > 8)
+                {
+                    piece.remaining_speed = 0;
+                    next_pos.y = 8;
+                    piece.board_destination = next_pos;
+                }
+                else if (board.board_state[next_pos.x][next_pos.y] == 0)
+                {
+                    board.board_state[piece.board_destination.x][piece.board_destination.y] = 0;
+                    board.board_state[next_pos.x][next_pos.y] = piece.team;
+                    piece.board_destination = next_pos;
+                    piece.remaining_speed -= 1;
+                    changed = true;
+                }
+            });
+        }
     }
 
     // Helper function for checking for legal attacks
