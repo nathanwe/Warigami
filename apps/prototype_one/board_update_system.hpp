@@ -141,15 +141,11 @@ public:
         components::board& board,
         entity_id board_id)
     {
-        unit_t.has_parent = true;
-        unit_t.parent = board_id;
+        //unit_t.has_parent = true;
+        //unit_t.parent = board_id;
         unit_t.position = grid_to_board(game_piece.continuous_board_location, board, board_t);
         unit_t.scale = glm::vec3(0.2f);
         unit_t.is_matrix_dirty = true;
-
-        game_piece.board_location = glm::ivec2(
-            std::round(game_piece.continuous_board_location.x),
-            std::round(game_piece.continuous_board_location.y));
     }
 
     // Helper function for mapping transforms to board space
@@ -174,7 +170,7 @@ public:
         // Do board combat every 1 second
         timer -= delta;
 
-        float timer_t = timer / ROUND_TIME;
+        float timer_t = (ROUND_TIME - timer) / ROUND_TIME;
 
         if (timer <= 0.f)
         {
@@ -252,7 +248,7 @@ public:
                                 move_unit(game_piece, movement);
                                 std::cerr << "Unit: " << id << " moved to " << movement.x << ", " << movement.y
                                           << std::endl;
-                                if (game_piece.board_location.y < 0.f || game_piece.board_location.y > 9.f)
+                                if (game_piece.board_location.y < 0.f || game_piece.board_location.y >= 9.f)
                                 {
                                     std::cerr << "Unit: " << id << " scored" << std::endl;
                                     game_piece.state = components::UNIT_STATE::DYING;
@@ -260,27 +256,29 @@ public:
                             }
                         }
                     });
+        } else
+        {
+            // If a unit made it through the last state update with a move state, move the unit until the next update
+            r_state.each_id<transforms::transform, components::board>(
+                [&](entity_id board_id, auto &board_t, auto &board) {
+                    r_state.each_id<transforms::transform, components::game_piece>(
+                        [&](entity_id unit_id, auto &unit_t, auto &unit) {
+                            if (unit.state == components::UNIT_STATE::MOVE)
+                            {
+                                // Walking animation here
+                                walk_unit(unit, timer_t);
+                                handle_unit_transform(board_t, unit_t, unit, board, board_id);
+                            }
+                            if (unit.state == components::UNIT_STATE::DYING)
+                            {
+                                // Death animation here
+                                unit_death_event new_event(unit_id);
+                                event_manager.BroadcastEvent(new_event);
+                            }
+                        });
+                    });
+
         }
-
-
-
-        // If a unit made it through the last state update with a move state, move the unit until the next update
-        r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
-            r_state.each_id<transforms::transform, components::game_piece>([&](entity_id unit_id, auto& unit_t, auto& unit) {
-                if (unit.state == components::UNIT_STATE::MOVE)
-                {
-                    // Walking animation here
-                    walk_unit(unit, timer_t);
-                    handle_unit_transform(board_t, unit_t, unit, board, board_id);
-                }
-                if (unit.state == components::UNIT_STATE::DYING)
-                {
-                    // Death animation here
-                    unit_death_event new_event(unit_id);
-                    event_manager.BroadcastEvent(new_event);
-                }
-            });
-        });
     }
 
 private:
