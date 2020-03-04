@@ -46,18 +46,19 @@ public:
     // Helper function for checking for legal attacks
     static bool check_attacks(glm::ivec2 location, std::vector<glm::ivec2> targets, float teammates, ecs::state &r_state)
     {
-        bool ret = false;
-        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
+        for (auto& t : targets) t += location;
+
+        auto attacked = r_state.first<components::game_piece>([&](components::game_piece& game_piece) {
             for (auto& target : targets)
             {
-                glm::ivec2 attack_location = location + target;
-                if (game_piece.board_location == attack_location && game_piece.team != teammates)
-                {
-                    ret = true;
-                }
+                if (game_piece.board_location == target && game_piece.team != teammates)
+                    return true;
             }
+
+            return false;
         });
-        return ret;
+
+        return attacked != nullptr;
     }
 
     // Helper function for attacking legal attacks
@@ -125,9 +126,12 @@ public:
     }
 
     // Helper function for moving in board space
-    static void walk_unit(components::game_piece& game_piece, float delta)
+    static void walk_unit(components::game_piece& game_piece, float ticker_t)
     {
-        game_piece.continuous_board_location += delta * game_piece.speed * glm::vec2(game_piece.move_board);
+        auto src = glm::vec2(game_piece.board_location);
+        auto dst = glm::vec2(game_piece.board_location + game_piece.speed * game_piece.move_board);
+        glm::vec2 interpolated = src + ticker_t * (dst - src);
+        game_piece.continuous_board_location = interpolated;
     }
 
     static void handle_unit_transform(
@@ -169,6 +173,9 @@ public:
 
         // Do board combat every 1 second
         timer -= delta;
+
+        float timer_t = timer / ROUND_TIME;
+
         if (timer <= 0.f)
         {
             timer = ROUND_TIME;
@@ -194,8 +201,13 @@ public:
                             game_piece.state == components::UNIT_STATE::DYING)
                         {
                             // Attack animation here
-                            attack_targets(game_piece.board_location, game_piece.attacks, game_piece.damage,
-                                           game_piece.team, r_state);
+                            attack_targets(
+                                    game_piece.board_location,
+                                    game_piece.attacks,
+                                    game_piece.damage,
+                                    game_piece.team,
+                                    r_state);
+
                             std::cerr << "Unit: " << id << " attacking" << std::endl;
                         }
                     });
@@ -258,7 +270,7 @@ public:
                 if (unit.state == components::UNIT_STATE::MOVE)
                 {
                     // Walking animation here
-                    walk_unit(unit, delta);
+                    walk_unit(unit, timer_t);
                     handle_unit_transform(board_t, unit_t, unit, board, board_id);
                 }
                 if (unit.state == components::UNIT_STATE::DYING)

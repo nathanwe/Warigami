@@ -29,7 +29,15 @@ core::glfw_context::glfw_context(startup_config& conf) : _conf(conf)
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 
-	_window = glfwCreateWindow(window_width, window_height, "Wizard People", nullptr, nullptr);
+    if (conf.fullscreen())
+    {
+        const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        _window = glfwCreateWindow(mode->width, mode->height, "RunShoot", glfwGetPrimaryMonitor(), NULL);
+    } else
+    {
+        _window = glfwCreateWindow(conf.width(), conf.height(), "RunShoot", nullptr, nullptr);
+    }
+
 	if (!_window)
 	{
 		auto msg = "Error: GLFW failed to create window.";
