@@ -16,7 +16,8 @@ namespace components
 		NO_CARD = 0,
 		BASIC_MELE = 1,
 		BASIC_RANGE = 2,
-		BASIC_FAST = 3
+		BASIC_FAST = 3,
+		TOTA_CARDS
 	};
 
 	const static std::vector<card_enum> start_deck = {

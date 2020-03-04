@@ -49,40 +49,15 @@ public:
 
 	void spawn_unit(int lane, int team, ecs::state& r_state, components::card_enum type)
 	{
-		ecs::entity* nerdp = nullptr;
-		switch (type)
-		{
-		case components::card_enum::NO_CARD:
-		{
-			ecs::entity& nerda = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
-			nerdp = &nerda;
-			break;
-		}
-		case components::card_enum::BASIC_MELE:
-		{
-			ecs::entity& nerdb = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
-			nerdp = &nerdb;
-			break;
-		}
-		case components::card_enum::BASIC_RANGE:
-		{
-			ecs::entity& nerdc = hydrater.add_from_prototype("assets/prototypes/ranged_unit.json");
-			nerdp = &nerdc;
-			break;
-		}
-		case components::card_enum::BASIC_FAST:
-		{
-			ecs::entity& nerdd = hydrater.add_from_prototype("assets/prototypes/fast_unit.json");
-			nerdp = &nerdd;
-			break;
-		}
-		default: {
-			ecs::entity& nerde = hydrater.add_from_prototype("assets/prototypes/basic_unit.json");
-			nerdp = &nerde;
-			break;
-		}
-		}
-		ecs::entity nerd = *nerdp;
+		static const std::string CardPrototypes[(size_t)components::card_enum::TOTA_CARDS] = {
+			"assets/prototypes/basic_unit.json",
+			"assets/prototypes/basic_unit.json",
+			"assets/prototypes/ranged_unit.json",
+			"assets/prototypes/fast_unit.json"
+		};
+	
+		size_t type_index = (size_t)type;		
+		ecs::entity& nerd = hydrater.add_from_prototype(CardPrototypes[type_index]);
 		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
 		components::game_piece& nerdP = nerd.get_component<components::game_piece>();
 		
@@ -113,8 +88,6 @@ public:
 		{
 			nerdT.has_parent = true;
 			nerdT.parent = id;
-
-			//nerdT.position = board.grid_to_board(nerdP.continuous_board_location, transform);
 		});
 	}
 
