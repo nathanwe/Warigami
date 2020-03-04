@@ -54,15 +54,16 @@ public:
 		components::game_piece& nerdP = nerd.get_component<components::game_piece>();
 		
 		nerdP.team = team;
-		nerdP.board_location.x = lane;
-		nerdP.team >= 0 ? nerdP.board_location.y = 0 : nerdP.board_location.y = 8;
+		nerdP.board_source.x = lane;
+		nerdP.board_source.y = nerdP.team >= 0 ? 0 : 8;
 		
 		if (nerdP.team >= 0)
 			nerdT.rotation.y = glm::pi<float>() - glm::half_pi<float>()/2.f;
 		else
 			nerdT.rotation.y = + glm::half_pi<float>()/2.f;
 
-		nerdP.continuous_board_location = nerdP.board_location;
+		nerdP.continuous_board_location = nerdP.board_source;
+		nerdP.board_destination = nerdP.board_source;
 		nerdP.move_board = nerdP.move_board * nerdP.team;
 		nerdP.move_world = nerdP.move_world * (float)nerdP.team;
 
@@ -80,7 +81,7 @@ public:
 			nerdT.has_parent = true;
 			nerdT.parent = id;
 
-			nerdT.position = board.grid_to_board(nerdP.continuous_board_location, transform);
+			//nerdT.position = board.grid_to_board(nerdP.continuous_board_location, transform);
 		});
 	}
 
@@ -127,7 +128,7 @@ public:
 						bool taken = false;
 						r_state.each<components::game_piece>([&](components::game_piece& piece)
 						{
-							if (piece.board_location == glm::ivec2(player.selected_row, 0))
+							if (piece.board_source == glm::ivec2(player.selected_row, 0))
 							{
 								taken = true;
 							}
@@ -215,7 +216,7 @@ public:
 						bool taken = false;
 						r_state.each<components::game_piece>([&](components::game_piece& piece)
 						{
-							if (piece.board_location == glm::ivec2(player.selected_row, 0))
+							if (piece.board_source == glm::ivec2(player.selected_row, 0))
 							{
 								taken = true;
 							}

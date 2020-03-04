@@ -9,22 +9,13 @@ void components::board_loader::load(asset::asset_loader_node& asset_loader_node)
 	
 	std::vector<ecs::entity*> new_entities;
 
-	b.rows = json.value("rows", 1);
-	b.columns = json.value("columns", 1);
-	b.board_state.resize(b.rows);
+	b.rows = json.value("rows", 7);
+	b.columns = json.value("columns", 9);
+	b.board_state.resize(b.columns);
 
 	for (int i = 0; i < b.board_state.size(); i++)
 	{
-		b.board_state[i].resize(b.columns);
-	}
-	
-	find_ids(asset_loader_node, new_entities);
-	
-	for (auto& ent : new_entities)
-	{
-		components::board_square square = ent->get_component<components::board_square>();
-		b.board_state[square.x][square.y].first = ent->id();
-		b.board_state[square.x][square.y].second = -1;
+		b.board_state[i].resize(b.rows);
 	}
 }
 

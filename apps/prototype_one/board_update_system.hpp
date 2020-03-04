@@ -58,7 +58,7 @@ public:
             r_state.each<components::game_piece>([&](components::game_piece& piece) 
             {
                 board.board_state[piece.board_source.x][piece.board_source.y] = piece.team;
-                piece.remaining_speed = piece.speed;
+                piece.state == components::UNIT_STATE::MOVE ? piece.remaining_speed = piece.speed : piece.remaining_speed = 0;
                 piece.board_destination = piece.board_source;
             });
            
@@ -71,18 +71,42 @@ public:
                     if(piece.remaining_speed > 0)
                     { 
                         glm::ivec2 next_pos = piece.board_source + piece.move_board;
-                        if (board.board_state[next_pos.x][next_pos.y] == 0)
+                        if (next_pos.y < 0 || next_pos.y > 8)
                         {
-                            board.board_state[piece.board_destination.x][piece.board_destination.y] = 0;
-                            board.board_state[next_pos.x][next_pos.y] = piece.team;
-                            piece.board_destination = next_pos;
-                            piece.remaining_speed -= 1;
-                            changed = true;
+                            piece.remaining_speed = 0;
+                            piece.state = components::UNIT_STATE::DYING;
+                        }
+                        else
+                        {
+                            if (board.board_state[next_pos.x][next_pos.y] == 0)
+                            {
+                                board.board_state[piece.board_destination.x][piece.board_destination.y] = 0;
+                                board.board_state[next_pos.x][next_pos.y] = piece.team;
+                                piece.board_destination = next_pos;
+                                piece.remaining_speed -= 1;
+                                changed = true;
+                            }
                         }
                     }
                 });
             }
-        });
+            for (int i = 0; i < board.board_state.size(); i++)
+            {
+                for (int j = 0; j < board.board_state[i].size(); j++)
+                {
+                    if (board.board_state[i][j] > 0)
+                    {
+                        std::cout << board.board_state[i][j] << " ";
+                    }
+                    else
+                    {
+                        std::cout << board.board_state[i][j] << " ";
+                    }
+                }
+                std::cout << std::endl;
+            }
+            std::cout << std::endl;
+        });        
     }
 
     // Helper function for checking for legal attacks
@@ -117,11 +141,6 @@ public:
                 if (game_piece.board_source == location + target && game_piece.team != teammates)
                 {
                     game_piece.health -= damage;
-
-                    if (game_piece.health <= 0)
-                    {
-                        game_piece.state = components::UNIT_STATE::DYING;
-                    }
                 }
             }
         });
@@ -139,13 +158,13 @@ public:
         r_state.each_id<components::game_piece>([&](entity_id id_two, auto& game_piece) 
         {
             if (id_two == id) return;
-            if (teammates == 1 && start.y >= game_piece.board_location.y) return;
-            if (teammates == -1 && start.y <= game_piece.board_location.y) return;
-            if (game_piece.board_location.x != start.x) return;
+            if (teammates == 1 && start.y >= game_piece.board_source.y) return;
+            if (teammates == -1 && start.y <= game_piece.board_source.y) return;
+            if (game_piece.board_source.x != start.x) return;
 
             ret.y = teammates == 1
-                ? std::min(ret.y, game_piece.board_location.y) - 1
-                : std::max(ret.y, game_piece.board_location.y) + 1;
+                ? std::min(ret.y, game_piece.board_source.y) - 1
+                : std::max(ret.y, game_piece.board_source.y) + 1;
         });
 
         ret.y = teammates == 1
@@ -171,7 +190,7 @@ public:
     static void walk_unit(components::game_piece& game_piece, float ticker_t)
     {
         glm::vec2 to_dst = game_piece.board_destination - game_piece.board_source;
-        glm::vec2 interpolated = glm::vec2(game_piece.board_destination) + ticker_t * to_dst;
+        glm::vec2 interpolated = glm::vec2(game_piece.board_source) + ticker_t * to_dst;
         game_piece.continuous_board_location = interpolated;
     }
 
@@ -195,6 +214,7 @@ public:
         components::board& board,
         transforms::transform& board_t)
     {
+
         float total_w = board.rows;
         float total_h = board.columns;
 
@@ -219,84 +239,68 @@ public:
 
             // A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
             // Update states to either attack or move depending on current board state
-            r_state.each_id<components::game_piece, transforms::transform>(
-                    [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) 
-                    {
-                        if (check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state))
-                        {
-                            game_piece.state = components::UNIT_STATE::ATTACK;
-                        } else
-                        {
-                            game_piece.state = components::UNIT_STATE::MOVE;
-                        }
-                    });
+            r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
+            {
+                game_piece.board_source = game_piece.board_destination;
+            });
+
+            r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
+            {
+                if (check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state))
+                {
+                    game_piece.state = components::UNIT_STATE::ATTACK;
+                }
+                else
+                {
+                    game_piece.state = components::UNIT_STATE::MOVE;
+                }
+            });
+
 
             // If a unit can attack, attack now
-            r_state.each_id<components::game_piece, transforms::transform>(
-                    [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
-                        if (game_piece.state == components::UNIT_STATE::ATTACK ||
-                            game_piece.state == components::UNIT_STATE::DYING)
-                        {
-                            // Attack animation here
-                            attack_targets(
-                                    game_piece.board_source,
-                                    game_piece.attacks,
-                                    game_piece.damage,
-                                    game_piece.team,
-                                    r_state);
+            r_state.each<components::game_piece>([&](components::game_piece& game_piece) 
+            {
+                if (game_piece.state == components::UNIT_STATE::ATTACK)
+                {
+                    // Attack animation here
+                    attack_targets(
+                        game_piece.board_source,
+                        game_piece.attacks,
+                        game_piece.damage,
+                        game_piece.team,
+                        r_state);
+                }
+            });
 
-                            std::cerr << "Unit: " << id << " attacking" << std::endl;
-                        }
-                    });
+            generate_new_board_state(r_state);
 
             // If a unit is standing in fire, it takes damage;
-            r_state.each_id<components::game_piece, transforms::transform>(
-                [&](entity_id id, components::game_piece& game_piece, transforms::transform& transform) {
+           /* r_state.each_id<components::game_piece, transforms::transform>(
+            [&](entity_id id, components::game_piece& game_piece, transforms::transform& transform) {
 
-                    auto square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
+                auto square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
 
-                    if (square_e) {
-                        components::board_square& square = square_e->get_component<components::board_square>();
-                        if (square.terrain_type == terrain::fire) {
-                            game_piece.health -= 1; //hardcoded damage, fix
-                            std::cerr << "Unit: " << id << " on fire" << std::endl;
-                            if (game_piece.health <= 0.f)
-                            {
-                                game_piece.state = components::UNIT_STATE::DYING;
-                            }
-                        }
-                    }                    
-                });
-
-            // If a unit is still alive after attacks and has a move state, check for legality and then move
-            r_state.each_id<components::game_piece, transforms::transform>(
-                    [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) {
-                        if (game_piece.state == components::UNIT_STATE::MOVE)
+                if (square_e) {
+                    components::board_square& square = square_e->get_component<components::board_square>();
+                    if (square.terrain_type == terrain::fire) {
+                        game_piece.health -= 1; //hardcoded damage, fix
+                        std::cerr << "Unit: " << id << " on fire" << std::endl;
+                        if (game_piece.health <= 0.f)
                         {
-                            glm::ivec2 movement = move_check(
-                                    id,
-                                    game_piece.board_source,
-                                    game_piece.board_source + game_piece.move_board,
-                                    game_piece.team,
-                                    r_state);
-
-                            if (movement == game_piece.board_source)
-                            {
-                                game_piece.state = components::UNIT_STATE::WAIT;
-                                std::cerr << "Unit: " << id << " waiting" << std::endl;
-                            } else
-                            {
-                                move_unit(game_piece, movement);
-                                std::cerr << "Unit: " << id << " moved to " << movement.x << ", " << movement.y
-                                          << std::endl;
-                                if (game_piece.board_source.y < 0.f || game_piece.board_source.y >= 9.f)
-                                {
-                                    std::cerr << "Unit: " << id << " scored" << std::endl;
-                                    game_piece.state = components::UNIT_STATE::DYING;
-                                }
-                            }
+                            game_piece.state = components::UNIT_STATE::DYING;
                         }
-                    });
+                    }
+                }                    
+            });*/
+
+            r_state.each<components::game_piece>([&](components::game_piece& game_piece)
+            {
+                if (game_piece.health <= 0)
+                {
+                    game_piece.state = components::UNIT_STATE::DYING;
+                }
+            });
+            
         } else
         {
             // If a unit made it through the last state update with a move state, move the unit until the next update
