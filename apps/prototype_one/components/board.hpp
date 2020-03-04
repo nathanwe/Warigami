@@ -30,6 +30,24 @@ namespace components
 
             return glm::vec3(world_x, 1.5f, world_z);
         }
+
+        void print()
+        {
+            for (int i = 0; i < board_state.size(); i++)
+            {
+                for (int j = 0; j < board_state[i].size(); j++)
+                {
+                    if (board_state[i][j] > 0)
+                        std::cout << board_state[i][j] << " ";
+                    else
+                        std::cout << board_state[i][j] << " ";
+                }
+
+                std::cout << std::endl;
+            }
+
+            std::cout << std::endl;
+        }
 	};
 }
 

@@ -54,11 +54,20 @@ public:
                     column = 0;
                 }
             }
+
+            // clean up units that have reached the end of the board, and cannot proceed.
+            r_state.each<components::game_piece>([&](components::game_piece& piece)
+            {
+                if (piece.board_source.y <= 0 && piece.team == -1)
+                    piece.state = components::UNIT_STATE::DYING;
+                if (piece.board_source.y >= 8 && piece.team == 1)
+                    piece.state = components::UNIT_STATE::DYING;
+            });
             
             r_state.each<components::game_piece>([&](components::game_piece& piece) 
             {
                 board.board_state[piece.board_source.x][piece.board_source.y] = piece.team;
-                piece.state == components::UNIT_STATE::MOVE ? piece.remaining_speed = piece.speed : piece.remaining_speed = 0;
+                piece.remaining_speed = piece.state == components::UNIT_STATE::MOVE ? piece.speed : 0;
                 piece.board_destination = piece.board_source;
             });
            
@@ -70,11 +79,18 @@ public:
                 {
                     if(piece.remaining_speed > 0)
                     { 
-                        glm::ivec2 next_pos = piece.board_source + piece.move_board;
-                        if (next_pos.y < 0 || next_pos.y > 8)
+                        glm::ivec2 next_pos = piece.board_destination + piece.move_board;
+                        if (next_pos.y < 0)
                         {
                             piece.remaining_speed = 0;
-                            piece.state = components::UNIT_STATE::DYING;
+                            next_pos.y = 0;
+                            piece.board_destination = next_pos;
+                        }
+                        if (next_pos.y > 8)
+                        {
+                            piece.remaining_speed = 0;
+                            next_pos.y = 8;
+                            piece.board_destination = next_pos;
                         }
                         else
                         {
@@ -90,22 +106,9 @@ public:
                     }
                 });
             }
-            for (int i = 0; i < board.board_state.size(); i++)
-            {
-                for (int j = 0; j < board.board_state[i].size(); j++)
-                {
-                    if (board.board_state[i][j] > 0)
-                    {
-                        std::cout << board.board_state[i][j] << " ";
-                    }
-                    else
-                    {
-                        std::cout << board.board_state[i][j] << " ";
-                    }
-                }
-                std::cout << std::endl;
-            }
-            std::cout << std::endl;
+            
+            board.print();
+
         });        
     }
 
@@ -201,27 +204,9 @@ public:
         components::board& board,
         entity_id board_id)
     {
-        //unit_t.has_parent = true;
-        //unit_t.parent = board_id;
-        unit_t.position = grid_to_board(game_piece.continuous_board_location, board, board_t);
+        unit_t.position = board.grid_to_board(game_piece.continuous_board_location, board_t);
         unit_t.scale = glm::vec3(0.2f);
         unit_t.is_matrix_dirty = true;
-    }
-
-    // Helper function for mapping transforms to board space
-    static glm::vec3 grid_to_board(
-        glm::vec2& grid,
-        components::board& board,
-        transforms::transform& board_t)
-    {
-
-        float total_w = board.rows;
-        float total_h = board.columns;
-
-        auto world_x = grid.x - (total_h / 2.f) + 0.5f;
-        auto world_z = grid.y - (total_w / 2.f) + 0.5f;
-
-        return glm::vec3(world_x, 1.6f, world_z);
     }
 
     void update(ecs::state &r_state) override
@@ -295,10 +280,10 @@ public:
 
             r_state.each<components::game_piece>([&](components::game_piece& game_piece)
             {
-                if (game_piece.health <= 0)
-                {
-                    game_piece.state = components::UNIT_STATE::DYING;
-                }
+                auto out_of_health = game_piece.health <= 0;
+                auto out_of_bounds = game_piece.board_source.y < 0 || game_piece.board_source.y > 8;
+                if (out_of_health || out_of_bounds)
+                    game_piece.state = components::UNIT_STATE::DYING;                
             });
             
         } else
