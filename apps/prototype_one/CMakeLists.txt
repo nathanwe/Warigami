@@ -7,7 +7,7 @@ add_executable (prototype_one main.cpp
 				components/dice.cpp components/dice_loader.cpp
 				components/player.cpp components/player_loader.cpp
 				board_update_system.hpp
-				util/boardgen.cpp)
+				util/boardgen.cpp components/countdown.cpp components/countdown.hpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs
