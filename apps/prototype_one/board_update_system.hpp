@@ -160,7 +160,7 @@ public:
         auto world_x = grid.x - (total_h / 2.f) + 0.5f;
         auto world_z = grid.y - (total_w / 2.f) + 0.5f;
 
-        return glm::vec3(world_x, 1.5f, world_z);
+        return glm::vec3(world_x, 1.6f, world_z);
     }
 
     void update(ecs::state &r_state) override
@@ -201,7 +201,7 @@ public:
                     });
 
             // If a unit is standing in fire, it takes damage;
-            /*r_state.each_id<components::game_piece, transforms::transform>(
+            r_state.each_id<components::game_piece, transforms::transform>(
                 [&](entity_id id, components::game_piece& game_piece, transforms::transform& transform) {
 
                     auto square_e = get_square_id_with_loaction(r_state, game_piece.board_location);
@@ -218,8 +218,6 @@ public:
                         }
                     }                    
                 });
-                */
-
 
             // If a unit is still alive after attacks and has a move state, check for legality and then move
             r_state.each_id<components::game_piece, transforms::transform>(

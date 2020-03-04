@@ -58,9 +58,9 @@ public:
 		nerdP.team >= 0 ? nerdP.board_location.y = 0 : nerdP.board_location.y = 8;
 		
 		if (nerdP.team >= 0)
-			nerdT.rotation.y = AI_MATH_PI / 2;
+			nerdT.rotation.y = glm::pi<float>() - glm::half_pi<float>()/2.f;
 		else
-			nerdT.rotation.y = -AI_MATH_PI / 2;
+			nerdT.rotation.y = + glm::half_pi<float>()/2.f;
 
 		nerdP.continuous_board_location = nerdP.board_location;
 		nerdP.move_board = nerdP.move_board * nerdP.team;
