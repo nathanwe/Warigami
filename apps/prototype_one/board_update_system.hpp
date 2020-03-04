@@ -43,6 +43,36 @@ public:
         }
     }
 
+    void generate_new_board_state(ecs::state& r_state)
+    {
+        r_state.each<components::board>([&](components::board& board) {
+           
+            for (auto& row : board.board_state)
+            {
+                for (auto& column : row)
+                {
+                    column = 0;
+                }
+            }
+            
+            r_state.each<components::game_piece>([&](components::game_piece& piece) 
+            {
+                board.board_state[piece.board_source.x][piece.board_source.y] = piece.team;
+                piece.remaining_speed = piece.speed;
+            });
+           
+            r_state.each<components::game_piece>([&](components::game_piece& piece)
+            {
+                glm::ivec2 next_pos = piece.board_source + piece.move_board;
+                if ()
+                {
+
+                }
+            });
+
+        });
+    }
+
     // Helper function for checking for legal attacks
     static bool check_attacks(glm::ivec2 location, std::vector<glm::ivec2> targets, float teammates, ecs::state &r_state)
     {
@@ -51,7 +81,7 @@ public:
         auto attacked = r_state.first<components::game_piece>([&](components::game_piece& game_piece) {
             for (auto& target : targets)
             {
-                if (game_piece.board_location == target && game_piece.team != teammates)
+                if (game_piece.board_source == target && game_piece.team != teammates)
                     return true;
             }
 
@@ -72,7 +102,7 @@ public:
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
             for (auto &target : targets)
             {
-                if (game_piece.board_location == location + target && game_piece.team != teammates)
+                if (game_piece.board_source == location + target && game_piece.team != teammates)
                 {
                     game_piece.health -= damage;
 
@@ -116,7 +146,7 @@ public:
     // Helper function for moving in board space
     static void move_unit(components::game_piece &game_piece, glm::ivec2 location)
     {
-        game_piece.board_location = location;
+        game_piece.board_source = location;
     }
     //Helper function for getting a board_square
     ecs::entity* get_square_id_with_loaction(ecs::state& r_state, glm::ivec2 loc) {
@@ -128,8 +158,8 @@ public:
     // Helper function for moving in board space
     static void walk_unit(components::game_piece& game_piece, float ticker_t)
     {
-        auto src = glm::vec2(game_piece.board_location);
-        auto dst = glm::vec2(game_piece.board_location + game_piece.speed * game_piece.move_board);
+        auto src = glm::vec2(game_piece.board_source);
+        auto dst = glm::vec2(game_piece.board_source + game_piece.speed * game_piece.move_board);
         glm::vec2 interpolated = src + ticker_t * (dst - src);
         game_piece.continuous_board_location = interpolated;
     }
@@ -181,7 +211,7 @@ public:
             r_state.each_id<components::game_piece, transforms::transform>(
                     [&](entity_id id, components::game_piece &game_piece, transforms::transform &transform) 
                     {
-                        if (check_attacks(game_piece.board_location, game_piece.attacks, game_piece.team, r_state))
+                        if (check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state))
                         {
                             game_piece.state = components::UNIT_STATE::ATTACK;
                         } else
@@ -198,7 +228,7 @@ public:
                         {
                             // Attack animation here
                             attack_targets(
-                                    game_piece.board_location,
+                                    game_piece.board_source,
                                     game_piece.attacks,
                                     game_piece.damage,
                                     game_piece.team,
@@ -212,7 +242,7 @@ public:
             r_state.each_id<components::game_piece, transforms::transform>(
                 [&](entity_id id, components::game_piece& game_piece, transforms::transform& transform) {
 
-                    auto square_e = get_square_id_with_loaction(r_state, game_piece.board_location);
+                    auto square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
 
                     if (square_e) {
                         components::board_square& square = square_e->get_component<components::board_square>();
@@ -234,12 +264,12 @@ public:
                         {
                             glm::ivec2 movement = move_check(
                                     id,
-                                    game_piece.board_location,
-                                    game_piece.board_location + game_piece.move_board,
+                                    game_piece.board_source,
+                                    game_piece.board_source + game_piece.move_board,
                                     game_piece.team,
                                     r_state);
 
-                            if (movement == game_piece.board_location)
+                            if (movement == game_piece.board_source)
                             {
                                 game_piece.state = components::UNIT_STATE::WAIT;
                                 std::cerr << "Unit: " << id << " waiting" << std::endl;
@@ -248,7 +278,7 @@ public:
                                 move_unit(game_piece, movement);
                                 std::cerr << "Unit: " << id << " moved to " << movement.x << ", " << movement.y
                                           << std::endl;
-                                if (game_piece.board_location.y < 0.f || game_piece.board_location.y >= 9.f)
+                                if (game_piece.board_source.y < 0.f || game_piece.board_source.y >= 9.f)
                                 {
                                     std::cerr << "Unit: " << id << " scored" << std::endl;
                                     game_piece.state = components::UNIT_STATE::DYING;
