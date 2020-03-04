@@ -142,34 +142,6 @@ public:
         });
     }
 
-    // Helper function for checking for legal moves
-    static glm::ivec2 move_check(entity_id id, glm::ivec2 start, glm::ivec2 end, float teammates, ecs::state &r_state)
-    {
-        auto y_start = teammates == 1
-            ? std::numeric_limits<int>::max()
-            : std::numeric_limits<int>::min();
-
-        glm::ivec2 ret = { start.x,  y_start};
-
-        r_state.each_id<components::game_piece>([&](entity_id id_two, auto& game_piece) 
-        {
-            if (id_two == id) return;
-            if (teammates == 1 && start.y >= game_piece.board_source.y) return;
-            if (teammates == -1 && start.y <= game_piece.board_source.y) return;
-            if (game_piece.board_source.x != start.x) return;
-
-            ret.y = teammates == 1
-                ? std::min(ret.y, game_piece.board_source.y) - 1
-                : std::max(ret.y, game_piece.board_source.y) + 1;
-        });
-
-        ret.y = teammates == 1
-            ? std::min(ret.y, end.y)
-            : std::max(ret.y, end.y);
-
-        return ret;
-    }
-
     // Helper function for moving in board space
     static void move_unit(components::game_piece &game_piece, glm::ivec2 location)
     {
@@ -252,7 +224,7 @@ public:
 
             generate_new_board_state(r_state);
 
-            // If a unit is standing in fire, it takes damage;
+            // If a unit is standing in fire, it takes damage; (SHOULD GO IN TILE_EFFECT_SYSTEM)
             r_state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
                 auto square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
                 if (square_e) {
@@ -268,10 +240,8 @@ public:
             });
 
             r_state.each<components::game_piece>([&](components::game_piece& game_piece)
-            {
-                auto out_of_health = game_piece.health <= 0;
-                auto out_of_bounds = game_piece.board_source.y < 0 || game_piece.board_source.y > 8;
-                if (out_of_health || out_of_bounds)
+            {                
+                if (game_piece.health <= 0)
                     game_piece.state = components::UNIT_STATE::DYING;                
             });
             
