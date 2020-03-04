@@ -148,7 +148,7 @@ public:
         game_piece.board_source = location;
     }
     //Helper function for getting a board_square
-    ecs::entity* get_square_id_with_loaction(ecs::state& r_state, glm::ivec2 loc) {
+    static ecs::entity* get_square_id_with_loaction(ecs::state& r_state, glm::ivec2 loc) {
         return r_state.first<components::board_square>([&](components::board_square& board_square) {
             return board_square.x == loc.x && board_square.y == loc.y;                 
         });
@@ -226,9 +226,9 @@ public:
 
             // If a unit is standing in fire, it takes damage; (SHOULD GO IN TILE_EFFECT_SYSTEM)
             r_state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
-                auto square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
+                ecs::entity* square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
                 if (square_e) {
-                    components::board_square& square = square_e->get_component<components::board_square>();
+                    auto& square = square_e->get_component<components::board_square>();
                     if (square.terrain_type == terrain::fire) {
                         game_piece.health -= 1; //hardcoded damage, fix                        
                         if (game_piece.health <= 0.f)
