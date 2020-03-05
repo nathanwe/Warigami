@@ -1,8 +1,6 @@
 #ifndef WIZARD_GAME_ENERGY_METER_SYSTEM_HPP
 #define WIZARD_GAME_ENERGY_METER_SYSTEM_HPP
 
-#include "game_events.hpp"
-
 #include "components/energy_meter.hpp"
 #include "components/player.hpp"
 

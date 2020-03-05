@@ -1,8 +1,6 @@
 #ifndef WIZARD_GAME_HEALTH_METER_SYSTEM_HPP
 #define WIZARD_GAME_HEALTH_METER_SYSTEM_HPP
 
-#include "game_events.hpp"
-
 #include "components/health_meter.hpp"
 
 #include <ecs/system_base.hpp>
