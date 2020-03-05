@@ -45,9 +45,9 @@ namespace ecs
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);			
 
-			for (auto& a : cache.accessors)
+			for (entity_accessor& a : cache.accessors)
 			{
-				callback((*(a.accessor.template get_component<TComponents>()))...);
+				callback((*(a.accessor.get_component<TComponents>()))...);
 			}
 		}
 
@@ -57,8 +57,8 @@ namespace ecs
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);
 
-			for (auto& a : cache.accessors)
-				if (predicate((*(a.accessor.template get_component<TComponents>()))...))
+			for (entity_accessor& a : cache.accessors)
+				if (predicate((*(a.accessor.get_component<TComponents>()))...))
 					return &(find_entity(a.entity));
 
 			return nullptr;
@@ -70,9 +70,9 @@ namespace ecs
 			auto arch_id = ecs::archetype_id<TComponents...>();
 			auto& cache = find_query_cache(arch_id);            
 
-			for (auto& a : cache.accessors)
+			for (entity_accessor& a : cache.accessors)
 			{
-				callback(a.entity, (*(a.accessor.template get_component<TComponents>()))...);
+				callback(a.entity, (*(a.accessor.get_component<TComponents>()))...);
 			}
 		}
 
