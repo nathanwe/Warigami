@@ -19,6 +19,12 @@ namespace components
 		BASIC_FAST = 3,
 		TOTAL_CARDS
 	};
+	enum class PLAYER_STATE
+	{
+		BASE,
+		UNIT_PLACEMENT,
+		DICE_PLACEMENT
+	};
 
 	const static std::vector<int> card_costanamos = { 0, 1, 2, 2 };
 
@@ -62,6 +68,11 @@ namespace components
 		float health = 0.f;
 		int bonus_dice = 0;
 		float team = 0.0f;
+		card_enum selected_card;
+		int selected_card_location;
+		float row_select_delay = 0.0f;
+		components::PLAYER_STATE state = components::PLAYER_STATE::BASE;
+
 		// Needs a list of cards in hand and dice in pool
 		//const card_enum start_deck_array[] = { BASIC_FAST, BASIC_FAST, BASIC_MELE, BASIC_MELE, BASIC_RANGE, BASIC_RANGE };
 
