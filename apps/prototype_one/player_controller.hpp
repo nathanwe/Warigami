@@ -1,6 +1,8 @@
 #ifndef GAME_PLAYER_CONTROLLER_HPP
 #define GAME_PLAYER_CONTROLLER_HPP
 
+#define ROUND_TIME 1.0f
+
 #include "ecs/state.hpp"
 #include <core/game_input_manager.hpp>
 #include <core/frame_timer.hpp>
@@ -37,7 +39,14 @@ public:
 
 	components::card_enum card_select(components::player& player, game::PLAYER_STATE* playerState, int num)
 	{
-		*playerState = game::PLAYER_STATE::PLACEMENT;
+		if (components::card_costanamos[(int)player.hand[num]] > player.energy)
+		{
+			*playerState = game::PLAYER_STATE::BASE;
+		}
+		else
+		{
+			*playerState = game::PLAYER_STATE::PLACEMENT;
+		}
 		return player.hand[num];
 	}
 
@@ -49,7 +58,7 @@ public:
 
 	void spawn_unit(int lane, int team, ecs::state& r_state, components::card_enum type)
 	{
-		static const std::string CardPrototypes[(size_t)components::card_enum::TOTA_CARDS] = {
+		static const std::string CardPrototypes[(size_t)components::card_enum::TOTAL_CARDS] = {
 			"assets/prototypes/basic_unit.json",
 			"assets/prototypes/basic_unit.json",
 			"assets/prototypes/ranged_unit.json",
@@ -93,6 +102,16 @@ public:
 
 	virtual void update(ecs::state& r_state) override
 	{
+		bool add_energy = false;
+		if (timer <= 0)
+		{
+			timer = ROUND_TIME;
+			add_energy = true;
+		}
+		else
+		{
+			timer -= m_timer.smoothed_delta_secs();
+		}
 		r_state.each<components::player>([&](components::player& player)
 		{
 			game::PLAYER_STATE* state_px_p;
@@ -105,6 +124,11 @@ public:
 			float* row_select_delay_px_p;
 			int column_to_up_scale;
 			float forward;
+			
+			if (add_energy && player.energy < 10)
+				player.energy++;
+
+			std::cerr << "Player " << player.team << " energy: " << player.energy << std::endl;
 
 			if (player.team == 1.0f) {
 				state_px_p = &state_p1;
@@ -180,6 +204,7 @@ public:
 					if (!taken)
 					{
 						spawn_unit(player.selected_row, player.team, r_state, player.hand[*selected_card_location_px_p]);
+						player.energy -= components::card_costanamos[(int)player.hand[*selected_card_location_px_p]];
 						player.hand[*selected_card_location_px_p] = player.safe_draw();
 					}
 						
@@ -221,98 +246,11 @@ public:
 				}
 				
 			} 
-			/*else if (player.team == -1.0f) {
-				if (state_p2 == game::PLAYER_STATE::BASE)
-				{
-					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = card_select(player, &state_p2, 0);
-						selected_card_location_p2 = 0;
-					}
-					else if (m_input.is_input_started(core::CARD2_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = card_select(player, &state_p2, 1);
-						selected_card_location_p2 = 1;
-					}
-					else if (m_input.is_input_started(core::CARD3_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = card_select(player, &state_p2, 2);
-						selected_card_location_p2 = 2;
-					}
-					else if (m_input.is_input_started(core::CARD4_CONTROL_PLAYER2))
-					{
-						selected_card_p2 = card_select(player, &state_p2, 3);
-						selected_card_location_p2 = 3;
-					}
-				}
-				else if (state_p2 == game::PLAYER_STATE::PLACEMENT)
-				{
-					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-					{
-						if (square.y == 8)
-						{
-							square.x == player.selected_row ? row_select(transform, 1.2f) : row_select(transform, 1);
-						}
-					});
-
-					if (m_input.is_input_started(core::CARD1_CONTROL_PLAYER2))
-					{
-						bool taken = false;
-						r_state.each<components::game_piece>([&](components::game_piece& piece)
-						{
-							if (piece.board_source == glm::ivec2(player.selected_row, 0))
-							{
-								taken = true;
-							}
-						});
-
-						if (!taken)
-						{
-							spawn_unit(player.selected_row, player.team, r_state, player.hand[selected_card_location_p2]);
-							player.hand[selected_card_location_p2] = player.safe_draw();
-						}
-						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-						{
-							transform.scale.y = 1;
-							transform.is_matrix_dirty = true;
-						});
-
-						state_p2 = game::PLAYER_STATE::BASE;
-					}
-					else if (m_input.is_input_started(core::CARD2_CONTROL_PLAYER2))
-					{
-						state_p2 = game::PLAYER_STATE::BASE;
-					}
-					else if (m_input.forward_player2() > .4f)
-					{
-						if (player.selected_row > 0 && row_select_delay_two <= 0.f)
-						{
-							row_select_delay_two = 0.1f;
-							player.selected_row--;
-						}
-						else
-						{
-							row_select_delay_two -= m_timer.smoothed_delta_secs();
-						}
-					}
-					else if (m_input.forward_player2() < -.4f)
-					{
-						if (player.selected_row < 6 && row_select_delay_two <= 0.f)
-						{
-							row_select_delay_two = 0.1f;
-							player.selected_row++;
-						}
-						else
-						{
-							row_select_delay_two -= m_timer.smoothed_delta_secs();
-						}
-					}
-				}
-			}*/
 		});
 	}
 
 private:
+	float timer = ROUND_TIME;
 	components::card_enum selected_card_p1;
 	int selected_card_location_p1;
 	components::card_enum selected_card_p2;

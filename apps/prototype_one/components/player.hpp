@@ -14,17 +14,19 @@ namespace components
 {
 	enum class card_enum {
 		NO_CARD = 0,
-		BASIC_MELE = 1,
+		BASIC_MELEE = 1,
 		BASIC_RANGE = 2,
 		BASIC_FAST = 3,
-		TOTA_CARDS
+		TOTAL_CARDS
 	};
+
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 2 };
 
 	const static std::vector<card_enum> start_deck = {
 	        card_enum::BASIC_FAST,
 			card_enum::BASIC_FAST,
-			card_enum::BASIC_MELE,
-			card_enum::BASIC_MELE,
+			card_enum::BASIC_MELEE,
+			card_enum::BASIC_MELEE,
 			card_enum::BASIC_RANGE,
 			card_enum::BASIC_RANGE
 	};
