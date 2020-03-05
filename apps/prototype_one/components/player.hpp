@@ -50,11 +50,13 @@ namespace components
 		X = 10,
 		I = 11
 	};
+	
 
 	struct player : ecs::component<player>
 	{
 	    static const std::uint8_t MaxCards = 4;
         using row_t = std::int16_t;
+		using column_t = std::int16_t;
 
         player()
         {
@@ -70,15 +72,16 @@ namespace components
 		float team = 0.0f;
 		card_enum selected_card;
 		int selected_card_location;
-		float row_select_delay = 0.0f;
+		float select_delay = 0.0f;
 		components::PLAYER_STATE state = components::PLAYER_STATE::BASE;
 
 		// Needs a list of cards in hand and dice in pool
-		//const card_enum start_deck_array[] = { BASIC_FAST, BASIC_FAST, BASIC_MELE, BASIC_MELE, BASIC_RANGE, BASIC_RANGE };
 
         row_t selected_row = 3;
+		column_t selected_column = 4;
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
+
 
 
 		std::vector<card_enum> deck = start_deck;
@@ -111,6 +114,60 @@ namespace components
 
 		void regrow_deck() {
 			deck = start_deck;
+		}
+		bool net_check(glm::ivec2 test, glm::ivec2 center,
+			dice_nets net, int rotate, bool flip) {
+			std::vector<glm::ivec2> legal_placements;
+			int tempx;
+			bool ret = false;
+			if (net == dice_nets::SEVEN) {
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(0, 1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(1, 0));
+			}
+
+			if (flip) {
+				for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
+					it->x = -it->x;
+				}
+			}
+
+			if (rotate == 0) {
+
+			}
+			else if (rotate == 1)
+			{
+				for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
+					tempx = it->x;
+					it->x = -it->y;
+					it->y = tempx;
+				}
+			}
+			else if (rotate == 2)
+			{
+				for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
+					it->x = -it->x;
+					it->y = -it->y;
+				}
+			}
+			else if (rotate == 3)
+			{
+				for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
+					tempx = it->x;
+					it->x = it->y;
+					it->y = -tempx;
+				}
+			}
+			for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
+				if (center + *it == test) {
+					ret = true;
+				}
+			}
+
+			return ret;
 		}
 	};
 }

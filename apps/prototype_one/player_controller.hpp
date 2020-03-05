@@ -113,6 +113,7 @@ public:
 			core::controls card4;
 			int column_to_up_scale;
 			float forward;
+			float left;
 			
 			if (add_energy && player.energy < 10)
 				player.energy++;
@@ -126,6 +127,7 @@ public:
 				card4 = core::CARD4_CONTROL;
 				column_to_up_scale = 0;
 				forward = m_input.forward();
+				left = m_input.strafe();
 			}
 			else if (player.team == -1.0f) {
 				card1 = core::CARD1_CONTROL_PLAYER2;
@@ -134,6 +136,7 @@ public:
 				card4 = core::CARD4_CONTROL_PLAYER2;
 				column_to_up_scale = 8;
 				forward = m_input.forward_player2();
+				left = m_input.strafe_player2();
 			}
 			
 			
@@ -148,7 +151,7 @@ public:
 				{
 					loc = 1;
 				}
-				else if (m_input.is_input_started(card3))
+				else if (m_input.is_input_started(card2))
 				{
 					loc = 2;
 				}
@@ -159,6 +162,9 @@ public:
 				if (loc != -1) {
 					player.selected_card = card_select(player, &(player.state), loc);
 					player.selected_card_location = loc;
+				}
+				if (m_input.is_input_started(card3)) {
+					player.state = components::PLAYER_STATE::DICE_PLACEMENT;
 				}
 			}
 			else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
@@ -203,33 +209,96 @@ public:
 				}
 				else if (forward > .4f)
 				{
-					if (player.selected_row > 0 && player.row_select_delay <= 0.f)
+					if (player.selected_row > 0 && player.select_delay <= 0.f)
 					{
-						player.row_select_delay = 0.1f;
+						player.select_delay = 0.1f;
 						player.selected_row--;
 					}
 					else
 					{
-						player.row_select_delay -= m_timer.smoothed_delta_secs();
+						player.select_delay -= m_timer.smoothed_delta_secs();
 					}
 				}
 				else if (forward < -.4f)
 				{
-					if (player.selected_row < 6 && player.row_select_delay <= 0.f)
+					if (player.selected_row < 6 && player.select_delay <= 0.f)
 					{
-						player.row_select_delay = 0.1f;
+						player.select_delay = 0.1f;
 						player.selected_row++;
 					}
 					else
 					{
-						player.row_select_delay -= m_timer.smoothed_delta_secs();
+						player.select_delay -= m_timer.smoothed_delta_secs();
 					}
 				}
 				
 			}
 			else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
 			{
-				//WIP
+				r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+					{
+						
+							player.net_check(glm::ivec2(square.x,square.y),glm::ivec2(player.selected_row,player.selected_column),
+								components::dice_nets::SEVEN,0,false)? row_select(transform, 1.5f) : row_select(transform, 1);
+						
+					});
+				if (m_input.is_input_started(card1))
+				{
+					//TODO
+				}
+				else if (m_input.is_input_started(card2))
+					{
+					player.state = components::PLAYER_STATE::BASE;
+					}
+				else if (forward > .4f)
+					{
+					if (player.selected_row > 0 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_row--;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+					}
+				else if (forward < -.4f)
+					{
+					if (player.selected_row < 6 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_row++;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+				}
+				
+				else if (left < -.4f)
+				{
+					if (player.selected_column > 0 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_column--;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+				}
+				else if (left > .4f)
+				{
+					if (player.selected_column < 8 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_column++;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+				}
 				
 
 			} 
