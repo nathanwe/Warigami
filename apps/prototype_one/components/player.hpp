@@ -24,7 +24,9 @@ namespace components
 	{
 		BASE,
 		UNIT_PLACEMENT,
-		DICE_PLACEMENT
+		DICE_PLACEMENT,
+		LOST,
+		WON
 	};
 
 	const static std::vector<int> card_costanamos = { 0, 1, 2, 2 };
@@ -66,7 +68,7 @@ namespace components
         }
 
 		int energy = 0;
-		float health = 0.f;
+		float health {100.f};
 		int bonus_dice = 0;
 		float team = 0.0f;
 		card_enum selected_card;

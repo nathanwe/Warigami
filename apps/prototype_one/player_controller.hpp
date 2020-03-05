@@ -68,9 +68,9 @@ public:
 		nerdP.board_source.y = nerdP.team >= 0 ? 0 : 8;
 		
 		if (nerdP.team >= 0)
-			nerdT.rotation.y = glm::pi<float>() - glm::half_pi<float>()/2.f;
+			nerdT.rotation.y = glm::pi<float>() - glm::quarter_pi<float>();
 		else
-			nerdT.rotation.y = + glm::half_pi<float>()/2.f;
+			nerdT.rotation.y = glm::quarter_pi<float>();
 
 		nerdP.continuous_board_location = nerdP.board_source;
 		nerdP.board_destination = nerdP.board_source;
@@ -103,7 +103,7 @@ public:
 		}
 		else
 		{
-			timer -= m_timer.smoothed_delta_secs();
+			timer -= m_timer.smoothed_delta_secs() * 10.f;
 		}
 		r_state.each<components::player>([&](components::player& player)
 		{
@@ -118,6 +118,7 @@ public:
 				player.energy++;
 
 			std::cerr << "Player " << player.team << " energy: " << player.energy << std::endl;
+            std::cerr << "Player " << player.team << " helath: " << player.health << std::endl;
 
 			if (player.team == 1.0f) {
 				card1 = core::CARD1_CONTROL;
@@ -230,10 +231,7 @@ public:
 			else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
 			{
 				//WIP
-				
-
-			} 
-			
+			}
 		});
 	}
 

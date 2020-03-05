@@ -54,8 +54,11 @@ public:
                     (piece.board_source.y <= 0 && piece.team == -1) ||
                     (piece.board_source.y >= 8 && piece.team == 1);
 
-                if (out_of_bounds) 
+                if (out_of_bounds)
+                {
                     piece.state = components::UNIT_STATE::DYING;
+                    score_for_team(r_state, piece.team, piece.damage * 10.f);
+                }
             });
             
             r_state.each<components::game_piece>([&](components::game_piece& piece) 
@@ -70,7 +73,7 @@ public:
         });        
     }
 
-    void reconcile_movement_intervals(ecs::state& r_state, components::board& board)
+    static void reconcile_movement_intervals(ecs::state& r_state, components::board& board)
     {
         bool changed = true;
         while (changed)
@@ -148,7 +151,7 @@ public:
         game_piece.board_source = location;
     }
     //Helper function for getting a board_square
-    static ecs::entity* get_square_id_with_loaction(ecs::state& r_state, glm::ivec2 loc) {
+    static ecs::entity* get_square_at_location(ecs::state& r_state, glm::ivec2 loc) {
         return r_state.first<components::board_square>([&](components::board_square& board_square) {
             return board_square.x == loc.x && board_square.y == loc.y;                 
         });
@@ -226,7 +229,7 @@ public:
 
             // If a unit is standing in fire, it takes damage; (SHOULD GO IN TILE_EFFECT_SYSTEM)
             r_state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
-                ecs::entity* square_e = get_square_id_with_loaction(r_state, game_piece.board_source);
+                ecs::entity* square_e = get_square_at_location(r_state, game_piece.board_source);
                 if (square_e) {
                     auto& square = square_e->get_component<components::board_square>();
                     if (square.terrain_type == terrain::fire) {
@@ -276,6 +279,21 @@ private:
     core::frame_timer &m_timer;
     event::EventManager &event_manager;
     asset::scene_hydrater &hydrater;
+
+    static void score_for_team(ecs::state& state, float team, float damage)
+    {
+		state.each<components::player>([&](auto& p)
+		{
+			if (p.team != team)
+			{
+				p.health -= damage;
+			}
+		});
+        state.each<components::tug_of_war_meter>([&](auto& meter)
+        {
+            meter.value += -1.f * team * damage;
+        });
+    }
 };
 
 #endif
