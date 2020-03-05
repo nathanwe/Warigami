@@ -54,8 +54,21 @@ public:
                     (piece.board_source.y <= 0 && piece.team == -1) ||
                     (piece.board_source.y >= 8 && piece.team == 1);
 
-                if (out_of_bounds) 
+                if (out_of_bounds)
+                {
                     piece.state = components::UNIT_STATE::DYING;
+                    r_state.each<components::player>([&](auto& p)
+                    {
+                        if (p.team != piece.team)
+                        {
+                            p.health -= piece.damage * 10.f;
+                        }
+                        r_state.each<components::tug_of_war_meter>([&](auto& meter)
+                        {
+                            meter.value += -1.f * piece.team * piece.damage * 10.f;
+                        });
+                    });
+                }
             });
             
             r_state.each<components::game_piece>([&](components::game_piece& piece) 

@@ -8,6 +8,8 @@
 #include <event/event_manager.hpp>
 #include <transforms/transform.hpp>
 
+#include <algorithm>
+
 class energy_meter_system : public ecs::system_base
 {
 public:
@@ -40,7 +42,8 @@ public:
 			{
 				if (p.team == meter.team)
 				{
-					tform.scale.x = p.energy / 10.f * max_scale;
+					float clamped = std::clamp(p.energy, 0, 10);
+					tform.scale.x = clamped / 10.f * max_scale;
 					tform.position.x = meter.first_position.x + tform.scale.x / 2.f;
 					tform.is_matrix_dirty = true;
 				}

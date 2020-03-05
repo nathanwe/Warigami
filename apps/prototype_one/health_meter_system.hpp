@@ -7,6 +7,8 @@
 #include <event/event_manager.hpp>
 #include <transforms/transform.hpp>
 
+#include <algorithm>
+
 class health_meter_system : public ecs::system_base
 {
 public:
@@ -39,7 +41,8 @@ public:
 			{
 				if (p.team == meter.team)
 				{
-					tform.scale.x = p.health / 100.f * max_scale;
+					float clamped = std::clamp(p.health, 0.f, 100.f);
+					tform.scale.x = clamped / 100.f * max_scale;
 					tform.position.x = meter.first_position.x + tform.scale.x / 2.f;
 					tform.is_matrix_dirty = true;
 				}

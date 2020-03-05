@@ -10,6 +10,7 @@ namespace components
 	struct tug_of_war_meter : ecs::component<tug_of_war_meter>
 	{
 		float value = 0.f; // [-100.f, 100.f]
+		glm::vec3 first_position;
 	};
 }
 

@@ -957,8 +957,22 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [ 5, 1, 0 ],
-					"scale": [ 1, 1, 1 ]
+					"position": [ 5, 2, 0 ],
+					"scale": [ 1, 0.5, 4.5 ]
+				}
+			]
+		},
+		{
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 5, 2, 0 ],
+					"scale": [ 1.25, 1, 0.25 ]
+				},
+				{
+					"type": "renderable_mesh_static",
+					"mesh": "assets/meshes/cube/cube.obj",
+					"param_diffuse": [ 0.25, 0.25, 0.25 ]
 				}
 			]
 		}
