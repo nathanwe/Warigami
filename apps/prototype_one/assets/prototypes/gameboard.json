@@ -895,6 +895,72 @@
 					"y": 0
 				}
 			]
+		},
+		{
+			"prototype": "assets/prototypes/health_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, -4.845 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "health_meter",
+					"team": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/health_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, 4.845 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "health_meter",
+					"team": -1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/energy_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, -4.625 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "energy_meter",
+					"team": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/energy_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, 4.625 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "energy_meter",
+					"team": -1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/tug_of_war_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 5, 1, 0 ],
+					"scale": [ 1, 1, 1 ]
+				}
+			]
 		}
 	]
 }
