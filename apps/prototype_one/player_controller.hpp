@@ -1,7 +1,7 @@
 #ifndef GAME_PLAYER_CONTROLLER_HPP
 #define GAME_PLAYER_CONTROLLER_HPP
 
-#define ROUND_TIME 1.0f
+#define ROUND_TIME 2.0f
 
 #include "ecs/state.hpp"
 #include <core/game_input_manager.hpp>
@@ -34,11 +34,11 @@ public:
 	{
 		if (components::card_costanamos[(int)player.hand[num]] > player.energy)
 		{
-			*playerState = game::PLAYER_STATE::BASE;
+			*playerState = components::PLAYER_STATE::BASE;
 		}
 		else
 		{
-			*playerState = game::PLAYER_STATE::PLACEMENT;
+			*playerState = components::PLAYER_STATE::UNIT_PLACEMENT;
 		}
 		return player.hand[num];
 	}
@@ -184,9 +184,9 @@ public:
 
 					if (!taken)
 					{
-						spawn_unit(player.selected_row, player.team, r_state, player.hand[*selected_card_location_px_p]);
-						player.energy -= components::card_costanamos[(int)player.hand[*selected_card_location_px_p]];
-						player.hand[*selected_card_location_px_p] = player.safe_draw();
+						spawn_unit(player.selected_row, player.team, r_state, player.hand[player.selected_card_location]);
+						player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
+						player.hand[player.selected_card_location] = player.safe_draw();
 					}
 						
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
@@ -238,6 +238,7 @@ public:
 	}
 
 private:
+	float timer = ROUND_TIME;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;

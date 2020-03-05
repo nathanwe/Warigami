@@ -1,7 +1,7 @@
 #ifndef GAME_BOARD_UPDATE_SYSTEM_HPP
 #define GAME_BOARD_UPDATE_SYSTEM_HPP
 
-#define ROUND_TIME 1.0f
+#define ROUND_TIME 2.0f
 
 #include "ecs/state.hpp"
 #include <transforms/transform.hpp>
