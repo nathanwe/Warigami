@@ -37,8 +37,9 @@ public:
 	{
 		r_state.each<components::tug_of_war_meter, transforms::transform>([&](auto& meter, auto& tform)
 		{
-			float offset = std::clamp(meter.value / 200.f * max_tug, -max_tug, max_tug);
-			
+			float offset = std::clamp(meter.value / 100.f, -1.f, 1.f);
+			offset *= max_tug;
+
 			tform.position.z = meter.first_position.z + offset;
 			tform.is_matrix_dirty = true;
 		});
