@@ -104,6 +104,7 @@ public:
 			int* selected_card_location_px_p;
 			float* row_select_delay_px_p;
 			int column_to_up_scale;
+			float forward;
 
 			if (player.team == 1.0f) {
 				state_px_p = &state_p1;
@@ -115,6 +116,7 @@ public:
 				selected_card_location_px_p = &selected_card_location_p1;
 				row_select_delay_px_p = &row_select_delay;
 				column_to_up_scale = 0;
+				forward = m_input.forward();
 			}
 			else if (player.team == -1.0f) {
 				state_px_p = &state_p2;
@@ -126,6 +128,7 @@ public:
 				selected_card_location_px_p = &selected_card_location_p2;
 				row_select_delay_px_p = &row_select_delay_two;
 				column_to_up_scale = 8;
+				forward = m_input.forward_player2();
 			}
 			
 			
@@ -192,7 +195,7 @@ public:
 				{
 					*state_px_p = game::PLAYER_STATE::BASE;
 				}
-				else if (m_input.forward() > .4f)
+				else if (forward > .4f)
 				{
 					if (player.selected_row > 0 && *row_select_delay_px_p <= 0.f)
 					{
@@ -204,7 +207,7 @@ public:
 						*row_select_delay_px_p -= m_timer.smoothed_delta_secs();
 					}
 				}
-				else if (m_input.forward() < -.4f)
+				else if (forward < -.4f)
 				{
 					if (player.selected_row < 6 && *row_select_delay_px_p <= 0.f)
 					{
