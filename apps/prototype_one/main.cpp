@@ -15,6 +15,12 @@
 #include "components/dice_loader.hpp"
 #include "components/player.hpp"
 #include "components/player_loader.hpp"
+#include "components/energy_meter.hpp"
+#include "components/energy_meter_loader.hpp"
+#include "components/health_meter.hpp"
+#include "components/health_meter_loader.hpp"
+#include "components/tug_of_war_meter.hpp"
+#include "components/tug_of_war_meter_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -22,6 +28,9 @@
 #include "player_controller.hpp"
 #include "util/boardgen.hpp"
 #include "game_start_system.hpp"
+#include "energy_meter_system.hpp"
+#include "health_meter_system.hpp"
+#include "tug_of_war_system.hpp"
 
 
 int main(int argc, char** argv) {
@@ -56,6 +65,9 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::card>("card");
 	ecs::register_component<components::dice>("dice");
 	ecs::register_component<components::player>("player");
+	ecs::register_component<components::energy_meter>("energy_meter");
+	ecs::register_component<components::health_meter>("health_meter");
+	ecs::register_component<components::tug_of_war_meter>("tug_of_war_meter");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -83,7 +95,14 @@ int main(int argc, char** argv) {
 	rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets, timer);
 	transforms::transformer transformer;
 
+	energy_meter_system energy_system;
+	health_meter_system health_system;
+	tug_of_war_meter_system tug_system;
+
 	ecs::systems systems({
+		&energy_system,
+		&health_system,
+		&tug_system,
 		&transformer,
 		&camera_updater,
 		&renderer,
@@ -110,6 +129,9 @@ int main(int argc, char** argv) {
 	components::card_loader card_loader;
 	components::dice_loader dice_loader;
 	components::player_loader player_loader;
+	components::energy_meter_loader energy_loader;
+	components::health_meter_loader health_loader;
+	components::tug_of_war_meter_loader tug_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
@@ -130,7 +152,10 @@ int main(int argc, char** argv) {
 		&rigid_body_loader,
 		&sphere_collider_loader,
 		&transform_loader,
-		&model_loader);
+		&model_loader,
+		&energy_loader,
+		&health_loader,
+		&tug_loader);
 
 	hydrater.load();
 
@@ -156,10 +181,9 @@ int main(int argc, char** argv) {
 		overlay.update();
 
 		glfw.swap_buffers();
+		hydrater.flush_removed();		
+		
 		limiter.wait_remainder();
-
-		hydrater.flush_removed();
-
 		timer.end();
 	}
 }

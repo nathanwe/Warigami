@@ -1,0 +1,17 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform"
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/cube/cube.obj",
+        "param_diffuse": [ 1, 0, 0 ]
+      },
+      {
+        "type": "tug_of_war_meter"
+      }
+    ]
+  }
+}

@@ -68,9 +68,17 @@ void engineui::entities_view::draw()
 
         if (tr != nullptr) {
             ImGui::Indent();
-            ImGui::InputFloat3("pos", glm::value_ptr(tr->position));
-            ImGui::InputFloat3("rot", glm::value_ptr(tr->rotation));
-            ImGui::InputFloat3("scl", glm::value_ptr(tr->scale));
+
+			const bool pos_changed = ImGui::InputFloat3("pos", glm::value_ptr(tr->position));
+			const bool rot_changed = ImGui::InputFloat3("rot", glm::value_ptr(tr->rotation));
+			const bool sca_changed = ImGui::InputFloat3("scl", glm::value_ptr(tr->scale));
+
+			const bool any_changed = pos_changed || rot_changed || sca_changed;
+			if (any_changed)
+			{
+				tr->is_matrix_dirty = true;
+			}
+
             ImGui::Unindent();
         }
 

@@ -6,6 +6,9 @@ add_executable (prototype_one main.cpp
 				components/card.cpp components/card_loader.cpp
 				components/dice.cpp components/dice_loader.cpp
 				components/player.cpp components/player_loader.cpp
+				components/energy_meter.cpp
+				components/health_meter.cpp
+				components/tug_of_war_meter.cpp
 				board_update_system.hpp
 				util/boardgen.cpp components/countdown.cpp components/countdown.hpp)
 

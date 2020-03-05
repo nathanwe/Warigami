@@ -15,7 +15,10 @@ namespace components
 		player = 37,
 		board_path_movement = 38,
 		hit_points = 39,
-		disco_light = 40
+		disco_light = 40,
+		health_meter = 41,
+		energy_meter = 42,
+		tug_of_war_meter = 43
 	};
 }
 
