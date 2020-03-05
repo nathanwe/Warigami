@@ -7,7 +7,7 @@ void components::player_loader::load(asset::asset_loader_node& asset_loader_node
 	auto& json = entity_data->component_data(components::player::component_bitshift);
 	auto& p = entity->get_component<player>();
 	p.energy = json.value("energy", 0);
-	p.health = json.value("health", 0.0f);
+	p.health = json.value("health", 100.0f);
 	p.team = json.value("team", 1.0f);
 }
 
