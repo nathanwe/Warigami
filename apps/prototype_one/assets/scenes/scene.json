@@ -5,9 +5,9 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -36, 13, 0 ],
+          "position": [ -35, 20, 0 ],
           "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, -90, -40 ]
+          "rotation": [ 0, -90, -45 ]
         },
         {
           "type": "camera",
