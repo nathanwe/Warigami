@@ -68,9 +68,9 @@ public:
 		nerdP.board_source.y = nerdP.team >= 0 ? 0 : 8;
 		
 		if (nerdP.team >= 0)
-			nerdT.rotation.y = glm::pi<float>() - glm::half_pi<float>()/2.f;
+			nerdT.rotation.y = glm::pi<float>() - glm::quarter_pi<float>();
 		else
-			nerdT.rotation.y = + glm::half_pi<float>()/2.f;
+			nerdT.rotation.y = glm::quarter_pi<float>();
 
 		nerdP.continuous_board_location = nerdP.board_source;
 		nerdP.board_destination = nerdP.board_source;

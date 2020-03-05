@@ -181,10 +181,9 @@ int main(int argc, char** argv) {
 		overlay.update();
 
 		glfw.swap_buffers();
+		hydrater.flush_removed();		
+		
 		limiter.wait_remainder();
-
-		hydrater.flush_removed();
-
 		timer.end();
 	}
 }
