@@ -118,6 +118,7 @@ public:
 				player.energy++;
 
 			std::cerr << "Player " << player.team << " energy: " << player.energy << std::endl;
+            std::cerr << "Player " << player.team << " helath: " << player.health << std::endl;
 
 			if (player.team == 1.0f) {
 				card1 = core::CARD1_CONTROL;
@@ -230,10 +231,7 @@ public:
 			else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
 			{
 				//WIP
-				
-
-			} 
-			
+			}
 		});
 	}
 
