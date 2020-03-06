@@ -34,6 +34,7 @@
 #include "combat.hpp"
 
 
+
 int main(int argc, char** argv) {
 
 	// Absolute dank
@@ -169,7 +170,10 @@ int main(int argc, char** argv) {
 	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
 	//cursor.disable();
-	
+
+	FT_Library  library;   /* handle to library     */
+
+
 
 	//game loop
 	while (!glfwWindowShouldClose(glfw.window())) {
