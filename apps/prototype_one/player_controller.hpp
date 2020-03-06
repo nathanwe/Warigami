@@ -103,7 +103,7 @@ public:
 		}
 		else
 		{
-			timer -= m_timer.smoothed_delta_secs() * 10.f;
+			timer -= m_timer.smoothed_delta_secs();
 		}
 		r_state.each<components::player>([&](components::player& player)
 		{
