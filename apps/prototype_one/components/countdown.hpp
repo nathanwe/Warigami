@@ -12,7 +12,7 @@ namespace components
 {
     struct countdown : public ecs::component<countdown>
     {
-        std::uint8_t current_value{ 3 };
+        float current_value{ 3 };
         float count_duration{ 60.f };
     };
 }
