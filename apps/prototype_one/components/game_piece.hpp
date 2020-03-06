@@ -4,6 +4,7 @@
 #include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
 #include "component_bits.hpp"
+#include "../combat.hpp"
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -36,6 +37,7 @@ namespace components
 		std::vector< glm::ivec2 > attacks; // A list of offsets in board-space that the unit can attack from its own space
 		glm::ivec2 move_board; // A vector keeping track of which direction is forward for the unit in board-space
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space
+		std::vector<combats::COMBAT_EFFECTS> effects = {combats::COMBAT_EFFECTS::DEAL_DAMAGE};
 	};
 }
 
