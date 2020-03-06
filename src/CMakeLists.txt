@@ -124,7 +124,9 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/animator.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/loader_rigged_model.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_node.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_animation.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_animation.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/renderable_text.cpp
+     ${PROJECT_SOURCE_DIR}/src/rendering/freetype_system.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST} )
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -136,7 +138,8 @@ target_link_libraries(rendering PUBLIC
     glbinding
     glm 
     glfw
-    asset)
+    asset
+    freetype)
 
 
 add_custom_target(copy_shaders

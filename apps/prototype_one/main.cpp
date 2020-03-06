@@ -171,9 +171,6 @@ int main(int argc, char** argv) {
 
 	//cursor.disable();
 
-	FT_Library  library;   /* handle to library     */
-
-
 
 	//game loop
 	while (!glfwWindowShouldClose(glfw.window())) {
