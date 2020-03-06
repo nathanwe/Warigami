@@ -76,6 +76,78 @@
           "scale": [ 5, 5, 5 ]
         }
       ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, -16 ]
+        }
+      ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, -11.8 ]
+        }
+      ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, -7.6 ]
+        }
+      ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, -3.4 ]
+        }
+      ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, 16 ]
+        }
+      ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, 11.8 ]
+        }
+      ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, 7.6 ]
+        }
+      ]
+    },
+    {
+      "prototype": "assets/prototypes/card.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -21, -8, 3.4 ]
+        }
+      ]
     }
   ]
 }

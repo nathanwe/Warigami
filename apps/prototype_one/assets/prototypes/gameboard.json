@@ -901,7 +901,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [ -3.5, 1, -4.845 ],
+					"position": [ -3.5, 1, -4.875 ],
 					"scale": [ 1, 1, 0.25 ]
 				},
 				{
@@ -915,7 +915,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [ -3.5, 1, 4.845 ],
+					"position": [ -3.5, 1, 4.875 ],
 					"scale": [ 1, 1, 0.25 ]
 				},
 				{
@@ -987,6 +987,222 @@
 					"type": "renderable_mesh_static",
 					"mesh": "assets/meshes/cube/cube.obj",
 					"param_diffuse": [ 0.25, 0.25, 0.25 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.8, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.1, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -1.4, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -0.7, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0.7, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 1.4, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.1, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.8, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 3.5, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.8, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.1, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -1.4, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -0.7, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0.7, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 1.4, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.1, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.8, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 3.5, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_wall.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, 5 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_wall.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, -5 ]
 				}
 			]
 		}

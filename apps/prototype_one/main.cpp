@@ -34,6 +34,7 @@
 #include "health_meter_system.hpp"
 #include "tug_of_war_system.hpp"
 #include "countdown_system.hpp"
+#include "combat.hpp"
 
 
 int main(int argc, char** argv) {
@@ -58,6 +59,7 @@ int main(int argc, char** argv) {
 	core::frame_limiter limiter(timer, 60);
 	core::cursor_state cursor(glfw.window());
 	event::EventManager events;
+	combats::combat_resolution resolver;
 
 	// init ecs state
 	ecs::archetype_pools memory;
@@ -88,7 +90,7 @@ int main(int argc, char** argv) {
 	asset::scene_hydrater hydrater(state, scene);
 
 	fly_cam flycam(input, timer, events);
-	board_update board_updater(input, timer, events, hydrater);
+	board_update board_updater(input, timer, events, hydrater, resolver);
 	player_controller player_control(input, timer, events, hydrater);
 	game_start_system game_start_system(hydrater);
 	audio::audio_system audio_system(strings, assets);

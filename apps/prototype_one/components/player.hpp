@@ -19,6 +19,7 @@ namespace components
 		BASIC_FAST = 3,
 		TOTAL_CARDS
 	};
+
 	enum class PLAYER_STATE
 	{
 		BASE,
