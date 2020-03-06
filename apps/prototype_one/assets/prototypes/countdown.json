@@ -1,0 +1,12 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform"
+      },
+      {
+        "type": "countdown"
+      }
+    ]
+  }
+}

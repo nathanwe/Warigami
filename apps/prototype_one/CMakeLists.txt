@@ -10,7 +10,9 @@ add_executable (prototype_one main.cpp
 				components/health_meter.cpp
 				components/tug_of_war_meter.cpp
 				board_update_system.hpp
-				util/boardgen.cpp components/countdown.cpp components/countdown.hpp)
+				util/boardgen.cpp
+				components/countdown.cpp
+				components/countdown.hpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs

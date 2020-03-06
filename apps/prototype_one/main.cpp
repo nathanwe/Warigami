@@ -21,6 +21,8 @@
 #include "components/health_meter_loader.hpp"
 #include "components/tug_of_war_meter.hpp"
 #include "components/tug_of_war_meter_loader.hpp"
+#include "components/countdown.hpp"
+#include "components/countdown_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -31,6 +33,7 @@
 #include "energy_meter_system.hpp"
 #include "health_meter_system.hpp"
 #include "tug_of_war_system.hpp"
+#include "countdown_system.hpp"
 
 
 int main(int argc, char** argv) {
@@ -68,6 +71,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::energy_meter>("energy_meter");
 	ecs::register_component<components::health_meter>("health_meter");
 	ecs::register_component<components::tug_of_war_meter>("tug_of_war_meter");
+	ecs::register_component<components::countdown>("countdown");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -98,11 +102,13 @@ int main(int argc, char** argv) {
 	energy_meter_system energy_system;
 	health_meter_system health_system;
 	tug_of_war_meter_system tug_system;
+	countdown_system count_system(timer);
 
 	ecs::systems systems({
 		&energy_system,
 		&health_system,
 		&tug_system,
+		&count_system,
 		&transformer,
 		&camera_updater,
 		&renderer,
@@ -132,6 +138,7 @@ int main(int argc, char** argv) {
 	components::energy_meter_loader energy_loader;
 	components::health_meter_loader health_loader;
 	components::tug_of_war_meter_loader tug_loader;
+	components::countdown_loader countdown_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
