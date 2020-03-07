@@ -35,10 +35,7 @@ void combats::combat_resolution::Resolve_Combats()
 			}
 		}
 	}
-}
 
-void combats::combat_resolution::Clear()
-{
 	current_combats.clear();
 }
 

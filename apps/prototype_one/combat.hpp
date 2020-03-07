@@ -39,8 +39,6 @@ namespace combats
 		void Add_Combat(components::game_piece& one, entity_id id_one, components::game_piece& two, entity_id id_two);
 		void Resolve_Combats();
 
-		void Clear();
-
 	private:
 		std::vector<combat> current_combats;
 	};
