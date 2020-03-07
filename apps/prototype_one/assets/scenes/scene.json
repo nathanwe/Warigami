@@ -148,15 +148,6 @@
           "position": [ -21, -8, 3.4 ]
         }
       ]
-    },
-    {
-      "components": [
-        {
-          "type": "renderable_text",
-          "text": "Hello freetype!\nabcdefghijklmnopqrstuvwzyz\nABCDEFGHIJKLMNOPQRSTUVWZYZ",
-          "position": [128, 128]
-        }
-      ]
-    }
+    }   
   ]
 }
