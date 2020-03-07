@@ -36,7 +36,8 @@ namespace rendering
         freetype_system(
             core::viewport &window_view,
             asset::asset_manager &assets,
-            util::string_table &strings);
+            util::string_table &strings,
+            render_state& render_state);
 
         void update(ecs::state &state) override;
 
@@ -45,6 +46,7 @@ namespace rendering
         core::viewport &_window_view;
         asset::asset_manager &_assets;
         util::string_table& _strings;
+        render_state& _render_state;
 
         Character _characters[NumCharacters]{};
 
@@ -54,7 +56,6 @@ namespace rendering
 
         render_pass::description _pass_desc;
         render_pass _pass_freetype;
-        render_state _render_state;
 
 
         void load_characters();

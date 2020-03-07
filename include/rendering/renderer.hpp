@@ -4,6 +4,7 @@
 #include "asset/asset_manager.hpp"
 #include "core/frame_timer.hpp"
 #include "core/viewport.hpp"
+#include <core/glfw_context.hpp>
 #include "ecs/ecs_types.hpp"
 #include "ecs/state.hpp"
 #include "ecs/system_base.hpp"
@@ -31,7 +32,13 @@ namespace rendering
 	class renderer : public ecs::system_base
 	{
 	public:
-		renderer(GLFWwindow* window, core::viewport window_view, bool is_debug, asset_cache& cache, asset::asset_manager& assets, const core::frame_timer& time);
+		renderer(
+			core::viewport window_view, 
+			bool is_debug, 
+			asset_cache& cache, 
+			asset::asset_manager& assets, 
+			const core::frame_timer& time,
+			render_state& render_state);
 
 	public:
 		virtual void update(ecs::state& state) override;
@@ -68,10 +75,11 @@ namespace rendering
         void bind_bones(renderable_mesh_rigged& component);
 
 	private:
-		const core::frame_timer& _time;
-		bool _is_debug = false;
-		GLFWwindow* _window = nullptr;
 		core::viewport _window_view;
+		bool _is_debug = false;
+		const core::frame_timer& _time;
+		render_state& _render_state;
+		
 		std::unique_ptr<render_pass> _pass_default;
         std::unique_ptr<render_pass> _pass_animated;
 		std::unique_ptr<render_pass> _pass_cubemap;
@@ -79,7 +87,7 @@ namespace rendering
 		mesh_static _mesh_cube;
 		mesh_static _mesh_sphere;
 		mesh_static _mesh_arrow;
-		render_state _render_state;
+		
 		glm::vec3 _debug_collider_color = glm::vec3(0, 1, 0);
 		float time_between_messages = 0.25f;
 		float last_message_time = 0.f;

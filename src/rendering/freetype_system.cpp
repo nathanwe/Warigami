@@ -9,12 +9,14 @@
 rendering::freetype_system::freetype_system(
         core::viewport &window_view,
         asset::asset_manager &assets,
-        util::string_table &strings)
+        util::string_table &strings,
+        render_state& render_state)
     : _window_view(window_view)
     , _assets(assets)
     , _strings(strings)
     , _pass_desc(make_pass_description(assets))
     , _pass_freetype(_pass_desc)
+    , _render_state(render_state)
 {	
 	if (FT_Init_FreeType(&ft))
 		std::cerr << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
@@ -48,9 +50,7 @@ void rendering::freetype_system::update(ecs::state& state)
                 0.0f,
                 (float)_window_view.height);
 
-        _pass_freetype.bind(_render_state);
-
-        //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+        _pass_freetype.bind(_render_state);        
 
         _pass_freetype.set_mat4(0, projection);
         _pass_freetype.set_float3(1, text.color);

@@ -99,8 +99,9 @@ int main(int argc, char** argv) {
 	physics::physics_update physics_update(collision_manager, timer);
 	rendering::asset_cache render_asset_cache(assets);
 	rendering::camera_updater camera_updater;
-	rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets, timer);
-	rendering::freetype_system text_renderer(window_view, assets, strings);
+	rendering::render_state render_state;
+	rendering::renderer renderer(window_view, is_debug, render_asset_cache, assets, timer, render_state);
+	rendering::freetype_system text_renderer(window_view, assets, strings, render_state);
 	transforms::transformer transformer;
 
 	energy_meter_system energy_system;
