@@ -37,6 +37,11 @@ void combats::combat_resolution::Resolve_Combats()
 	}
 }
 
+void combats::combat_resolution::Clear()
+{
+	current_combats.clear();
+}
+
 void combats::combat_resolution::Add_Combat(components::game_piece& one, entity_id id_one, components::game_piece& two, entity_id id_two) 
 { 
 	combats::combat new_combat(one, id_one, two, id_two);
