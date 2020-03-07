@@ -92,7 +92,16 @@ public:
 			nerdT.parent = id;
 		});
 	}
-
+	void create_fire_graphic(glm::vec3 relitive_pos, entity_id parent)
+	{
+		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/fire_graphic.json");
+		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
+		nerdT.position = relitive_pos;
+		nerdT.position.y += .6;
+		nerdT.has_parent = true;
+		nerdT.parent = parent;
+		nerdT.is_matrix_dirty = true;
+	}
 	virtual void update(ecs::state& r_state) override
 	{
 		bool add_energy = false;
@@ -103,7 +112,7 @@ public:
 		}
 		else
 		{
-			timer -= m_timer.smoothed_delta_secs() * 10.f;
+			timer -= m_timer.smoothed_delta_secs();
 		}
 		r_state.each<components::player>([&](components::player& player)
 		{
@@ -114,195 +123,206 @@ public:
 			int column_to_up_scale;
 			float forward;
 			float left;
-			
-			if (add_energy && player.energy < 10)
-				player.energy++;
+			r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
 
-			std::cerr << "Player " << player.team << " energy: " << player.energy << std::endl;
-            std::cerr << "Player " << player.team << " helath: " << player.health << std::endl;
+				if (add_energy && player.energy < 10)
+					player.energy++;
 
-			if (player.team == 1.0f) {
-				card1 = core::CARD1_CONTROL;
-				card2 = core::CARD2_CONTROL;
-				card3 = core::CARD3_CONTROL;
-				card4 = core::CARD4_CONTROL;
-				column_to_up_scale = 0;
-				forward = m_input.forward();
-				left = m_input.strafe();
-			}
-			else if (player.team == -1.0f) {
-				card1 = core::CARD1_CONTROL_PLAYER2;
-				card2 = core::CARD2_CONTROL_PLAYER2;
-				card3 = core::CARD3_CONTROL_PLAYER2;
-				card4 = core::CARD4_CONTROL_PLAYER2;
-				column_to_up_scale = 8;
-				forward = m_input.forward_player2();
-				left = m_input.strafe_player2();
-			}
-			
-			
-			if (player.state == components::PLAYER_STATE::BASE)
-			{	
-				int loc = -1;
-				if (m_input.is_input_started(card1))
+				std::cerr << "Player " << player.team << " energy: " << player.energy << std::endl;
+				std::cerr << "Player " << player.team << " helath: " << player.health << std::endl;
+
+				if (player.team == 1.0f) {
+					card1 = core::CARD1_CONTROL;
+					card2 = core::CARD2_CONTROL;
+					card3 = core::CARD3_CONTROL;
+					card4 = core::CARD4_CONTROL;
+					column_to_up_scale = 0;
+					forward = m_input.forward();
+					left = m_input.strafe();
+				}
+				else if (player.team == -1.0f) {
+					card1 = core::CARD1_CONTROL_PLAYER2;
+					card2 = core::CARD2_CONTROL_PLAYER2;
+					card3 = core::CARD3_CONTROL_PLAYER2;
+					card4 = core::CARD4_CONTROL_PLAYER2;
+					column_to_up_scale = 8;
+					forward = m_input.forward_player2();
+					left = m_input.strafe_player2();
+				}
+
+
+				if (player.state == components::PLAYER_STATE::BASE)
 				{
-					loc = 0;
-				}
-				else if (m_input.is_input_started(card2))
-				{
-					loc = 1;
-				}
-				else if (m_input.is_input_started(card2))
-				{
-					loc = 2;
-				}
-				else if (m_input.is_input_started(card4))
-				{
-					loc = 3;
-				}
-				if (loc != -1) {
-					player.selected_card = card_select(player, &(player.state), loc);
-					player.selected_card_location = loc;
-				}
-				if (m_input.is_input_started(card3)) {
-					player.state = components::PLAYER_STATE::DICE_PLACEMENT;
-				}
-			}
-			else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
-			{
-				r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-				{
-					if (square.y == column_to_up_scale)
+					int loc = -1;
+					if (m_input.is_input_started(card1))
 					{
-						square.x == player.selected_row ? row_select(transform, 1.2f) : row_select(transform, 1);
+						loc = 0;
 					}
-				});
-
-				if (m_input.is_input_started(card1))
-				{
-					bool taken = false;
-					r_state.each<components::game_piece>([&](components::game_piece& piece)
+					else if (m_input.is_input_started(card2))
 					{
-						if (piece.board_source == glm::ivec2(player.selected_row, column_to_up_scale))
-						{
-							taken = true;
-						}
-					});
-
-					if (!taken)
-					{
-						spawn_unit(player.selected_row, player.team, r_state, player.hand[player.selected_card_location]);
-						player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
-						player.hand[player.selected_card_location] = player.safe_draw();
+						loc = 1;
 					}
-						
+					else if (m_input.is_input_started(card2))
+					{
+						loc = 2;
+					}
+					else if (m_input.is_input_started(card4))
+					{
+						loc = 3;
+					}
+					if (loc != -1) {
+						player.selected_card = card_select(player, &(player.state), loc);
+						player.selected_card_location = loc;
+					}
+					if (m_input.is_input_started(card3)) {
+						player.state = components::PLAYER_STATE::DICE_PLACEMENT;
+					}
+				}
+				else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
+				{
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-					{
-						transform.scale.y = 1;
-						transform.is_matrix_dirty = true;
-					});
+						{
+							if (square.y == column_to_up_scale)
+							{
+								square.x == player.selected_row ? row_select(transform, 1.2f) : row_select(transform, 1);
+							}
+						});
 
-					player.state = components::PLAYER_STATE::BASE;
-				}
-				else if (m_input.is_input_started(card2))
-				{
-					player.state = components::PLAYER_STATE::BASE;
-				}
-				else if (forward > .4f)
-				{
-					if (player.selected_row > 0 && player.select_delay <= 0.f)
+					if (m_input.is_input_started(card1))
 					{
-						player.select_delay = 0.1f;
-						player.selected_row--;
-					}
-					else
-					{
-						player.select_delay -= m_timer.smoothed_delta_secs();
-					}
-				}
-				else if (forward < -.4f)
-				{
-					if (player.selected_row < 6 && player.select_delay <= 0.f)
-					{
-						player.select_delay = 0.1f;
-						player.selected_row++;
-					}
-					else
-					{
-						player.select_delay -= m_timer.smoothed_delta_secs();
-					}
-				}
-				
-			}
-			else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
-			{
-				r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-					{
-						
-							player.net_check(glm::ivec2(square.x,square.y),glm::ivec2(player.selected_row,player.selected_column),
-								components::dice_nets::SEVEN,0,false)? row_select(transform, 1.5f) : row_select(transform, 1);
-						
-					});
-				if (m_input.is_input_started(card1))
-				{
-					//TODO
-				}
-				else if (m_input.is_input_started(card2))
-					{
-					player.state = components::PLAYER_STATE::BASE;
-					}
-				else if (forward > .4f)
-					{
-					if (player.selected_row > 0 && player.select_delay <= 0.f)
-					{
-						player.select_delay = 0.1f;
-						player.selected_row--;
-					}
-					else
-					{
-						player.select_delay -= m_timer.smoothed_delta_secs();
-					}
-					}
-				else if (forward < -.4f)
-					{
-					if (player.selected_row < 6 && player.select_delay <= 0.f)
-					{
-						player.select_delay = 0.1f;
-						player.selected_row++;
-					}
-					else
-					{
-						player.select_delay -= m_timer.smoothed_delta_secs();
-					}
-				}
-				
-				else if (left < -.4f)
-				{
-					if (player.selected_column > 0 && player.select_delay <= 0.f)
-					{
-						player.select_delay = 0.1f;
-						player.selected_column--;
-					}
-					else
-					{
-						player.select_delay -= m_timer.smoothed_delta_secs();
-					}
-				}
-				else if (left > .4f)
-				{
-					if (player.selected_column < 8 && player.select_delay <= 0.f)
-					{
-						player.select_delay = 0.1f;
-						player.selected_column++;
-					}
-					else
-					{
-						player.select_delay -= m_timer.smoothed_delta_secs();
-					}
-				}
-				
+						bool taken = false;
+						r_state.each<components::game_piece>([&](components::game_piece& piece)
+							{
+								if (piece.board_source == glm::ivec2(player.selected_row, column_to_up_scale))
+								{
+									taken = true;
+								}
+							});
 
-			} 
+						if (!taken)
+						{
+							spawn_unit(player.selected_row, player.team, r_state, player.hand[player.selected_card_location]);
+							player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
+							player.hand[player.selected_card_location] = player.safe_draw();
+						}
+
+						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+							{
+								transform.scale.y = 1;
+								transform.is_matrix_dirty = true;
+							});
+
+						player.state = components::PLAYER_STATE::BASE;
+					}
+					else if (m_input.is_input_started(card2))
+					{
+						player.state = components::PLAYER_STATE::BASE;
+					}
+					else if (forward > .4f)
+					{
+						if (player.selected_row > 0 && player.select_delay <= 0.f)
+						{
+							player.select_delay = 0.1f;
+							player.selected_row--;
+						}
+						else
+						{
+							player.select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+					else if (forward < -.4f)
+					{
+						if (player.selected_row < 6 && player.select_delay <= 0.f)
+						{
+							player.select_delay = 0.1f;
+							player.selected_row++;
+						}
+						else
+						{
+							player.select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+
+				}
+				else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
+				{
+					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+						{
+
+							bool foo = player.net_check(glm::ivec2(square.x, square.y), glm::ivec2(player.selected_row, player.selected_column),
+								components::dice_nets::SEVEN, 0, false);
+							foo ? row_select(transform, 1.5f) : row_select(transform, 1);
+							if (m_input.is_input_started(card1)&&foo)
+							{
+								transform.scale.y = 1;
+								square.terrain_type = terrain::fire;
+								create_fire_graphic(transform.position, board_id);
+								player.state = components::PLAYER_STATE::BASE;
+							}
+							transform.is_matrix_dirty = true;
+						});
+					if (m_input.is_input_started(card2))
+					{
+						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+							{
+								transform.scale.y = 1;
+								transform.is_matrix_dirty = true;
+							});
+						player.state = components::PLAYER_STATE::BASE;
+					}
+					else if (forward > .4f)
+					{
+						if (player.selected_row > 0 && player.select_delay <= 0.f)
+						{
+							player.select_delay = 0.1f;
+							player.selected_row--;
+						}
+						else
+						{
+							player.select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+					else if (forward < -.4f)
+					{
+						if (player.selected_row < 6 && player.select_delay <= 0.f)
+						{
+							player.select_delay = 0.1f;
+							player.selected_row++;
+						}
+						else
+						{
+							player.select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+
+					else if (left < -.4f)
+					{
+						if (player.selected_column > 0 && player.select_delay <= 0.f)
+						{
+							player.select_delay = 0.1f;
+							player.selected_column--;
+						}
+						else
+						{
+							player.select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+					else if (left > .4f)
+					{
+						if (player.selected_column < 8 && player.select_delay <= 0.f)
+						{
+							player.select_delay = 0.1f;
+							player.selected_column++;
+						}
+						else
+						{
+							player.select_delay -= m_timer.smoothed_delta_secs();
+						}
+					}
+
+
+				}
+			});
 			
 		});
 	}
