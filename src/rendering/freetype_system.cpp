@@ -50,6 +50,7 @@ void rendering::freetype_system::update(ecs::state& state)
 
         _pass_freetype.bind(_render_state);
 
+        //glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
         _pass_freetype.set_mat4(0, projection);
         _pass_freetype.set_float3(1, text.color);
