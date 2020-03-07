@@ -19,6 +19,7 @@ namespace core
 		~glfw_context();
 
 		GLFWwindow* window();
+		const GLFWwindow* window() const;
 		void swap_buffers();
 
 		std::uint32_t width() const;

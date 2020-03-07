@@ -148,6 +148,15 @@
           "position": [ -21, -8, 3.4 ]
         }
       ]
+    },
+    {
+      "prototype": "assets/prototypes/egg.json",
+      "components": [
+        {
+          "type": "transform",
+          "scale": [1, 1, 1]
+        }
+      ]
     }
   ]
 }
