@@ -1,4 +1,7 @@
 #include <engine.hpp>
+#include <rendering/freetype_system.hpp>
+#include <rendering/loader_renderable_text.hpp>
+#include <rendering/renderable_text.hpp>
 
 #include "core/frame_limiter.hpp"
 
@@ -77,6 +80,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<rendering::light_point>("light_point");
 	ecs::register_component<rendering::renderable_mesh_static>("renderable_mesh_static");
 	ecs::register_component<rendering::renderable_model_static>("model");
+    ecs::register_component<rendering::renderable_text>("renderable_text");
 	ecs::register_component<audio::audio_emitter>("audio_emitter");
 	ecs::register_component<audio::audio_listener>("audio_listener");
 	ecs::register_component<collisions::sphere_collider>("sphere_collider");
@@ -96,6 +100,7 @@ int main(int argc, char** argv) {
 	rendering::asset_cache render_asset_cache(assets);
 	rendering::camera_updater camera_updater;
 	rendering::renderer renderer(glfw.window(), window_view, is_debug, render_asset_cache, assets, timer);
+	rendering::freetype_system text_renderer(window_view, assets, strings);
 	transforms::transformer transformer;
 
 	energy_meter_system energy_system;
@@ -109,6 +114,7 @@ int main(int argc, char** argv) {
 		&transformer,
 		&camera_updater,
 		&renderer,
+        &text_renderer,
 		&flycam,
 		&audio_system,
 		&physics_update,
@@ -126,6 +132,7 @@ int main(int argc, char** argv) {
 	rendering::loader_light_point point_light_loader;
 	rendering::loader_model model_loader(render_asset_cache);
 	rendering::render_loader render_loader(render_asset_cache);
+	rendering::loader_renderable_text text_loader(strings);
 	components::game_piece_loader game_piece_loader;
 	components::board_loader board_loader;
 	components::board_square_loader board_square_loader;
@@ -158,7 +165,8 @@ int main(int argc, char** argv) {
 		&model_loader,
 		&energy_loader,
 		&health_loader,
-		&tug_loader);
+		&tug_loader,
+		&text_loader);
 
 	hydrater.load();
 

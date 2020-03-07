@@ -126,7 +126,8 @@ set (RENDERING_SOURCE_LIST
      ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_node.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/skeleton_animation.cpp
      ${PROJECT_SOURCE_DIR}/src/rendering/renderable_text.cpp
-     ${PROJECT_SOURCE_DIR}/src/rendering/freetype_system.cpp)
+     ${PROJECT_SOURCE_DIR}/src/rendering/freetype_system.cpp
+    ${PROJECT_SOURCE_DIR}/src/rendering/loader_renderable_text.cpp)
 
 add_library(rendering STATIC ${RENDERING_SOURCE_LIST} )
 target_include_directories(rendering PRIVATE ${PROJECT_SOURCE_DIR}/include)
@@ -141,12 +142,11 @@ target_link_libraries(rendering PUBLIC
     asset
     freetype)
 
-
-add_custom_target(copy_shaders
+add_custom_target(copy_render_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/src/rendering/shaders ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/shaders
-)
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/src/rendering/fonts ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets/fonts)
 
-add_dependencies (rendering copy_shaders)
+add_dependencies (rendering copy_render_assets)
 
 ##### ENGINE-UI #####
 set (ENGINEUI_SOURCE_LIST

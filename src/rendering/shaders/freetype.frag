@@ -3,8 +3,9 @@
 in vec2 TexCoords;
 out vec4 color;
 
-uniform sampler2D text;
-uniform vec3 textColor;
+layout(binding = 0) uniform sampler2D text;
+
+layout(location = 1) uniform vec3 textColor;
 
 void main()
 {    
