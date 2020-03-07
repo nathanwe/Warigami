@@ -128,9 +128,6 @@ public:
 				if (add_energy && player.energy < 10)
 					player.energy++;
 
-				std::cerr << "Player " << player.team << " energy: " << player.energy << std::endl;
-				std::cerr << "Player " << player.team << " helath: " << player.health << std::endl;
-
 				if (player.team == 1.0f) {
 					card1 = core::CARD1_CONTROL;
 					card2 = core::CARD2_CONTROL;
