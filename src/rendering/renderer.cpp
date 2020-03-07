@@ -27,12 +27,17 @@ namespace rendering
     gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message,
                       const void *user_parameter);
 
-    renderer::renderer(GLFWwindow *window, core::viewport window_view, bool is_debug, asset_cache &cache,
-                       asset::asset_manager &assets, const core::frame_timer &time) :
-            _window(window),
-            _window_view(window_view),
-            _is_debug(is_debug),
-            _time(time)
+    renderer::renderer(
+        core::viewport window_view, 
+        bool is_debug, 
+        asset_cache &cache,
+        asset::asset_manager &assets, 
+        const core::frame_timer &time,
+        render_state& render_state)
+        : _window_view(window_view)
+        , _is_debug(is_debug)
+        , _time(time)
+        , _render_state(render_state)
     {
         initialize_backend();
         initialize_passes(assets);

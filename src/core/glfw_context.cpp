@@ -65,6 +65,11 @@ GLFWwindow* core::glfw_context::window()
 	return _window;
 }
 
+const GLFWwindow* core::glfw_context::window() const
+{
+	return _window;
+}
+
 void core::glfw_context::swap_buffers()
 {
 	glfwSwapBuffers(_window);
