@@ -17,7 +17,7 @@ using namespace gl;
 #include <util/string_table.hpp>
 
 #include "render_pass.hpp"
-
+#include "renderable_text.hpp"
 
 namespace rendering
 {
@@ -48,6 +48,8 @@ namespace rendering
         util::string_table& _strings;
         render_state& _render_state;
 
+        int _max_character_height{ 0 };
+
         Character _characters[NumCharacters]{};
 
         FT_Library ft{};
@@ -59,6 +61,8 @@ namespace rendering
 
 
         void load_characters();
+        void render_characters(rendering::renderable_text& text);
+        void draw_character(glm::vec2 pos, Character& ch, float scale);
 
         static render_pass::description make_pass_description(asset::asset_manager &assets);
 

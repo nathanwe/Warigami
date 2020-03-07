@@ -41,71 +41,6 @@ rendering::freetype_system::freetype_system(
 
 }
 
-void rendering::freetype_system::update(ecs::state& state)
-{
-	state.each<renderable_text>([&](renderable_text& text) {
-        glm::mat4 projection = glm::ortho(
-                0.0f,
-                (float)_window_view.width,
-                0.0f,
-                (float)_window_view.height);
-
-        _pass_freetype.bind(_render_state);        
-
-        _pass_freetype.set_mat4(0, projection);
-        _pass_freetype.set_float3(1, text.color);
-
-
-        glBindVertexArray(VAO);
-
-        auto x = text.position.x;
-        auto y = text.position.y;
-        auto scale = text.scale;
-
-        // Iterate through all characters
-        std::string::const_iterator c;
-        auto& str = _strings[text.string_hash];
-        for (c = str.begin(); c != str.end(); c++)
-        {
-            Character& ch = _characters[*c];
-
-            GLfloat xpos = x + ch.bearing.x * scale;
-            GLfloat ypos = y - (ch.size.y - ch.bearing.y) * scale;
-
-            GLfloat w = ch.size.x * scale;
-            GLfloat h = ch.size.y * scale;
-
-            // Update VBO for each character
-            GLfloat vertices[6][4] = {
-                    { xpos,     ypos + h,   0.0, 0.0 },
-                    { xpos,     ypos,       0.0, 1.0 },
-                    { xpos + w, ypos,       1.0, 1.0 },
-                    { xpos,     ypos + h,   0.0, 0.0 },
-                    { xpos + w, ypos,       1.0, 1.0 },
-                    { xpos + w, ypos + h,   1.0, 0.0 }
-            };
-            // Render glyph texture over quad
-            //glBindTexture(GL_TEXTURE_2D, ch.textureID);
-            _pass_freetype.set_texture(0, ch.textureID);
-
-            // Update content of VBO memory
-            glBindBuffer(GL_ARRAY_BUFFER, VBO);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-            // Render quad
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-            x += (ch.advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-        }
-
-        glBindVertexArray(0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-    });
-}
-
 void rendering::freetype_system::load_characters()
 {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
@@ -146,7 +81,91 @@ void rendering::freetype_system::load_characters()
         _characters[c].size = glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
         _characters[c].bearing = glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
         _characters[c].advance = face->glyph->advance.x;
+
+        _max_character_height = std::max(_characters[c].size.y, _max_character_height);
     }
+}
+
+void rendering::freetype_system::update(ecs::state& state)
+{
+	state.each<renderable_text>([&](renderable_text& text) {
+        glm::mat4 projection = glm::ortho(
+                0.0f,
+                (float)_window_view.width,
+                0.0f,
+                (float)_window_view.height);
+
+        _pass_freetype.bind(_render_state);
+        _pass_freetype.set_mat4(0, projection);
+        _pass_freetype.set_float3(1, text.color);
+
+        glBindVertexArray(VAO);
+
+        render_characters(text);
+    });
+}
+
+void rendering::freetype_system::render_characters(rendering::renderable_text& text)
+{
+    auto x = text.position.x;
+    auto y = text.position.y;
+    auto scale = text.scale;
+    float line_number_offset = 0;
+    auto& str = _strings[text.string_hash];    
+
+    for (std::string::const_iterator c = str.begin(); c != str.end(); c++)
+    {
+        if (*c == '\n')
+        {
+            line_number_offset += _max_character_height;
+            x = text.position.x;
+            continue;
+        }
+
+        if (*c > NumCharacters)
+            continue;
+
+        draw_character({ x, y - line_number_offset }, _characters[*c], scale);
+
+        // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+        // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+        x += (_characters[*c].advance >> 6)* scale; 
+    }
+
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void rendering::freetype_system::draw_character(glm::vec2 pos, Character& ch, float scale)
+{
+    GLfloat xpos = pos.x + ch.bearing.x * scale;
+    GLfloat ypos = pos.y - (ch.size.y - ch.bearing.y) * scale;
+
+    GLfloat w = ch.size.x * scale;
+    GLfloat h = ch.size.y * scale;
+
+    // Update VBO for each character
+    GLfloat vertices[6][4] = {
+            { xpos,     ypos + h,   0.0, 0.0 },
+            { xpos,     ypos,       0.0, 1.0 },
+            { xpos + w, ypos,       1.0, 1.0 },
+            { xpos,     ypos + h,   0.0, 0.0 },
+            { xpos + w, ypos,       1.0, 1.0 },
+            { xpos + w, ypos + h,   1.0, 0.0 }
+    };
+
+    // Render glyph texture over quad
+    //glBindTexture(GL_TEXTURE_2D, ch.textureID);
+    _pass_freetype.set_texture(0, ch.textureID);
+
+    // Update content of VBO memory
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    // Render quad
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 rendering::render_pass::description rendering::freetype_system::make_pass_description(asset::asset_manager &assets)
