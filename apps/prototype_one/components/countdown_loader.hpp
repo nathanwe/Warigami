@@ -18,7 +18,7 @@ namespace components
 
 			if (auto it = json.find("duration"); it != json.end())
 			{
-				count.count_duration = it->get<float>() *  1000000000; // To nanoseconds
+				count.count_duration = it->get<float>();
 			}
 		}
 

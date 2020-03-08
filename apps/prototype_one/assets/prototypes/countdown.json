@@ -5,7 +5,8 @@
         "type": "transform"
       },
       {
-        "type": "countdown"
+        "type": "countdown",
+        "duration": 600 
       },
       {
         "type": "renderable_text",

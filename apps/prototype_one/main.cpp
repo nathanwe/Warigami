@@ -174,6 +174,7 @@ int main(int argc, char** argv) {
 		&energy_loader,
 		&health_loader,
 		&tug_loader,
+		&countdown_loader,
 		&text_loader);
 
 	hydrater.load();

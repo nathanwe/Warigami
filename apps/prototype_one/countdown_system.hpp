@@ -33,7 +33,7 @@ public:
 			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
 			{
 				countdown.current_value = countdown.count_duration;
-				text.position = glm::ivec2(config.width()/2 - 50, config.height() - 200);
+				text.position = glm::ivec2(config.width()/2 - 100, config.height() - 200);
 				text.scale = 2.0;
 				text.string_hash = _strings.hash_and_store(std::to_string((int)countdown.current_value));
 			});
@@ -44,7 +44,11 @@ public:
 			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
 			{
 				countdown.current_value -= m_timer.delta_secs();
-				text.string_hash = _strings.hash_and_store(std::to_string((int)countdown.current_value));
+				int minutes = countdown.current_value / 60;
+				int seconds = (int)countdown.current_value % 60;
+				std::ostringstream oss;
+				oss << std::setfill('0') << std::setw(2) << minutes << ":" << seconds;
+				text.string_hash = _strings.hash_and_store(oss.str());
 				if (countdown.current_value <= 0) {
 					countdown.current_value = countdown.count_duration;
 					ended = true;

@@ -971,8 +971,7 @@
 					"scale": [ 1, 0.5, 4.5 ]
 				},
 				{
-					"type": "countdown",
-					"duration": 60
+					"type": "countdown"
 				}
 			]
 		},
