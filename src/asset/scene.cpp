@@ -14,6 +14,9 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
 
 	std::vector<json> descendant_children;
 	std::vector<scene_entity*> inserted_children;
+
+    inserted_children.reserve(j["entities"].size());
+    descendant_children.reserve(j["entities"].size());
     
     _entities.reserve(j["entities"].size());
 
