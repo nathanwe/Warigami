@@ -60,7 +60,6 @@ void deck_ui_controller::handle_card_entities(
                     auto& card_t = card.get_component<transforms::transform>();
                     position_card(i, card_t, p, deck_ui, deck_id);
                 }
-
             }
             else if (!card_entity_id && card_val != components::card_enum::NO_CARD)
             {

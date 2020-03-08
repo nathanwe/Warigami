@@ -316,8 +316,12 @@ public:
                         switch (effect)
                         {
                         case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
-                            spawn_unit_in_place(game_piece.board_source.x, game_piece.board_source.y,
-                                                game_piece.team, r_state, components::card_enum::BASIC_MELEE);
+                            spawn_unit_in_place(
+                                    game_piece.board_source.x,
+                                    game_piece.board_source.y,
+                                    game_piece.team,
+                                    r_state,
+                                    components::card_enum::BASIC_MELEE);
                             break;
                         }
                     }

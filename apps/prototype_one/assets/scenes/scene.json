@@ -5,9 +5,9 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -35, 20, 0 ],
+          "position": [ -40, 18, 0 ],
           "scale": [ 1, 1, 1 ],
-          "rotation": [ 0, -90, -45 ]
+          "rotation": [ 0, -90, -48 ]
         },
         {
           "type": "camera",
@@ -86,15 +86,6 @@
           "type": "transform",
           "position": [ 0, -20, 0 ],
           "scale": [ 5, 5, 5 ]
-        }
-      ]
-    },
-    {
-      "prototype": "assets/prototypes/egg.json",
-      "components": [
-        {
-          "type": "transform",
-          "scale": [1, 1, 1]
         }
       ]
     }

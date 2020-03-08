@@ -7,7 +7,7 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/cube/cube.obj",
-        "param_diffuse": [ 1, 1, 0 ]
+        "param_diffuse": [ 0.3, 0.8, 1 ]
       },
       {
         "type": "energy_meter"

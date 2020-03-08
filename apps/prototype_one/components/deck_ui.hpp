@@ -21,7 +21,7 @@ struct deck_ui : public ecs::component<deck_ui>
 
     float min_card_x { -16.f };
     float max_card_x { 16.f };
-    float card_y { -7 };
+    float card_y { -7.25f };
     float card_depth { 25.f };
     float deck_gap { 3.4f };
 };
