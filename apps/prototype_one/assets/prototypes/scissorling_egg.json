@@ -1,0 +1,28 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/unit_orange/unit_orange.obj",
+        "texture_diffuse": "assets/textures/colors/blue.png"
+      },
+      {
+        "type": "game_piece",
+        "speed": 0.0,
+        "damage": 0.0,
+        "health": 4.0,
+        "team": 1.0,
+        "board_location": [ 0.0, 0.0 ],
+        "move_board": [ 0.0, 0.0 ],
+        "move_world": [ 0.0, 0.0, 1.0 ],
+        "attacks": [ [ 0.0, 1.0 ] ],
+        "effects": [ 0, 3 ]
+      }
+    ]
+  }
+}

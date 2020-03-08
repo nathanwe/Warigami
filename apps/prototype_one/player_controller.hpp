@@ -62,10 +62,14 @@ public:
 	void spawn_unit(int lane, int team, ecs::state& r_state, components::card_enum type)
 	{
 		static const std::string CardPrototypes[(size_t)components::card_enum::TOTAL_CARDS] = {
-			"assets/prototypes/basic_unit.json",
-			"assets/prototypes/basic_unit.json",
-			"assets/prototypes/ranged_unit.json",
-			"assets/prototypes/fast_unit.json"
+			"assets/prototypes/scissorling.json",
+			"assets/prototypes/scissorling_twin.json",
+			"assets/prototypes/scissor_trooper.json",
+			"assets/prototypes/scissorling_egg.json",
+			"assets/prototypes/scissor_webber.json",
+			"assets/prototypes/scissor_goliath.json",
+			"assets/prototypes/scissor_queen.json",
+			"assets/prototypes/scissor_titan.json"
 		};
 	
 		auto type_index = (size_t)type;

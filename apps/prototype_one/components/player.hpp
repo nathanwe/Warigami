@@ -22,16 +22,40 @@ namespace components
 		WON
 	};
 
-	const static std::vector<int> card_costanamos = { 0, 1, 2, 2 };
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	const static int dice_costanamos = 1;
 
 	const static std::vector<card_enum> start_deck = {
-	        card_enum::BASIC_FAST,
-			card_enum::BASIC_FAST,
-			card_enum::BASIC_MELEE,
-			card_enum::BASIC_MELEE,
-			card_enum::BASIC_RANGE,
-			card_enum::BASIC_RANGE
+	        card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_TITAN,
+			card_enum::SCISSOR_TITAN
 	};
 
 	enum class dice_nets {
@@ -47,6 +71,7 @@ namespace components
 		X = 10,
 		I = 11
 	};
+
 	enum class rotate_states {
 		ZERO = 0,
 		NINTY = 1,

@@ -11,14 +11,14 @@ namespace components
     enum class card_enum
     {
         NO_CARD = 0,
-        BASIC_MELEE = 1,
-        BASIC_RANGE = 2,
-        BASIC_FAST = 3,
-        DRAGON = 4,
-        ERATHOR = 5,
-        MATCH = 6,
-        SCISSORLING = 7,
-        WIZARD = 8,
+        SCISSORLING = 1,
+        SCISSORLING_TWIN = 2,
+        SCISSOR_TROOPER = 3,
+        SCISSORLING_EGG = 4,
+        SCISSOR_WEBBER = 5,
+        SCISSOR_GOLIATH = 6,
+        SCISSOR_QUEEN = 7,
+        SCISSOR_TITAN = 8,
         TOTAL_CARDS
     };
 
