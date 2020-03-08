@@ -15,7 +15,7 @@ public:
 	game_start_system(asset::scene_hydrater& _hydrater) : hydrater(_hydrater) {}
 
 	
-	void create_fire_graphic(glm::vec3 relitive_pos, entity_id parent)
+	void create_fire_graphics(glm::vec3 relitive_pos, entity_id parent)
 	{
 		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/fire_graphic.json");
 		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
@@ -38,7 +38,7 @@ public:
 					{
 						/*if (id % 7 == 0) {
 							board_square.terrain_type = terrain::fire;
-							create_fire_graphic(transform.position, board_id);
+							create_fire_graphics(transform.position, board_id);
 						}*/
 					});
 				});
