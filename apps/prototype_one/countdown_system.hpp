@@ -33,7 +33,7 @@ public:
 			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
 			{
 				countdown.current_value = countdown.count_duration;
-				text.position = glm::ivec2(config.width()/2 - 100, config.height() - 200);
+				text.position = glm::ivec2(config.width()/2 - 90, config.height() - 200);
 				text.scale = 2.0;
 				text.string_hash = _strings.hash_and_store(std::to_string((int)countdown.current_value));
 			});
@@ -47,8 +47,13 @@ public:
 				int minutes = countdown.current_value / 60;
 				int seconds = (int)countdown.current_value % 60;
 				std::ostringstream oss;
-				oss << std::setfill('0') << std::setw(2) << minutes << ":" << seconds;
+				oss << std::setfill('0') << std::setw(2) << minutes << ":" << std::setfill('0') << std::setw(2) << seconds;
 				text.string_hash = _strings.hash_and_store(oss.str());
+				if (minutes == 0) {
+					text.scale = 2.5;
+					text.color = glm::vec3(1, 0, 0);
+					text.position = glm::ivec2(config.width() / 2 - 120, config.height() - 200);
+				}
 				if (countdown.current_value <= 0) {
 					countdown.current_value = countdown.count_duration;
 					ended = true;

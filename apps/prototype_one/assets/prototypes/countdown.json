@@ -6,7 +6,7 @@
       },
       {
         "type": "countdown",
-        "duration": 600 
+        "duration": 80 
       },
       {
         "type": "renderable_text",
