@@ -1,6 +1,7 @@
 #ifndef __SYSTEMS_HPP_
 #define __SYSTEMS_HPP_
 
+#include <utility>
 #include <vector>
 
 #include <ecs/system_base.hpp>
@@ -11,8 +12,9 @@ namespace ecs
 	class systems
 	{
 	public:
-		systems(std::vector<system_base*> systems) : _systems(systems) {}
+		explicit systems(std::vector<system_base*> systems);
 
+        void initialize(state& state);
 		void update(state& state);
 
 	private:
