@@ -12,6 +12,16 @@
 #include "components/board.hpp"
 #include "components/board_square.hpp"
 #include "combat.hpp"
+#include "components/card_enum.hpp"
+
+struct to_spawn 
+{
+    to_spawn(int _x, int _y, int _team, components::card_enum _type) : x(_x), y(_y), team(_team), type(_type) {}
+    int x;
+    int y;
+    int team;
+    components::card_enum type;
+};
 
 class unit_death_event : public event::Event
 {
@@ -48,10 +58,14 @@ public:
     void spawn_unit_in_place(int lane, int space, int team, ecs::state& r_state, components::card_enum type)
     {
         static const std::string CardPrototypes[(size_t)components::card_enum::TOTAL_CARDS] = {
-            "assets/prototypes/basic_unit.json",
-            "assets/prototypes/basic_unit.json",
-            "assets/prototypes/ranged_unit.json",
-            "assets/prototypes/fast_unit.json"
+            "assets/prototypes/scissorling.json",
+            "assets/prototypes/scissorling_twin.json",
+            "assets/prototypes/scissor_trooper.json",
+            "assets/prototypes/scissorling_egg.json",
+            "assets/prototypes/scissor_webber.json",
+            "assets/prototypes/scissor_goliath.json",
+            "assets/prototypes/scissor_queen.json",
+            "assets/prototypes/scissor_titan.json"
         };
 
         size_t type_index = (size_t)type;
@@ -250,6 +264,8 @@ public:
         {
             timer = ROUND_TIME;
 
+            std::vector<to_spawn> spawner;
+
             // A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
             // Update states to either attack or move depending on current board state
             r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
@@ -316,13 +332,27 @@ public:
                         switch (effect)
                         {
                         case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
-                            spawn_unit_in_place(game_piece.board_source.x, game_piece.board_source.y,
-                                                game_piece.team, r_state, components::card_enum::BASIC_MELEE);
+                        {
+                            to_spawn newSpawn(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSORLING);
+                            spawner.push_back(newSpawn);
                             break;
+                        }
+                        case combats::COMBAT_EFFECTS::SPAWN_SCISSOR_TROOPER_ON_DEATH:
+                        {
+                            to_spawn newSpawn2(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSOR_TROOPER);
+                            spawner.push_back(newSpawn2);
+                            break;
+                        }
                         }
                     }
                 }
             });
+
+            for (auto& spawns : spawner)
+            {
+                spawn_unit_in_place(spawns.x, spawns.y, spawns.team, r_state, spawns.type);
+            }
+            spawner.clear();
             
         } else
         {

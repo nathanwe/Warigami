@@ -98,23 +98,10 @@ namespace boardgen {
 		startBoard(f);
 		for (int i = -maxX; i <= maxX; i++) {
 			for (int j = maxY; j >= -maxY; j--) {
-				if (i % 2 != 0) {
-					if (j % 2 == 0) {
-						writeSquare(f, squareProto, i, 1, j, maxX, maxY);
-					}
-					else {
-						writeSquare(f, squareProto2, i, 1, j, maxX, maxY);
-					}
-				}
-				else {
-					if (j % 2 != 0) {
-						writeSquare(f, squareProto, i, 1, j, maxX, maxY);
-					}
-					else {
-						writeSquare(f, squareProto2, i, 1, j, maxX, maxY);
-					}
-				}
-				
+				if (i % 2 != 0)
+                    writeSquare(f, squareProto, i, 1, j, maxX, maxY);
+                else
+                    writeSquare(f, squareProto2, i, 1, j, maxX, maxY);
 			}
 		}
 		endBoard(f);

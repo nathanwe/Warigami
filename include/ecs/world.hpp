@@ -17,6 +17,11 @@ namespace ecs
 			_systems.update(_state);
 		}
 
+		void initialize()
+        {
+            _systems.initialize(_state);
+        }
+
 	private:
 		systems& _systems;
 		state& _state;

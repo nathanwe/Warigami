@@ -35,7 +35,8 @@
 #include "health_meter_system.hpp"
 #include "tug_of_war_system.hpp"
 #include "combat.hpp"
-
+#include "components/deck_ui.hpp"
+#include "deck_ui_controller.hpp"
 
 
 int main(int argc, char** argv) {
@@ -74,7 +75,8 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::energy_meter>("energy_meter");
 	ecs::register_component<components::health_meter>("health_meter");
 	ecs::register_component<components::tug_of_war_meter>("tug_of_war_meter");
-	ecs::register_component<transforms::transform>("transform");
+    ecs::register_component<components::deck_ui>("deck_ui");
+    ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
 	ecs::register_component<rendering::light_point>("light_point");
@@ -94,6 +96,7 @@ int main(int argc, char** argv) {
 	board_update board_updater(input, timer, events, hydrater, resolver);
 	player_controller player_control(input, timer, events, hydrater);
 	game_start_system game_start_system(hydrater);
+	deck_ui_controller deck_ui_controller(hydrater);
 	audio::audio_system audio_system(strings, assets);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
@@ -121,7 +124,8 @@ int main(int argc, char** argv) {
 		&physics_update,
 		&board_updater,
 		&game_start_system,
-		&player_control});
+		&player_control,
+	    &deck_ui_controller});
 
 	ecs::world world(systems, state);
 
@@ -180,6 +184,7 @@ int main(int argc, char** argv) {
 
 	//cursor.disable();
 
+	world.initialize();
 
 	//game loop
 	while (!glfwWindowShouldClose(glfw.window())) {

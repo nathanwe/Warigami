@@ -4,6 +4,7 @@
 #include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
 #include "component_bits.hpp"
+#include "card_enum.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>
@@ -12,14 +13,6 @@
 
 namespace components
 {
-	enum class card_enum {
-		NO_CARD = 0,
-		BASIC_MELEE = 1,
-		BASIC_RANGE = 2,
-		BASIC_FAST = 3,
-		TOTAL_CARDS
-	};
-
 	enum class PLAYER_STATE
 	{
 		BASE,
@@ -29,16 +22,40 @@ namespace components
 		WON
 	};
 
-	const static std::vector<int> card_costanamos = { 0, 1, 2, 2 };
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	const static int dice_costanamos = 1;
 
 	const static std::vector<card_enum> start_deck = {
-	        card_enum::BASIC_FAST,
-			card_enum::BASIC_FAST,
-			card_enum::BASIC_MELEE,
-			card_enum::BASIC_MELEE,
-			card_enum::BASIC_RANGE,
-			card_enum::BASIC_RANGE
+	        card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_TITAN,
+			card_enum::SCISSOR_TITAN
 	};
 
 	enum class dice_nets {
@@ -55,6 +72,7 @@ namespace components
 		I = 10,
 		NUM = 11
 	};
+
 	enum class rotate_states {
 		ZERO = 0,
 		NINTY = 1,
@@ -69,7 +87,7 @@ namespace components
 
 	struct player : ecs::component<player>
 	{
-	    static const std::uint8_t MaxCards = 4;
+	    static constexpr std::uint8_t MaxCards = 4;
         using row_t = std::int16_t;
 		using column_t = std::int16_t;
 

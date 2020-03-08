@@ -10,10 +10,11 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/quad/quad.obj",
-        "texture_diffuse": "assets/textures/checkerboard/checkerboard.png"
+        "texture_diffuse": "assets/textures/cards/scissorling.png"
       },
       {
-        "type": "card"
+        "type": "card",
+        "card_type": 3
       }
     ]
   }

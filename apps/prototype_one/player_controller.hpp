@@ -14,6 +14,16 @@
 #include "components/board_square.hpp"
 #include "components/game_piece.hpp"
 
+struct player_controls
+{
+    core::controls card1;
+    core::controls card2;
+    core::controls card3;
+    core::controls card4;
+    core::controls dice_button;
+    int column_to_up_scale;
+};
+
 class player_controller : public ecs::system_base, public event::Listener
 {
 public:
@@ -25,12 +35,12 @@ public:
 
 	}
 
-	void HandleEvent(event::Event& event)
+	void HandleEvent(event::Event& event) override
 	{
 
 	}
 
-	components::card_enum card_select(components::player& player, components::PLAYER_STATE* playerState, int num)
+	static components::card_enum card_select(components::player& player, components::PLAYER_STATE* playerState, int num)
 	{
 		if (components::card_costanamos[(int)player.hand[num]] > player.energy)
 		{
@@ -43,7 +53,7 @@ public:
 		return player.hand[num];
 	}
 
-	void row_select(transforms::transform& transform, float num)
+	static void row_select(transforms::transform& transform, float num)
 	{
 		transform.scale.y = num;
 		transform.is_matrix_dirty = true;
@@ -52,16 +62,20 @@ public:
 	void spawn_unit(int lane, int team, ecs::state& r_state, components::card_enum type)
 	{
 		static const std::string CardPrototypes[(size_t)components::card_enum::TOTAL_CARDS] = {
-			"assets/prototypes/basic_unit.json",
-			"assets/prototypes/basic_unit.json",
-			"assets/prototypes/ranged_unit.json",
-			"assets/prototypes/fast_unit.json"
+			"assets/prototypes/scissorling.json",
+			"assets/prototypes/scissorling_twin.json",
+			"assets/prototypes/scissor_trooper.json",
+			"assets/prototypes/scissorling_egg.json",
+			"assets/prototypes/scissor_webber.json",
+			"assets/prototypes/scissor_goliath.json",
+			"assets/prototypes/scissor_queen.json",
+			"assets/prototypes/scissor_titan.json"
 		};
 	
-		size_t type_index = (size_t)type;		
+		auto type_index = (size_t)type;
 		ecs::entity& nerd = hydrater.add_from_prototype(CardPrototypes[type_index]);
-		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
-		components::game_piece& nerdP = nerd.get_component<components::game_piece>();
+		auto& nerdT = nerd.get_component<transforms::transform>();
+		auto& nerdP = nerd.get_component<components::game_piece>();
 		
 		nerdP.team = team;
 		nerdP.board_source.x = lane;
@@ -95,14 +109,15 @@ public:
 	void create_fire_graphic(glm::vec3 relitive_pos, entity_id parent)
 	{
 		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/fire_graphic.json");
-		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
+		auto& nerdT = nerd.get_component<transforms::transform>();
 		nerdT.position = relitive_pos;
 		nerdT.position.y += .6;
 		nerdT.has_parent = true;
 		nerdT.parent = parent;
 		nerdT.is_matrix_dirty = true;
 	}
-	virtual void update(ecs::state& r_state) override
+
+	void update(ecs::state& r_state) override
 	{
 		bool add_energy = false;
 		if (timer <= 0)
@@ -116,37 +131,21 @@ public:
 		}
 		r_state.each<components::player>([&](components::player& player)
 		{
-			core::controls card1;
-			core::controls card2;
-			core::controls card3;
-			core::controls card4;
-			core::controls dice_button;
-			int column_to_up_scale;
-			float forward;
-			float left;
+			float forward = 0;
+			float left = 0;
+
 			r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
 
 				if (add_energy && player.energy < 10)
 					player.energy++;
 
+				auto& controls = player.team == 1.f ? p1_controls : p2_controls;
+
 				if (player.team == 1.0f) {
-					card1 = core::CARD1_CONTROL;
-					card2 = core::CARD2_CONTROL;
-					card3 = core::CARD3_CONTROL;
-					card4 = core::CARD4_CONTROL;
-					dice_button = core::DIE1_CONTROL;
-					column_to_up_scale = 0;
 					forward = m_input.forward();
 					left = m_input.strafe();
-
 				}
 				else if (player.team == -1.0f) {
-					card1 = core::CARD1_CONTROL_PLAYER2;
-					card2 = core::CARD2_CONTROL_PLAYER2;
-					card3 = core::CARD3_CONTROL_PLAYER2;
-					card4 = core::CARD4_CONTROL_PLAYER2;
-					dice_button = core::DIE1_CONTROL_PLAYER2;
-					column_to_up_scale = 8;
 					forward = m_input.forward_player2();
 					left = m_input.strafe_player2();
 				}
@@ -154,54 +153,46 @@ public:
 
 				if (player.state == components::PLAYER_STATE::BASE)
 				{
-					
-					
-					int loc = -1;
-					if (m_input.is_input_started(card1))
-					{
-						loc = 0;
-					}
-					else if (m_input.is_input_started(card2))
-					{
-						loc = 1;
-					}
-					else if (m_input.is_input_started(card3))
-					{
-						loc = 2;
-					}
-					else if (m_input.is_input_started(card4))
-					{
-						loc = 3;
-					}
+					int loc = find_selected_card_index(controls);
+
 					if (loc != -1) {
 						player.selected_card = player.hand[loc];
 						player.selected_card_location = loc;
 						player.state = components::PLAYER_STATE::UNIT_PLACEMENT;						
 					}
 					
-					
-					if (m_input.is_input_started(dice_button) && player.bonus_dice > 0){
+					if (m_input.is_input_started(controls.dice_button) && player.bonus_dice > 0){
 						player.state = components::PLAYER_STATE::DICE_PLACEMENT;
 					}
-					
-
 				}
 				else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
 				{
-					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+
+				    int loc = find_selected_card_index(controls);
+
+				    if (loc != player.selected_card_location && loc != -1)
+                    {
+                        player.state = components::PLAYER_STATE::BASE;
+                    }
+
+					r_state.each<components::board_square, transforms::transform>([&](
+					        components::board_square& square,
+					        transforms::transform& transform)
 						{
-							if (square.y == column_to_up_scale)
+							if (square.y == controls.column_to_up_scale)
 							{
-								square.x == player.selected_row ? row_select(transform, 1.5f) : row_select(transform, 1);
+								square.x == player.selected_row
+								    ? row_select(transform, 1.5f)
+								    : row_select(transform, 1);
 							}
 						});
 
-					if (m_input.is_input_started(card1))
+					if (m_input.is_input_started(controls.card1))
 					{
 						bool taken = false;
 						r_state.each<components::game_piece>([&](components::game_piece& piece)
 							{
-								if (piece.board_source == glm::ivec2(player.selected_row, column_to_up_scale))
+								if (piece.board_source == glm::ivec2(player.selected_row, controls.column_to_up_scale))
 								{
 									taken = true;
 								}
@@ -214,7 +205,9 @@ public:
 							player.hand[player.selected_card_location] = player.safe_draw();
 
 
-							r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+							r_state.each<components::board_square, transforms::transform>([&](
+							        components::board_square& square,
+							        transforms::transform& transform)
 								{
 									transform.scale.y = 1;
 									transform.is_matrix_dirty = true;
@@ -222,10 +215,6 @@ public:
 
 							player.state = components::PLAYER_STATE::BASE;
 						}
-					}
-					else if (m_input.is_input_started(card2))
-					{
-						player.state = components::PLAYER_STATE::BASE;
 					}
 					else if (forward > .4f)
 					{
@@ -261,7 +250,7 @@ public:
 						bool foo = player.net_check(glm::ivec2(square.x, square.y), glm::ivec2(player.selected_row, player.selected_column),
 							components::dice_nets::SEVEN, player.rotate_state, player.flip_state);
 						foo ? row_select(transform, 1.5f) : row_select(transform, 1);
-						if (m_input.is_input_started(card1) && foo && player.energy >= components::dice_costanamos)
+						if (m_input.is_input_started(controls.card1) && foo && player.energy >= components::dice_costanamos)
 						{
 							transform.scale.y = 1;
 							square.terrain_type = terrain::fire;
@@ -271,12 +260,12 @@ public:
 						transform.is_matrix_dirty = true;
 					});
 
-					if (m_input.is_input_started(card1) && player.energy >= components::dice_costanamos) {
+					if (m_input.is_input_started(controls.card1) && player.energy >= components::dice_costanamos) {
 						player.bonus_dice--;
 						player.energy -= components::dice_costanamos;
 						player.state = components::PLAYER_STATE::BASE;
 					} 
-					else if (m_input.is_input_started(card2))
+					else if (m_input.is_input_started(controls.card2))
 					{
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 							{
@@ -285,11 +274,11 @@ public:
 							});
 						player.state = components::PLAYER_STATE::BASE;
 					}
-					else if (m_input.is_input_started(card3)) {
+					else if (m_input.is_input_started(controls.card3)) {
 						player.flip_state = !player.flip_state;
 					}
-					else if (m_input.is_input_started(card4)) {
-						components::rotate_states next = static_cast<components::rotate_states>(static_cast<int>(player.rotate_state) + 1);
+					else if (m_input.is_input_started(controls.card4)) {
+						auto next = static_cast<components::rotate_states>(static_cast<int>(player.rotate_state) + 1);
 						if (next == components::rotate_states::NUM) {
 							next = components::rotate_states::ZERO;
 						}
@@ -358,6 +347,38 @@ private:
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
 	asset::scene_hydrater& hydrater;
+
+	int find_selected_card_index(player_controls& controls)
+    {
+        if (m_input.is_input_started(controls.card1))
+            return 0;
+        else if (m_input.is_input_started(controls.card2))
+            return 1;
+        else if (m_input.is_input_started(controls.card3))
+            return 2;
+        else if (m_input.is_input_started(controls.card4))
+            return 3;
+
+        return -1;
+    }
+
+	player_controls p1_controls {
+            core::CARD1_CONTROL,
+            core::CARD2_CONTROL,
+            core::CARD3_CONTROL,
+            core::CARD4_CONTROL,
+            core::DIE1_CONTROL,
+            0,
+	};
+
+    player_controls p2_controls {
+            core::CARD1_CONTROL_PLAYER2,
+            core::CARD2_CONTROL_PLAYER2,
+            core::CARD3_CONTROL_PLAYER2,
+            core::CARD4_CONTROL_PLAYER2,
+            core::DIE1_CONTROL_PLAYER2,
+            8,
+    };
 };
 
 #endif
