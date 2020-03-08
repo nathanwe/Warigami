@@ -6,6 +6,11 @@
       },
       {
         "type": "countdown"
+      },
+      {
+        "type": "renderable_text",
+        "position": [ 0, 0 ],
+        "color": [ 0, 0, 0 ]
       }
     ]
   }
