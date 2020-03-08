@@ -35,6 +35,8 @@ void combats::combat_resolution::Resolve_Combats()
 			}
 		}
 	}
+
+	current_combats.clear();
 }
 
 void combats::combat_resolution::Add_Combat(components::game_piece& one, entity_id id_one, components::game_piece& two, entity_id id_two) 

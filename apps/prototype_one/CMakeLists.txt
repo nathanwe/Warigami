@@ -24,7 +24,8 @@ target_link_libraries(prototype_one PRIVATE
 	asset
 	collisions
 	physics
-	engineui)
+	engineui
+	freetype)
 
 add_custom_target(copy_prototype_one_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets

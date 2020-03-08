@@ -23,6 +23,7 @@ add_subdirectory(thirdparty/imgui)
 add_subdirectory(thirdparty/lua)
 add_subdirectory(thirdparty/fmod)
 add_subdirectory(thirdparty/stb)
+add_subdirectory(thirdparty/freetype)
 
 # Main build targets
 add_subdirectory(src)

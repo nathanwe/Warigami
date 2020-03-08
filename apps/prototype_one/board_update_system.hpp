@@ -285,7 +285,7 @@ public:
                         game_piece.team,
                         r_state);
                 }
-                resolver.Resolve_Combats();
+                resolver.Resolve_Combats();                
             });
 
             generate_new_board_state(r_state);
