@@ -36,7 +36,7 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
 
         for (auto* potential_parent : inserted_children)
         {
-            auto jsonstr = potential_parent->j().dump();
+            if (!potential_parent->has_id()) continue;
 
             auto parent_id = potential_parent->id();
 

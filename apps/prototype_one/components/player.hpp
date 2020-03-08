@@ -4,6 +4,7 @@
 #include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
 #include "component_bits.hpp"
+#include "card_enum.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>
@@ -12,14 +13,6 @@
 
 namespace components
 {
-	enum class card_enum {
-		NO_CARD = 0,
-		BASIC_MELEE = 1,
-		BASIC_RANGE = 2,
-		BASIC_FAST = 3,
-		TOTAL_CARDS
-	};
-
 	enum class PLAYER_STATE
 	{
 		BASE,
@@ -56,7 +49,7 @@ namespace components
 
 	struct player : ecs::component<player>
 	{
-	    static const std::uint8_t MaxCards = 4;
+	    static constexpr std::uint8_t MaxCards = 4;
         using row_t = std::int16_t;
 
         player()
