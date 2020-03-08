@@ -30,6 +30,7 @@ namespace components
 		int health; // How much damage a unit can take before dying
 		int team; // Which team the unit is a part of
 		int remaining_speed;
+		int give_points = 0; //How many points a unit is currently worth for dice earning
 		glm::ivec2 board_source; // A unit's board coordinates
 		glm::vec2 continuous_board_location; // Interpolated position on board
 		glm::ivec2 board_destination; // A unit's discrete tile coordinates

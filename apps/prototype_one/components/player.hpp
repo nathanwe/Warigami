@@ -42,17 +42,18 @@ namespace components
 	};
 
 	enum class dice_nets {
-		T = 1,
-		SEVEN = 2,
-		DROOPY_SEVEN = 3,
-		Z = 4,
-		T_HAT = 5,
-		WX = 6,
-		W = 7,
-		WM = 8,
-		CROSS = 9,
-		X = 10,
-		I = 11
+		T = 0,
+		SEVEN = 1,
+		DROOPY_SEVEN = 2,
+		Z = 3,
+		T_HAT = 4,
+		WX = 5,
+		W = 6,
+		WM = 7,
+		CROSS = 8,
+		X = 9,
+		I = 10,
+		NUM = 11
 	};
 	enum class rotate_states {
 		ZERO = 0,
@@ -62,7 +63,8 @@ namespace components
 		NUM = 4
 
 	};
-	
+	static std::vector<std::vector<std::vector<std::vector<glm::ivec2>>>> legal_dice;
+	//static glm::ivec2[11][4][2] legal_dice; //magic numbers
 	
 
 	struct player : ecs::component<player>

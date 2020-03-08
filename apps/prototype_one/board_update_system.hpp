@@ -310,6 +310,7 @@ public:
                 if (game_piece.health <= 0)
                 {
                     game_piece.state = components::UNIT_STATE::DYING;
+                    game_piece.give_points = 3;
                     for (auto& effect : game_piece.effects)
                     {
                         switch (effect)
@@ -341,6 +342,7 @@ public:
                                 // Death animation here
                                 unit_death_event new_event(unit_id);
                                 event_manager.BroadcastEvent(new_event);
+
                             }
                         });
                     });
@@ -355,7 +357,6 @@ private:
     event::EventManager &event_manager;
     asset::scene_hydrater &hydrater;
     combats::combat_resolution& resolver;
-
     static void score_for_team(ecs::state& state, float team, float damage)
     {
 		state.each<components::player>([&](auto& p)
