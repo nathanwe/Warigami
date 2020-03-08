@@ -324,13 +324,13 @@ public:
                     game_piece.state = components::UNIT_STATE::DYING;
                     for (auto& effect : game_piece.effects)
                     {
-                        switch (effect)
+                        /*  switch (effect)
                         {
                         case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
                             to_spawn newSpawn(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::BASIC_MELEE);
                             spawner.push_back(newSpawn);
                             break;
-                        }
+                        }*/
                     }
                 }
             });
