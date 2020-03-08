@@ -12,6 +12,7 @@
 #include "components/board.hpp"
 #include "components/board_square.hpp"
 #include "combat.hpp"
+#include "components/card_enum.hpp"
 
 class unit_death_event : public event::Event
 {

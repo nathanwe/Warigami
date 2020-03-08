@@ -163,13 +163,13 @@ public:
 				}
 				else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
 				{
-//				    int loc = find_selected_card_index(controls);
-//
-//				    if (loc != player.selected_card_location && loc != -1)
-//                    {
-//                        player.state = components::PLAYER_STATE::BASE;
-//                        return;
-//                    }
+
+				    int loc = find_selected_card_index(controls);
+
+				    if (loc != player.selected_card_location && loc != -1)
+                    {
+                        player.state = components::PLAYER_STATE::BASE;
+                    }
 
 					r_state.each<components::board_square, transforms::transform>([&](
 					        components::board_square& square,
@@ -211,10 +211,6 @@ public:
 
 							player.state = components::PLAYER_STATE::BASE;
 						}
-					}
-					else if (m_input.is_input_started(controls.card2))
-					{
-						player.state = components::PLAYER_STATE::BASE;
 					}
 					else if (forward > .4f)
 					{

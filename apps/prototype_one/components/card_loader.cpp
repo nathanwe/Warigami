@@ -7,6 +7,7 @@ void components::card_loader::load(asset::asset_loader_node& asset_loader_node)
 	auto& json = entity_data->component_data(components::card::component_bitshift);
 	auto& c = entity->get_component<card>();
 
+	c.card_type = json.value("card_type", card_enum::NO_CARD);
 	c.speed = json.value("speed", 0.f);
 	c.power = json.value("power", 0.f);
 	c.armor = json.value("armor", 0.f);

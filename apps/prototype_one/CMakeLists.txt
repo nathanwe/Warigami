@@ -13,7 +13,12 @@ add_executable (prototype_one main.cpp
 				components/countdown.cpp
 				components/tug_of_war_meter.cpp 
 				util/boardgen.cpp
-				combat.cpp)
+				combat.cpp
+				components/deck_ui.cpp
+				components/deck_ui.hpp
+				deck_ui_controller.cpp
+				deck_ui_controller.hpp
+				components/card_enum.hpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs
