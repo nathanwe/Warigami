@@ -11,6 +11,7 @@
 #include "components/game_piece.hpp"
 #include "components/board.hpp"
 #include "components/board_square.hpp"
+#include "combat.hpp"
 
 class unit_death_event : public event::Event
 {
@@ -29,8 +30,9 @@ public:
             core::game_input_manager &input,
             core::frame_timer &timer,
             event::EventManager &_event_manager,
-            asset::scene_hydrater &_hydrater)
-            : m_input(input), m_timer(timer), event_manager(_event_manager), hydrater(_hydrater)
+            asset::scene_hydrater &_hydrater,
+            combats::combat_resolution& _resolver)
+            : m_input(input), m_timer(timer), event_manager(_event_manager), hydrater(_hydrater), resolver(_resolver)
     {
         event_manager.Subscribe(this, event::EVENT_TYPE::UNIT_DEATH);
     }
@@ -41,6 +43,50 @@ public:
         {
             hydrater.remove_entity(((unit_death_event &) event).id);
         }
+    }
+
+    void spawn_unit_in_place(int lane, int space, int team, ecs::state& r_state, components::card_enum type)
+    {
+        static const std::string CardPrototypes[(size_t)components::card_enum::TOTAL_CARDS] = {
+            "assets/prototypes/basic_unit.json",
+            "assets/prototypes/basic_unit.json",
+            "assets/prototypes/ranged_unit.json",
+            "assets/prototypes/fast_unit.json"
+        };
+
+        size_t type_index = (size_t)type;
+        ecs::entity& nerd = hydrater.add_from_prototype(CardPrototypes[type_index]);
+        transforms::transform& nerdT = nerd.get_component<transforms::transform>();
+        components::game_piece& nerdP = nerd.get_component<components::game_piece>();
+
+        nerdP.team = team;
+        nerdP.board_source.x = lane;
+        nerdP.board_source.y = space;
+
+        if (nerdP.team >= 0)
+            nerdT.rotation.y = glm::pi<float>() - glm::quarter_pi<float>();
+        else
+            nerdT.rotation.y = glm::quarter_pi<float>();
+
+        nerdP.continuous_board_location = nerdP.board_source;
+        nerdP.board_destination = nerdP.board_source;
+        nerdP.move_board = nerdP.move_board * nerdP.team;
+        nerdP.move_world = nerdP.move_world * (float)nerdP.team;
+
+        std::vector<glm::ivec2> new_attacks;
+        for (int i = 0; i < nerdP.attacks.size(); i++)
+        {
+            new_attacks.push_back(nerdP.attacks[i] * nerdP.team);
+        }
+        nerdP.attacks = new_attacks;
+
+        nerdT.scale = glm::vec3(0.5);
+
+        r_state.each_id<components::board, transforms::transform>([&](entity_id id, components::board& board, transforms::transform& transform)
+            {
+                nerdT.has_parent = true;
+                nerdT.parent = id;
+            });
     }
 
     void generate_new_board_state(ecs::state& r_state)
@@ -127,7 +173,9 @@ public:
     }
 
     // Helper function for attacking legal attacks
-    static void attack_targets(
+    void attack_targets(
+            components::game_piece& attacker,
+            entity_id attacker_id,
             glm::ivec2 location,
             std::vector<glm::ivec2> targets,
             int damage,
@@ -139,7 +187,19 @@ public:
             {
                 if (game_piece.board_source == location + target && game_piece.team != teammates)
                 {
-                    game_piece.health -= damage;
+                    bool duplicate = false;
+                    for (auto& comb : resolver.Get_Combats())
+                    {
+                        if (comb.id_one == id && comb.id_two == attacker_id)
+                        {
+                            comb.retaliation = true;
+                            duplicate = true;
+                        }
+                    }
+                    if (!duplicate)
+                    {
+                        resolver.Add_Combat(attacker, attacker_id, game_piece, id);
+                    }
                 }
             }
         });
@@ -211,18 +271,21 @@ public:
 
 
             // If a unit can attack, attack now
-            r_state.each<components::game_piece>([&](components::game_piece& game_piece) 
+            r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) 
             {
                 if (game_piece.state == components::UNIT_STATE::ATTACK)
                 {
                     // Attack animation here
                     attack_targets(
+                        game_piece,
+                        id,
                         game_piece.board_source,
                         game_piece.attacks,
                         game_piece.damage,
                         game_piece.team,
                         r_state);
                 }
+                resolver.Resolve_Combats();
             });
 
             generate_new_board_state(r_state);
@@ -245,7 +308,19 @@ public:
             r_state.each<components::game_piece>([&](components::game_piece& game_piece)
             {                
                 if (game_piece.health <= 0)
-                    game_piece.state = components::UNIT_STATE::DYING;                
+                {
+                    game_piece.state = components::UNIT_STATE::DYING;
+                    for (auto& effect : game_piece.effects)
+                    {
+                        switch (effect)
+                        {
+                        case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
+                            spawn_unit_in_place(game_piece.board_source.x, game_piece.board_source.y,
+                                                game_piece.team, r_state, components::card_enum::BASIC_MELEE);
+                            break;
+                        }
+                    }
+                }
             });
             
         } else
@@ -279,6 +354,7 @@ private:
     core::frame_timer &m_timer;
     event::EventManager &event_manager;
     asset::scene_hydrater &hydrater;
+    combats::combat_resolution& resolver;
 
     static void score_for_team(ecs::state& state, float team, float damage)
     {

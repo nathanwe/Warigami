@@ -19,6 +19,7 @@ namespace components
 		BASIC_FAST = 3,
 		TOTAL_CARDS
 	};
+
 	enum class PLAYER_STATE
 	{
 		BASE,
@@ -29,6 +30,7 @@ namespace components
 	};
 
 	const static std::vector<int> card_costanamos = { 0, 1, 2, 2 };
+	const static int dice_costanamos = 1;
 
 	const static std::vector<card_enum> start_deck = {
 	        card_enum::BASIC_FAST,
@@ -52,6 +54,15 @@ namespace components
 		X = 10,
 		I = 11
 	};
+	enum class rotate_states {
+		ZERO = 0,
+		NINTY = 1,
+		ONE_EIGHTY = 2,
+		TWO_SEVENTY = 3,
+		NUM = 4
+
+	};
+	
 	
 
 	struct player : ecs::component<player>
@@ -70,23 +81,23 @@ namespace components
 
 		int energy = 0;
 		float health {100.f};
-		int bonus_dice = 0;
+		int bonus_dice = 4;
 		float team = 0.0f;
 		card_enum selected_card;
 		int selected_card_location;
 		float select_delay = 0.0f;
 		components::PLAYER_STATE state = components::PLAYER_STATE::BASE;
-
-		// Needs a list of cards in hand and dice in pool
-
+		std::vector<card_enum> deck;
         row_t selected_row = 3;
 		column_t selected_column = 4;
+		rotate_states rotate_state = components::rotate_states::ZERO;
+		bool flip_state = false;
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
 
 
 
-		std::vector<card_enum> deck = start_deck;
+		
 
 		card_enum draw() {
 			card_count++;
@@ -118,7 +129,7 @@ namespace components
 			deck = start_deck;
 		}
 		bool net_check(glm::ivec2 test, glm::ivec2 center,
-			dice_nets net, int rotate, bool flip) {
+			dice_nets net, rotate_states rotate, bool flip) {
 			std::vector<glm::ivec2> legal_placements;
 			int tempx;
 			bool ret = false;
@@ -137,10 +148,10 @@ namespace components
 				}
 			}
 
-			if (rotate == 0) {
+			if (rotate == rotate_states::ZERO) {
 
 			}
-			else if (rotate == 1)
+			else if (rotate == rotate_states::NINTY)
 			{
 				for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
 					tempx = it->x;
@@ -148,14 +159,14 @@ namespace components
 					it->y = tempx;
 				}
 			}
-			else if (rotate == 2)
+			else if (rotate == rotate_states::ONE_EIGHTY)
 			{
 				for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
 					it->x = -it->x;
 					it->y = -it->y;
 				}
 			}
-			else if (rotate == 3)
+			else if (rotate == rotate_states::TWO_SEVENTY)
 			{
 				for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
 					tempx = it->x;

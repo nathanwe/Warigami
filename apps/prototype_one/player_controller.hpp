@@ -120,6 +120,7 @@ public:
 			core::controls card2;
 			core::controls card3;
 			core::controls card4;
+			core::controls dice_button;
 			int column_to_up_scale;
 			float forward;
 			float left;
@@ -133,15 +134,18 @@ public:
 					card2 = core::CARD2_CONTROL;
 					card3 = core::CARD3_CONTROL;
 					card4 = core::CARD4_CONTROL;
+					dice_button = core::DIE1_CONTROL;
 					column_to_up_scale = 0;
 					forward = m_input.forward();
 					left = m_input.strafe();
+
 				}
 				else if (player.team == -1.0f) {
 					card1 = core::CARD1_CONTROL_PLAYER2;
 					card2 = core::CARD2_CONTROL_PLAYER2;
 					card3 = core::CARD3_CONTROL_PLAYER2;
 					card4 = core::CARD4_CONTROL_PLAYER2;
+					dice_button = core::DIE1_CONTROL_PLAYER2;
 					column_to_up_scale = 8;
 					forward = m_input.forward_player2();
 					left = m_input.strafe_player2();
@@ -150,6 +154,8 @@ public:
 
 				if (player.state == components::PLAYER_STATE::BASE)
 				{
+					
+					
 					int loc = -1;
 					if (m_input.is_input_started(card1))
 					{
@@ -159,7 +165,7 @@ public:
 					{
 						loc = 1;
 					}
-					else if (m_input.is_input_started(card2))
+					else if (m_input.is_input_started(card3))
 					{
 						loc = 2;
 					}
@@ -168,12 +174,17 @@ public:
 						loc = 3;
 					}
 					if (loc != -1) {
-						player.selected_card = card_select(player, &(player.state), loc);
+						player.selected_card = player.hand[loc];
 						player.selected_card_location = loc;
+						player.state = components::PLAYER_STATE::UNIT_PLACEMENT;						
 					}
-					if (m_input.is_input_started(card3)) {
+					
+					
+					if (m_input.is_input_started(dice_button) && player.bonus_dice > 0){
 						player.state = components::PLAYER_STATE::DICE_PLACEMENT;
 					}
+					
+
 				}
 				else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
 				{
@@ -181,7 +192,7 @@ public:
 						{
 							if (square.y == column_to_up_scale)
 							{
-								square.x == player.selected_row ? row_select(transform, 1.2f) : row_select(transform, 1);
+								square.x == player.selected_row ? row_select(transform, 1.5f) : row_select(transform, 1);
 							}
 						});
 
@@ -196,20 +207,21 @@ public:
 								}
 							});
 
-						if (!taken)
+						if (!taken && player.energy >= components::card_costanamos[(int)player.hand[player.selected_card_location]])
 						{
 							spawn_unit(player.selected_row, player.team, r_state, player.hand[player.selected_card_location]);
 							player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
 							player.hand[player.selected_card_location] = player.safe_draw();
+
+
+							r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+								{
+									transform.scale.y = 1;
+									transform.is_matrix_dirty = true;
+								});
+
+							player.state = components::PLAYER_STATE::BASE;
 						}
-
-						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-							{
-								transform.scale.y = 1;
-								transform.is_matrix_dirty = true;
-							});
-
-						player.state = components::PLAYER_STATE::BASE;
 					}
 					else if (m_input.is_input_started(card2))
 					{
@@ -244,21 +256,27 @@ public:
 				else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
 				{
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-						{
+					{
 
-							bool foo = player.net_check(glm::ivec2(square.x, square.y), glm::ivec2(player.selected_row, player.selected_column),
-								components::dice_nets::SEVEN, 0, false);
-							foo ? row_select(transform, 1.5f) : row_select(transform, 1);
-							if (m_input.is_input_started(card1)&&foo)
-							{
-								transform.scale.y = 1;
-								square.terrain_type = terrain::fire;
-								create_fire_graphic(transform.position, board_id);
-								player.state = components::PLAYER_STATE::BASE;
-							}
-							transform.is_matrix_dirty = true;
-						});
-					if (m_input.is_input_started(card2))
+						bool foo = player.net_check(glm::ivec2(square.x, square.y), glm::ivec2(player.selected_row, player.selected_column),
+							components::dice_nets::SEVEN, player.rotate_state, player.flip_state);
+						foo ? row_select(transform, 1.5f) : row_select(transform, 1);
+						if (m_input.is_input_started(card1) && foo && player.energy >= components::dice_costanamos)
+						{
+							transform.scale.y = 1;
+							square.terrain_type = terrain::fire;
+							create_fire_graphic(transform.position, board_id);
+							
+						}
+						transform.is_matrix_dirty = true;
+					});
+
+					if (m_input.is_input_started(card1) && player.energy >= components::dice_costanamos) {
+						player.bonus_dice--;
+						player.energy -= components::dice_costanamos;
+						player.state = components::PLAYER_STATE::BASE;
+					} 
+					else if (m_input.is_input_started(card2))
 					{
 						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 							{
@@ -266,6 +284,16 @@ public:
 								transform.is_matrix_dirty = true;
 							});
 						player.state = components::PLAYER_STATE::BASE;
+					}
+					else if (m_input.is_input_started(card3)) {
+						player.flip_state = !player.flip_state;
+					}
+					else if (m_input.is_input_started(card4)) {
+						components::rotate_states next = static_cast<components::rotate_states>(static_cast<int>(player.rotate_state) + 1);
+						if (next == components::rotate_states::NUM) {
+							next = components::rotate_states::ZERO;
+						}
+						player.rotate_state = next;
 					}
 					else if (forward > .4f)
 					{
