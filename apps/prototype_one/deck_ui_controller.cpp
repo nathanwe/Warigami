@@ -96,11 +96,11 @@ ecs::entity &deck_ui_controller::spawn_card(components::card_enum type)
 
         // TEMP:
         case components::card_enum::BASIC_FAST:
-            return _hydrater.add_from_prototype("assets/prototypes/card_scissorling.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_basic_fast.json");
         case components::card_enum ::BASIC_MELEE:
-            return _hydrater.add_from_prototype("assets/prototypes/card_erathor.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_basic_melee.json");
         case components::card_enum::BASIC_RANGE:
-            return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_basic_range.json");
         //////
 
         default:
