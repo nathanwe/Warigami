@@ -14,6 +14,15 @@
 #include "combat.hpp"
 #include "components/card_enum.hpp"
 
+struct to_spawn 
+{
+    to_spawn(int _x, int _y, int _team, components::card_enum _type) : x(_x), y(_y), team(_team), type(_type) {}
+    int x;
+    int y;
+    int team;
+    components::card_enum type;
+};
+
 class unit_death_event : public event::Event
 {
 public:
@@ -251,6 +260,8 @@ public:
         {
             timer = ROUND_TIME;
 
+            std::vector<to_spawn> spawner;
+
             // A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
             // Update states to either attack or move depending on current board state
             r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
@@ -274,7 +285,7 @@ public:
             // If a unit can attack, attack now
             r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) 
             {
-                if (game_piece.state == components::UNIT_STATE::ATTACK)
+\\\                if (game_piece.state == components::UNIT_STATE::ATTACK)
                 {
                     // Attack animation here
                     attack_targets(
@@ -316,17 +327,19 @@ public:
                         switch (effect)
                         {
                         case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
-                            spawn_unit_in_place(
-                                    game_piece.board_source.x,
-                                    game_piece.board_source.y,
-                                    game_piece.team,
-                                    r_state,
-                                    components::card_enum::BASIC_MELEE);
+                            to_spawn newSpawn(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::BASIC_MELEE);
+                            spawner.push_back(newSpawn);
                             break;
                         }
                     }
                 }
             });
+
+            for (auto& spawns : spawner)
+            {
+                spawn_unit_in_place(spawns.x, spawns.y, spawns.team, r_state, spawns.type);
+            }
+            spawner.clear();
             
         } else
         {
