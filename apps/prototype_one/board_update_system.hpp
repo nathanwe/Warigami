@@ -432,13 +432,17 @@ private:
                 ecs::entity* square_e = get_square_at_location(r_state, game_piece.board_source);
                 if (square_e) {
                     auto& square = square_e->get_component<components::board_square>();
-                    if (square.terrain_type == terrain::fire) {
-                        game_piece.health -= 1; //hardcoded damage, fix                        
-                        if (game_piece.health <= 0.f)
-                        {
-                            game_piece.state = components::UNIT_STATE::DYING;
+                    for (std::vector<components::terrain>::iterator it = square.terrains.begin(); it != square.terrains.end(); ++it) {
+                        if (it->type == components::TERRAIN_ENUM::fire) {
+                            if (game_piece.team != it->team) {
+                                game_piece.health -= it->damage;
+                                if (game_piece.health <= 0.f)
+                                {
+                                    game_piece.state = components::UNIT_STATE::DYING;
+                                }
+                            }
                         }
-                    }
+                    }                    
                 }
                 });
 

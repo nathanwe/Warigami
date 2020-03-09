@@ -37,7 +37,7 @@ public:
 					transforms::transform& transform)
 					{
 						/*if (id % 7 == 0) {
-							board_square.terrain_type = terrain::fire;
+							board_square.terrain_type = TERRAIN_ENUM::fire;
 							create_fire_graphics(transform.position, board_id);
 						}*/
 					});

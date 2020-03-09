@@ -2,6 +2,7 @@
 #define GAME_PLAYER_CONTROLLER_HPP
 
 #define ROUND_TIME 2.0f
+//#define ONLY_ONE_TERRAIN_PER_TILE
 
 #include "ecs/state.hpp"
 #include <core/game_input_manager.hpp>
@@ -293,7 +294,7 @@ public:
 				else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
 				{
 					std::vector<glm::ivec2> net = player.create_shifted_net(glm::ivec2(player.selected_row, player.selected_column),
-						components::dice_nets::SEVEN, player.rotate_state, player.flip_state);
+						player.current_dice_shape, player.rotate_state, player.flip_state);
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
 						
@@ -302,7 +303,11 @@ public:
 						if (m_input.is_input_started(controls.card1) && foo && player.energy >= components::dice_costanamos)
 						{
 							transform.scale.y = 1;
-							square.terrain_type = terrain::fire;
+							#ifdef ONLY_ONE_TERRAIN_PER_TILE
+							square.terrains.clear();
+							#endif // ONLY_ONE_TERRAIN_PER_TILE
+
+							square.terrains.push_back(components::terrain(components::TERRAIN_ENUM::fire, player.team));
 							create_fire_graphic(transform.position, board_id);
 							
 						}
@@ -312,6 +317,11 @@ public:
 					if (m_input.is_input_started(controls.card1) && player.energy >= components::dice_costanamos) {
 						player.bonus_dice--;
 						player.energy -= components::dice_costanamos;
+						auto next_dice_shape = static_cast<components::dice_nets>(static_cast<int>(player.current_dice_shape) + 1);
+						if (next_dice_shape == components::dice_nets::NUM) { // replace with random next dice, rather than iterating through dice shapes
+							next_dice_shape = components::dice_nets::T;
+						}
+						player.current_dice_shape = next_dice_shape;
 						player.state = components::PLAYER_STATE::BASE;
 					} 
 					else if (m_input.is_input_started(controls.card2))
@@ -327,11 +337,11 @@ public:
 						player.flip_state = !player.flip_state;
 					}
 					else if (m_input.is_input_started(controls.card4)) {
-						auto next = static_cast<components::rotate_states>(static_cast<int>(player.rotate_state) + 1);
-						if (next == components::rotate_states::NUM) {
-							next = components::rotate_states::ZERO;
+						auto next_rotate = static_cast<components::rotate_states>(static_cast<int>(player.rotate_state) + 1);
+						if (next_rotate == components::rotate_states::NUM) {
+							next_rotate = components::rotate_states::ZERO;
 						}
-						player.rotate_state = next;
+						player.rotate_state = next_rotate;
 					}
 					
 
