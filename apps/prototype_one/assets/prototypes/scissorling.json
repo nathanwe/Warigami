@@ -8,8 +8,8 @@
       },
       {
         "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/unit_orange/unit_orange.obj",
-        "param_diffuse": [ 0.55, 0.0, 1.0 ]
+        "mesh": "assets/meshes/spiderling/spiderling.gltf",
+        "texture_diffuse": "assets/meshes/spiderling/spiderling.png"
       },
       {
         "type": "game_piece",
