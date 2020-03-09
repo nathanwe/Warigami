@@ -14,6 +14,8 @@
 #include "combat.hpp"
 #include "components/card_enum.hpp"
 
+#include <algorithm>
+
 struct to_spawn 
 {
     to_spawn(int _x, int _y, int _team, components::card_enum _type) : x(_x), y(_y), team(_team), type(_type) {}
@@ -58,6 +60,7 @@ public:
     void spawn_unit_in_place(int lane, int space, int team, ecs::state& r_state, components::card_enum type)
     {
         static const std::string CardPrototypes[(size_t)components::card_enum::TOTAL_CARDS] = {
+            "assets/prototypes/scissorling.json",
             "assets/prototypes/scissorling.json",
             "assets/prototypes/scissorling_twin.json",
             "assets/prototypes/scissor_trooper.json",
@@ -251,6 +254,53 @@ public:
         unit_t.is_matrix_dirty = true;
     }
 
+    void spiderling_egg_spawns(std::vector<to_spawn>& spawner, ecs::state& r_state, components::game_piece& piece)
+    {
+        for (auto& effect : piece.effects)
+        {
+            if (effect == combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_FOR_HEALTH)
+            {
+                bool open_space[3] = {true, true, true};
+                r_state.each<components::game_piece>([&](components::game_piece& game_piece) 
+                {
+                    if (game_piece.board_source == piece.board_source + glm::ivec2(0, 1 * piece.team))
+                    {
+                        open_space[0] = false;
+                    }
+
+                    if (game_piece.board_source == piece.board_source + glm::ivec2(1, 0) || piece.board_source.x >= 6)
+                    {
+                        open_space[1] = false;
+                    }
+
+                    if (game_piece.board_source == piece.board_source + glm::ivec2(-1, 0) || piece.board_source.x <= 0)
+                    {
+                        open_space[2] = false;
+                    }
+                });
+
+                if (open_space[0])
+                {
+                    to_spawn new_spawn(piece.board_source.x, piece.board_source.y + (1 * piece.team), piece.team, components::card_enum::SCISSORLING);
+                    spawner.push_back(new_spawn);
+                    piece.health -= 1;
+                }
+                else if (open_space[1])
+                {
+                    to_spawn new_spawn(piece.board_source.x + 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
+                    spawner.push_back(new_spawn);
+                    piece.health -= 1;
+                }
+                else if (open_space[2])
+                {
+                    to_spawn new_spawn(piece.board_source.x - 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
+                    spawner.push_back(new_spawn);
+                    piece.health -= 1;
+                }
+            }
+        }
+    }
+
     void update(ecs::state &r_state) override
     {
         float delta = m_timer.smoothed_delta_secs();
@@ -271,6 +321,7 @@ public:
             r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
             {
                 game_piece.board_source = game_piece.board_destination;
+                spiderling_egg_spawns(spawner, r_state, game_piece);
             });
 
             r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
@@ -394,11 +445,16 @@ private:
 			if (p.team != team)
 			{
 				p.health -= damage;
+                if (p.health < 0.f)
+                {
+                    p.health = 0.f;
+                }
 			}
 		});
         state.each<components::tug_of_war_meter>([&](auto& meter)
         {
             meter.value += -1.f * team * damage;
+            std::clamp(meter.value, -100.f, 100.f);
         });
     }
 };
