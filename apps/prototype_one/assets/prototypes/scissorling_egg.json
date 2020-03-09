@@ -21,7 +21,7 @@
         "move_board": [ 0.0, 0.0 ],
         "move_world": [ 0.0, 0.0, 0.0 ],
         "attacks": [ [ 0.0, 1.0 ] ],
-        "effects": [ 0, 3 ]
+        "effects": [ 3 ]
       }
     ]
   }
