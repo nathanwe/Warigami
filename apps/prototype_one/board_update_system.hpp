@@ -377,7 +377,7 @@ public:
                 if (game_piece.health <= 0)
                 {
                     game_piece.state = components::UNIT_STATE::DYING;
-                    game_piece.give_points = (int)game_piece.piece_type; // with the current order, big pieces give more points
+                    game_piece.give_points = 3;//back to 3 for testing //(int)game_piece.piece_type; // with the current order, big pieces give more points
                     for (auto& effect : game_piece.effects)
                     {
                         switch (effect)
