@@ -329,6 +329,22 @@ public:
 
     void update(ecs::state &r_state) override
     {
+        r_state.each_id<transforms::transform, components::board>(
+            [&](entity_id board_id, auto& board_t, auto& board) {
+                handle_board(r_state, board_id, board_t, board);
+            });
+    }
+
+private:
+    float timer = ROUND_TIME;
+    core::game_input_manager &m_input;
+    core::frame_timer &m_timer;
+    event::EventManager &event_manager;
+    asset::scene_hydrater &hydrater;
+    combats::combat_resolution& resolver;
+
+    void handle_board(ecs::state r_state, entity_id board_id, transforms::transform& board_t, components::board& board)
+    {
         float delta = m_timer.smoothed_delta_secs();
 
         // Do board combat every 1 second
@@ -344,23 +360,23 @@ public:
 
             // A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
             // Update states to either attack or move depending on current board state
-            r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
-            {
-                game_piece.board_source = game_piece.board_destination;
-                spiderling_egg_spawns(spawner, r_state, game_piece);
-            });
+            r_state.each<components::game_piece>([&](components::game_piece& game_piece)
+                {
+                    game_piece.board_source = game_piece.board_destination;
+                    spiderling_egg_spawns(spawner, r_state, game_piece);
+                });
 
-            r_state.each<components::game_piece>([&](components::game_piece &game_piece) 
-            {
-                if (check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state))
+            r_state.each<components::game_piece>([&](components::game_piece& game_piece)
                 {
-                    game_piece.state = components::UNIT_STATE::ATTACK;
-                }
-                else
-                {
-                    game_piece.state = components::UNIT_STATE::MOVE;
-                }
-            });
+                    if (check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state))
+                    {
+                        game_piece.state = components::UNIT_STATE::ATTACK;
+                    }
+                    else
+                    {
+                        game_piece.state = components::UNIT_STATE::MOVE;
+                    }
+                });
 
 
             r_state.each<components::game_piece>([&](components::game_piece& game_piece)
@@ -392,22 +408,22 @@ public:
 
 
             // If a unit can attack, attack now
-            r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) 
-            {
-                if (game_piece.state == components::UNIT_STATE::ATTACK)
+            r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece)
                 {
-                    // Attack animation here
-                    attack_targets(
-                        game_piece,
-                        id,
-                        game_piece.board_source,
-                        game_piece.attacks,
-                        game_piece.damage,
-                        game_piece.team,
-                        r_state);
-                }
-                resolver.Resolve_Combats();                
-            });
+                    if (game_piece.state == components::UNIT_STATE::ATTACK)
+                    {
+                        // Attack animation here
+                        attack_targets(
+                            game_piece,
+                            id,
+                            game_piece.board_source,
+                            game_piece.attacks,
+                            game_piece.damage,
+                            game_piece.team,
+                            r_state);
+                    }
+                    resolver.Resolve_Combats();
+                });
 
             generate_new_board_state(r_state);
 
@@ -424,54 +440,46 @@ public:
                         }
                     }
                 }
-            });
+                });
 
-          
+
             for (auto& spawns : spawner)
             {
                 spawn_unit_in_place(spawns.x, spawns.y, spawns.team, r_state, spawns.type);
             }
             spawner.clear();
-            
-        } else
+
+        }
+        else
         {
             // If a unit made it through the last state update with a move state, move the unit until the next update
-            r_state.each_id<transforms::transform, components::board>(
-                [&](entity_id board_id, auto &board_t, auto &board) {
-                    r_state.each_id<transforms::transform, components::game_piece>(
-                        [&](entity_id unit_id, auto &unit_t, auto &unit) {
-                            if (unit.state == components::UNIT_STATE::ATTACK)
-                            {
-                                // attacking animation here
-                                attack_unit(unit, timer_t);
-                                handle_unit_transform(board_t, unit_t, unit, board, board_id);
-                            }
-                            if (unit.state == components::UNIT_STATE::MOVE)
-                            {
-                                // Walking animation here
-                                walk_unit(unit, timer_t);
-                                handle_unit_transform(board_t, unit_t, unit, board, board_id);
-                            }
-                            if (unit.state == components::UNIT_STATE::DYING)
-                            {
-                                // Death animation here
-                                unit_death_event new_event(unit_id);
-                                event_manager.BroadcastEvent(new_event);
 
-                            }
-                        });
-                    });
+            r_state.each_id<transforms::transform, components::game_piece>(
+                [&](entity_id unit_id, auto& unit_t, auto& unit) {
+                    if (unit.state == components::UNIT_STATE::ATTACK)
+                    {
+                        // attacking animation here
+                        attack_unit(unit, timer_t);
+                        handle_unit_transform(board_t, unit_t, unit, board, board_id);
+                    }
+                    if (unit.state == components::UNIT_STATE::MOVE)
+                    {
+                        // Walking animation here
+                        walk_unit(unit, timer_t);
+                        handle_unit_transform(board_t, unit_t, unit, board, board_id);
+                    }
+                    if (unit.state == components::UNIT_STATE::DYING)
+                    {
+                        // Death animation here
+                        unit_death_event new_event(unit_id);
+                        event_manager.BroadcastEvent(new_event);
+
+                    }
+                });
+
 
         }
     }
-
-private:
-    float timer = ROUND_TIME;
-    core::game_input_manager &m_input;
-    core::frame_timer &m_timer;
-    event::EventManager &event_manager;
-    asset::scene_hydrater &hydrater;
-    combats::combat_resolution& resolver;
 
     static void score_for_team(ecs::state& state, float team, float damage)
     {
