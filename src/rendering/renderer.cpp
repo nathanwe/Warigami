@@ -277,7 +277,7 @@ namespace rendering
         glm::vec3 light_inverse_direction = -1.f *
                                             glm::eulerAngleZXY(transform.rotation.z, transform.rotation.x,
                                                                transform.rotation.y) *
-                                            glm::vec4(0, 0, -1, 1);
+                                            glm::vec4(0, 0, -1, 0);
 
         _pass_default->set_float3(19, light_inverse_direction);
         _pass_default->set_float(20, light.intensity);

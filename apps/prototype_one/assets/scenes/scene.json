@@ -70,7 +70,8 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 50, 0 ]
+          "position": [ 0, 50, 0 ],
+          "rotation": [ -120, 0, 0 ]
         },
         {
           "type": "light_directional",

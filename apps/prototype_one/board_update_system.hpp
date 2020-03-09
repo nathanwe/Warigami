@@ -14,6 +14,8 @@
 #include "combat.hpp"
 #include "components/card_enum.hpp"
 
+#include <algorithm>
+
 struct to_spawn 
 {
     to_spawn(int _x, int _y, int _team, components::card_enum _type) : x(_x), y(_y), team(_team), type(_type) {}
@@ -443,11 +445,16 @@ private:
 			if (p.team != team)
 			{
 				p.health -= damage;
+                if (p.health < 0.f)
+                {
+                    p.health = 0.f;
+                }
 			}
 		});
         state.each<components::tug_of_war_meter>([&](auto& meter)
         {
             meter.value += -1.f * team * damage;
+            std::clamp(meter.value, -100.f, 100.f);
         });
     }
 };
