@@ -62,7 +62,7 @@ public:
 			{
 				_tie = _did_game_end == true;
 				_did_game_end = true;
-				_winner = meter.value / 100.f;
+				_winner = meter.value / -100.f;
 			}
 			return true;
 		});
