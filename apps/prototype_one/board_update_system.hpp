@@ -244,12 +244,31 @@ public:
     // Helper function for attacking
     static void attack_unit(components::game_piece& game_piece, float ticker_t)
     {
-        
-        glm::vec2 source = ticker_t < 0.5 ? (glm::vec2)game_piece.board_source : glm::vec2(0.1f, 0.5 * game_piece.team) + (glm::vec2)game_piece.board_source;
-        glm::vec2 destination = ticker_t < 0.5 ? glm::vec2(0.1f, 0.5 * game_piece.team) + (glm::vec2)game_piece.board_source : (glm::vec2)game_piece.board_source;
-        float animation_t = ticker_t < 0.5 ? ticker_t / 0.5 : (ticker_t - 0.5) / 0.5;
-        game_piece.continuous_board_location = source + animation_t * (destination - source);
+        static std::pair<float, float> position_keyframes[] { // t -> y
+            {std::numeric_limits<float>::min(), 0.f},
+            {0.f, 0.f},            
+            {0.4f, 0.0f},
+            {0.6f, -0.1f},
+            {0.7f, 0.2f},
+            {1.f, 0.f},
+            {std::numeric_limits<float>::max(), 0.f},
+        };
+
+        size_t index = 0;
+        while (position_keyframes[index].first < ticker_t)
+            index++;
+
+        float source = position_keyframes[index - 1].second;
+        float destination = position_keyframes[index].second;
+        float t_first = position_keyframes[index-1].first;
+        float t_second = position_keyframes[index].first;
+
+        float t_range = t_second - t_first;
+        float t = (ticker_t - t_first) / t_range;
+        game_piece.continuous_board_location.y = game_piece.board_source.y + 
+            (source + t * (destination - source)) * game_piece.team;
     }
+
     static void test() {
 
     }
@@ -369,7 +388,7 @@ public:
 
             generate_new_board_state(r_state);
 
-            // If a unit is standing in fire, it takes damage; (SHOULD GO IN TILE_EFFECT_SYSTEM)
+            // If a unit is standing in fire, it takes damage; 
             r_state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
                 ecs::entity* square_e = get_square_at_location(r_state, game_piece.board_source);
                 if (square_e) {
@@ -456,6 +475,7 @@ private:
     event::EventManager &event_manager;
     asset::scene_hydrater &hydrater;
     combats::combat_resolution& resolver;
+
     static void score_for_team(ecs::state& state, float team, float damage)
     {
 		state.each<components::player>([&](auto& p)
@@ -469,6 +489,7 @@ private:
                 }
 			}
 		});
+
         state.each<components::tug_of_war_meter>([&](auto& meter)
         {
             meter.value += -1.f * team * damage;
