@@ -241,6 +241,18 @@ public:
         glm::vec2 interpolated = glm::vec2(game_piece.board_source) + ticker_t * to_dst;
         game_piece.continuous_board_location = interpolated;
     }
+    // Helper function for attacking
+    static void attack_unit(components::game_piece& game_piece, float ticker_t)
+    {
+        
+        glm::vec2 source = ticker_t < 0.5 ? (glm::vec2)game_piece.board_source : glm::vec2(0.1f, 0.5 * game_piece.team) + (glm::vec2)game_piece.board_source;
+        glm::vec2 destination = ticker_t < 0.5 ? glm::vec2(0.1f, 0.5 * game_piece.team) + (glm::vec2)game_piece.board_source : (glm::vec2)game_piece.board_source;
+        float animation_t = ticker_t < 0.5 ? ticker_t / 0.5 : (ticker_t - 0.5) / 0.5;
+        game_piece.continuous_board_location = source + animation_t * (destination - source);
+    }
+    static void test() {
+
+    }
 
     static void handle_unit_transform(
         transforms::transform& board_t,
@@ -412,6 +424,12 @@ public:
                 [&](entity_id board_id, auto &board_t, auto &board) {
                     r_state.each_id<transforms::transform, components::game_piece>(
                         [&](entity_id unit_id, auto &unit_t, auto &unit) {
+                            if (unit.state == components::UNIT_STATE::ATTACK)
+                            {
+                                // attacking animation here
+                                attack_unit(unit, timer_t);
+                                handle_unit_transform(board_t, unit_t, unit, board, board_id);
+                            }
                             if (unit.state == components::UNIT_STATE::MOVE)
                             {
                                 // Walking animation here
