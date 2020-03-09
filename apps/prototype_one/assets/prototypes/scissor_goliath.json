@@ -8,8 +8,8 @@
       },
       {
         "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/unit_orange/unit_orange.obj",
-        "param_diffuse": [ 1.0, 1.0, 0.0 ]
+        "mesh": "assets/meshes/goliath/goliath.gltf",
+        "texture_diffuse": "assets/meshes/goliath/goliath.png"
       },
       {
         "type": "game_piece",
