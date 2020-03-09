@@ -262,15 +262,10 @@ public:
         float destination = position_keyframes[index].second;
         float t_first = position_keyframes[index-1].first;
         float t_second = position_keyframes[index].first;
-
         float t_range = t_second - t_first;
         float t = (ticker_t - t_first) / t_range;
         game_piece.continuous_board_location.y = game_piece.board_source.y + 
             (source + t * (destination - source)) * game_piece.team;
-    }
-
-    static void test() {
-
     }
 
     static void handle_unit_transform(
