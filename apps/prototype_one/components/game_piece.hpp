@@ -6,6 +6,7 @@
 #include "component_bits.hpp"
 #include "../combat.hpp"
 #include <vector>
+#include "card_enum.hpp"
 
 #include <glm/glm.hpp>
 
@@ -39,6 +40,7 @@ namespace components
 		glm::ivec2 move_board; // A vector keeping track of which direction is forward for the unit in board-space
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space
 		std::vector<combats::COMBAT_EFFECTS> effects;
+		components::card_enum piece_type; //what kind of unit it is
 	};
 }
 
