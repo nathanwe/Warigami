@@ -112,8 +112,16 @@ public:
 
 		nerdP.piece_type = type;
 	}
-	void create_fire_graphic(glm::vec3 relitive_pos, entity_id parent)
+
+	//Helper function for getting a terrain_graphic
+	static ecs::entity* get_terrain_at_location(ecs::state& r_state, glm::ivec2 loc) {
+		return r_state.first<components::terrain_graphic>([&](components::terrain_graphic& terrain_graphic) {
+			return terrain_graphic.location == loc;
+			});
+	}
+	void create_fire_graphic(ecs::state& r_state, glm::vec3 relitive_pos, entity_id parent, std::vector<components::terrain>& terrains)
 	{
+		
 		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/fire_graphic.json");
 		auto& nerdT = nerd.get_component<transforms::transform>();
 		nerdT.position = relitive_pos;
@@ -308,7 +316,7 @@ public:
 							#endif // ONLY_ONE_TERRAIN_PER_TILE
 
 							square.terrains.push_back(components::terrain(components::TERRAIN_ENUM::fire, player.team));
-							create_fire_graphic(transform.position, board_id);
+							create_fire_graphic(r_state, transform.position, board_id, square.terrains);
 							
 						}
 						transform.is_matrix_dirty = true;
