@@ -108,6 +108,8 @@ public:
 			nerdT.has_parent = true;
 			nerdT.parent = id;
 		});
+
+		nerdP.piece_type = type;
 	}
 	void create_fire_graphic(glm::vec3 relitive_pos, entity_id parent)
 	{
@@ -142,6 +144,7 @@ public:
 				if (add_energy && player.energy < 10)
 					player.energy++;
 
+				//set p1&p2 diffrences
 				auto& controls = player.team == 1.f ? p1_controls : p2_controls;
 
 				if (player.team == 1.0f) {
@@ -153,7 +156,71 @@ public:
 					left = m_input.strafe_player2();
 				}
 
+				//gather points 
+				r_state.each<components::game_piece>([&](components::game_piece& game_piece)
+					{
+						if (game_piece.team != player.team) {
+							player.points += game_piece.give_points;
+							game_piece.give_points = 0;
+						}
+					});
+				if (player.points >= 5) { //TODO: fix hardcoded 5
+					player.points -= 5;
+					player.bonus_dice++;
+				}
 
+				//move statlessly
+				if (forward > .4f)
+				{
+					if (player.selected_row > 0 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_row--;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+				}
+				else if (forward < -.4f)
+				{
+					if (player.selected_row < 6 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_row++;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+				}
+
+				else if (left < -.4f)
+				{
+					if (player.selected_column > 0 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_column--;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+				}
+				else if (left > .4f)
+				{
+					if (player.selected_column < 8 && player.select_delay <= 0.f)
+					{
+						player.select_delay = 0.1f;
+						player.selected_column++;
+					}
+					else
+					{
+						player.select_delay -= m_timer.smoothed_delta_secs();
+					}
+				}
+
+				//base behavior
 				if (player.state == components::PLAYER_STATE::BASE)
 				{
 					int loc = find_selected_card_index(controls);
@@ -168,6 +235,7 @@ public:
 						player.state = components::PLAYER_STATE::DICE_PLACEMENT;
 					}
 				}
+				//unit placement behavior
 				else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
 				{
 
@@ -218,40 +286,18 @@ public:
 
 							player.state = components::PLAYER_STATE::BASE;
 						}
-					}
-					else if (forward > .4f)
-					{
-						if (player.selected_row > 0 && player.select_delay <= 0.f)
-						{
-							player.select_delay = 0.1f;
-							player.selected_row--;
-						}
-						else
-						{
-							player.select_delay -= m_timer.smoothed_delta_secs();
-						}
-					}
-					else if (forward < -.4f)
-					{
-						if (player.selected_row < 6 && player.select_delay <= 0.f)
-						{
-							player.select_delay = 0.1f;
-							player.selected_row++;
-						}
-						else
-						{
-							player.select_delay -= m_timer.smoothed_delta_secs();
-						}
-					}
-
+					}				
 				}
+
+				//dice placement behavior
 				else if (player.state == components::PLAYER_STATE::DICE_PLACEMENT)
 				{
+					std::vector<glm::ivec2> net = player.create_shifted_net(glm::ivec2(player.selected_row, player.selected_column),
+						components::dice_nets::SEVEN, player.rotate_state, player.flip_state);
 					r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 					{
-
-						bool foo = player.net_check(glm::ivec2(square.x, square.y), glm::ivec2(player.selected_row, player.selected_column),
-							components::dice_nets::SEVEN, player.rotate_state, player.flip_state);
+						
+						bool foo = player.net_check(glm::ivec2(square.x, square.y), net);
 						foo ? row_select(transform, 1.5f) : row_select(transform, 1);
 						if (m_input.is_input_started(controls.card1) && foo && player.energy >= components::dice_costanamos)
 						{
@@ -287,55 +333,7 @@ public:
 						}
 						player.rotate_state = next;
 					}
-					else if (forward > .4f)
-					{
-						if (player.selected_row > 0 && player.select_delay <= 0.f)
-						{
-							player.select_delay = 0.1f;
-							player.selected_row--;
-						}
-						else
-						{
-							player.select_delay -= m_timer.smoothed_delta_secs();
-						}
-					}
-					else if (forward < -.4f)
-					{
-						if (player.selected_row < 6 && player.select_delay <= 0.f)
-						{
-							player.select_delay = 0.1f;
-							player.selected_row++;
-						}
-						else
-						{
-							player.select_delay -= m_timer.smoothed_delta_secs();
-						}
-					}
-
-					else if (left < -.4f)
-					{
-						if (player.selected_column > 0 && player.select_delay <= 0.f)
-						{
-							player.select_delay = 0.1f;
-							player.selected_column--;
-						}
-						else
-						{
-							player.select_delay -= m_timer.smoothed_delta_secs();
-						}
-					}
-					else if (left > .4f)
-					{
-						if (player.selected_column < 8 && player.select_delay <= 0.f)
-						{
-							player.select_delay = 0.1f;
-							player.selected_column++;
-						}
-						else
-						{
-							player.select_delay -= m_timer.smoothed_delta_secs();
-						}
-					}
+					
 
 
 				}

@@ -14,6 +14,8 @@
 #include "combat.hpp"
 #include "components/card_enum.hpp"
 
+#include <algorithm>
+
 struct to_spawn 
 {
     to_spawn(int _x, int _y, int _team, components::card_enum _type) : x(_x), y(_y), team(_team), type(_type) {}
@@ -375,6 +377,7 @@ public:
                 if (game_piece.health <= 0)
                 {
                     game_piece.state = components::UNIT_STATE::DYING;
+                    game_piece.give_points = 3;//back to 3 for testing //(int)game_piece.piece_type; // with the current order, big pieces give more points
                     for (auto& effect : game_piece.effects)
                     {
                         switch (effect)
@@ -420,6 +423,7 @@ public:
                                 // Death animation here
                                 unit_death_event new_event(unit_id);
                                 event_manager.BroadcastEvent(new_event);
+
                             }
                         });
                     });
@@ -434,7 +438,6 @@ private:
     event::EventManager &event_manager;
     asset::scene_hydrater &hydrater;
     combats::combat_resolution& resolver;
-
     static void score_for_team(ecs::state& state, float team, float damage)
     {
 		state.each<components::player>([&](auto& p)
@@ -442,11 +445,16 @@ private:
 			if (p.team != team)
 			{
 				p.health -= damage;
+                if (p.health < 0.f)
+                {
+                    p.health = 0.f;
+                }
 			}
 		});
         state.each<components::tug_of_war_meter>([&](auto& meter)
         {
             meter.value += -1.f * team * damage;
+            std::clamp(meter.value, -100.f, 100.f);
         });
     }
 };

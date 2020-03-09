@@ -6,6 +6,7 @@
 #include "component_bits.hpp"
 #include "../combat.hpp"
 #include <vector>
+#include "card_enum.hpp"
 
 #include <glm/glm.hpp>
 
@@ -30,6 +31,7 @@ namespace components
 		int health; // How much damage a unit can take before dying
 		int team; // Which team the unit is a part of
 		int remaining_speed;
+		int give_points = 0; //How many points a unit is currently worth for dice earning
 		glm::ivec2 board_source; // A unit's board coordinates
 		glm::vec2 continuous_board_location; // Interpolated position on board
 		glm::ivec2 board_destination; // A unit's discrete tile coordinates
@@ -38,6 +40,7 @@ namespace components
 		glm::ivec2 move_board; // A vector keeping track of which direction is forward for the unit in board-space
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space
 		std::vector<combats::COMBAT_EFFECTS> effects;
+		components::card_enum piece_type; //what kind of unit it is
 	};
 }
 

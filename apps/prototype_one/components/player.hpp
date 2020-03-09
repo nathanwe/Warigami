@@ -59,17 +59,18 @@ namespace components
 	};
 
 	enum class dice_nets {
-		T = 1,
-		SEVEN = 2,
-		DROOPY_SEVEN = 3,
-		Z = 4,
-		T_HAT = 5,
-		WX = 6,
-		W = 7,
-		WM = 8,
-		CROSS = 9,
-		X = 10,
-		I = 11
+		T = 0,
+		SEVEN = 1,
+		DROOPY_SEVEN = 2,
+		Z = 3,
+		T_HAT = 4,
+		WX = 5,
+		W = 6,
+		WM = 7,
+		CROSS = 8,
+		X = 9,
+		I = 10,
+		NUM = 11
 	};
 
 	enum class rotate_states {
@@ -80,7 +81,8 @@ namespace components
 		NUM = 4
 
 	};
-	
+	static std::vector<std::vector<std::vector<std::vector<glm::ivec2>>>> legal_dice;
+	//static glm::ivec2[11][4][2] legal_dice; //magic numbers
 	
 
 	struct player : ecs::component<player>
@@ -99,7 +101,8 @@ namespace components
 
 		int energy = 0;
 		float health {100.f};
-		int bonus_dice = 4;
+		int points = 0;
+		int bonus_dice = 1;
 		float team = 0.0f;
 		card_enum selected_card;
 		int selected_card_location;
@@ -146,11 +149,10 @@ namespace components
 		void regrow_deck() {
 			deck = start_deck;
 		}
-		bool net_check(glm::ivec2 test, glm::ivec2 center,
+		std::vector<glm::ivec2> create_shifted_net(glm::ivec2 center,
 			dice_nets net, rotate_states rotate, bool flip) {
 			std::vector<glm::ivec2> legal_placements;
 			int tempx;
-			bool ret = false;
 			if (net == dice_nets::SEVEN) {
 				legal_placements.push_back(glm::ivec2(0, 0));
 				legal_placements.push_back(glm::ivec2(0, 1));
@@ -193,7 +195,16 @@ namespace components
 				}
 			}
 			for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
-				if (center + *it == test) {
+				it->x += center.x;
+				it->y += center.y;
+			}
+			return legal_placements;
+
+		}
+		bool net_check(glm::ivec2 test, std::vector<glm::ivec2> legal_placements) {
+			bool ret = false;
+			for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
+				if (*it == test) {
 					ret = true;
 				}
 			}
