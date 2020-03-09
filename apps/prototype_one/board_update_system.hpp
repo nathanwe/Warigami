@@ -363,6 +363,34 @@ public:
             });
 
 
+            r_state.each<components::game_piece>([&](components::game_piece& game_piece)
+                {
+                    if (game_piece.health <= 0)
+                    {
+                        game_piece.state = components::UNIT_STATE::DYING;
+                        game_piece.give_points = 3;//back to 3 for testing //(int)game_piece.piece_type; // with the current order, big pieces give more points
+                        for (auto& effect : game_piece.effects)
+                        {
+                            switch (effect)
+                            {
+                            case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
+                            {
+                                to_spawn newSpawn(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSORLING);
+                                spawner.push_back(newSpawn);
+                                break;
+                            }
+                            case combats::COMBAT_EFFECTS::SPAWN_SCISSOR_TROOPER_ON_DEATH:
+                            {
+                                to_spawn newSpawn2(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSOR_TROOPER);
+                                spawner.push_back(newSpawn2);
+                                break;
+                            }
+                            }
+                        }
+                    }
+                });
+
+
             // If a unit can attack, attack now
             r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) 
             {
@@ -398,33 +426,7 @@ public:
                 }
             });
 
-            r_state.each<components::game_piece>([&](components::game_piece& game_piece)
-            {                
-                if (game_piece.health <= 0)
-                {
-                    game_piece.state = components::UNIT_STATE::DYING;
-                    game_piece.give_points = 3;//back to 3 for testing //(int)game_piece.piece_type; // with the current order, big pieces give more points
-                    for (auto& effect : game_piece.effects)
-                    {
-                        switch (effect)
-                        {
-                        case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
-                        {
-                            to_spawn newSpawn(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSORLING);
-                            spawner.push_back(newSpawn);
-                            break;
-                        }
-                        case combats::COMBAT_EFFECTS::SPAWN_SCISSOR_TROOPER_ON_DEATH:
-                        {
-                            to_spawn newSpawn2(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSOR_TROOPER);
-                            spawner.push_back(newSpawn2);
-                            break;
-                        }
-                        }
-                    }
-                }
-            });
-
+          
             for (auto& spawns : spawner)
             {
                 spawn_unit_in_place(spawns.x, spawns.y, spawns.team, r_state, spawns.type);
