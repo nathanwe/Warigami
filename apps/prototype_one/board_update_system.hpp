@@ -13,6 +13,7 @@
 #include "components/board_square.hpp"
 #include "combat.hpp"
 #include "components/card_enum.hpp"
+#include "components/terrain.hpp"
 
 #include <algorithm>
 
@@ -429,21 +430,19 @@ private:
 
             // If a unit is standing in fire, it takes damage; 
             r_state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
-                ecs::entity* square_e = get_square_at_location(r_state, game_piece.board_source);
-                if (square_e) {
-                    auto& square = square_e->get_component<components::board_square>();
-                    for (std::vector<components::terrain>::iterator it = square.terrains.begin(); it != square.terrains.end(); ++it) {
-                        if (it->type == components::TERRAIN_ENUM::fire) {
-                            if (game_piece.team != it->team) {
-                                game_piece.health -= it->damage;
-                                if (game_piece.health <= 0.f)
-                                {
-                                    game_piece.state = components::UNIT_STATE::DYING;
+                r_state.each<components::terrain>([&](auto& terrain) {
+                        if (terrain.location == game_piece.board_source) {
+                            if (terrain.type == components::TERRAIN_ENUM::fire) {
+                                if (terrain.team != game_piece.team) {
+                                    game_piece.health -= terrain.damage;
+                                    if (game_piece.health <= 0.f)
+                                    {
+                                        game_piece.state = components::UNIT_STATE::DYING;
+                                    }
                                 }
                             }
                         }
-                    }                    
-                }
+                    });
                 });
 
 

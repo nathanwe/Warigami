@@ -10,7 +10,7 @@ add_executable (prototype_one main.cpp
 				components/energy_meter.cpp
 				components/health_meter.cpp
 				components/tug_of_war_meter.cpp 
-				components/terrain_graphic.cpp
+				components/terrain.cpp
 				util/boardgen.cpp
 				combat.cpp
 				components/deck_ui.cpp

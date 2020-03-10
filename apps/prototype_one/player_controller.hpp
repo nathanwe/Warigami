@@ -13,6 +13,7 @@
 
 #include "components/player.hpp" 
 #include "components/board_square.hpp"
+#include "components/terrain.hpp"
 #include "components/game_piece.hpp"
 
 struct player_controls
@@ -111,24 +112,54 @@ public:
 		});
 
 		nerdP.piece_type = type;
-	}
-
-	//Helper function for getting a terrain_graphic
-	static ecs::entity* get_terrain_at_location(ecs::state& r_state, glm::ivec2 loc) {
-		return r_state.first<components::terrain_graphic>([&](components::terrain_graphic& terrain_graphic) {
-			return terrain_graphic.location == loc;
-			});
-	}
-	void create_fire_graphic(ecs::state& r_state, glm::vec3 relitive_pos, entity_id parent, std::vector<components::terrain>& terrains)
-	{
 		
-		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/fire_graphic.json");
+	}
+	
+	void create_terrain(ecs::state& r_state, glm::vec3 relitive_pos, entity_id parent,
+		glm::ivec2 location, components::TERRAIN_ENUM type, float team, int damage = 1, int charges = -1, int duration = -1)
+	{
+		int existing_terrain_here = 0;
+		r_state.each<components::terrain>([&](components::terrain& that_terrain)
+			{
+				if (that_terrain.location == location) {
+					++existing_terrain_here;
+				}
+			});
+
+		static const std::string TerrainPrototypes[3] = {
+			"assets/prototypes/terrain.json",
+			"assets/prototypes/terrain_fire_p1.json",
+			"assets/prototypes/terrain_fire_p2.json"
+						
+		};
+
+		size_t type_index = 0;
+		if (team == 1.0f && type == components::TERRAIN_ENUM::fire) {
+			type_index = 1;
+		}
+		else if (team == -1.0f && type == components::TERRAIN_ENUM::fire) {
+			type_index = 2;
+		}
+		else {
+			type_index = 0; // this should never happen
+		}
+		
+		ecs::entity& nerd = hydrater.add_from_prototype(TerrainPrototypes[type_index]);
+
 		auto& nerdT = nerd.get_component<transforms::transform>();
 		nerdT.position = relitive_pos;
-		nerdT.position.y += .6;
+		nerdT.position.y += .6 + existing_terrain_here * 0.3f;
 		nerdT.has_parent = true;
 		nerdT.parent = parent;
 		nerdT.is_matrix_dirty = true;
+
+		auto& nerdTerrain = nerd.get_component<components::terrain>();
+		nerdTerrain.charges = charges;
+		nerdTerrain.damage = damage;
+		nerdTerrain.duration = duration;
+		nerdTerrain.location = location;
+		nerdTerrain.team = team;
+		nerdTerrain.type = type;
 	}
 
 	void update(ecs::state& r_state) override
@@ -312,11 +343,11 @@ public:
 						{
 							transform.scale.y = 1;
 							#ifdef ONLY_ONE_TERRAIN_PER_TILE
-							square.terrains.clear();
+							//TODO
 							#endif // ONLY_ONE_TERRAIN_PER_TILE
 
-							square.terrains.push_back(components::terrain(components::TERRAIN_ENUM::fire, player.team));
-							create_fire_graphic(r_state, transform.position, board_id, square.terrains);
+							
+							create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::fire, player.team);
 							
 						}
 						transform.is_matrix_dirty = true;
