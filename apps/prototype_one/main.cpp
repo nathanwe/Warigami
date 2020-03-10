@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
 	health_meter_system health_system;
 	tug_of_war_meter_system tug_system;
 	countdown_system count_system(timer, events, strings, glfw);
-	endgame_system endgame(hydrater);
+	endgame_system endgame(state, events, hydrater);
 	tick_update_system ticker(timer);
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);

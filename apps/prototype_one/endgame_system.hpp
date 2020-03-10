@@ -6,33 +6,51 @@
 
 #include <asset/scene_hydrater.hpp>
 #include <ecs/system_base.hpp>
+#include <event/event.hpp>
+#include <event/event_manager.hpp>
 
-class endgame_system : public ecs::system_base
+#include <math.h>
+
+class endgame_system : public ecs::system_base, event::Listener
 {
 public:
-	endgame_system(asset::scene_hydrater& hydrater) : _hydrater(hydrater)
+	endgame_system(ecs::state& state, event::EventManager& event_manager, asset::scene_hydrater& hydrater) :
+		_state(state), _event_manager(event_manager), _hydrater(hydrater)
 	{
 	}
 
 public:
-	void update(ecs::state& r_state) override
+	void initialize(ecs::state& r_state) override
 	{
-		if (_did_game_end)
-		{
-			return;
-		}
-
-		prototype_one_condition(r_state);
-		prototype_two_condition(r_state);
-		check_endgame();
+		_event_manager.Subscribe(this, event::EVENT_TYPE::GAME_OVER);
 	}
 
-	void prototype_one_condition(ecs::state& r_state)
+	void update(ecs::state& r_state) override
 	{
-		if (_did_game_end)
+		if (!_did_game_end)
 		{
-			return;
+			prototype_one_kill_condition(r_state);
+			//prototype_two_kill_condition(r_state);
+			//prototype_three_kill_condition(r_state);
+			check_endgame();
 		}
+	}
+
+	void HandleEvent(event::Event& event) override
+	{
+		if (event.mType == event::EVENT_TYPE::GAME_OVER && !_did_game_end)
+		{
+			_did_game_end = true;
+			prototype_one_timeout_condition(event);
+			//prototype_two_timeout_condition(event);
+			//prototype_three_timeout_condition(r_state);
+			check_endgame();
+		}
+	}
+
+private:
+	void prototype_one_kill_condition(ecs::state& r_state)
+	{
 		r_state.each<components::player>([&](auto& player)
 		{
 			if (player.health == 0.f)
@@ -50,12 +68,8 @@ public:
 		});
 	}
 
-	void prototype_two_condition(ecs::state& r_state)
+	void prototype_two_kill_condition(ecs::state& r_state)
 	{
-		if (_did_game_end)
-		{
-			return;
-		}
 		r_state.first<components::tug_of_war_meter>([&](auto& meter)
 		{
 			if (abs(meter.value) == 100.f)
@@ -68,12 +82,47 @@ public:
 		});
 	}
 
+	void prototype_one_timeout_condition(event::Event& event)
+	{
+		float highest_health = -1.f;
+		float highest_team = 0.f;
+		bool tied = false;
+		_state.each<components::player>([&](auto& player)
+		{
+			if (player.health > highest_health)
+			{
+				highest_health = player.health;
+				highest_team = player.team;
+				tied = false;
+			}
+			else if (player.health == highest_health)
+			{
+				tied = true;
+			}
+		});
+		_winner = highest_team;
+		_tie = tied;
+	}
+
+	void prototype_two_timeout_condition(event::Event& event)
+	{
+		bool found_meter = false;
+		_state.first<components::tug_of_war_meter>([&](auto& meter)
+		{
+			_tie = meter.value == 0.f;
+			_winner = signbit(meter.value) ? -1.f : 1.f;
+			found_meter = true;
+			return true;
+		});
+		assert(found_meter);
+	}
+
 	void check_endgame()
 	{
 		if (_did_game_end)
 		{
 			if (_tie) { endgame_tie(); }
-			else      { endgame_winlose(); }
+			else { endgame_winlose(); }
 		}
 	}
 
@@ -95,6 +144,8 @@ public:
 	}
 
 private:
+	ecs::state& _state;
+	event::EventManager& _event_manager;
 	asset::scene_hydrater& _hydrater;
 	bool _did_game_end = false;
 	float _winner = 0.f;
