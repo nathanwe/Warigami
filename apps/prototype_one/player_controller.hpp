@@ -1,7 +1,7 @@
 #ifndef GAME_PLAYER_CONTROLLER_HPP
 #define GAME_PLAYER_CONTROLLER_HPP
 
-#define ROUND_TIME 2.0f
+#define ROUND_TIME_PLAYER 2.0f
 //#define ONLY_ONE_TERRAIN_PER_TILE
 
 #include "ecs/state.hpp"
@@ -13,6 +13,7 @@
 
 #include "components/player.hpp" 
 #include "components/board_square.hpp"
+#include "components/terrain.hpp"
 #include "components/game_piece.hpp"
 
 struct player_controls
@@ -111,16 +112,54 @@ public:
 		});
 
 		nerdP.piece_type = type;
+		
 	}
-	void create_fire_graphic(glm::vec3 relitive_pos, entity_id parent)
+	
+	void create_terrain(ecs::state& r_state, glm::vec3 relitive_pos, entity_id parent,
+		glm::ivec2 location, components::TERRAIN_ENUM type, float team, int damage = 1, int charges = -1, int duration = -1)
 	{
-		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/fire_graphic.json");
+		int existing_terrain_here = 0;
+		r_state.each<components::terrain>([&](components::terrain& that_terrain)
+			{
+				if (that_terrain.location == location) {
+					++existing_terrain_here;
+				}
+			});
+
+		static const std::string TerrainPrototypes[3] = {
+			"assets/prototypes/terrain.json",
+			"assets/prototypes/terrain_fire_p1.json",
+			"assets/prototypes/terrain_fire_p2.json"
+						
+		};
+
+		size_t type_index = 0;
+		if (team == 1.0f && type == components::TERRAIN_ENUM::fire) {
+			type_index = 1;
+		}
+		else if (team == -1.0f && type == components::TERRAIN_ENUM::fire) {
+			type_index = 2;
+		}
+		else {
+			type_index = 0; // this should never happen
+		}
+		
+		ecs::entity& nerd = hydrater.add_from_prototype(TerrainPrototypes[type_index]);
+
 		auto& nerdT = nerd.get_component<transforms::transform>();
 		nerdT.position = relitive_pos;
-		nerdT.position.y += .6;
+		nerdT.position.y += .6 + existing_terrain_here * 0.3f;
 		nerdT.has_parent = true;
 		nerdT.parent = parent;
 		nerdT.is_matrix_dirty = true;
+
+		auto& nerdTerrain = nerd.get_component<components::terrain>();
+		nerdTerrain.charges = charges;
+		nerdTerrain.damage = damage;
+		nerdTerrain.duration = duration;
+		nerdTerrain.location = location;
+		nerdTerrain.team = team;
+		nerdTerrain.type = type;
 	}
 
 	void update(ecs::state& r_state) override
@@ -128,7 +167,7 @@ public:
 		bool add_energy = false;
 		if (timer <= 0)
 		{
-			timer = ROUND_TIME;
+			timer = ROUND_TIME_PLAYER;
 			add_energy = true;
 		}
 		else
@@ -304,11 +343,11 @@ public:
 						{
 							transform.scale.y = 1;
 							#ifdef ONLY_ONE_TERRAIN_PER_TILE
-							square.terrains.clear();
+							//TODO
 							#endif // ONLY_ONE_TERRAIN_PER_TILE
 
-							square.terrains.push_back(components::terrain(components::TERRAIN_ENUM::fire, player.team));
-							create_fire_graphic(transform.position, board_id);
+							
+							create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::fire, player.team);
 							
 						}
 						transform.is_matrix_dirty = true;
@@ -353,7 +392,7 @@ public:
 	}
 
 private:
-	float timer = ROUND_TIME;
+	float timer = ROUND_TIME_PLAYER;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;

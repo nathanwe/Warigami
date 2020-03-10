@@ -12,6 +12,7 @@ add_executable (prototype_one main.cpp
 				util/boardgen.cpp
 				components/countdown.cpp
 				components/tug_of_war_meter.cpp 
+				components/terrain.cpp
 				util/boardgen.cpp
 				combat.cpp
 				components/deck_ui.cpp

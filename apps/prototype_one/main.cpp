@@ -26,6 +26,7 @@
 #include "components/tug_of_war_meter_loader.hpp"
 #include "components/countdown.hpp"
 #include "components/countdown_loader.hpp"
+#include "components/terrain.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -82,6 +83,8 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::countdown>("countdown");
 	ecs::register_component<transforms::transform>("transform");
     ecs::register_component<components::deck_ui>("deck_ui");
+	ecs::register_component<components::terrain>("terrain");
+    ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
 	ecs::register_component<rendering::light_point>("light_point");

@@ -39,6 +39,13 @@ private:
             components::player& player,
             components::deck_ui& deck,
             entity_id deck_id);
+
+    static void position_tooltip(
+            size_t card_index,
+            transforms::transform& card_t,
+            components::player& player,
+            components::deck_ui& deck,
+            entity_id deck_id);
 };
 
 
