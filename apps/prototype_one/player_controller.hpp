@@ -1,7 +1,7 @@
 #ifndef GAME_PLAYER_CONTROLLER_HPP
 #define GAME_PLAYER_CONTROLLER_HPP
 
-#define ROUND_TIME 2.0f
+#define ROUND_TIME 2.5f
 //#define ONLY_ONE_TERRAIN_PER_TILE
 
 #include "ecs/state.hpp"

@@ -10,11 +10,11 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/quad/quad.obj",
-        "texture_diffuse": "assets/textures/cards/dragon.png"
+        "texture_diffuse": "assets/textures/cards/webber.png"
       },
       {
         "type": "card",
-        "card_type": 8
+        "card_type": 5
       }
     ]
   }

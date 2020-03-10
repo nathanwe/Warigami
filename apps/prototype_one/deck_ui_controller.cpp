@@ -82,21 +82,21 @@ ecs::entity &deck_ui_controller::spawn_card(components::card_enum type)
     switch (type)
     {
         case components::card_enum::SCISSORLING_TWIN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_tandem.json");
         case components::card_enum::SCISSOR_TROOPER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_erathor.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_trooper.json");
         case components::card_enum::SCISSORLING_EGG:
             return _hydrater.add_from_prototype("assets/prototypes/card_egg.json");
         case components::card_enum::SCISSORLING:
             return _hydrater.add_from_prototype("assets/prototypes/card_scissorling.json");
         case components::card_enum::SCISSOR_WEBBER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_wizard.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_webber.json");
         case components::card_enum::SCISSOR_GOLIATH:
-            return _hydrater.add_from_prototype("assets/prototypes/card_basic_fast.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_goliath.json");
         case components::card_enum ::SCISSOR_TITAN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_basic_melee.json");
+            return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
         case components::card_enum::SCISSOR_QUEEN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_basic_range.json");        
+            return _hydrater.add_from_prototype("assets/prototypes/card_queen.json");        
 
         default:
             return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
