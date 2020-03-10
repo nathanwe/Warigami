@@ -60,6 +60,11 @@ public:
 		transform.scale.y = num;
 		transform.is_matrix_dirty = true;
 	}
+	static void row_increase(transforms::transform& transform, float num)
+	{
+		transform.scale.y += num;
+		transform.is_matrix_dirty = true;
+	}
 
 	void spawn_unit(int lane, int team, ecs::state& r_state, components::card_enum type)
 	{
@@ -181,6 +186,14 @@ public:
 		{
 			timer -= m_timer.smoothed_delta_secs();
 		}
+		//board reset
+		r_state.each<components::board_square, transforms::transform>([&](
+			components::board_square& square,
+			transforms::transform& transform)
+			{
+				row_select(transform, 1);
+			});
+
 		r_state.each<components::player>([&](components::player& player)
 		{
 			float forward = 0;
@@ -281,6 +294,17 @@ public:
 					if (m_input.is_input_started(controls.dice_button) && player.bonus_dice > 0){
 						player.state = components::PLAYER_STATE::DICE_PLACEMENT;
 					}
+					r_state.each<components::board_square, transforms::transform>([&](
+						components::board_square& square,
+						transforms::transform& transform)
+						{
+							if (square.y == controls.column_to_up_scale)
+							{
+								square.x == player.selected_row
+									? row_increase(transform, 0.3f)
+									: row_increase(transform, 0);
+							}
+						});
 				}
 				//unit placement behavior
 				else if (player.state == components::PLAYER_STATE::UNIT_PLACEMENT)
@@ -300,8 +324,8 @@ public:
 							if (square.y == controls.column_to_up_scale)
 							{
 								square.x == player.selected_row
-								    ? row_select(transform, 1.5f)
-								    : row_select(transform, 1);
+								    ? row_increase(transform, 0.5f)
+								    : row_increase(transform, 0);
 							}
 						});
 
@@ -321,19 +345,13 @@ public:
 							spawn_unit(player.selected_row, player.team, r_state, player.hand[player.selected_card_location]);
 							player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
 							player.hand[player.selected_card_location] = player.safe_draw();
-
-
-							r_state.each<components::board_square, transforms::transform>([&](
-							        components::board_square& square,
-							        transforms::transform& transform)
-								{
-									transform.scale.y = 1;
-									transform.is_matrix_dirty = true;
-								});
-
 							player.state = components::PLAYER_STATE::BASE;
 						}
-					}				
+					}
+					else if (m_input.is_input_started(controls.card2))
+					{						
+						player.state = components::PLAYER_STATE::BASE;
+					}
 				}
 
 				//dice placement behavior
@@ -345,19 +363,15 @@ public:
 					{
 						
 						bool foo = player.net_check(glm::ivec2(square.x, square.y), net);
-						foo ? row_select(transform, 1.5f) : row_select(transform, 1);
+						foo ? row_increase(transform, 0.5f) : row_increase(transform, 0);
 						if (m_input.is_input_started(controls.card1) && foo && player.energy >= components::dice_costanamos)
 						{
-							transform.scale.y = 1;
+							row_select(transform, 1);
 							#ifdef ONLY_ONE_TERRAIN_PER_TILE
 							//TODO
 							#endif // ONLY_ONE_TERRAIN_PER_TILE
-
-							
-							create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::WEB, player.team);
-							
-						}
-						transform.is_matrix_dirty = true;
+							create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::WEB, player.team);							
+						}						
 					});
 
 					if (m_input.is_input_started(controls.card1) && player.energy >= components::dice_costanamos) {
@@ -371,12 +385,7 @@ public:
 						player.state = components::PLAYER_STATE::BASE;
 					} 
 					else if (m_input.is_input_started(controls.card2))
-					{
-						r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
-							{
-								transform.scale.y = 1;
-								transform.is_matrix_dirty = true;
-							});
+					{						
 						player.state = components::PLAYER_STATE::BASE;
 					}
 					else if (m_input.is_input_started(controls.card3)) {
