@@ -114,10 +114,6 @@ namespace components
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
 
-
-
-		
-
 		card_enum draw() {
 			card_count++;
 			if (!deck.empty()) {
@@ -140,7 +136,8 @@ namespace components
 		}
 
 		void shuffle() {
-			auto rng = std::default_random_engine{};
+		    static std::random_device rd;
+			auto rng = std::default_random_engine{rd()};
 			std::shuffle(std::begin(deck), std::end(deck), rng);
 		}
 
