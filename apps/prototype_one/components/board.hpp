@@ -25,6 +25,7 @@ namespace components
         float tick_time{ 1.f };
         float tick_time_remaining{ tick_time };
         float timer_t{ 0.f };
+        float ticker_dt{ 0.f };
 
         bool did_tick_elapse{ false };
 

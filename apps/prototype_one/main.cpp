@@ -143,11 +143,12 @@ int main(int argc, char** argv) {
 		&ticker,		
 		&spiderlings,
 		&board_updater,
+		&player_control,
 		&spawner,
 		//
 
 		&game_start_system,
-		&player_control,
+		
 	    &deck_ui_controller,
 		&endgame});
 

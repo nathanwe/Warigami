@@ -72,48 +72,8 @@ private:
 
 	void handle_tick_end(ecs::state& r_state, entity_id board_id, transforms::transform& board_t, components::board& board)
 	{
-		// A unit can only do one thing per turn with the exception that a unit can both attack and die on the same turn
-		// Update states to either attack or move depending on current board state
-		r_state.each<components::game_piece>([&](components::game_piece& game_piece)
-			{
-				game_piece.board_source = game_piece.board_destination;
-			});
-
-		r_state.each<components::game_piece>([&](components::game_piece& game_piece)
-			{
-				game_piece.state = check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state)
-					? components::UNIT_STATE::ATTACK
-					: components::UNIT_STATE::MOVE;
-			});
-
-		r_state.each<components::game_piece>([&](components::game_piece& game_piece)
-			{
-				if (game_piece.health <= 0)
-				{
-					game_piece.state = components::UNIT_STATE::DYING;
-					game_piece.give_points = 3;
-				}
-			});
-
-
-		// If a unit can attack, attack now
-		r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece)
-			{
-				if (game_piece.state == components::UNIT_STATE::ATTACK)
-				{
-					// Attack animation here
-					attack_targets(
-						game_piece,
-						id,
-						game_piece.board_source,
-						game_piece.attacks,
-						game_piece.damage,
-						game_piece.team,
-						r_state);
-				}
-				resolver.Resolve_Combats();
-			});
-
+		do_game_piece_actions(r_state);
+		resolver.Resolve_Combats();
 		generate_new_board_state(r_state);
 		
 		// If a unit is standing in FIRE, it takes damage; 
@@ -160,6 +120,36 @@ private:
 			});
 	}
 
+	void do_game_piece_actions(ecs::state& r_state)
+	{
+		r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece)
+			{
+				game_piece.board_source = game_piece.board_destination;
+
+				game_piece.state = check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state)
+					? components::UNIT_STATE::ATTACK
+					: components::UNIT_STATE::MOVE;
+
+				if (game_piece.health <= 0)
+				{
+					game_piece.state = components::UNIT_STATE::DYING;
+					game_piece.give_points = 3;
+				}
+
+				if (game_piece.state == components::UNIT_STATE::ATTACK)
+				{
+					// Attack animation here
+					attack_targets(
+						game_piece,
+						id,
+						game_piece.board_source,
+						game_piece.attacks,
+						game_piece.team,
+						r_state);
+				}
+			});
+	}
+
 	static void score_for_team(ecs::state& state, float team, float damage)
 	{
 		state.each<components::player>([&](auto& p)
@@ -190,7 +180,7 @@ private:
 	static ecs::entity* get_square_at_location(ecs::state& r_state, glm::ivec2 loc) {
 		return r_state.first<components::board_square>([&](components::board_square& board_square) {
 			return board_square.x == loc.x && board_square.y == loc.y;
-			});
+		});
 	}
 
 	// Helper function for moving in board space
@@ -338,8 +328,7 @@ private:
 		components::game_piece& attacker,
 		entity_id attacker_id,
 		glm::ivec2 location,
-		std::vector<glm::ivec2> targets,
-		int damage,
+		std::vector<glm::ivec2> targets,		
 		int teammates,
 		ecs::state& r_state)
 	{

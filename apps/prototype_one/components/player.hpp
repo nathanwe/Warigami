@@ -96,6 +96,7 @@ namespace components
                 card_slot = draw();
         }
 
+		int max_energy{ 10 };
 		int energy = 5;
 		float health {100.f};
 		int points = 0;
@@ -113,6 +114,9 @@ namespace components
 		components::dice_nets current_dice_shape = dice_nets::SEVEN;
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
+
+		float ticks_per_energy_grow{ 2.f };
+		float ticks_to_energy_grow{ ticks_per_energy_grow };
 
 		card_enum draw() {
 			card_count++;

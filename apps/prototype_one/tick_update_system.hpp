@@ -32,6 +32,7 @@ public:
 			}
 
 			board.timer_t = (board.tick_time - board.tick_time_remaining) / board.tick_time;
+			board.ticker_dt = _timer.smoothed_delta_secs() / board.tick_time;
 		});
 	}
 
