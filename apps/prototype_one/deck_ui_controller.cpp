@@ -126,3 +126,26 @@ deck_ui_controller::position_card(
     card_t.is_matrix_dirty = true;
 }
 
+void
+deck_ui_controller::position_tooltip(
+        size_t card_index,
+        transforms::transform &card_t,
+        components::player &player,
+        components::deck_ui &deck,
+        entity_id deck_id)
+{
+    float start_x = player.team == 1
+                    ? deck.min_card_x
+                    : deck.deck_gap;
+
+    float x_increment = (deck.max_card_x - deck.deck_gap) /
+                        (components::player::MaxCards - 1.f);
+
+    card_t.has_parent = true;
+    card_t.parent = deck_id;
+    card_t.position.x = start_x + x_increment * card_index + 0.25f;
+    card_t.position.y = deck.card_y + 2.5;
+    card_t.position.z = -deck.card_depth;
+    card_t.is_matrix_dirty = true;
+}
+

@@ -1,0 +1,17 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "rotation": [ 0, 0, -8 ],
+        "scale": [ 0.6, 0.6, 0.6 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/quad/quad.obj",
+        "texture_diffuse": "assets/textures/b.png"
+      }
+    ]
+  }
+}
