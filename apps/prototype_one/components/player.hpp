@@ -96,7 +96,7 @@ namespace components
                 card_slot = draw();
         }
 
-		int energy = 0;
+		int energy = 5;
 		float health {100.f};
 		int points = 0;
 		int bonus_dice = 1;
@@ -113,10 +113,6 @@ namespace components
 		components::dice_nets current_dice_shape = dice_nets::SEVEN;
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
-
-
-
-		
 
 		card_enum draw() {
 			card_count++;
@@ -140,7 +136,8 @@ namespace components
 		}
 
 		void shuffle() {
-			auto rng = std::default_random_engine{};
+		    static std::random_device rd;
+			auto rng = std::default_random_engine{rd()};
 			std::shuffle(std::begin(deck), std::end(deck), rng);
 		}
 

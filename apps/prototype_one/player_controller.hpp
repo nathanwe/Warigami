@@ -1,7 +1,7 @@
 #ifndef GAME_PLAYER_CONTROLLER_HPP
 #define GAME_PLAYER_CONTROLLER_HPP
 
-#define ROUND_TIME 2.0f
+#define ROUND_TIME_PLAYER 2.0f
 //#define ONLY_ONE_TERRAIN_PER_TILE
 
 #include "ecs/state.hpp"
@@ -167,7 +167,7 @@ public:
 		bool add_energy = false;
 		if (timer <= 0)
 		{
-			timer = ROUND_TIME;
+			timer = ROUND_TIME_PLAYER;
 			add_energy = true;
 		}
 		else
@@ -392,7 +392,7 @@ public:
 	}
 
 private:
-	float timer = ROUND_TIME;
+	float timer = ROUND_TIME_PLAYER;
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;

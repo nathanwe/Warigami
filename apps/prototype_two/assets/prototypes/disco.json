@@ -1,0 +1,220 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [0,0,0],
+        "scale": [1,1,1],
+        "rotation": [0,0,0]
+      }
+    ]
+  },
+  "children": [
+    {
+      "prototype": "assets/prototypes/disco_floor.json"
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 2, 1.5, 1 ],
+          "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 2, 1.5, 2 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 180, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -2, 1.5, 1 ],
+          "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -2, 1.5, 2 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 180, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 1.5, 2 ],
+          "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 1.5, 3 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 180, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -3, 1.5, 1.5 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 90, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -3, 1.5, -4 ],
+          "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 3, 1.5, -2 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 270, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 2, 1.5, -2 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 90, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1, 1.5, -1.5 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 270, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 1.5, -1.5 ],
+          "scale": [ 0.25, 0.25, 0.25 ],
+          "rotation": [ 0, 90, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/dude/dude.gltf",
+          "texture_diffuse": "assets/textures/dude/texture.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 5, 0 ]
+        },
+        {
+          "type": "light_point",
+          "intensity": 3000,
+          "color": [ 1, 0, 0 ],
+          "radius": 50
+        },
+        {
+          "type": "disco_light"
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/Darude.mp3",
+              "loop": true,
+              "volume": 0.20
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

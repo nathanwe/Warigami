@@ -1,0 +1,17 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/egg/egg.gltf",
+        "texture_diffuse": "assets/meshes/egg/egg.png"
+      }
+    ]
+  }
+}
