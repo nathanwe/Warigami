@@ -15,6 +15,7 @@ namespace event {
 		UNIT_SPAWN,
 		UNIT_DEATH,
 		GAME_OVER,
+		GAME_START,
 		NUM
 	};
 
