@@ -126,19 +126,26 @@ public:
 				}
 			});
 
-		static const std::string TerrainPrototypes[3] = {
+		static const std::string TerrainPrototypes[5] = {
 			"assets/prototypes/terrain.json",
 			"assets/prototypes/terrain_fire_p1.json",
-			"assets/prototypes/terrain_fire_p2.json"
-						
+			"assets/prototypes/terrain_fire_p2.json",
+			"assets/prototypes/terrain_web_p1.json",
+			"assets/prototypes/terrain_web_p2.json"
 		};
 
 		size_t type_index = 0;
-		if (team == 1.0f && type == components::TERRAIN_ENUM::fire) {
+		if (team == 1.0f && type == components::TERRAIN_ENUM::FIRE) {
 			type_index = 1;
 		}
-		else if (team == -1.0f && type == components::TERRAIN_ENUM::fire) {
+		else if (team == -1.0f && type == components::TERRAIN_ENUM::FIRE) {
 			type_index = 2;
+		}
+		else if (team == 1.0f && type == components::TERRAIN_ENUM::WEB) {
+			type_index = 3;
+		}
+		else if (team == -1.0f && type == components::TERRAIN_ENUM::WEB) {
+			type_index = 4;
 		}
 		else {
 			type_index = 0; // this should never happen
@@ -347,7 +354,7 @@ public:
 							#endif // ONLY_ONE_TERRAIN_PER_TILE
 
 							
-							create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::fire, player.team);
+							create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::WEB, player.team);
 							
 						}
 						transform.is_matrix_dirty = true;

@@ -8,11 +8,11 @@
 namespace components
 {
 	enum class TERRAIN_ENUM {
-		fire,
-		web,
-		glue,
-		pointy_hat_spikes,
-		num
+		FIRE,
+		WEB,
+		GLUE,
+		POINTY_HAT_SPIKES,
+		NUM
 	};
 
 	struct terrain : ecs::component<terrain>
