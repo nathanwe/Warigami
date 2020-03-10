@@ -42,7 +42,9 @@
 #include "components/deck_ui.hpp"
 #include "deck_ui_controller.hpp"
 #include "endgame_system.hpp"
-
+#include "tick_update_system.hpp"
+#include "spiderling_system.hpp"
+#include "spawner_system.hpp"
 
 int main(int argc, char** argv) {
 
@@ -120,6 +122,9 @@ int main(int argc, char** argv) {
 	tug_of_war_meter_system tug_system;
 	countdown_system count_system(timer, events, strings, glfw);
 	endgame_system endgame(hydrater);
+	tick_update_system ticker(timer);
+	spiderling_system spiderlings(hydrater);
+	spawner_system spawner(hydrater);
 
 	ecs::systems systems({
 		&energy_system,
@@ -133,7 +138,14 @@ int main(int argc, char** argv) {
 		&flycam,
 		&audio_system,
 		&physics_update,
+		
+		// order of these matters
+		&ticker,		
+		&spiderlings,
 		&board_updater,
+		&spawner,
+		//
+
 		&game_start_system,
 		&player_control,
 	    &deck_ui_controller,

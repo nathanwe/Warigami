@@ -28,7 +28,7 @@ void deck_ui_controller::handle_deck_ui(
     handle_card_entities(state, deck, deck_t, deck_id);
 }
 
-
+#include <iostream>
 void deck_ui_controller::handle_card_entities(
     ecs::state &state,
     components::deck_ui &deck_ui,
@@ -49,6 +49,10 @@ void deck_ui_controller::handle_card_entities(
 
                 if (card_component.card_type != card_val)
                 {
+                    std::cerr 
+                        << " " << (int)card_component.card_type 
+                        << " - " << (int)card_val << std::endl;
+
                     _hydrater.remove_entity(card_entity);
                     auto& new_card = spawn_card(card_val);
                     auto& new_card_t = new_card.get_component<transforms::transform>();

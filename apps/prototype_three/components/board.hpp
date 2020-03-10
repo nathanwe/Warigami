@@ -1,6 +1,8 @@
 #ifndef GAME_COMPONENTS_BOARD_HPP
 #define GAME_COMPONENTS_BOARD_HPP
 
+#include <vector>
+
 #include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
 #include "component_bits.hpp"

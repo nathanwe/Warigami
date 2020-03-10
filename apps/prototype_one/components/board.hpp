@@ -1,11 +1,14 @@
 #ifndef GAME_COMPONENTS_BOARD_HPP
 #define GAME_COMPONENTS_BOARD_HPP
 
+#include <vector>
+
 #include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
 #include "component_bits.hpp"
 #include "board_square.hpp"
 #include "transforms/transform.hpp"
+#include "to_spawn.hpp"
 
 #include <glm/glm.hpp>
 
@@ -18,6 +21,14 @@ namespace components
 		int columns;
 		float cell_width{ 1.f };
 		float cell_height{ 1.f };
+
+        float tick_time{ 1.f };
+        float tick_time_remaining{ tick_time };
+        float timer_t{ 0.f };
+
+        bool did_tick_elapse{ false };
+
+        std::vector<to_spawn> spawner;
 
         // Helper function for mapping transforms to board space
         glm::vec3 grid_to_board(glm::vec2& coordinates, transforms::transform& board_t)
