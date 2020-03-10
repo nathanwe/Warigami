@@ -19,7 +19,8 @@ namespace components
 		health_meter = 41,
 		energy_meter = 42,
 		tug_of_war_meter = 43,
-        deck_ui = 44
+        deck_ui = 44,
+		countdown = 45
 	};
 }
 

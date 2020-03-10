@@ -24,6 +24,8 @@
 #include "components/health_meter_loader.hpp"
 #include "components/tug_of_war_meter.hpp"
 #include "components/tug_of_war_meter_loader.hpp"
+#include "components/countdown.hpp"
+#include "components/countdown_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -38,6 +40,7 @@
 #include "components/deck_ui.hpp"
 #include "deck_ui_controller.hpp"
 #include "endgame_system.hpp"
+#include "countdown_system.hpp"
 
 
 int main(int argc, char** argv) {
@@ -89,6 +92,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::sphere_collider>("sphere_collider");
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
+	ecs::register_component<components::countdown>("countdown");
 
 	asset::scene scene("assets/scenes/scene.json", assets);
 	asset::scene_hydrater hydrater(state, scene);
@@ -112,6 +116,7 @@ int main(int argc, char** argv) {
 	health_meter_system health_system;
 	tug_of_war_meter_system tug_system;
 	endgame_system endgame(state, events, hydrater);
+	countdown_system count_system(timer, events, strings, glfw);
 
 	ecs::systems systems({
 		&energy_system,
@@ -128,6 +133,7 @@ int main(int argc, char** argv) {
 		&game_start_system,
 		&player_control,
 	    &deck_ui_controller,
+		& count_system,
 		&endgame});
 
 	ecs::world world(systems, state);
@@ -150,6 +156,7 @@ int main(int argc, char** argv) {
 	components::energy_meter_loader energy_loader;
 	components::health_meter_loader health_loader;
 	components::tug_of_war_meter_loader tug_loader;
+	components::countdown_loader countdown_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
@@ -174,6 +181,7 @@ int main(int argc, char** argv) {
 		&energy_loader,
 		&health_loader,
 		&tug_loader,
+		&countdown_loader,
 		&text_loader);
 
 	hydrater.load();

@@ -19,7 +19,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, 4 ]
+					"position": [ -3, 1, 4 ]
 				},
 				{
 					"type": "board_square",
@@ -33,7 +33,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, 3 ]
+					"position": [ -3, 1, 3 ]
 				},
 				{
 					"type": "board_square",
@@ -47,7 +47,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, 2 ]
+					"position": [ -3, 1, 2 ]
 				},
 				{
 					"type": "board_square",
@@ -61,7 +61,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, 1 ]
+					"position": [ -3, 1, 1 ]
 				},
 				{
 					"type": "board_square",
@@ -75,7 +75,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, 0 ]
+					"position": [ -3, 1, 0 ]
 				},
 				{
 					"type": "board_square",
@@ -89,7 +89,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, -1 ]
+					"position": [ -3, 1, -1 ]
 				},
 				{
 					"type": "board_square",
@@ -103,7 +103,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, -2 ]
+					"position": [ -3, 1, -2 ]
 				},
 				{
 					"type": "board_square",
@@ -117,7 +117,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, -3 ]
+					"position": [ -3, 1, -3 ]
 				},
 				{
 					"type": "board_square",
@@ -131,7 +131,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-3, 1, -4 ]
+					"position": [ -3, 1, -4 ]
 				},
 				{
 					"type": "board_square",
@@ -145,7 +145,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, 4 ]
+					"position": [ -2, 1, 4 ]
 				},
 				{
 					"type": "board_square",
@@ -159,7 +159,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, 3 ]
+					"position": [ -2, 1, 3 ]
 				},
 				{
 					"type": "board_square",
@@ -173,7 +173,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, 2 ]
+					"position": [ -2, 1, 2 ]
 				},
 				{
 					"type": "board_square",
@@ -187,7 +187,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, 1 ]
+					"position": [ -2, 1, 1 ]
 				},
 				{
 					"type": "board_square",
@@ -201,7 +201,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, 0 ]
+					"position": [ -2, 1, 0 ]
 				},
 				{
 					"type": "board_square",
@@ -215,7 +215,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, -1 ]
+					"position": [ -2, 1, -1 ]
 				},
 				{
 					"type": "board_square",
@@ -229,7 +229,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, -2 ]
+					"position": [ -2, 1, -2 ]
 				},
 				{
 					"type": "board_square",
@@ -243,7 +243,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, -3 ]
+					"position": [ -2, 1, -3 ]
 				},
 				{
 					"type": "board_square",
@@ -257,7 +257,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-2, 1, -4 ]
+					"position": [ -2, 1, -4 ]
 				},
 				{
 					"type": "board_square",
@@ -271,7 +271,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, 4 ]
+					"position": [ -1, 1, 4 ]
 				},
 				{
 					"type": "board_square",
@@ -285,7 +285,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, 3 ]
+					"position": [ -1, 1, 3 ]
 				},
 				{
 					"type": "board_square",
@@ -299,7 +299,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, 2 ]
+					"position": [ -1, 1, 2 ]
 				},
 				{
 					"type": "board_square",
@@ -313,7 +313,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, 1 ]
+					"position": [ -1, 1, 1 ]
 				},
 				{
 					"type": "board_square",
@@ -327,7 +327,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, 0 ]
+					"position": [ -1, 1, 0 ]
 				},
 				{
 					"type": "board_square",
@@ -341,7 +341,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, -1 ]
+					"position": [ -1, 1, -1 ]
 				},
 				{
 					"type": "board_square",
@@ -355,7 +355,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, -2 ]
+					"position": [ -1, 1, -2 ]
 				},
 				{
 					"type": "board_square",
@@ -369,7 +369,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, -3 ]
+					"position": [ -1, 1, -3 ]
 				},
 				{
 					"type": "board_square",
@@ -383,7 +383,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [-1, 1, -4 ]
+					"position": [ -1, 1, -4 ]
 				},
 				{
 					"type": "board_square",
@@ -397,7 +397,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, 4 ]
+					"position": [ 0, 1, 4 ]
 				},
 				{
 					"type": "board_square",
@@ -411,7 +411,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, 3 ]
+					"position": [ 0, 1, 3 ]
 				},
 				{
 					"type": "board_square",
@@ -425,7 +425,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, 2 ]
+					"position": [ 0, 1, 2 ]
 				},
 				{
 					"type": "board_square",
@@ -439,7 +439,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, 1 ]
+					"position": [ 0, 1, 1 ]
 				},
 				{
 					"type": "board_square",
@@ -453,7 +453,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, 0 ]
+					"position": [ 0, 1, 0 ]
 				},
 				{
 					"type": "board_square",
@@ -467,7 +467,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, -1 ]
+					"position": [ 0, 1, -1 ]
 				},
 				{
 					"type": "board_square",
@@ -481,7 +481,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, -2 ]
+					"position": [ 0, 1, -2 ]
 				},
 				{
 					"type": "board_square",
@@ -495,7 +495,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, -3 ]
+					"position": [ 0, 1, -3 ]
 				},
 				{
 					"type": "board_square",
@@ -509,7 +509,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [0, 1, -4 ]
+					"position": [ 0, 1, -4 ]
 				},
 				{
 					"type": "board_square",
@@ -523,7 +523,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, 4 ]
+					"position": [ 1, 1, 4 ]
 				},
 				{
 					"type": "board_square",
@@ -537,7 +537,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, 3 ]
+					"position": [ 1, 1, 3 ]
 				},
 				{
 					"type": "board_square",
@@ -551,7 +551,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, 2 ]
+					"position": [ 1, 1, 2 ]
 				},
 				{
 					"type": "board_square",
@@ -565,7 +565,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, 1 ]
+					"position": [ 1, 1, 1 ]
 				},
 				{
 					"type": "board_square",
@@ -579,7 +579,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, 0 ]
+					"position": [ 1, 1, 0 ]
 				},
 				{
 					"type": "board_square",
@@ -593,7 +593,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, -1 ]
+					"position": [ 1, 1, -1 ]
 				},
 				{
 					"type": "board_square",
@@ -607,7 +607,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, -2 ]
+					"position": [ 1, 1, -2 ]
 				},
 				{
 					"type": "board_square",
@@ -621,7 +621,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, -3 ]
+					"position": [ 1, 1, -3 ]
 				},
 				{
 					"type": "board_square",
@@ -635,7 +635,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [1, 1, -4 ]
+					"position": [ 1, 1, -4 ]
 				},
 				{
 					"type": "board_square",
@@ -649,7 +649,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, 4 ]
+					"position": [ 2, 1, 4 ]
 				},
 				{
 					"type": "board_square",
@@ -663,7 +663,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, 3 ]
+					"position": [ 2, 1, 3 ]
 				},
 				{
 					"type": "board_square",
@@ -677,7 +677,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, 2 ]
+					"position": [ 2, 1, 2 ]
 				},
 				{
 					"type": "board_square",
@@ -691,7 +691,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, 1 ]
+					"position": [ 2, 1, 1 ]
 				},
 				{
 					"type": "board_square",
@@ -705,7 +705,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, 0 ]
+					"position": [ 2, 1, 0 ]
 				},
 				{
 					"type": "board_square",
@@ -719,7 +719,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, -1 ]
+					"position": [ 2, 1, -1 ]
 				},
 				{
 					"type": "board_square",
@@ -733,7 +733,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, -2 ]
+					"position": [ 2, 1, -2 ]
 				},
 				{
 					"type": "board_square",
@@ -747,7 +747,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, -3 ]
+					"position": [ 2, 1, -3 ]
 				},
 				{
 					"type": "board_square",
@@ -761,7 +761,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [2, 1, -4 ]
+					"position": [ 2, 1, -4 ]
 				},
 				{
 					"type": "board_square",
@@ -775,7 +775,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, 4 ]
+					"position": [ 3, 1, 4 ]
 				},
 				{
 					"type": "board_square",
@@ -789,7 +789,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, 3 ]
+					"position": [ 3, 1, 3 ]
 				},
 				{
 					"type": "board_square",
@@ -803,7 +803,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, 2 ]
+					"position": [ 3, 1, 2 ]
 				},
 				{
 					"type": "board_square",
@@ -817,7 +817,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, 1 ]
+					"position": [ 3, 1, 1 ]
 				},
 				{
 					"type": "board_square",
@@ -831,7 +831,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, 0 ]
+					"position": [ 3, 1, 0 ]
 				},
 				{
 					"type": "board_square",
@@ -845,7 +845,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, -1 ]
+					"position": [ 3, 1, -1 ]
 				},
 				{
 					"type": "board_square",
@@ -859,7 +859,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, -2 ]
+					"position": [ 3, 1, -2 ]
 				},
 				{
 					"type": "board_square",
@@ -873,7 +873,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, -3 ]
+					"position": [ 3, 1, -3 ]
 				},
 				{
 					"type": "board_square",
@@ -887,7 +887,7 @@
 			"components": [
 				{
 					"type": "transform",
-					"position": [3, 1, -4 ]
+					"position": [ 3, 1, -4 ]
 				},
 				{
 					"type": "board_square",
@@ -931,6 +931,19 @@
 					"type": "transform",
 					"position": [ 5, 0.75, 0 ],
 					"scale": [ 1, 0.5, 4.5 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/countdown.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 5, 2, 0 ],
+					"scale": [ 1, 0.5, 4.5 ]
+				},
+				{
+					"type": "countdown"
 				}
 			]
 		},

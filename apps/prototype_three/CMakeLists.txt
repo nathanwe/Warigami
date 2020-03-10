@@ -11,6 +11,7 @@ add_executable (prototype_three main.cpp
 				components/health_meter.cpp
 				components/tug_of_war_meter.cpp 
 				util/boardgen.cpp
+				components/countdown.cpp
 				combat.cpp
 				components/deck_ui.cpp
 				components/deck_ui.hpp
