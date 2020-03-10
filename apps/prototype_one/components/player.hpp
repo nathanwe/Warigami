@@ -96,7 +96,7 @@ namespace components
                 card_slot = draw();
         }
 
-		int energy = 0;
+		int energy = 5;
 		float health {100.f};
 		int points = 0;
 		int bonus_dice = 1;

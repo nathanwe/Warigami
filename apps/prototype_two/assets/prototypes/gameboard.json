@@ -1,0 +1,1172 @@
+{
+	"root": {
+		"components": [
+			{
+				"type": "transform",
+				"position": [ 10, 0, 10 ],
+				"scale": [ 1, 1, 1 ]
+			},
+			{
+				"type": "board",
+				"rows": 9,
+				"columns": 7
+			}
+		]
+	},
+	"children": [
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, 4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 8
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, 3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 7
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, 2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 6
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, 1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 5
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, 0 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 4
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, -1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 3
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, -2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 2
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, -3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-3, 1, -4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 0,
+					"y": 0
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, 4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 8
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, 3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 7
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, 2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 6
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, 1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 5
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, 0 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 4
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, -1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 3
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, -2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 2
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, -3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-2, 1, -4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 1,
+					"y": 0
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, 4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 8
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, 3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 7
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, 2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 6
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, 1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 5
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, 0 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 4
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, -1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 3
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, -2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 2
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, -3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [-1, 1, -4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 2,
+					"y": 0
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, 4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 8
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, 3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 7
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, 2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 6
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, 1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 5
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, 0 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 4
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, -1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 3
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, -2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 2
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, -3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [0, 1, -4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 3,
+					"y": 0
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, 4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 8
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, 3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 7
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, 2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 6
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, 1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 5
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, 0 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 4
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, -1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 3
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, -2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 2
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, -3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [1, 1, -4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 4,
+					"y": 0
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, 4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 8
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, 3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 7
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, 2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 6
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, 1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 5
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, 0 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 4
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, -1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 3
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, -2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 2
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, -3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare2.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [2, 1, -4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 5,
+					"y": 0
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, 4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 8
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, 3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 7
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, 2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 6
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, 1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 5
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, 0 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 4
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, -1 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 3
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, -2 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 2
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, -3 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/boardsquare.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [3, 1, -4 ]
+				},
+				{
+					"type": "board_square",
+					"x": 6,
+					"y": 0
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/health_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, -4.875 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "health_meter",
+					"team": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/health_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, 4.875 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "health_meter",
+					"team": -1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/energy_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, -4.625 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "energy_meter",
+					"team": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/energy_meter.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, 4.625 ],
+					"scale": [ 1, 1, 0.25 ]
+				},
+				{
+					"type": "energy_meter",
+					"team": -1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.8, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.1, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -1.4, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -0.7, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0.7, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 1.4, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.1, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.8, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 3.5, 1, -4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -3.5, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.8, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -2.1, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -1.4, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ -0.7, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0.7, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 1.4, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.1, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 2.8, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_mark.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 3.5, 1, 4.75 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_wall.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, 5 ]
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/meter_wall.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 1, -5 ]
+				}
+			]
+		}
+	]
+}

@@ -29,6 +29,8 @@ add_subdirectory(thirdparty/freetype)
 add_subdirectory(src)
 add_subdirectory(apps/game)
 add_subdirectory(apps/prototype_one)
+add_subdirectory(apps/prototype_two)
+add_subdirectory(apps/prototype_three)
 add_subdirectory(apps/boardgen)
 
 
