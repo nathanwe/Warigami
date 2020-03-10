@@ -1,0 +1,16 @@
+{
+	"root": {
+		"components": [
+			{
+				"type": "transform",
+				"position": [ 0, 0, 0 ],
+				"scale": [ 0.5, 0.2, 0.5 ]
+			},
+			{
+				"type": "renderable_mesh_static",
+				"mesh": "assets/meshes/cube/cube.obj",
+				"texture_diffuse": "assets/textures/terrain/fire.png"
+			}
+		]
+	}
+}
