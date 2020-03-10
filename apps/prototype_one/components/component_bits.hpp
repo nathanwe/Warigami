@@ -20,7 +20,8 @@ namespace components
 		energy_meter = 42,
 		tug_of_war_meter = 43,
         deck_ui = 44,
-		terrain = 45
+		terrain = 45,
+		countdown = 46
 	};
 }
 

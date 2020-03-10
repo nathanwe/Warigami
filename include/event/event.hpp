@@ -14,6 +14,8 @@ namespace event {
 		TOGGLE_NOCLIP,
 		UNIT_SPAWN,
 		UNIT_DEATH,
+		GAME_OVER,
+		GAME_START,
 		NUM
 	};
 
