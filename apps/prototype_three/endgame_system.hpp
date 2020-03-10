@@ -14,19 +14,23 @@
 class endgame_system : public ecs::system_base, event::Listener
 {
 public:
-	endgame_system(ecs::state& state, event::EventManager& event_manager, asset::scene_hydrater& hydrater) : 
+	endgame_system(ecs::state& state, event::EventManager& event_manager, asset::scene_hydrater& hydrater) :
 		_state(state), _event_manager(event_manager), _hydrater(hydrater)
 	{
 	}
 
 public:
+	void initialize(ecs::state& r_state) override
+	{
+		_event_manager.Subscribe(this, event::EVENT_TYPE::GAME_OVER);
+	}
+
 	void update(ecs::state& r_state) override
 	{
 		if (!_did_game_end)
 		{
-			prototype_one_kill_condition(r_state);
-			//prototype_two_kill_condition(r_state);
-			//prototype_three_kill_condition(r_state);
+			tug_kill_condition(r_state);
+			//health_kill_condition(r_state);
 			check_endgame();
 		}
 	}
@@ -36,86 +40,88 @@ public:
 		if (event.mType == event::EVENT_TYPE::GAME_OVER && !_did_game_end)
 		{
 			_did_game_end = true;
-			prototype_one_timeout_condition(event);
-			//prototype_two_timeout_condition(event);
-			//prototype_three_timeout_condition(r_state);
+			tug_timeout_condition(event);
+			//health_timeout_condition(event);
 			check_endgame();
 		}
 	}
 
 private:
-	void prototype_one_kill_condition(ecs::state& r_state)
+	void health_kill_condition(ecs::state& r_state)
 	{
 		r_state.each<components::player>([&](auto& player)
-		{
-			if (player.health == 0.f)
 			{
-				if (!_did_game_end)
+				if (player.health == 0.f)
 				{
-					_winner = player.team * -1.f;
-					_did_game_end = true;
+					if (!_did_game_end)
+					{
+						_winner = player.team * -1.f;
+						_did_game_end = true;
+					}
+					else
+					{
+						_tie = true;
+					}
 				}
-				else
-				{
-					_tie = true;
-				}
-			}
-		});
+			});
 	}
 
-	void prototype_two_kill_condition(ecs::state& r_state)
+	void tug_kill_condition(ecs::state& r_state)
 	{
 		r_state.first<components::tug_of_war_meter>([&](auto& meter)
-		{
-			if (abs(meter.value) == 100.f)
 			{
-				_tie = _did_game_end == true;
-				_did_game_end = true;
-				_winner = meter.value / -100.f;
-			}
-			return true;
-		});
+				if (abs(meter.value) == 100.f)
+				{
+					_tie = _did_game_end == true;
+					_did_game_end = true;
+					_winner = meter.value / -100.f;
+				}
+				return true;
+			});
 	}
 
-	void prototype_one_timeout_condition(event::Event& event)
+	void health_timeout_condition(event::Event& event)
 	{
 		float highest_health = -1.f;
 		float highest_team = 0.f;
 		bool tied = false;
 		_state.each<components::player>([&](auto& player)
-		{
-			if (player.health > highest_health)
 			{
-				highest_health = player.health;
-				highest_team = player.team;
-				tied = false;
-			}
-			else if (player.health == highest_health)
-			{
-				tied = true;
-			}
-		});
+				if (player.health > highest_health)
+				{
+					highest_health = player.health;
+					highest_team = player.team;
+					tied = false;
+				}
+				else if (player.health == highest_health)
+				{
+					tied = true;
+				}
+			});
 		_winner = highest_team;
 		_tie = tied;
 	}
 
-	void prototype_two_timeout_condition(event::Event& event)
+	void tug_timeout_condition(event::Event& event)
 	{
 		bool found_meter = false;
 		_state.first<components::tug_of_war_meter>([&](auto& meter)
-		{
-			_tie = meter.value == 0.f;
-			_winner = signbit(meter.value) ? -1.f : 1.f;
-			found_meter = true;
-			return true;
-		});
+			{
+				_tie = meter.value == 0.f;
+				_winner = signbit(meter.value) ? 1.f : -1.f;
+				found_meter = true;
+				return true;
+			});
 		assert(found_meter);
 	}
 
 	void check_endgame()
 	{
-		if (_tie) { endgame_tie(); }
-		else      { endgame_winlose(); }
+		if (_did_game_end)
+		{
+			if (_tie) { endgame_tie(); }
+			else { endgame_winlose(); }
+		}
 	}
 
 	void endgame_tie()

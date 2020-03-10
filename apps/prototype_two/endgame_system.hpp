@@ -29,9 +29,8 @@ public:
 	{
 		if (!_did_game_end)
 		{
-			//prototype_one_kill_condition(r_state);
-			prototype_two_kill_condition(r_state);
-			//prototype_three_kill_condition(r_state);
+			//tug_kill_condition(r_state);
+			health_kill_condition(r_state);
 			check_endgame();
 		}
 	}
@@ -41,15 +40,14 @@ public:
 		if (event.mType == event::EVENT_TYPE::GAME_OVER && !_did_game_end)
 		{
 			_did_game_end = true;
-			//prototype_one_timeout_condition(event);
-			prototype_two_timeout_condition(event);
-			//prototype_three_timeout_condition(r_state);
+			//tug_timeout_condition(event);
+			health_timeout_condition(event);
 			check_endgame();
 		}
 	}
 
 private:
-	void prototype_one_kill_condition(ecs::state& r_state)
+	void health_kill_condition(ecs::state& r_state)
 	{
 		r_state.each<components::player>([&](auto& player)
 			{
@@ -68,7 +66,7 @@ private:
 			});
 	}
 
-	void prototype_two_kill_condition(ecs::state& r_state)
+	void tug_kill_condition(ecs::state& r_state)
 	{
 		r_state.first<components::tug_of_war_meter>([&](auto& meter)
 			{
@@ -82,7 +80,7 @@ private:
 			});
 	}
 
-	void prototype_one_timeout_condition(event::Event& event)
+	void health_timeout_condition(event::Event& event)
 	{
 		float highest_health = -1.f;
 		float highest_team = 0.f;
@@ -104,13 +102,13 @@ private:
 		_tie = tied;
 	}
 
-	void prototype_two_timeout_condition(event::Event& event)
+	void tug_timeout_condition(event::Event& event)
 	{
 		bool found_meter = false;
 		_state.first<components::tug_of_war_meter>([&](auto& meter)
 			{
 				_tie = meter.value == 0.f;
-				_winner = signbit(meter.value) ? -1.f : 1.f;
+				_winner = signbit(meter.value) ? 1.f : -1.f;
 				found_meter = true;
 				return true;
 			});
