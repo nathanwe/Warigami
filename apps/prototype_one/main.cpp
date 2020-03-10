@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
 	energy_meter_system energy_system;
 	health_meter_system health_system;
 	tug_of_war_meter_system tug_system;
-	countdown_system count_system(timer, events, strings);
+	countdown_system count_system(timer, events, strings, glfw);
 	endgame_system endgame(hydrater);
 
 	ecs::systems systems({

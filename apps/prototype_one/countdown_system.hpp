@@ -30,10 +30,12 @@ public:
 	countdown_system(
 		core::frame_timer& timer, 
 		event::EventManager& _event_manager,
-		util::string_table& _strings)
+		util::string_table& strings,
+        core::glfw_context& config)
 		: m_timer(timer),
-		event_manager(_event_manager),
-		_strings(_strings) {}
+          event_manager(_event_manager),
+          _strings(strings),
+          _glfw_context(config) {}
 
 	// Note: Magic numbers in here are what looks good, chosen by looking at results
 	void update(ecs::state& r_state) override
@@ -44,7 +46,7 @@ public:
 			{
 				// Prepare for start countdown
 				countdown.current_value = START_COUNT_SECONDS;
-				text.position = glm::ivec2(config.width()/2 - 100, config.height()/2);
+				text.position = glm::ivec2(_glfw_context.width()/2 - 100, _glfw_context.height()/2);
 				text.scale = 5.0;
 				std::ostringstream oss;
 				oss << (int)countdown.current_value << "!";
@@ -58,7 +60,7 @@ public:
 				if (countdown.current_value <= 0) {
 					// Prepare for the real countdown
 					countdown.current_value = countdown.count_duration;
-					text.position = glm::ivec2(config.width() / 2 - 60, config.height() - 60);
+					text.position = glm::ivec2(_glfw_context.width() / 2 - 60, _glfw_context.height() - 60);
 					text.scale = 1.5;
 					is_start_count = false;
 					game_start_event gs;
@@ -67,7 +69,7 @@ public:
 				}
 				else if (countdown.current_value < 1) {
 					// Show "GO!"
-					text.position = glm::ivec2(config.width() / 2 - 30*text.scale, config.height() / 2);
+					text.position = glm::ivec2(_glfw_context.width() / 2 - 30*text.scale, _glfw_context.height() / 2);
 					text.scale += 0.02;
 					text.string_hash = _strings.hash_and_store("GO!");
 				}
@@ -93,7 +95,7 @@ public:
 				if (minutes == 0) {
 					text.scale = 2.0;
 					text.color = glm::vec3(1, 0, 0);
-					text.position = glm::ivec2(config.width() / 2 - 100, config.height() - 80);
+					text.position = glm::ivec2(_glfw_context.width() / 2 - 100, _glfw_context.height() - 80);
 				}
 				if (countdown.current_value <= 0) {
 					countdown.current_value = countdown.count_duration;
@@ -113,7 +115,7 @@ private:
 	bool ended = false;
 	event::EventManager& event_manager;
 	util::string_table& _strings;
-	core::startup_config config;
+	core::glfw_context& _glfw_context;
 };
 
 #endif
