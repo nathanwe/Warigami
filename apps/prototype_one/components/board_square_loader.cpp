@@ -8,7 +8,6 @@ void components::board_square_loader::load(asset::asset_loader_node& asset_loade
 	auto& bs = entity->get_component<board_square>();
 	bs.x = json.value("x", 0);	
 	bs.y = json.value("y", 0);	
-	bs.terrain_type = json.value("terrain", terrain::empty);
 }
 
 component_bitset components::board_square_loader::components_to_load()

@@ -48,6 +48,14 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 			gp.attacks.push_back(glm::ivec2(vec[0].get<int>(), vec[1].get<int>()) * (int)gp.team);
 		}
 	}
+
+	if (json.find("effects") != json.end())
+	{
+		for (auto& vec : json["effects"])
+		{
+			gp.effects.push_back(vec);
+		}
+	}
 }
 
 component_bitset components::game_piece_loader::components_to_load()

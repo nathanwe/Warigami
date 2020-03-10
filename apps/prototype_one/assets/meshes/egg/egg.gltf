@@ -27,10 +27,6 @@
             "doubleSided" : true,
             "name" : "Material.001",
             "pbrMetallicRoughness" : {
-                "baseColorTexture" : {
-                    "index" : 0,
-                    "texCoord" : 0
-                },
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.5
             }
@@ -52,32 +48,20 @@
             ]
         }
     ],
-    "textures" : [
-        {
-            "source" : 0
-        }
-    ],
-    "images" : [
-        {
-            "mimeType" : "image/png",
-            "name" : "egg",
-            "uri" : "egg.png"
-        }
-    ],
     "accessors" : [
         {
             "bufferView" : 0,
             "componentType" : 5126,
             "count" : 552,
             "max" : [
-                0.09998469054698944,
-                1.418375015258789,
-                1.4481666088104248
+                1.3907849788665771,
+                2.717118740081787,
+                0.09998474270105362
             ],
             "min" : [
-                -0.09998466819524765,
-                -1.208958625793457,
-                -1.3907849788665771
+                -1.4481666088104248,
+                0.08978509902954102,
+                -0.09998472034931183
             ],
             "type" : "VEC3"
         },

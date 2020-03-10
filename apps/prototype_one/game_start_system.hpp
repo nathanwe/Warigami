@@ -29,7 +29,7 @@ public:
 	virtual void update(ecs::state& r_state) override
 	{
 		++updates;
-		if (updates == 3) {
+		if (updates == 1) {
 			r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
 				r_state.each_id<components::board_square, transforms::transform>([&](
 					entity_id id,
@@ -37,7 +37,7 @@ public:
 					transforms::transform& transform)
 					{
 						/*if (id % 7 == 0) {
-							board_square.terrain_type = terrain::fire;
+							board_square.terrain_type = TERRAIN_ENUM::fire;
 							create_fire_graphics(transform.position, board_id);
 						}*/
 					});

@@ -40,6 +40,7 @@
 #include "combat.hpp"
 #include "components/deck_ui.hpp"
 #include "deck_ui_controller.hpp"
+#include "endgame_system.hpp"
 
 
 int main(int argc, char** argv) {
@@ -115,6 +116,7 @@ int main(int argc, char** argv) {
 	health_meter_system health_system;
 	tug_of_war_meter_system tug_system;
 	countdown_system count_system(timer, events, strings);
+	endgame_system endgame(hydrater);
 
 	ecs::systems systems({
 		&energy_system,
@@ -131,7 +133,8 @@ int main(int argc, char** argv) {
 		&board_updater,
 		&game_start_system,
 		&player_control,
-	    &deck_ui_controller});
+	    &deck_ui_controller,
+		&endgame});
 
 	ecs::world world(systems, state);
 

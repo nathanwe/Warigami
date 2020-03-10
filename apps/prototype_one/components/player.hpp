@@ -22,31 +22,57 @@ namespace components
 		WON
 	};
 
-	const static std::vector<int> card_costanamos = { 0, 1, 2, 2 };
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	const static int dice_costanamos = 1;
 
 	const static std::vector<card_enum> start_deck = {
-	        card_enum::BASIC_FAST,
-			card_enum::BASIC_FAST,
-			card_enum::BASIC_MELEE,
-			card_enum::BASIC_MELEE,
-			card_enum::BASIC_RANGE,
-			card_enum::BASIC_RANGE
+	        card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_TITAN,
+			card_enum::SCISSOR_TITAN
 	};
 
 	enum class dice_nets {
-		T = 1,
-		SEVEN = 2,
-		DROOPY_SEVEN = 3,
-		Z = 4,
-		T_HAT = 5,
-		WX = 6,
-		W = 7,
-		WM = 8,
-		CROSS = 9,
-		X = 10,
-		I = 11
+		T = 0,
+		SEVEN = 1,
+		DROOPY_SEVEN = 2,
+		Z = 3,
+		T_HAT = 4,
+		WX = 5,
+		W = 6,
+		WM = 7,
+		CROSS = 8,
+		X = 9,
+		I = 10,
+		NUM = 11
 	};
+
 	enum class rotate_states {
 		ZERO = 0,
 		NINTY = 1,
@@ -55,8 +81,6 @@ namespace components
 		NUM = 4
 
 	};
-	
-	
 
 	struct player : ecs::component<player>
 	{
@@ -72,9 +96,10 @@ namespace components
                 card_slot = draw();
         }
 
-		int energy = 0;
+		int energy = 5;
 		float health {100.f};
-		int bonus_dice = 4;
+		int points = 0;
+		int bonus_dice = 1;
 		float team = 0.0f;
 		card_enum selected_card;
 		int selected_card_location;
@@ -85,6 +110,7 @@ namespace components
 		column_t selected_column = 4;
 		rotate_states rotate_state = components::rotate_states::ZERO;
 		bool flip_state = false;
+		components::dice_nets current_dice_shape = dice_nets::SEVEN;
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
 
@@ -121,18 +147,100 @@ namespace components
 		void regrow_deck() {
 			deck = start_deck;
 		}
-		bool net_check(glm::ivec2 test, glm::ivec2 center,
+		std::vector<glm::ivec2> create_shifted_net(glm::ivec2 center,
 			dice_nets net, rotate_states rotate, bool flip) {
 			std::vector<glm::ivec2> legal_placements;
 			int tempx;
-			bool ret = false;
-			if (net == dice_nets::SEVEN) {
+
+			switch (net) {
+			case dice_nets::T:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(0, 1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(1, 1));
+				break;
+			case dice_nets::SEVEN:
 				legal_placements.push_back(glm::ivec2(0, 0));
 				legal_placements.push_back(glm::ivec2(0, 1));
 				legal_placements.push_back(glm::ivec2(0, -1));
 				legal_placements.push_back(glm::ivec2(0, -2));
 				legal_placements.push_back(glm::ivec2(-1, 1));
 				legal_placements.push_back(glm::ivec2(1, 0));
+				break;
+			case dice_nets::DROOPY_SEVEN:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(0, 1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(1, -1));
+				break;
+			case dice_nets::Z:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(0, 1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(1, -2));
+				break;
+			case dice_nets::T_HAT:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(-1, 0));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(1, 0));
+				break;
+			case dice_nets::WX:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(1, -1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(-1, 0));
+				break;
+			case dice_nets::W:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(1, -2));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(-1, 0));
+				break;
+			case dice_nets::WM:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(1, -1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(1, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(-1, 0));
+				break;
+			case dice_nets::CROSS:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(0, 1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 0));
+				legal_placements.push_back(glm::ivec2(1, 0));
+				break;
+			case dice_nets::X:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(0, 1));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 0));
+				legal_placements.push_back(glm::ivec2(1, -1));
+				break;
+			case dice_nets::I:
+				legal_placements.push_back(glm::ivec2(0, 0));
+				legal_placements.push_back(glm::ivec2(-1, 0));
+				legal_placements.push_back(glm::ivec2(0, -1));
+				legal_placements.push_back(glm::ivec2(0, -2));
+				legal_placements.push_back(glm::ivec2(-1, 1));
+				legal_placements.push_back(glm::ivec2(-1, 2));
+				break;
 			}
 
 			if (flip) {
@@ -168,7 +276,16 @@ namespace components
 				}
 			}
 			for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
-				if (center + *it == test) {
+				it->x += center.x;
+				it->y += center.y;
+			}
+			return legal_placements;
+
+		}
+		bool net_check(glm::ivec2 test, std::vector<glm::ivec2> legal_placements) {
+			bool ret = false;
+			for (std::vector<glm::ivec2>::iterator it = legal_placements.begin(); it != legal_placements.end(); ++it) {
+				if (*it == test) {
 					ret = true;
 				}
 			}

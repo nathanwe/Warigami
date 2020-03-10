@@ -60,7 +60,6 @@ void deck_ui_controller::handle_card_entities(
                     auto& card_t = card.get_component<transforms::transform>();
                     position_card(i, card_t, p, deck_ui, deck_id);
                 }
-
             }
             else if (!card_entity_id && card_val != components::card_enum::NO_CARD)
             {
@@ -82,26 +81,22 @@ ecs::entity &deck_ui_controller::spawn_card(components::card_enum type)
 {
     switch (type)
     {
-        case components::card_enum::DRAGON:
-            return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
-        case components::card_enum::ERATHOR:
-            return _hydrater.add_from_prototype("assets/prototypes/card_erathor.json");
-        case components::card_enum::MATCH:
-            return _hydrater.add_from_prototype("assets/prototypes/card_matchgirl.json");
+        case components::card_enum::SCISSORLING_TWIN:
+            return _hydrater.add_from_prototype("assets/prototypes/card_tandem.json");
+        case components::card_enum::SCISSOR_TROOPER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_trooper.json");
+        case components::card_enum::SCISSORLING_EGG:
+            return _hydrater.add_from_prototype("assets/prototypes/card_egg.json");
         case components::card_enum::SCISSORLING:
             return _hydrater.add_from_prototype("assets/prototypes/card_scissorling.json");
-        case components::card_enum::WIZARD:
-            return _hydrater.add_from_prototype("assets/prototypes/card_wizard.json");
-
-
-        // TEMP:
-        case components::card_enum::BASIC_FAST:
-            return _hydrater.add_from_prototype("assets/prototypes/card_basic_fast.json");
-        case components::card_enum ::BASIC_MELEE:
-            return _hydrater.add_from_prototype("assets/prototypes/card_basic_melee.json");
-        case components::card_enum::BASIC_RANGE:
-            return _hydrater.add_from_prototype("assets/prototypes/card_basic_range.json");
-        //////
+        case components::card_enum::SCISSOR_WEBBER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_webber.json");
+        case components::card_enum::SCISSOR_GOLIATH:
+            return _hydrater.add_from_prototype("assets/prototypes/card_goliath.json");
+        case components::card_enum ::SCISSOR_TITAN:
+            return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
+        case components::card_enum::SCISSOR_QUEEN:
+            return _hydrater.add_from_prototype("assets/prototypes/card_queen.json");        
 
         default:
             return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");

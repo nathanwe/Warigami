@@ -9,7 +9,7 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/cube/cube.obj",
-        "texture_diffuse": "assets/textures/colors/red.png"
+        "param_diffuse": [ 0.3, 0.3, 0.3 ]
       },
       {
         "type": "board_square"
