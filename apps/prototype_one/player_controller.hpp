@@ -30,6 +30,7 @@ struct player_values
 	int column_to_up_scale;
 	float forward = 0;
 	float left = 0;
+	glm::vec3 team_color;
 };
 
 struct player_specific_data
@@ -100,10 +101,12 @@ private:
 
 	void board_reset(ecs::state& r_state)
 	{
-		r_state.each<components::board_square, transforms::transform>([&](
+		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>([&](
 			components::board_square& square,
-			transforms::transform& transform)
+			transforms::transform& transform,
+			rendering::renderable_mesh_static& render_mesh_s)
 			{
+				render_mesh_s.material.param_diffuse = glm::vec3(0.5, 0.5, 0.5);
 				row_select(transform, 1);
 			});
 	}
@@ -115,7 +118,8 @@ private:
 		auto forward = player.team == 1.0f ? m_input.forward() : m_input.forward_player2();
 		auto left = player.team == 1.0f ? m_input.strafe() : m_input.strafe_player2();
 		auto column_to_upscale = player.team == 1.0f ? 0 : 8;
-		return { controls, {column_to_upscale, forward, left } };
+		auto team_color = player.team ==1.0f ? glm::vec3(1,0,0) : glm::vec3(0, 0, 1);
+		return { controls, {column_to_upscale, forward, left, team_color } };
 	}
 
 	void handle_player_selection(components::player& player, float forward, float left)
@@ -225,13 +229,15 @@ private:
 			
 		}
 		//show cursor
-		r_state.each<components::board_square, transforms::transform>(
-			[&](components::board_square& square, transforms::transform& transform)
+		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>(
+			[&](components::board_square& square, transforms::transform& transform, rendering::renderable_mesh_static& render_mesh_s)
 			{		
 				if (square.x == player.selected_row) {
-					row_increase(transform, 0.3f);
+					//row_increase(transform, 0.3f);
+					render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;
 					if (square.y == player.selected_column) {
 						row_increase(transform, 0.3f);
+						//render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;
 					}
 				}													
 			});

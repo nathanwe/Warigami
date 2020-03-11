@@ -100,7 +100,7 @@ namespace components
 		int energy = 5;
 		float health {100.f};
 		int points = 0;
-		int bonus_dice = 5;
+		int bonus_dice = 0;
 		float team = 0.0f;
 		card_enum selected_card;
 		int selected_card_location;
