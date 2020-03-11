@@ -139,7 +139,7 @@ private:
 
 			auto horizontal_input_active = std::abs(left) > .4f;
 			auto dir_h = -util::sign(left);
-			auto under_limit_h = dir_h < 0 ? player.selected_column < 6 : player.selected_column > 0;
+			auto under_limit_h = dir_h < 0 ? player.selected_column < 8 : player.selected_column > 0;
 			player.select_delay = 0.1f;
 
 			if (horizontal_input_active && under_limit_h)
