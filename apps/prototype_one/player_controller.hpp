@@ -63,7 +63,7 @@ public:
 					if (player.ticks_to_energy_grow < 0)
 					{
 						player.ticks_to_energy_grow = player.ticks_per_energy_grow;
-						player.energy = std::max(player.energy + 1, player.max_energy);
+						player.energy = std::min(player.energy + 1, player.max_energy);
 					}
 
 					auto player_specifics = build_player_specific_data(player);
