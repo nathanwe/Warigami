@@ -72,7 +72,7 @@ public:
 					auto left = player_specifics.values.left;
 
 					gather_points(r_state, player);					
-					handle_player_selection(player, forward);
+					handle_player_selection(player, forward, left);
 					do_everything(player, r_state, player_specifics, board, board_id);
 				});
 			});
@@ -118,24 +118,34 @@ private:
 		return { controls, {column_to_upscale, forward, left } };
 	}
 
-	void handle_player_selection(components::player& player, float forward)
+	void handle_player_selection(components::player& player, float forward, float left)
 	{
 		if (player.select_delay > 0.f)
 		{
 			player.select_delay -= m_timer.smoothed_delta_secs();
 		}
 		else
-		{
-			//move statlessly
+		{		
 			auto vertical_input_active = std::abs(forward) > .4f;
-			auto dir = util::sign(forward);
-			auto under_limit = dir < 0 ? player.selected_row < 6 : player.selected_row > 0;
+			auto dir_v = util::sign(forward);
+			auto under_limit_v = dir_v < 0 ? player.selected_row < 6 : player.selected_row > 0;
 			player.select_delay = 0.1f;
 
-			if (vertical_input_active && under_limit)
+			if (vertical_input_active && under_limit_v)
 			{
 				player.select_delay = 0.1f;
-				player.selected_row -= dir;
+				player.selected_row -= dir_v;
+			}
+
+			auto horizontal_input_active = std::abs(left) > .4f;
+			auto dir_h = -util::sign(left);
+			auto under_limit_h = dir_h < 0 ? player.selected_column < 6 : player.selected_column > 0;
+			player.select_delay = 0.1f;
+
+			if (horizontal_input_active && under_limit_h)
+			{
+				player.select_delay = 0.1f;
+				player.selected_column -= dir_h;
 			}
 		}
 	}
@@ -169,6 +179,7 @@ private:
 		std::uniform_int_distribution<int> dice_shapes(0, (int)components::dice_nets::NUM - 1);
 		auto d4 = std::bind(dice, rng);
 
+		//place card
 		if (loc != -1) {
 			player.selected_card = player.hand[loc];
 			player.selected_card_location = loc;
@@ -180,7 +191,7 @@ private:
 						taken = true;
 					}
 				});
-
+			
 			if (!taken && player.energy >= components::card_costanamos[(int)player.hand[player.selected_card_location]])
 			{
 				board.spawner.emplace_back(
@@ -197,7 +208,7 @@ private:
 		// place dice
 		if (m_input.is_input_started(controls.dice_button) && player.bonus_dice > 0) {
 			
-			std::vector<glm::ivec2> net = player.create_shifted_net(glm::ivec2(player.selected_row, 1+d4()+d4()),
+			std::vector<glm::ivec2> net = player.create_shifted_net(glm::ivec2(player.selected_row, player.selected_column),
 				player.current_dice_shape, (components::rotate_states)d4(), d4()%2==0);
 			r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
 				{
@@ -213,16 +224,16 @@ private:
 			player.current_dice_shape = next_dice_shape;
 			
 		}
-
+		//show cursor
 		r_state.each<components::board_square, transforms::transform>(
 			[&](components::board_square& square, transforms::transform& transform)
-			{
-				if (square.y == player_specifics.values.column_to_up_scale)
-				{
-					square.x == player.selected_row
-						? row_increase(transform, 0.3f)
-						: row_increase(transform, 0);
-				}
+			{		
+				if (square.x == player.selected_row) {
+					row_increase(transform, 0.3f);
+					if (square.y == player.selected_column) {
+						row_increase(transform, 0.3f);
+					}
+				}													
 			});
 
 	}
