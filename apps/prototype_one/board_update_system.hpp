@@ -134,7 +134,7 @@ private:
 				if (game_piece.health <= 0)
 				{
 					game_piece.state = components::UNIT_STATE::DYING;
-					game_piece.give_points = 3;
+					game_piece.give_points = 1;
 				}
 
 				if (game_piece.state == components::UNIT_STATE::ATTACK)

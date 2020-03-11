@@ -73,19 +73,7 @@ public:
 
 					gather_points(r_state, player);					
 					handle_player_selection(player, forward);
-
-					switch (player.state)
-					{
-						case components::PLAYER_STATE::BASE:
-							do_base(player, r_state, player_specifics);
-							break;
-						case components::PLAYER_STATE::UNIT_PLACEMENT:
-							do_placement(player, r_state, player_specifics, board);
-							break;
-						case components::PLAYER_STATE::DICE_PLACEMENT:
-							do_dice_placement(player, r_state, player_specifics, board, board_id);
-							break;
-					}
+					do_everything(player, r_state, player_specifics, board, board_id);
 				});
 			});
 	}
@@ -165,6 +153,78 @@ private:
 			player.points -= 5;
 			player.bonus_dice++;
 		}
+	}
+	void do_everything(
+		components::player& player,
+		ecs::state& r_state,
+		player_specific_data& player_specifics,
+		components::board& board,
+		entity_id board_id)
+	{
+		auto& controls = player_specifics.controls;
+		int loc = find_selected_card_index(controls);
+		std::random_device rd;
+		auto rng = std::default_random_engine{ rd() };
+		std::uniform_int_distribution<int> dice(0, 3);
+		std::uniform_int_distribution<int> dice_shapes(0, (int)components::dice_nets::NUM - 1);
+		auto d4 = std::bind(dice, rng);
+
+		if (loc != -1) {
+			player.selected_card = player.hand[loc];
+			player.selected_card_location = loc;
+			bool taken = false;
+			r_state.each<components::game_piece>([&](components::game_piece& piece)
+				{
+					if (piece.board_source == glm::ivec2(player.selected_row, player_specifics.values.column_to_up_scale))
+					{
+						taken = true;
+					}
+				});
+
+			if (!taken && player.energy >= components::card_costanamos[(int)player.hand[player.selected_card_location]])
+			{
+				board.spawner.emplace_back(
+					player.selected_row,
+					player.team >= 0 ? 0 : 8,
+					player.team,
+					player.hand[player.selected_card_location]);
+
+				player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
+				player.hand[player.selected_card_location] = player.safe_draw();
+				player.state = components::PLAYER_STATE::BASE;
+			}
+		}
+		// place dice
+		if (m_input.is_input_started(controls.dice_button) && player.bonus_dice > 0) {
+			
+			std::vector<glm::ivec2> net = player.create_shifted_net(glm::ivec2(player.selected_row, 1+d4()+d4()),
+				player.current_dice_shape, (components::rotate_states)d4(), d4()%2==0);
+			r_state.each<components::board_square, transforms::transform>([&](components::board_square& square, transforms::transform& transform)
+				{
+
+					bool foo = player.net_check(glm::ivec2(square.x, square.y), net);		
+					if (foo)
+					{
+						create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::FIRE, player.team);
+					}
+				});			
+			player.bonus_dice--;			
+			auto next_dice_shape = static_cast<components::dice_nets>(dice_shapes(rng));			
+			player.current_dice_shape = next_dice_shape;
+			
+		}
+
+		r_state.each<components::board_square, transforms::transform>(
+			[&](components::board_square& square, transforms::transform& transform)
+			{
+				if (square.y == player_specifics.values.column_to_up_scale)
+				{
+					square.x == player.selected_row
+						? row_increase(transform, 0.3f)
+						: row_increase(transform, 0);
+				}
+			});
+
 	}
 
 	void do_base(components::player& player, ecs::state& r_state, player_specific_data& player_specifics)
@@ -265,10 +325,7 @@ private:
 				if (m_input.is_input_started(controls.card1) && foo && player.energy >= components::dice_costanamos)
 				{
 					row_select(transform, 1);
-#ifdef ONLY_ONE_TERRAIN_PER_TILE
-					//TODO
-#endif // ONLY_ONE_TERRAIN_PER_TILE
-					create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::WEB, player.team);
+					create_terrain(r_state, transform.position, board_id, glm::ivec2(square.x, square.y), components::TERRAIN_ENUM::FIRE, player.team);
 				}
 			});
 

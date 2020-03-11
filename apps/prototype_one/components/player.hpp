@@ -93,14 +93,14 @@ namespace components
             regrow_deck();
             shuffle();
             for (auto & card_slot : hand)
-                card_slot = draw();
+                card_slot = safe_draw();
         }
 
 		int max_energy{ 10 };
 		int energy = 5;
 		float health {100.f};
 		int points = 0;
-		int bonus_dice = 1;
+		int bonus_dice = 5;
 		float team = 0.0f;
 		card_enum selected_card;
 		int selected_card_location;
