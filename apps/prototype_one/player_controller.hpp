@@ -108,7 +108,7 @@ private:
 			{
 				render_mesh_s.material.param_diffuse = glm::vec3(0.5, 0.5, 0.5);
 				if (square.y % 2 == 0) {
-					render_mesh_s.material.param_diffuse -= glm::vec3(0.1f, 0.1f, 0.1f);
+					render_mesh_s.material.param_diffuse -= glm::vec3(0.0f, 0.0f, 0.0f);
 				}
 				if (square.x % 2 == 0) {
 					render_mesh_s.material.param_diffuse -= glm::vec3(0.2f, 0.2f, 0.2f);
@@ -242,7 +242,7 @@ private:
 					//row_increase(transform, 0.3f);
 					render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;
 					if (square.y == player.selected_column) {
-						//row_increase(transform, 0.3f);
+						row_increase(transform, 0.3f);
 						//render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;
 					}
 				}													
