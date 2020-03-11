@@ -96,28 +96,29 @@ private:
 
 	void handle_tick_progress(ecs::state& r_state, entity_id board_id, transforms::transform& board_t, components::board& board)
 	{
-		r_state.each_id<transforms::transform, components::game_piece>(
-			[&](entity_id unit_id, auto& unit_t, auto& unit) {
-				if (unit.state == components::UNIT_STATE::ATTACK)
-				{
-					// attacking animation here
-					attack_unit(unit, board.timer_t);
-					handle_unit_transform(board_t, unit_t, unit, board, board_id);
-				}
-				if (unit.state == components::UNIT_STATE::MOVE)
-				{
-					// Walking animation here
-					walk_unit(unit, board.timer_t);
-					handle_unit_transform(board_t, unit_t, unit, board, board_id);
-				}
-				if (unit.state == components::UNIT_STATE::DYING)
-				{
-					// Death animation here
-					unit_death_event new_event(unit_id);
-					event_manager.BroadcastEvent(new_event);
-
-				}
-			});
+		r_state.each_id<transforms::transform, components::game_piece>([&](entity_id unit_id, auto& unit_t, auto& unit) {
+			switch (unit.state)
+			{
+			case components::UNIT_STATE::ATTACK:
+			{			
+				attack_unit(unit, board.timer_t);
+				handle_unit_transform(board_t, unit_t, unit, board, board_id);
+				break;
+			}
+			case components::UNIT_STATE::MOVE:
+			{			
+				walk_unit(unit, board.timer_t);
+				handle_unit_transform(board_t, unit_t, unit, board, board_id);
+				break;
+			}
+			case components::UNIT_STATE::DYING:
+			{				
+				unit_death_event new_event(unit_id);
+				event_manager.BroadcastEvent(new_event);
+				break;
+			}
+			}
+		});
 	}
 
 	void do_game_piece_actions(ecs::state& r_state)
