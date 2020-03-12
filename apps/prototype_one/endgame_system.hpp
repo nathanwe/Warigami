@@ -29,7 +29,7 @@ public:
 	{
 		if (!_did_game_end)
 		{
-			tug_kill_condition(r_state);
+			//tug_kill_condition(r_state);
 			//health_kill_condition(r_state);
 			check_endgame();
 		}

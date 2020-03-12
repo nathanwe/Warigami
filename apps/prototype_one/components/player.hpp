@@ -26,11 +26,6 @@ namespace components
 	const static int dice_costanamos = 1;
 
 	const static std::vector<card_enum> start_deck = {
-	        card_enum::SCISSORLING,
-			card_enum::SCISSORLING,
-			card_enum::SCISSORLING,
-			card_enum::SCISSORLING,
-			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
@@ -40,6 +35,7 @@ namespace components
 			card_enum::SCISSOR_TROOPER,
 			card_enum::SCISSOR_TROOPER,
 			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSORLING_EGG,
 			card_enum::SCISSORLING_EGG,
 			card_enum::SCISSORLING_EGG,
 			card_enum::SCISSORLING_EGG,
@@ -54,8 +50,6 @@ namespace components
 			card_enum::SCISSOR_QUEEN,
 			card_enum::SCISSOR_QUEEN,
 			card_enum::SCISSOR_QUEEN,
-			card_enum::SCISSOR_TITAN,
-			card_enum::SCISSOR_TITAN
 	};
 
 	enum class dice_nets {

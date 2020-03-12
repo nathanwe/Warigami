@@ -16,6 +16,24 @@ void combats::combat_resolution::Resolve_Combats()
 			case::combats::COMBAT_EFFECTS::SLOW_TARGET:
 				instance.unit_two.speed = instance.unit_two.speed > 1 ? instance.unit_two.speed - 1 : instance.unit_two.speed;
 				break;
+			case::combats::COMBAT_EFFECTS::INFEST:
+			{
+				bool infested = false;
+				for (auto& effector : instance.unit_two.effects)
+				{
+					if (effector == combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH 
+						|| effector == combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH 
+						|| effector == combats::COMBAT_EFFECTS::SPAWN_SCISSOR_TROOPER_ON_DEATH)
+					{
+						infested = true;
+					}
+				}
+				if (!infested)
+				{
+					instance.unit_two.effects.push_back(combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH);
+				}
+				break;
+			}
 			}
 		}
 

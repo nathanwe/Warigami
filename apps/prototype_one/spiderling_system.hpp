@@ -107,6 +107,12 @@ private:
 					board.spawner.push_back(newSpawn2);
 					break;
 				}
+				case combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH:
+				{
+					to_spawn newSpawn3(game_piece.board_source.x, game_piece.board_source.y, game_piece.team * -1, components::card_enum::SCISSORLING);
+					board.spawner.push_back(newSpawn3);
+					break;
+				}
 				}
 			}
 		}

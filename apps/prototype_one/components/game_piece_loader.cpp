@@ -13,6 +13,7 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 	gp.damage = json.value("damage", 1);
 	gp.health = json.value("health", 1);
 	gp.team = json.value("team", 1);
+	gp.give_points = gp.health;
 
 	if (json.find("board_location") != json.end())
 	{

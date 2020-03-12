@@ -107,11 +107,8 @@ private:
 			rendering::renderable_mesh_static& render_mesh_s)
 			{
 				render_mesh_s.material.param_diffuse = glm::vec3(0.5, 0.5, 0.5);
-				if (square.y % 2 == 0) {
-					render_mesh_s.material.param_diffuse -= glm::vec3(0.0f, 0.0f, 0.0f);
-				}
 				if (square.x % 2 == 0) {
-					render_mesh_s.material.param_diffuse -= glm::vec3(0.2f, 0.2f, 0.2f);
+					render_mesh_s.material.param_diffuse -= glm::vec3(0.3f, 0.3f, 0.3f);
 				}
 				row_select(transform, 1);
 			});
@@ -166,11 +163,14 @@ private:
 			{
 				if (game_piece.team != player.team) {
 					player.points += game_piece.give_points;
-					game_piece.give_points = 0;
+				}
+				else
+				{
+					player.points += game_piece.give_points / 2;
 				}
 			});
-		if (player.points >= 5) { //TODO: fix hardcoded 5
-			player.points -= 5;
+		if (player.points >= 20) { //TODO: fix hardcode
+			player.points -= 20;
 			player.bonus_dice++;
 		}
 	}
