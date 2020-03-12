@@ -199,8 +199,29 @@ private:
     static void walk_unit(components::game_piece &game_piece, float ticker_t)
     {
         glm::vec2 to_dst = game_piece.board_destination - game_piece.board_source;
-        glm::vec2 interpolated = glm::vec2(game_piece.board_source) + ticker_t * to_dst;
-        game_piece.continuous_board_location = interpolated;
+        glm::vec2 overstep = glm::vec2(game_piece.board_destination) + (to_dst) * 0.2f;
+
+        std::pair<float, glm::vec2> position_keyframes[]{ // t -> y
+                {std::numeric_limits<float>::min(), game_piece.board_source},
+                {0.f,                               game_piece.board_source},
+                {0.6f,                              game_piece.board_source},
+                {0.9f,                              overstep},
+                {1.f,                               game_piece.board_destination},
+                {std::numeric_limits<float>::max(), game_piece.board_destination} };
+
+        size_t index = 0;
+        while (position_keyframes[index].first < ticker_t)
+            index++;
+
+        auto source = position_keyframes[index - 1].second;
+        auto destination = position_keyframes[index].second;
+        float t_first = position_keyframes[index - 1].first;
+        float t_second = position_keyframes[index].first;
+        float t_range = t_second - t_first;
+        float t = (ticker_t - t_first) / t_range;
+
+        glm::vec2 interpolated = glm::vec2(game_piece.board_source) + t * to_dst;
+        game_piece.continuous_board_location = source + t * (destination - source);
     }
 
     // Helper function for attacking
