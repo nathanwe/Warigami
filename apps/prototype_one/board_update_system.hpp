@@ -270,8 +270,8 @@ private:
 
             r_state.each<components::game_piece>([&](components::game_piece &piece) {
                 auto out_of_bounds =
-                        (piece.board_source.y <= 0 && piece.team == -1) ||
-                        (piece.board_source.y >= 8 && piece.team == 1);
+                        (piece.board_source.y <= 1 && piece.team == -1) ||
+                        (piece.board_source.y >= 7 && piece.team == 1);
 
                 if (out_of_bounds)
                 {
