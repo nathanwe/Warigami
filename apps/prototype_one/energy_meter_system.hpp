@@ -42,7 +42,7 @@ public:
 			{
 				if (p.team == meter.team)
 				{
-					float clamped = std::clamp(p.energy, 0, 10);
+					float clamped = std::clamp(p.energy, 0.0f, 10.0f);
 					tform.scale.x = clamped / 10.f * max_scale;
 					tform.position.x = meter.first_position.x + tform.scale.x / 2.f;
 					tform.is_matrix_dirty = true;

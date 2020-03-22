@@ -77,7 +77,7 @@ private:
         resolver.Resolve_Combats();
         generate_new_board_state(r_state);
 
-        // If a unit is standing in FIRE, it takes damage;
+        // If a unit is standing in fire, it takes damage;
         r_state.each<components::game_piece, transforms::transform>([&](auto &game_piece, auto &transform) {
             r_state.each<components::terrain>([&](auto &terrain) {
                 if (terrain.location == game_piece.board_source)
@@ -287,6 +287,7 @@ private:
             });
 
             reconcile_movement_intervals(r_state, board);
+            claim_territory(r_state, board);
             board.print();
         });
     }
@@ -336,7 +337,14 @@ private:
             });
         }
     }
-
+    static void claim_territory(ecs::state& r_state, components::board& board) {
+        r_state.each<components::board_square>([&](auto& square) {
+            float foo = board.board_state[square.x][square.y];
+            if (foo != 0) {
+                square.team = foo;
+            }
+            });
+    }
     // Helper function for checking for legal attacks
     static bool
     check_attacks(glm::ivec2 location, std::vector<glm::ivec2> targets, float teammates, ecs::state &r_state)

@@ -59,22 +59,29 @@ public:
 
 			r_state.each<components::player>([&](components::player& player)
 				{
-
-					player.ticks_to_energy_grow -= board.ticker_dt;
-					if (player.ticks_to_energy_grow < 0)
-					{
-						player.ticks_to_energy_grow = player.ticks_per_energy_grow;
-						player.energy = std::min(player.energy + 1, player.max_energy);
-					}
-
 					auto player_specifics = build_player_specific_data(player);
 					auto& controls = player_specifics.controls;
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
 
+					//count the board squares controled by both players at the same time
+					int p_1_squares = 0;
+					int p_minus1_squares = 0;
+					r_state.each<components::board_square>([&](components::board_square& square)
+						{
+							if (square.team == 1.0f) {
+								++p_1_squares;
+							}
+							if (square.team == -1.0f) {
+								++p_minus1_squares;
+							}
+						});
+
 					gather_points(r_state, player);					
 					handle_player_selection(player, forward, left);
 					do_everything(player, r_state, player_specifics, board, board_id);
+					gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
+					
 				});
 			});
 	}
@@ -98,7 +105,18 @@ private:
 
 		return -1;
 	}
+	void gain_energy(ecs::state& r_state, components::player& player
+		, components::board& board, float p1_squares, float pminus1_squares) {
 
+		float square_percent = player.team == 1.0f ? p1_squares / 30.0f : pminus1_squares / 30.0f;
+
+		player.ticks_to_energy_grow -= board.ticker_dt;
+		if (player.ticks_to_energy_grow < 0)
+		{
+			player.ticks_to_energy_grow = player.ticks_per_energy_grow;
+			player.energy = std::min(player.energy + 2.0f * square_percent, player.max_energy);
+		}
+	}
 	void board_reset(ecs::state& r_state)
 	{
 		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>([&](
@@ -114,6 +132,12 @@ private:
 					render_mesh_s.material.param_diffuse += glm::vec3(0.225f, 0.215f, 0.0f);
 				}
 				row_select(transform, 1);
+				if (square.team == 1.0f) { //TODO: refactor so team color is not hardcoded
+					render_mesh_s.material.param_diffuse += glm::vec3(0.4f, -0.2f, -0.2f);
+				}
+				if (square.team == -1.0f) { //TODO: refactor so team color is not hardcoded
+					render_mesh_s.material.param_diffuse += glm::vec3(-0.2f, -0.2f, 0.4f);
+				}
 			});
 	}
 

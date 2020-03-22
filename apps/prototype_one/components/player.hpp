@@ -90,8 +90,8 @@ namespace components
                 card_slot = safe_draw();
         }
 
-		int max_energy{ 10 };
-		int energy = 5;
+		float max_energy{ 10.0f };
+		float energy = 5.0f;
 		float health {100.f};
 		int points = 0;
 		int bonus_dice = 0;
