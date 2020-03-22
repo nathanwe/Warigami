@@ -124,9 +124,9 @@ private:
 			transforms::transform& transform,
 			rendering::renderable_mesh_static& render_mesh_s)
 			{
-				render_mesh_s.material.param_diffuse = glm::vec3(0.5, 0.5, 0.5);
+				render_mesh_s.material.param_diffuse = glm::vec3(0.4, 0.4, 0.4);
 				if (square.x % 2 == 0) {
-					render_mesh_s.material.param_diffuse -= glm::vec3(0.3f, 0.3f, 0.3f);
+					render_mesh_s.material.param_diffuse -= glm::vec3(0.1f, 0.1f, 0.1f);
 				}
 				if (square.y == 1 || square.y == 7) {
 					render_mesh_s.material.param_diffuse += glm::vec3(0.225f, 0.215f, 0.0f);

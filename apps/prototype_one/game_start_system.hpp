@@ -36,6 +36,12 @@ public:
 					components::board_square& board_square,
 					transforms::transform& transform)
 					{
+						if (board_square.x+1 > board_square.y) {
+							board_square.team = 1.0f;
+						}
+						if (board_square.x+1 < board_square.y) {
+							board_square.team = -1.0f;
+						}
 						/*if (id % 7 == 0) {
 							board_square.terrain_type = TERRAIN_ENUM::FIRE;
 							create_fire_graphics(transform.position, board_id);
