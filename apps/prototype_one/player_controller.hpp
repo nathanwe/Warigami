@@ -75,6 +75,7 @@ public:
 								++p_minus1_squares;
 							}
 						});
+
 					draw_goalposts(r_state, player);
 					gather_points(r_state, player);					
 					handle_player_selection(player, forward, left, board);
@@ -237,9 +238,9 @@ private:
 			
 			if (!taken && player.energy >= components::card_costanamos[(int)player.hand[player.selected_card_location]])
 			{
-				board.spawner.emplace_back(
+				board.spawner.emplace_back(					
 					player.selected_row,
-					player.spawn_column,
+					player.spawn_column,					
 					player.team,
 					player.hand[player.selected_card_location]);
 
@@ -248,6 +249,7 @@ private:
 				player.state = components::PLAYER_STATE::BASE;
 			}
 		}
+
 		// place dice
 		if (m_input.is_input_started(controls.dice_button) && player.bonus_dice > 0) {
 			

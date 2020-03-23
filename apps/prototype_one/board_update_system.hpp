@@ -317,7 +317,7 @@ private:
                     piece.remaining_speed = 0;
                     next_pos.y = 0;
                     piece.board_destination = next_pos;
-                } else if (next_pos.y > board.columns)
+                } else if (next_pos.y > board.rows)
                 {
                     piece.remaining_speed = 0;
                     next_pos.y = board.columns;
@@ -349,7 +349,7 @@ private:
     }
     static void claim_territory(ecs::state& r_state, components::board& board) {
         r_state.each<components::board_square>([&](auto& square) {
-            float foo = board.board_state[square.y][square.x];
+            float foo = board.board_state[square.x][square.y];
             if (foo != 0) {
                 square.team = foo;
             }
