@@ -288,8 +288,8 @@ private:
         r_state.each<components::player>([&](auto& p) {
             if (p.team != piece.team)
             {
-                if ((piece.board_source.y <= p.score_column && piece.team == -1) ||
-                    (piece.board_source.y >= p.score_column && piece.team == 1)) {
+                if ((piece.board_source.y >= p.score_column && p.team == -1) ||
+                    (piece.board_source.y <= p.score_column && p.team == 1)) {
 
                     piece.state = components::UNIT_STATE::DYING;
                     p.health -= piece.damage * 10.f;
@@ -317,10 +317,10 @@ private:
                     piece.remaining_speed = 0;
                     next_pos.y = 0;
                     piece.board_destination = next_pos;
-                } else if (next_pos.y > board.columns - 1)
+                } else if (next_pos.y > board.columns)
                 {
                     piece.remaining_speed = 0;
-                    next_pos.y = board.columns-1;
+                    next_pos.y = board.columns;
                     piece.board_destination = next_pos;
                 } else if (board.board_state[next_pos.x][next_pos.y] == 0)
                 {

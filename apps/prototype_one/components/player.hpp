@@ -104,7 +104,7 @@ namespace components
         row_t selected_row = 3;
 		column_t selected_column = 4;
 		int spawn_column = 0;
-		int score_column = 7;
+		int score_column = 1; //If units get here, this player gets hurt
 		rotate_states rotate_state = components::rotate_states::ZERO;
 		bool flip_state = false;
 		components::dice_nets current_dice_shape = dice_nets::SEVEN;
