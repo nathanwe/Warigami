@@ -349,7 +349,7 @@ private:
     }
     static void claim_territory(ecs::state& r_state, components::board& board) {
         r_state.each<components::board_square>([&](auto& square) {
-            float foo = board.board_state[square.x][square.y];
+            float foo = board.board_state[square.y][square.x];
             if (foo != 0) {
                 square.team = foo;
             }

@@ -9,6 +9,36 @@
 using nlohmann::json;
 
 
+void do_boardsquares(json& children, int num_lanes, int num_columns)
+{    
+    for (int row = 0; row < num_lanes; row++)
+    {
+        std::string prototype = row % 2 == 0
+            ? "assets/prototypes/boardsquare.json"
+            : "assets/prototypes/boardsquare2.json";
+
+        for (int col = 0; col < num_columns; col++)
+        {
+            json tile;
+            tile["prototype"] = prototype;
+
+            json transform;
+            transform["type"] = "transform";
+            transform["position"] = { row - num_lanes / 2, 1, col - num_columns / 2 };
+
+            json board_square;
+            board_square["type"] = "board_square";
+            board_square["x"] = row;
+            board_square["y"] = col;
+
+            tile["components"] = {transform, board_square};
+
+            children.push_back(tile);
+        }
+    }
+}
+
+
 int main()
 {
     json all;
@@ -24,34 +54,9 @@ int main()
             }
     };
 
-    for (int i = 0; i < 6; ++i)
-    {
-        for (int j = 0; j < 8; ++j)
-        {
-            std::string boardsquare_proto = "invalid";
+    all["children"] = {};
 
-            if (i % 2 != 0)
-                boardsquare_proto = "assets/prototypes/boardsquare.json";
-            else
-                boardsquare_proto = "assets/prototypes/boardsquare2.json";
-
-
-            all["children"][i * j] = {
-                    {"prototype",  boardsquare_proto},
-                    {"components", {
-                                           {
-                                                   {"type", "transform"},
-                                                   {"position", {i - 3, 1, j - 4}}
-                                           },
-                                           {
-                                                   {"type", "board_square"},
-                                                   {"x", i},
-                                                   {"y", j}
-                                           }
-                                   }},
-            };
-        }
-    }
+    do_boardsquares(all["children"], 5, 9);
 
 
     std::ofstream o("gameboard.json");
