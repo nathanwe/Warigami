@@ -168,7 +168,7 @@ private:
 		{		
 			auto vertical_input_active = std::abs(forward) > .4f;
 			auto dir_v = util::sign(forward);
-			auto under_limit_v = dir_v < 0 ? player.selected_row < board.rows-1 : player.selected_row > 0;
+			auto under_limit_v = dir_v < 0 ? player.selected_row < board.columns-1 : player.selected_row > 0;
 			player.select_delay = 0.1f;
 
 			if (vertical_input_active && under_limit_v)
@@ -179,7 +179,7 @@ private:
 
 			auto horizontal_input_active = std::abs(left) > .4f;
 			auto dir_h = -util::sign(left);
-			auto under_limit_h = dir_h < 0 ? player.selected_column < board.columns-1 : player.selected_column > 0;
+			auto under_limit_h = dir_h < 0 ? player.selected_column < board.rows-1 : player.selected_column > 0;
 			player.select_delay = 0.1f;
 
 			if (horizontal_input_active && under_limit_h)

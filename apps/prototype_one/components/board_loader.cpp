@@ -9,7 +9,7 @@ void components::board_loader::load(asset::asset_loader_node& asset_loader_node)
 	
 	std::vector<ecs::entity*> new_entities;
 
-	b.rows = json.value("rows", 7);
+	b.rows = json.value("rows", 5);
 	b.columns = json.value("columns", 9);
 	b.board_state.resize(b.columns);
 
