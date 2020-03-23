@@ -9,6 +9,8 @@ void components::player_loader::load(asset::asset_loader_node& asset_loader_node
 	p.energy = json.value("energy", 5);
 	p.health = json.value("health", 100.0f);
 	p.team = json.value("team", 1.0f);
+	p.spawn_column = json.value("spawn", 0);
+	p.score_column = json.value("score", 7);
 }
 
 component_bitset components::player_loader::components_to_load()

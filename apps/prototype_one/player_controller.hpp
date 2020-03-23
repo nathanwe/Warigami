@@ -27,7 +27,6 @@ struct player_controls
 
 struct player_values
 {
-	int column_to_up_scale;
 	float forward = 0;
 	float left = 0;
 	glm::vec3 team_color;
@@ -76,9 +75,9 @@ public:
 								++p_minus1_squares;
 							}
 						});
-
+					draw_goalposts(r_state, player);
 					gather_points(r_state, player);					
-					handle_player_selection(player, forward, left);
+					handle_player_selection(player, forward, left, board);
 					do_everything(player, r_state, player_specifics, board, board_id);
 					gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
 					
@@ -108,13 +107,13 @@ private:
 	void gain_energy(ecs::state& r_state, components::player& player
 		, components::board& board, float p1_squares, float pminus1_squares) {
 
-		float square_percent = player.team == 1.0f ? p1_squares / 30.0f : pminus1_squares / 30.0f;
-
+		float square_percent = player.team == 1.0f ? p1_squares : pminus1_squares;
+		square_percent /= (board.columns * board.rows);
 		player.ticks_to_energy_grow -= board.ticker_dt;
 		if (player.ticks_to_energy_grow < 0)
 		{
 			player.ticks_to_energy_grow = player.ticks_per_energy_grow;
-			player.energy = std::min(player.energy + 2.0f * square_percent, player.max_energy);
+			player.energy = std::min(player.energy + 1.0f * square_percent, player.max_energy);
 		}
 	}
 	void board_reset(ecs::state& r_state)
@@ -128,9 +127,6 @@ private:
 				if (square.x % 2 == 0) {
 					render_mesh_s.material.param_diffuse -= glm::vec3(0.1f, 0.1f, 0.1f);
 				}
-				if (square.y == 1 || square.y == 7) {
-					render_mesh_s.material.param_diffuse += glm::vec3(0.225f, 0.215f, 0.0f);
-				}
 				row_select(transform, 1);
 				if (square.team == 1.0f) { //TODO: refactor so team color is not hardcoded
 					render_mesh_s.material.param_diffuse += glm::vec3(0.4f, -0.2f, -0.2f);
@@ -140,6 +136,17 @@ private:
 				}
 			});
 	}
+	void draw_goalposts(ecs::state& r_state, components::player& player) {
+		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>([&](
+			components::board_square& square,
+			transforms::transform& transform,
+			rendering::renderable_mesh_static& render_mesh_s)
+			{
+				if (square.y == player.score_column) {
+					render_mesh_s.material.param_diffuse += glm::vec3(0.225f, 0.215f, 0.0f);
+				} 
+			});
+	}
 
 	player_specific_data build_player_specific_data(components::player& player)
 	{
@@ -147,12 +154,11 @@ private:
 		auto& controls = player.team == 1.f ? p1_controls : p2_controls;
 		auto forward = player.team == 1.0f ? m_input.forward() : m_input.forward_player2();
 		auto left = player.team == 1.0f ? m_input.strafe() : m_input.strafe_player2();
-		auto column_to_upscale = player.team == 1.0f ? 0 : 8;
 		auto team_color = player.team ==1.0f ? glm::vec3(1,0,0) : glm::vec3(0, 0, 1);
-		return { controls, {column_to_upscale, forward, left, team_color } };
+		return { controls, {forward, left, team_color } };
 	}
 
-	void handle_player_selection(components::player& player, float forward, float left)
+	void handle_player_selection(components::player& player, float forward, float left, components::board& board)
 	{
 		if (player.select_delay > 0.f)
 		{
@@ -162,7 +168,7 @@ private:
 		{		
 			auto vertical_input_active = std::abs(forward) > .4f;
 			auto dir_v = util::sign(forward);
-			auto under_limit_v = dir_v < 0 ? player.selected_row < 6 : player.selected_row > 0;
+			auto under_limit_v = dir_v < 0 ? player.selected_row < board.rows-1 : player.selected_row > 0;
 			player.select_delay = 0.1f;
 
 			if (vertical_input_active && under_limit_v)
@@ -173,7 +179,7 @@ private:
 
 			auto horizontal_input_active = std::abs(left) > .4f;
 			auto dir_h = -util::sign(left);
-			auto under_limit_h = dir_h < 0 ? player.selected_column < 8 : player.selected_column > 0;
+			auto under_limit_h = dir_h < 0 ? player.selected_column < board.columns-1 : player.selected_column > 0;
 			player.select_delay = 0.1f;
 
 			if (horizontal_input_active && under_limit_h)
@@ -223,7 +229,7 @@ private:
 			bool taken = false;
 			r_state.each<components::game_piece>([&](components::game_piece& piece)
 				{
-					if (piece.board_source == glm::ivec2(player.selected_row, player_specifics.values.column_to_up_scale))
+					if (piece.board_source == glm::ivec2(player.selected_row, player.score_column))
 					{
 						taken = true;
 					}
@@ -233,7 +239,7 @@ private:
 			{
 				board.spawner.emplace_back(
 					player.selected_row,
-					player.team >= 0 ? 0 : 8,
+					player.spawn_column,
 					player.team,
 					player.hand[player.selected_card_location]);
 
@@ -295,7 +301,7 @@ private:
 		r_state.each<components::board_square, transforms::transform>(
 			[&](components::board_square& square, transforms::transform& transform)
 			{
-				if (square.y == player_specifics.values.column_to_up_scale)
+				if (square.y == player.spawn_column)
 				{
 					square.x == player.selected_row
 						? row_increase(transform, 0.3f)
@@ -318,7 +324,7 @@ private:
 			components::board_square& square,
 			transforms::transform& transform)
 			{
-				if (square.y == player_specifics.values.column_to_up_scale)
+				if (square.y == player.spawn_column)
 				{
 					square.x == player.selected_row
 						? row_increase(transform, 0.5f)
@@ -331,7 +337,7 @@ private:
 			bool taken = false;
 			r_state.each<components::game_piece>([&](components::game_piece& piece)
 				{
-					if (piece.board_source == glm::ivec2(player.selected_row, player_specifics.values.column_to_up_scale))
+					if (piece.board_source == glm::ivec2(player.selected_row, player.spawn_column))
 					{
 						taken = true;
 					}

@@ -269,15 +269,7 @@ private:
             board.clear_state();
 
             r_state.each<components::game_piece>([&](components::game_piece &piece) {
-                auto out_of_bounds =
-                        (piece.board_source.y <= 1 && piece.team == -1) ||
-                        (piece.board_source.y >= 7 && piece.team == 1);
-
-                if (out_of_bounds)
-                {
-                    piece.state = components::UNIT_STATE::DYING;
-                    score_for_team(r_state, piece.team, piece.damage * 10.f);
-                }
+                out_of_bounds_effects(r_state, piece);
             });
 
             r_state.each<components::game_piece>([&](components::game_piece &piece) {
@@ -290,6 +282,24 @@ private:
             claim_territory(r_state, board);
             board.print();
         });
+    }
+
+    void out_of_bounds_effects(ecs::state& r_state, components::game_piece& piece) {
+        r_state.each<components::player>([&](auto& p) {
+            if (p.team != piece.team)
+            {
+                if ((piece.board_source.y <= p.score_column && piece.team == -1) ||
+                    (piece.board_source.y >= p.score_column && piece.team == 1)) {
+
+                    piece.state = components::UNIT_STATE::DYING;
+                    p.health -= piece.damage * 10.f;
+                    if (p.health < 0.f)
+                    {
+                        p.health = 0.f;
+                    }
+                }
+            }
+            });
     }
 
     static void reconcile_movement_intervals(ecs::state &r_state, components::board &board)
@@ -307,10 +317,10 @@ private:
                     piece.remaining_speed = 0;
                     next_pos.y = 0;
                     piece.board_destination = next_pos;
-                } else if (next_pos.y > 8)
+                } else if (next_pos.y > board.columns - 1)
                 {
                     piece.remaining_speed = 0;
-                    next_pos.y = 8;
+                    next_pos.y = board.columns-1;
                     piece.board_destination = next_pos;
                 } else if (board.board_state[next_pos.x][next_pos.y] == 0)
                 {
