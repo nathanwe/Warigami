@@ -101,7 +101,7 @@ namespace components
 		float select_delay = 0.0f;
 		components::PLAYER_STATE state = components::PLAYER_STATE::BASE;
 		std::vector<card_enum> deck;
-        row_t selected_row = 3;
+        row_t selected_row = 2;
 		column_t selected_column = 4;
 		int spawn_column = 0;
 		int score_column = 1; //If units get here, this player gets hurt
