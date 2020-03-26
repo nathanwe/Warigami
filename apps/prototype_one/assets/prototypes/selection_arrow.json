@@ -1,0 +1,16 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/arrow/arrow.obj",
+        "param_diffuse": [ 0.1, 0.1, 0.1 ]
+      }
+    ]
+  }
+}

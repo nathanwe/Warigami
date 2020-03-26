@@ -1,6 +1,36 @@
 {
 	"children": [
 		{
+			"prototype": "assets/prototypes/selection_arrow.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 0, 0 ],
+					"scale": [ 0.5, 0.5, 0.5 ],
+					"rotation": [ 0, 0, 150 ]
+				},
+				{
+					"type": "selection_arrow",
+					"team": 1
+				}
+			]
+		},
+		{
+			"prototype": "assets/prototypes/selection_arrow.json",
+			"components": [
+				{
+					"type": "transform",
+					"position": [ 0, 0, 0 ],
+					"scale": [ 0.5, 0.5, 0.5 ],
+					"rotation": [ 0, 0, 150 ]
+				},
+				{
+					"type": "selection_arrow",
+					"team": -1
+				}
+			]
+		},
+		{
 			"components": [
 				{
 					"position": [ -2, 1, -4 ],

@@ -27,6 +27,8 @@
 #include "components/countdown.hpp"
 #include "components/countdown_loader.hpp"
 #include "components/terrain.hpp"
+#include "components/selection_arrow.hpp"
+#include "components/selection_arrow_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -83,6 +85,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::health_meter>("health_meter");
 	ecs::register_component<components::tug_of_war_meter>("tug_of_war_meter");
 	ecs::register_component<components::countdown>("countdown");
+	ecs::register_component<components::selection_arrow>("selection_arrow");
 	ecs::register_component<transforms::transform>("transform");
     ecs::register_component<components::deck_ui>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");
@@ -173,6 +176,7 @@ int main(int argc, char** argv) {
 	components::health_meter_loader health_loader;
 	components::tug_of_war_meter_loader tug_loader;
 	components::countdown_loader countdown_loader;
+	components::selection_arrow_loader selection_arrow_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
@@ -198,6 +202,7 @@ int main(int argc, char** argv) {
 		&health_loader,
 		&tug_loader,
 		&countdown_loader,
+		&selection_arrow_loader,
 		&text_loader);
 
 	hydrater.load();

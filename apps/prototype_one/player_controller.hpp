@@ -273,16 +273,24 @@ private:
 		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>(
 			[&](components::board_square& square, transforms::transform& transform, rendering::renderable_mesh_static& render_mesh_s)
 			{		
-				if (square.x == player.selected_row) {
-					//row_increase(transform, 0.3f);
-					render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;
-					if (square.y == player.selected_column) {
-						row_increase(transform, 0.3f);
-						//render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;
-					}
+				if (square.x == player.selected_row && square.y == player.selected_column) {
+					// Shine a little
+					render_mesh_s.material.param_diffuse += glm::vec3(1,1,1) * 0.2f;
+
+					// Place arrow in selected tile
+					glm::vec3 arrow_pos = transform.position;
+					arrow_pos.y += 1;
+					r_state.each<components::selection_arrow, transforms::transform, rendering::renderable_mesh_static>(
+						[&](components::selection_arrow& arrow, transforms::transform& transform_arrow, rendering::renderable_mesh_static& render_mesh_s_arrow)
+					{
+						if (arrow.team == player.team) {
+							render_mesh_s_arrow.material.param_diffuse += player_specifics.values.team_color;
+							transform_arrow.position = arrow_pos;
+							transform_arrow.is_matrix_dirty = true;
+						}
+					});
 				}													
 			});
-
 	}
 
 	void do_base(components::player& player, ecs::state& r_state, player_specific_data& player_specifics)
