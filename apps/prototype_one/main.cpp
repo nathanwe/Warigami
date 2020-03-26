@@ -51,6 +51,7 @@
 #include "tick_update_system.hpp"
 #include "spiderling_system.hpp"
 #include "spawner_system.hpp"
+#include "deck_selection_system.hpp"
 #include "pause_system.hpp"
 #include "animator_system.hpp"
 #include "deck_selection_system.hpp"
