@@ -126,14 +126,14 @@ private:
 			{
 				render_mesh_s.material.param_diffuse = glm::vec3(0.4, 0.4, 0.4);
 				if (square.x % 2 == 0) {
-					render_mesh_s.material.param_diffuse -= glm::vec3(0.1f, 0.1f, 0.1f);
+					render_mesh_s.material.param_diffuse -= glm::vec3(0.02f, 0.02f, 0.02f);
 				}
 				row_select(transform, 1);
 				if (square.team == 1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.param_diffuse += glm::vec3(0.4f, -0.2f, -0.2f);
+					render_mesh_s.material.param_diffuse += glm::vec3(0.2f, 0.2f, 0.2f);
 				}
 				if (square.team == -1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.param_diffuse += glm::vec3(-0.2f, -0.2f, 0.4f);
+					render_mesh_s.material.param_diffuse += glm::vec3(-0.2f, -0.2f, -0.2f);
 				}
 			});
 	}
@@ -144,7 +144,7 @@ private:
 			rendering::renderable_mesh_static& render_mesh_s)
 			{
 				if (square.y == player.score_column) {
-					render_mesh_s.material.param_diffuse += glm::vec3(0.225f, 0.215f, 0.0f);
+					render_mesh_s.material.param_diffuse += glm::vec3(0.112f, 0.107f, 0.0f);
 				} 
 			});
 	}
@@ -275,7 +275,7 @@ private:
 			{		
 				if (square.x == player.selected_row) {
 					//row_increase(transform, 0.3f);
-					render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;
+					render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.1f;
 					if (square.y == player.selected_column) {
 						row_increase(transform, 0.3f);
 						//render_mesh_s.material.param_diffuse += player_specifics.values.team_color * 0.3f;

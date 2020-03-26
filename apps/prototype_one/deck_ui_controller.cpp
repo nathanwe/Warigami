@@ -101,8 +101,25 @@ ecs::entity &deck_ui_controller::spawn_card(components::card_enum type)
             return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
         case components::card_enum::SCISSOR_QUEEN:
             return _hydrater.add_from_prototype("assets/prototypes/card_queen.json"); 
+
         case components::card_enum::LIGHT_TANK_SOLDIER:
             return _hydrater.add_from_prototype("assets/prototypes/card_light_tank_soldier.json");
+        case components::card_enum::LIGHT_RANGE_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_light_range_soldier.json");
+        case components::card_enum::LIGHT_FAST_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_light_fast_soldier.json");
+        case components::card_enum::MEDIUM_TANK_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_medium_tank_soldier.json");
+        case components::card_enum::MEDIUM_RANGE_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_medium_range_soldier.json");
+        case components::card_enum::MEDIUM_FAST_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_medium_fast_soldier.json");
+        case components::card_enum::HEAVY_TANK_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_heavy_tank_soldier.json");
+        case components::card_enum::HEAVY_RANGE_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_heavy_range_soldier.json");
+        case components::card_enum::HEAVY_FAST_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_heavy_fast_soldier.json");
 
         default:
             return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
