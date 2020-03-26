@@ -51,6 +51,7 @@ namespace ecs
         std::unordered_map<component_bitset, archetype_pool> _archetype_pools;
        
         archetype_pool& find_pool(component_bitset archetype_id);
+        static std::uint32_t find_min_allocation(component_bitset archetype_id);
     };
 }
 

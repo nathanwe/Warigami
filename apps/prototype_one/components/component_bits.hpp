@@ -21,7 +21,9 @@ namespace components
 		tug_of_war_meter = 43,
         deck_ui = 44,
 		terrain = 45,
-		countdown = 46
+		countdown = 46,
+		deck_selection = 47,
+		deck_option = 48
 	};
 }
 

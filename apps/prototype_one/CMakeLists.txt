@@ -8,18 +8,18 @@ add_executable (prototype_one main.cpp
 				components/player.cpp components/player_loader.cpp
 				components/energy_meter.cpp
 				components/health_meter.cpp
-				board_update_system.hpp
-				util/boardgen.cpp
+				board_update_system.hpp				
 				components/countdown.cpp
 				components/tug_of_war_meter.cpp 
-				components/terrain.cpp
-				util/boardgen.cpp
+				components/terrain.cpp				
 				combat.cpp
 				components/deck_ui.cpp
 				components/deck_ui.hpp
 				deck_ui_controller.cpp
 				deck_ui_controller.hpp
-				components/card_enum.hpp)
+				components/card_enum.hpp
+				deck_selection_system.cpp
+				components/deck_selection.cpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs
