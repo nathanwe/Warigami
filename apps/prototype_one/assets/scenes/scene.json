@@ -27,101 +27,14 @@
         }
       ]
     },
-    {
-      "entity_id": 5,
-      "parent_id": 1,
-      "components": [
-        {
-          "type": "transform"
-        },
-        {
-          "type": "deck_ui"
-        }
-      ]
-    },
-
-
-
 
     {
       "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_a.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [-13.8, -3.5, -23.5]
-        }
-      ]
+      "prototype": "assets/prototypes/deck_ui.json"
     },
     {
       "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_b.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [-9.8, -3.5, -23.5]
-        }
-      ]
-    },
-    {
-      "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_x.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [-5.8, -3.5, -23.5]
-        }
-      ]
-    },
-    {
-      "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_y.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [-1.8, -3.5, -23.5]
-        }
-      ]
-    },
-    {
-      "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_a.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [1.8, -3.5, -23.5]
-        }
-      ]
-    },
-    {
-      "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_b.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [5.8, -3.5, -23.5]
-        }
-      ]
-    },
-    {
-      "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_x.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [9.8, -3.5, -23.5]
-        }
-      ]
-    },
-    {
-      "parent_id": 1,
-      "prototype": "assets/prototypes/tooltip_y.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [13.8, -3.5, -23.5]
-        }
-      ]
+      "prototype": "assets/prototypes/deck_selection.json"
     },
 
 
@@ -136,7 +49,7 @@
           "team": 1.0,
           "health": 100,
           "spawn": 0,
-          "score":  1
+          "score": 1
         }
       ]
     },
@@ -147,11 +60,11 @@
           "type": "transform"
         },
         {
-            "type": "player",
-            "team": -1.0,
-            "health": 100,
-            "spawn": 8,
-            "score": 7
+          "type": "player",
+          "team": -1.0,
+          "health": 100,
+          "spawn": 8,
+          "score": 7
         }
       ]
     },

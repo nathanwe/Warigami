@@ -27,6 +27,11 @@
 #include "components/countdown.hpp"
 #include "components/countdown_loader.hpp"
 #include "components/terrain.hpp"
+#include "components/deck_option.hpp"
+#include "components/deck_selection.hpp"
+#include "components/deck_selection_loader.hpp"
+#include "components/deck_option_loader.hpp"
+#include "components/deck_ui_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -79,9 +84,11 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::health_meter>("health_meter");
 	ecs::register_component<components::tug_of_war_meter>("tug_of_war_meter");
 	ecs::register_component<components::countdown>("countdown");
-	ecs::register_component<transforms::transform>("transform");
-    ecs::register_component<components::deck_ui, 1>("deck_ui");
+	ecs::register_component<components::deck_ui, 1>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");
+	ecs::register_component<components::deck_option>("deck_option");
+	ecs::register_component<components::deck_selection, 1>("deck_selection");
+	ecs::register_component<transforms::transform>("transform");	
     ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -121,7 +128,7 @@ int main(int argc, char** argv) {
 	tick_update_system ticker(timer);
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
-	deck_selection_system deck_selection(hydrater);
+	deck_selection_system deck_selection(hydrater, input);
 
 	ecs::systems systems({
 		&energy_system,
@@ -170,6 +177,9 @@ int main(int argc, char** argv) {
 	components::health_meter_loader health_loader;
 	components::tug_of_war_meter_loader tug_loader;
 	components::countdown_loader countdown_loader;
+	components::deck_selection_loader deck_selection_loader;
+	components::deck_option_loader deck_option_loader;
+	components::deck_ui_loader deck_ui_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
@@ -195,7 +205,10 @@ int main(int argc, char** argv) {
 		&health_loader,
 		&tug_loader,
 		&countdown_loader,
-		&text_loader);
+		&text_loader,
+		&deck_selection_loader,
+		&deck_option_loader,
+		&deck_ui_loader);
 
 	hydrater.load();
 
