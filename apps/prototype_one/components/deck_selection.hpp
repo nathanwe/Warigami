@@ -10,8 +10,8 @@ namespace components
 {
     struct deck_selection : public ecs::component<deck_selection>
     {
-        std::optional<entity_id> p1_decks[3]{};
-        std::optional<entity_id> p2_decks[3]{};
+        entity_id p1_deck_options[3]{};
+        entity_id p2_deck_options[3]{};
 
         float min_card_x{ -16.f };
         float max_card_x{ 16.f };

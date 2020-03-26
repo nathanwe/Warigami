@@ -29,6 +29,11 @@
 #include "components/terrain.hpp"
 #include "components/selection_arrow.hpp"
 #include "components/selection_arrow_loader.hpp"
+#include "components/deck_option.hpp"
+#include "components/deck_selection.hpp"
+#include "components/deck_selection_loader.hpp"
+#include "components/deck_option_loader.hpp"
+#include "components/deck_ui_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -88,6 +93,9 @@ int main(int argc, char** argv) {
 	ecs::register_component<transforms::transform>("transform");
     ecs::register_component<components::deck_ui, 1>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");
+	ecs::register_component<components::deck_option>("deck_option");
+	ecs::register_component<components::deck_selection, 1>("deck_selection");
+	ecs::register_component<transforms::transform>("transform");	
     ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -183,6 +191,9 @@ int main(int argc, char** argv) {
 	components::tug_of_war_meter_loader tug_loader;
 	components::countdown_loader countdown_loader;
 	components::selection_arrow_loader selection_arrow_loader;
+	components::deck_selection_loader deck_selection_loader;
+	components::deck_option_loader deck_option_loader;
+	components::deck_ui_loader deck_ui_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
@@ -209,7 +220,10 @@ int main(int argc, char** argv) {
 		&tug_loader,
 		&countdown_loader,
 		&selection_arrow_loader,
-		&text_loader);
+		&text_loader,
+		&deck_ui_loader,
+		&deck_option_loader,
+		&deck_selection_loader,
 
 	hydrater.load();
 

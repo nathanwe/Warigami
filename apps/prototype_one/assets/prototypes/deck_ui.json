@@ -1,0 +1,86 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform"
+      },
+      {
+        "type": "deck_ui"
+      }
+    ]
+  },
+  "children": [
+    {      
+      "prototype": "assets/prototypes/tooltip_a.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -13.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {     
+      "prototype": "assets/prototypes/tooltip_b.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -9.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {     
+      "prototype": "assets/prototypes/tooltip_x.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -5.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {     
+      "prototype": "assets/prototypes/tooltip_y.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -1.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {      
+      "prototype": "assets/prototypes/tooltip_a.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {     
+      "prototype": "assets/prototypes/tooltip_b.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 5.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {     
+      "prototype": "assets/prototypes/tooltip_x.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 9.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {     
+      "prototype": "assets/prototypes/tooltip_y.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 13.8, -3.5, -23.5 ]
+        }
+      ]
+    }
+  ]
+}

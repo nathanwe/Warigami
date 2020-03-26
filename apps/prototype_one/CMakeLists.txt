@@ -1,28 +1,31 @@
 
-add_executable (prototype_one main.cpp 
-				components/game_piece.cpp components/game_piece_loader.cpp 
-				components/board.cpp components/board_loader.cpp 
-				components/board_square.cpp components/board_square_loader.cpp
-				components/card.cpp components/card_loader.cpp
-				components/dice.cpp components/dice_loader.cpp
-				components/player.cpp components/player_loader.cpp
-				components/selection_arrow.cpp components/selection_arrow.cpp
-				components/selection_arrow_loader.cpp components/selection_arrow_loader.cpp
-				components/energy_meter.cpp
-				components/health_meter.cpp
-				board_update_system.hpp				
-				components/countdown.cpp
-				components/tug_of_war_meter.cpp 
-				components/terrain.cpp				
-				combat.cpp
-				components/deck_ui.cpp
-				components/deck_ui.hpp
-				deck_ui_controller.cpp
-				deck_ui_controller.hpp
-				components/card_enum.hpp
-				components/pause.cpp
-				deck_selection_system.cpp
-				components/deck_selection.cpp)
+add_executable (prototype_one 
+	board_update_system.hpp				
+	combat.cpp
+	components/board_loader.cpp 
+	components/board_square_loader.cpp
+	components/board_square.cpp
+	components/board.cpp 
+	components/card_enum.hpp
+	components/card_loader.cpp
+	components/card.cpp
+	components/countdown.cpp
+	components/deck_option.cpp
+	components/deck_selection.cpp
+	components/deck_ui.cpp	
+	components/dice_loader.cpp
+	components/dice.cpp 
+	components/energy_meter.cpp
+	components/game_piece_loader.cpp 
+	components/game_piece.cpp 
+	components/health_meter.cpp
+	components/player_loader.cpp
+	components/player.cpp
+	components/terrain.cpp				
+	components/tug_of_war_meter.cpp 
+	deck_selection_system.cpp
+	deck_ui_controller.cpp	
+	main.cpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs
