@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <optional>
 #include <ecs/component.hpp>
-#include <../deck_type.hpp>
+#include "../deck_type.hpp"
 #include "player.hpp"
 
 namespace components

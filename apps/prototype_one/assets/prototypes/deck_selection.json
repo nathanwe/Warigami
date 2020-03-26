@@ -1,0 +1,100 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "deck_selection"
+      },
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      }
+    ]
+  },
+  "children": [
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": 1,
+          "deck": 0
+        },
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 2, 3, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/cards/erathor.png"
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": 1,
+          "deck": 1
+        },
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 2, 3, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/cards/erathor.png"
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": -1,
+          "deck": 0
+        },
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 2, 3, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/cards/erathor.png"
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": -1,
+          "deck": 1
+        },
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 2, 3, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/cards/erathor.png"
+        }
+      ]
+    }
+  ]
+}

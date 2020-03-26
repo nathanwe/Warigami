@@ -64,7 +64,7 @@ namespace ecs
 			return nullptr;
 		}
 
-		template <typename... TComponents, typename TFunc>
+		template <typename... TComponents>
 		ecs::entity* first()
 		{
 			auto arch_id = ecs::archetype_id<TComponents...>();
