@@ -27,6 +27,11 @@
 #include "components/countdown.hpp"
 #include "components/countdown_loader.hpp"
 #include "components/terrain.hpp"
+#include "components/deck_option.hpp"
+#include "components/deck_selection.hpp"
+#include "components/deck_selection_loader.hpp"
+#include "components/deck_option_loader.hpp"
+#include "components/deck_ui_loader.hpp"
 #include "components/selection_arrow.hpp"
 #include "components/selection_arrow_loader.hpp"
 #include "components/deck_option.hpp"
@@ -222,9 +227,9 @@ int main(int argc, char** argv) {
 		&countdown_loader,
 		&selection_arrow_loader,
 		&text_loader,
-		&deck_ui_loader,
-		&deck_option_loader,
 		&deck_selection_loader,
+		&deck_option_loader,
+		&deck_ui_loader);
 
 	hydrater.load();
 
