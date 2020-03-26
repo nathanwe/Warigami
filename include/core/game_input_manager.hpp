@@ -49,15 +49,16 @@ namespace core {
 
 		void update();
 
-		input_axis forward() { return _forward; }
-		input_axis strafe() { return _strafe; }
-		view_axis pitch() { return _pitch; }
-		view_axis yaw() { return _yaw; }
+		input_axis forward() const { return _forward; }
+		input_axis strafe() const { return _strafe; }
+		view_axis pitch() const { return _pitch; }
+		view_axis yaw() const { return _yaw; }
 
-		input_axis forward_player2() { return _forward_player2; }
-		input_axis strafe_player2() { return _strafe_player2; }
-		view_axis pitch_player2() { return _pitch_player2; }
-		view_axis yaw_player2() { return _yaw_player2; }
+		input_axis forward_player2() const { return _forward_player2; }
+		input_axis strafe_player2() const { return _strafe_player2; }
+		view_axis pitch_player2() const { return _pitch_player2; }
+		view_axis yaw_player2() const { return _yaw_player2; }
+
 	private:
 		input_manager _input;
 		bool _prev_game_state[CONTROL_COUNT];

@@ -14,6 +14,14 @@
 
 namespace components
 {
+    enum class game_state
+    {
+        gameplay,
+        deck_selection,
+        game_over,
+        paused
+    };
+
 	struct board : ecs::component<board>
 	{
 		std::vector< std::vector< int > > board_state; // 
@@ -26,8 +34,9 @@ namespace components
         float tick_time_remaining{ tick_time };
         float timer_t{ 0.f };
         float ticker_dt{ 0.f };
-
         bool did_tick_elapse{ false };
+
+        game_state state{ game_state::gameplay };
 
         std::vector<to_spawn> spawner;
 

@@ -15,7 +15,7 @@ using nlohmann::json;
 
 namespace ecs
 {
-    template <typename TComponent>
+    template <typename TComponent, std::uint32_t AllocationMin = component_meta::MinArchetypeChunks>
     void register_component(std::string type_name)
     {
         if (ecs::component_meta::bit_metas.find(TComponent::component_bitshift) !=
@@ -26,7 +26,7 @@ namespace ecs
 
         ecs::component_meta::bit_metas.insert(std::make_pair(
             TComponent::component_bitshift,
-            ecs::component_meta::of<TComponent>()));
+            ecs::component_meta::of<TComponent, AllocationMin>()));
 
         ecs::component_meta::type_to_bit.insert(std::make_pair(
             type_name,

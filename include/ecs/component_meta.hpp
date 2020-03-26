@@ -21,6 +21,8 @@ namespace ecs
     class component_meta
     {
     public:
+        static constexpr std::uint32_t MinArchetypeChunks = 512;
+
         component_meta &operator=(const component_meta &other)
         {
             _size = other._size;
@@ -37,7 +39,7 @@ namespace ecs
          * @tparam T A component type. must have a static component_bitshift member.
          * @return A metadata object for type T
          */
-        template<class T>
+        template<class T, std::uint32_t AllocationMin = MinArchetypeChunks>
         static component_meta of()
         {
             return component_meta(
@@ -48,7 +50,8 @@ namespace ecs
                 [](void *addr) { ((T *) addr)->~T(); },
                 [](void *destination, void* source) {
                     *((T*)destination) = *((T *)source);
-                });
+                },
+                AllocationMin);
         }
 
         static std::map<component_shift, component_meta> bit_metas;
@@ -61,6 +64,7 @@ namespace ecs
 
         component_shift shift() const { return _shift; }
 
+        std::uint32_t min_allocation_count() const { return _min_allocation_count; }
 
         void construct(void *addr) { _ctor(addr); }
 
@@ -76,13 +80,15 @@ namespace ecs
             component_shift shift,
             std::function<void(void *)> ctor,
             std::function<void(void *)> dtor,
-            std::function<void(void*, void*)> copier) :
+            std::function<void(void*, void*)> copier,
+            std::uint32_t initial_count = MinArchetypeChunks) :
             _size(size),
             _align(align),
             _shift(shift),
             _ctor(std::move(ctor)),
             _dtor(std::move(dtor)),
-            _copier(std::move(copier))
+            _copier(std::move(copier)),
+            _min_allocation_count(initial_count)
         {
         }
 
@@ -94,6 +100,8 @@ namespace ecs
         mutable std::function<void(void *)> _ctor;
         mutable std::function<void(void *)> _dtor;
         mutable std::function<void(void*, void*)> _copier;
+
+        std::uint32_t _min_allocation_count;
     };
 }
 
