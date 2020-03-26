@@ -23,7 +23,9 @@ namespace components
 		terrain = 45,
 		countdown = 46,
 		selection_arrow = 47,
-		pause = 48
+		pause = 48,
+		deck_option = 49,
+		deck_selection = 50,
 	};
 }
 

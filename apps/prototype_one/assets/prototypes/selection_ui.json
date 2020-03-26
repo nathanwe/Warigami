@@ -1,0 +1,50 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "deck_selection"
+      }
+    ]
+  },
+  "children": [
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": 1,
+          "deck": 0
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": 1,
+          "deck": 1
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": -1,
+          "deck": 0
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "deck_option",
+          "team": -1,
+          "deck": 1
+        }
+      ]
+    }
+  ]
+}

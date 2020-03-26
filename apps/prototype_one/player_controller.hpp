@@ -17,27 +17,7 @@
 #include "components/to_spawn.hpp"
 #include "components/pause.hpp"
 
-struct player_controls
-{
-	core::controls card1;
-	core::controls card2;
-	core::controls card3;
-	core::controls card4;
-	core::controls dice_button;	
-};
-
-struct player_values
-{
-	float forward = 0;
-	float left = 0;
-	glm::vec3 team_color;
-};
-
-struct player_specific_data
-{
-	player_controls& controls;
-	player_values values;
-};
+#include "game_util/player_specifics.hpp"
 
 class player_controller : public ecs::system_base
 {
@@ -71,12 +51,13 @@ public:
 		}
 
 		r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, components::board& board) {
+			if (board.state != components::game_state::gameplay) return;
 
 			board_reset(r_state);
 
 			r_state.each<components::player>([&](components::player& player)
 				{
-					auto player_specifics = build_player_specific_data(player);
+					player_specific_data player_specifics(player, m_input);
 					auto& controls = player_specifics.controls;
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
@@ -99,7 +80,6 @@ public:
 					handle_player_selection(player, forward, left, board);
 					do_everything(player, r_state, player_specifics, board, board_id);
 					gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
-					
 				});
 			});
 	}
@@ -165,16 +145,6 @@ private:
 					render_mesh_s.material.tint_color += glm::vec3(0.112f, 0.107f, 0.0f);
 				} 
 			});
-	}
-
-	player_specific_data build_player_specific_data(components::player& player)
-	{
-		//set p1&p2 diffrences
-		auto& controls = player.team == 1.f ? p1_controls : p2_controls;
-		auto forward = player.team == 1.0f ? m_input.forward() : m_input.forward_player2();
-		auto left = player.team == 1.0f ? m_input.strafe() : m_input.strafe_player2();
-		auto team_color = player.team ==1.0f ? glm::vec3(1,0,0) : glm::vec3(0, 0, 1);
-		return { controls, {forward, left, team_color } };
 	}
 
 	void handle_player_selection(components::player& player, float forward, float left, components::board& board)
@@ -510,26 +480,6 @@ private:
 		nerdTerrain.team = team;
 		nerdTerrain.type = type;
 	}
-
-
-
-	player_controls p1_controls{
-			core::CARD1_CONTROL,
-			core::CARD2_CONTROL,
-			core::CARD3_CONTROL,
-			core::CARD4_CONTROL,
-			core::DIE1_CONTROL
-	};
-
-	player_controls p2_controls{
-			core::CARD1_CONTROL_PLAYER2,
-			core::CARD2_CONTROL_PLAYER2,
-			core::CARD3_CONTROL_PLAYER2,
-			core::CARD4_CONTROL_PLAYER2,
-			core::DIE1_CONTROL_PLAYER2
-	};
-
-
 };
 
 #endif

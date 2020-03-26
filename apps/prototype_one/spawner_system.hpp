@@ -23,11 +23,13 @@ public:
 	{
 		state.each_id<transforms::transform, components::board>(
 			[&](entity_id board_id, transforms::transform& board_t, components::board& board) {
-				for (auto& spawns : board.spawner)
-				{
-					spawn_unit_in_place(spawns.x, spawns.y, spawns.team, state, spawns.type);
-				}
-				board.spawner.clear();
+                if (board.state != components::game_state::gameplay) return;
+
+                for (auto& spawns : board.spawner)
+                {
+                    spawn_unit_in_place(spawns.x, spawns.y, spawns.team, state, spawns.type);
+                }
+                board.spawner.clear();                
 			});
 	}
 

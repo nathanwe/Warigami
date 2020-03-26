@@ -37,9 +37,26 @@ ecs::archetype_pool& ecs::archetype_pools::find_pool(component_bitset archetype_
     {
         _archetype_pools.emplace(std::piecewise_construct,
             std::forward_as_tuple(archetype_id),
-            std::forward_as_tuple(archetype_id, MinArchetypeChunks));
+            std::forward_as_tuple(archetype_id, find_min_allocation(archetype_id)));
     }
 
     return _archetype_pools.find(archetype_id)->second;
 }
 
+std::uint32_t ecs::archetype_pools::find_min_allocation(component_bitset archetype_id)
+{
+    std::uint32_t max = 0;
+
+    for (std::uint8_t i = 0; i < ECS_MAX_COMPONENT_TYPES; ++i)
+    {
+        component_bitset bit = component_bitset(1) << i;
+        
+        if (!(archetype_id & bit))
+            continue;
+
+        auto& meta = component_meta::bit_metas.find(i)->second;
+        max = std::max(max, meta.min_allocation_count());        
+    }
+
+    return max;
+}
