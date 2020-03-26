@@ -19,6 +19,17 @@ namespace components
         SCISSOR_GOLIATH = 6,
         SCISSOR_QUEEN = 7,
         SCISSOR_TITAN = 8,
+
+        LIGHT_TANK_SOLDIER = 9,
+        LIGHT_RANGE_SOLDIER = 10,
+        LIGHT_FAST_SOLDIER = 11,
+        MEDIUM_TANK_SOLDIER = 12,
+        MEDIUM_RANGE_SOLDIER = 13,
+        MEDIUM_FAST_SOLDIER = 14,
+        HEAVY_TANK_SOLDIER = 15,
+        HEAVY_RANGE_SOLDIER = 16,
+        HEAVY_FAST_SOLDIER = 17,
+
         TOTAL_CARDS
     };
 

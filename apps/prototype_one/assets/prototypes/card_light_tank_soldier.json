@@ -1,0 +1,21 @@
+{
+    "root": {
+        "components": [
+            {
+                "type": "transform",
+                "position": [ 0, 0, 0 ],
+                "rotation": [ 0, 0, 0 ],
+                "scale": [ 2, 3, 1 ]
+            },
+            {
+                "type": "renderable_mesh_static",
+                "mesh": "assets/meshes/quad/quad.obj",
+                "texture_diffuse": "assets/textures/cards/LightTankSoldier.png"
+            },
+            {
+                "type": "card",
+                "card_type": 9
+            }
+        ]
+    }
+}

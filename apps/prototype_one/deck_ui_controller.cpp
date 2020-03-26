@@ -100,7 +100,9 @@ ecs::entity &deck_ui_controller::spawn_card(components::card_enum type)
         case components::card_enum ::SCISSOR_TITAN:
             return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
         case components::card_enum::SCISSOR_QUEEN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_queen.json");        
+            return _hydrater.add_from_prototype("assets/prototypes/card_queen.json"); 
+        case components::card_enum::LIGHT_TANK_SOLDIER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_light_tank_soldier.json");
 
         default:
             return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");

@@ -22,10 +22,10 @@ namespace components
 		WON
 	};
 
-	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 5, 5, 5, 8, 8, 8 };
 	const static int dice_costanamos = 1;
 
-	const static std::vector<card_enum> start_deck = {
+	const static std::vector<card_enum> spider_deck = {
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
@@ -51,6 +51,7 @@ namespace components
 			card_enum::SCISSOR_QUEEN,
 			card_enum::SCISSOR_QUEEN,
 	};
+	const static std::vector<card_enum> start_deck = { card_enum::LIGHT_TANK_SOLDIER };
 
 	enum class dice_nets {
 		T = 0,

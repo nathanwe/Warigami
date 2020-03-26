@@ -37,7 +37,7 @@ private:
     void spawn_unit_in_place(int lane, int space, int team, ecs::state& r_state, components::card_enum type)
     {
         static const std::string CardPrototypes[(size_t)components::card_enum::TOTAL_CARDS] = {
-            "assets/prototypes/scissorling.json",
+            "assets/prototypes/scissorling.json", 
             "assets/prototypes/scissorling.json",
             "assets/prototypes/scissorling_twin.json",
             "assets/prototypes/scissor_trooper.json",
@@ -45,7 +45,16 @@ private:
             "assets/prototypes/scissor_webber.json",
             "assets/prototypes/scissor_goliath.json",
             "assets/prototypes/scissor_queen.json",
-            "assets/prototypes/scissor_titan.json"
+            "assets/prototypes/scissor_titan.json",
+            "assets/prototypes/light_tank_soldier.json",
+            "assets/prototypes/light_range_soldier.json",
+            "assets/prototypes/light_fast_soldier.json",
+            "assets/prototypes/medium_tank_soldier.json",
+            "assets/prototypes/medium_range_soldier.json",
+            "assets/prototypes/medium_fast_soldier.json",
+            "assets/prototypes/heavy_tank_soldier.json",
+            "assets/prototypes/heavy_range_soldier.json",
+            "assets/prototypes/heavy_fast_soldier.json"
         };
 
         size_t type_index = (size_t)type;
