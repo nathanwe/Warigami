@@ -179,6 +179,10 @@
           "scale": [ 5, 5, 5 ]
         }
       ]
+    },
+    {
+      "entity_id": 70,
+      "prototype": "assets/prototypes/pause.json"
     }
   ]
 }

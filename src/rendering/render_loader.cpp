@@ -63,12 +63,15 @@ void rendering::render_loader::load(asset::asset_loader_node& asset_loader_node)
 	{
 		renderable.material.param_roughness = it->get<float>();
 	}
-
 	if (auto it = json.find("tint_color"); it != json.end())
 	{
 		renderable.material.tint_color.x = it->operator[](0).get<float>();
 		renderable.material.tint_color.y = it->operator[](1).get<float>();
 		renderable.material.tint_color.z = it->operator[](2).get<float>();
+	}
+	if (auto it = json.find("is_enabled"); it != json.end())
+	{
+		renderable.is_enabled = it->get<bool>();
 	}
 }
 

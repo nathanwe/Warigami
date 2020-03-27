@@ -25,6 +25,8 @@ namespace core
 		std::uint32_t width() const;
 		std::uint32_t height() const;
 
+		void set_should_close(bool);
+
 	private:
 		GLFWwindow* _window;
 		startup_config& _conf;

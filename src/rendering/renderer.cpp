@@ -251,9 +251,12 @@ namespace rendering
         });
 
         ecs_state.each<transforms::transform, renderable_mesh_static>([&](auto &transform, auto &renderable) {
-            default_bind_renderable(transform, renderable.material);
-            draw_mesh_static(renderable.mesh);
-            default_unbind_renderable();
+            if (renderable.is_enabled)
+			{
+				default_bind_renderable(transform, renderable.material);
+				draw_mesh_static(renderable.mesh);
+				default_unbind_renderable();
+            }
         });
 
 		ecs_state.each<transforms::transform, renderable_model_static>([&](auto& transform, auto& renderable)

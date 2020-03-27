@@ -47,6 +47,7 @@
 #include "tick_update_system.hpp"
 #include "spiderling_system.hpp"
 #include "spawner_system.hpp"
+#include "pause_system.hpp"
 
 int main(int argc, char** argv) {
 
@@ -86,6 +87,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::tug_of_war_meter>("tug_of_war_meter");
 	ecs::register_component<components::countdown>("countdown");
 	ecs::register_component<components::selection_arrow>("selection_arrow");
+	ecs::register_component<components::pause>("pause");
 	ecs::register_component<transforms::transform>("transform");
     ecs::register_component<components::deck_ui>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");
@@ -128,6 +130,7 @@ int main(int argc, char** argv) {
 	tick_update_system ticker(timer);
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
+	pause_system pauser(input, timer, glfw);
 
 	ecs::systems systems({
 		&energy_system,
@@ -153,7 +156,8 @@ int main(int argc, char** argv) {
 		&game_start_system,
 		
 	    &deck_ui_controller,
-		&endgame});
+		&endgame,
+		&pauser });
 
 	ecs::world world(systems, state);
 

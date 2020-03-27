@@ -84,3 +84,8 @@ std::uint32_t core::glfw_context::height() const
 {
 	return _height;
 }
+
+void core::glfw_context::set_should_close(bool value)
+{
+	glfwSetWindowShouldClose(_window, value);
+}

@@ -1,0 +1,21 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ -25, 2, 0 ],
+        "rotation": [ 0, -90, -48 ],
+        "scale": [ 10, 6, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/quad/quad.obj",
+        "texture_diffuse": "assets/textures/pause/pause.png",
+        "is_enabled": false
+      },
+      {
+        "type": "pause"
+      }
+    ]
+  }
+}

@@ -21,7 +21,8 @@ add_executable (prototype_one main.cpp
 				components/deck_ui.hpp
 				deck_ui_controller.cpp
 				deck_ui_controller.hpp
-				components/card_enum.hpp)
+				components/card_enum.hpp
+				components/pause.cpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs

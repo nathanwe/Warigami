@@ -22,7 +22,8 @@ namespace components
         deck_ui = 44,
 		terrain = 45,
 		countdown = 46,
-		selection_arrow = 47
+		selection_arrow = 47,
+		pause = 48
 	};
 }
 

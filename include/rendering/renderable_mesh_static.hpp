@@ -12,6 +12,7 @@ namespace rendering
 	{
 		mesh_static mesh;
 		material_pbr material;
+		bool is_enabled = true;
 	};
 }
 
