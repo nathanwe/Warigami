@@ -15,6 +15,7 @@
 #include "components/game_piece.hpp"
 #include <util/sign.hpp>
 #include "components/to_spawn.hpp"
+#include "components/pause.hpp"
 
 struct player_controls
 {
@@ -52,6 +53,16 @@ public:
 
 	void update(ecs::state& r_state) override
 	{
+		// Skip system when paused
+		auto e = r_state.first<components::pause>([](auto& pause)
+		{
+			return true;
+		});
+		if (e && e->get_component<components::pause>().is_game_paused)
+		{
+			return;
+		}
+
 		r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, components::board& board) {
 
 			board_reset(r_state);

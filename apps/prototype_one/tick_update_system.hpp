@@ -7,7 +7,7 @@
 #include <transforms/transform.hpp>
 
 #include "components/board.hpp"
-
+#include "components/pause.hpp"
 
 class tick_update_system : public ecs::system_base
 {
@@ -18,6 +18,16 @@ public:
 
 	void update(ecs::state& state)
 	{
+		// Skip system when paused
+		auto e = state.first<components::pause>([](auto& pause)
+		{
+			return true;
+		});
+		if (e && e->get_component<components::pause>().is_game_paused)
+		{
+			return;
+		}
+
 		state.each<components::board>([&](components::board& board) {
 			board.tick_time_remaining -= _timer.smoothed_delta_secs();
 			
