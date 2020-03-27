@@ -259,7 +259,7 @@ private:
             entity_id board_id)
     {
         unit_t.position = board.grid_to_board(game_piece.continuous_board_location, board_t);
-        unit_t.scale = glm::vec3(0.2f);
+        //unit_t.scale = glm::vec3(0.2f); //I would like changig the scale in the json to do somthing
         unit_t.is_matrix_dirty = true;
     }
 

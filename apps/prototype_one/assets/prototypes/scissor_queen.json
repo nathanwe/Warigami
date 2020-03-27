@@ -1,11 +1,11 @@
 {
   "root": {
     "components": [
-      {
-        "type": "transform",
-        "position": [ 0, 0, 0 ],
-        "scale": [ 1, 1, 1 ]
-      },
+        {
+            "type": "transform",
+            "position": [ 0, 0, 0 ],
+            "scale": [ 0.2, 0.2, 0.2 ]
+        },
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/bm/bm.gltf",

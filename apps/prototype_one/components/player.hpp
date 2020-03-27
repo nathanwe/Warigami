@@ -51,7 +51,23 @@ namespace components
 			card_enum::SCISSOR_QUEEN,
 			card_enum::SCISSOR_QUEEN,
 	};
-	const static std::vector<card_enum> start_deck = { card_enum::LIGHT_TANK_SOLDIER };
+
+	const static std::vector<card_enum> soldier_deck = { 
+		card_enum::LIGHT_TANK_SOLDIER,
+		card_enum::LIGHT_TANK_SOLDIER,
+		card_enum::LIGHT_RANGE_SOLDIER,
+		card_enum::LIGHT_RANGE_SOLDIER,
+		card_enum::LIGHT_FAST_SOLDIER,
+		card_enum::LIGHT_FAST_SOLDIER,
+		card_enum::MEDIUM_TANK_SOLDIER,
+		card_enum::MEDIUM_FAST_SOLDIER,
+		card_enum::MEDIUM_RANGE_SOLDIER,
+		card_enum::HEAVY_TANK_SOLDIER,
+		card_enum::HEAVY_FAST_SOLDIER,
+		card_enum::HEAVY_RANGE_SOLDIER
+	};
+
+	const static std::vector<card_enum> start_deck = soldier_deck;
 
 	enum class dice_nets {
 		T = 0,

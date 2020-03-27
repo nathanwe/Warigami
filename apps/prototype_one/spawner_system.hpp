@@ -83,7 +83,7 @@ private:
         }
         nerdP.attacks = new_attacks;
 
-        nerdT.scale = glm::vec3(0.5);
+        //nerdT.scale = glm::vec3(0.5); //I would like changing the scale in the json to do things.
 
         r_state.each_id<components::board, transforms::transform>(
             [&](entity_id id, components::board& board, transforms::transform& transform)
