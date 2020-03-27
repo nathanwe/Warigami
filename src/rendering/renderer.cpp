@@ -314,6 +314,8 @@ namespace rendering
         _pass_default->set_float3(15, material.param_diffuse);
         _pass_default->set_float(16, material.param_metalness);
         _pass_default->set_float(17, material.param_roughness);
+
+        _pass_default->set_float3(35, material.tint_color);
     }
 
     void renderer::default_unbind_renderable()
@@ -347,6 +349,8 @@ namespace rendering
 		_pass_default->set_float3(15, sub.material.param_diffuse);
 		_pass_default->set_float(16, sub.material.param_metalness);
 		_pass_default->set_float(17, sub.material.param_roughness);
+
+		_pass_default->set_float3(35, sub.material.tint_color);
 	}
 
     void renderer::run_pass_cubemap(const camera &cam)

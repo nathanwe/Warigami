@@ -9,7 +9,10 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/cube/cube.obj",
-        "param_diffuse": [ 0.1, 0.1, 0.1 ]
+        "texture_diffuse": "assets/textures/board_paper/wrinkled-paper-albedo.png",
+        "texture_normal": "assets/textures/board_paper/wrinkled-paper-normal-ogl.png",
+        "texture_ambient_occlusion": "assets/textures/board_paper/wrinkled-paper-ao.png",
+        "tint_color": [ 0.1, 0.1, 0.1 ]
       },
       {
         "type": "board_square"

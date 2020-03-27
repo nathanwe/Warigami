@@ -28,6 +28,8 @@ layout(location = 15) uniform vec3  u_param_diffuse;
 layout(location = 16) uniform float u_param_metalness;
 layout(location = 17) uniform float u_param_roughness;
 
+layout(location = 35) uniform vec3 u_tint_color;
+
 layout(location = 18) uniform vec3 u_camera_position_world; 
 
 layout(location = 19) uniform vec3  u_light_directional_inverse_direction_world;
@@ -136,7 +138,7 @@ void main()
 		*/
 	}
 
-	fs_out = pixel_color;
+	fs_out = pixel_color * u_tint_color;
 }
 
 #undef NUM_LIGHT_POINTS

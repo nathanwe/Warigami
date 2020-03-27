@@ -124,16 +124,16 @@ private:
 			transforms::transform& transform,
 			rendering::renderable_mesh_static& render_mesh_s)
 			{
-				render_mesh_s.material.param_diffuse = glm::vec3(0.4, 0.4, 0.4);
+				render_mesh_s.material.tint_color = glm::vec3(0.4, 0.4, 0.4);
 				if (square.x % 2 == 0) {
-					render_mesh_s.material.param_diffuse -= glm::vec3(0.02f, 0.02f, 0.02f);
+					render_mesh_s.material.tint_color -= glm::vec3(0.02f, 0.02f, 0.02f);
 				}
 				row_select(transform, 1);
 				if (square.team == 1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.param_diffuse += glm::vec3(0.2f, 0.2f, 0.2f);
+					render_mesh_s.material.tint_color += glm::vec3(0.2f, 0.2f, 0.2f);
 				}
 				if (square.team == -1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.param_diffuse += glm::vec3(-0.2f, -0.2f, -0.2f);
+					render_mesh_s.material.tint_color += glm::vec3(-0.2f, -0.2f, -0.2f);
 				}
 			});
 	}
@@ -144,7 +144,7 @@ private:
 			rendering::renderable_mesh_static& render_mesh_s)
 			{
 				if (square.y == player.score_column) {
-					render_mesh_s.material.param_diffuse += glm::vec3(0.112f, 0.107f, 0.0f);
+					render_mesh_s.material.tint_color += glm::vec3(0.112f, 0.107f, 0.0f);
 				} 
 			});
 	}
@@ -275,7 +275,7 @@ private:
 			{		
 				if (square.x == player.selected_row && square.y == player.selected_column) {
 					// Shine a little
-					render_mesh_s.material.param_diffuse += glm::vec3(1,1,1) * 0.2f;
+					render_mesh_s.material.tint_color += glm::vec3(1,1,1) * 0.2f;
 
 					// Place arrow in selected tile
 					glm::vec3 arrow_pos = transform.position;

@@ -22,6 +22,8 @@ namespace rendering
 		glm::vec3 param_diffuse   = glm::vec3(1.f);
 		float param_metalness     = 0.f;
 		float param_roughness     = 0.5f;
+
+		glm::vec3 tint_color = glm::vec3(1.f);
 	};
 }
 
