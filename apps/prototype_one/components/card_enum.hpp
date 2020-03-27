@@ -30,7 +30,7 @@ namespace components
         HEAVY_RANGE_SOLDIER = 16,
         HEAVY_FAST_SOLDIER = 17,
 
-        TOTAL_CARDS
+        TOTAL_CARDS = 18
     };
 
 }

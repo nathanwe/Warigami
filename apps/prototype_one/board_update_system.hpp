@@ -268,6 +268,8 @@ private:
         r_state.each<components::board>([&](components::board &board) {
             board.clear_state();
 
+            
+
             r_state.each<components::game_piece>([&](components::game_piece &piece) {
                 out_of_bounds_effects(r_state, piece);
             });
@@ -280,7 +282,8 @@ private:
 
             reconcile_movement_intervals(r_state, board);
             claim_territory(r_state, board);
-            board.print();
+
+            //board.print();
         });
     }
 
@@ -317,10 +320,10 @@ private:
                     piece.remaining_speed = 0;
                     next_pos.y = 0;
                     piece.board_destination = next_pos;
-                } else if (next_pos.y > board.rows)
+                } else if (next_pos.y > board.rows -1)
                 {
                     piece.remaining_speed = 0;
-                    next_pos.y = board.columns;
+                    next_pos.y = board.rows -1;
                     piece.board_destination = next_pos;
                 } else if (board.board_state[next_pos.x][next_pos.y] == 0)
                 {
