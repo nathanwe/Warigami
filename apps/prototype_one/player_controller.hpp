@@ -286,6 +286,8 @@ private:
 						if (arrow.team == player.team) {
 							render_mesh_s_arrow.material.param_diffuse += player_specifics.values.team_color;
 							transform_arrow.position = arrow_pos;
+							// Tilt arrow a little
+							transform_arrow.rotation.x = -(player.selected_column - 4) * 0.1;
 							transform_arrow.is_matrix_dirty = true;
 						}
 					});
