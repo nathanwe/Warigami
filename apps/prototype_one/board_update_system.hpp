@@ -281,7 +281,7 @@ private:
             });
 
             reconcile_movement_intervals(r_state, board);
-            claim_territory(r_state, board);
+            //claim_territory(r_state, board);
 
             //board.print();
         });
@@ -312,6 +312,9 @@ private:
         {
             changed = false;
             r_state.each<components::game_piece>([&](components::game_piece &piece) {
+                ecs::entity* foo = get_square_at_location(r_state, piece.board_destination);
+                foo->get_component<components::board_square>().team = piece.team;
+                
                 if (piece.remaining_speed <= 0) return;
 
                 glm::ivec2 next_pos = piece.board_destination + piece.move_board;

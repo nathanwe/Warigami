@@ -113,6 +113,11 @@ private:
 					board.spawner.push_back(newSpawn3);
 					break;
 				}
+				case combats::COMBAT_EFFECTS::CREATE_FIRE_TERRAIN_ON_DEATH:
+				{
+
+					break;
+				}
 				}
 			}
 		}

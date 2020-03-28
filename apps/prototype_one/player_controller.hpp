@@ -286,7 +286,7 @@ private:
 			{		
 				if (square.x == player.selected_row && square.y == player.selected_column) {
 					// Shine a little
-					render_mesh_s.material.tint_color += glm::vec3(1,1,1) * 0.2f;
+					//render_mesh_s.material.tint_color += glm::vec3(1,1,1) * 0.2f;
 
 					// Place arrow in selected tile
 					glm::vec3 arrow_pos = transform.position;

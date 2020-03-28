@@ -3,6 +3,7 @@
 
 #include "components/player.hpp"
 #include "components/tug_of_war_meter.hpp"
+#include "components/board_square.hpp"
 
 #include <asset/scene_hydrater.hpp>
 #include <ecs/system_base.hpp>
@@ -31,6 +32,7 @@ public:
 		{
 			//tug_kill_condition(r_state);
 			//health_kill_condition(r_state);
+			terrain_kill_condition(r_state);
 			check_endgame();
 		}
 	}
@@ -64,6 +66,29 @@ private:
 				}
 			}
 		});
+	}
+	void terrain_kill_condition(ecs::state& r_state)
+	{
+		int squares_needed_to_win = 40;
+		int player_1_square_total = 0;
+		int player_minus_1_square_total = 0;
+		r_state.each<components::board_square>([&](auto& square)
+			{
+				if (square.team == 1.0f) {
+					player_1_square_total++;
+				}
+				if (square.team == -1.0f) {
+					player_minus_1_square_total++;
+				}
+			});
+		if (player_1_square_total >= squares_needed_to_win) {
+			_did_game_end = true;
+			_winner = 1.0f;
+		}
+		if (player_minus_1_square_total >= squares_needed_to_win) {
+			_did_game_end = true;
+			_winner = -1.0f;
+		}
 	}
 
 	void tug_kill_condition(ecs::state& r_state)
