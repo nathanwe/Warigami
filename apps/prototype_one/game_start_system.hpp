@@ -37,6 +37,9 @@ public:
 			//components::terrain::fire_texture_id = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png").id;
 			//components::terrain::fire_texture_id_p1 = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png").id;
 			//components::terrain::default_texture_id = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-albedo.png").id;
+			uint32_t f_id = _asset_cache.get<rendering::texture, "assets/textures/terrain/12fire2.png">().id;
+			uint32_t d_id = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-albedo.png").id;
+			
 			r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
 				r_state.each_id<components::board_square, transforms::transform, components::terrain>([&](
 					entity_id id,
@@ -44,6 +47,10 @@ public:
 					transforms::transform& transform,
 					components::terrain& terrain)
 					{
+						terrain.location.x = board_square.x;
+						terrain.location.y = board_square.y;
+						terrain.fire_texture_id = f_id;
+						terrain.default_texture_id = d_id;
 						if (board_square.x+2 > board_square.y) {
 							board_square.team = 1.0f;
 						}

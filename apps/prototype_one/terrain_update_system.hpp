@@ -11,7 +11,6 @@
 #include "components/pause.hpp"
 #include "components/terrain.hpp"
 
-extern uint32_t default_texture_id;
 
 class terrain_update_system : public ecs::system_base
 {
@@ -81,10 +80,7 @@ private:
 	core::frame_timer& _timer;
 	rendering::asset_cache& _asset_cache;
 	void terrain_upkeep(components::terrain& terrain,
-		rendering::renderable_mesh_static& mesh, components::board_square& square) {
-		
-				terrain.location.x = square.x;
-				terrain.location.y = square.y;
+		rendering::renderable_mesh_static& mesh, components::board_square& square) {				
 				switch (terrain.type)
 				{
 				case components::TERRAIN_ENUM::NONE:
@@ -92,7 +88,7 @@ private:
 					uint32_t foo = mesh.material.texture_diffuse;
 					int breakpoint = 69;
 
-					mesh.material.texture_diffuse = default_texture_id;
+					mesh.material.texture_diffuse = terrain.default_texture_id;
 					//mesh.material.texture_normal = (uint32_t)"assets/textures/board_paper/wrinkled-paper-normal-ogl.png";
 					//mesh.material.texture_ambient_occlusion = (uint32_t)"assets/textures/board_paper/wrinkled-paper-ao.png";
 					break;
@@ -100,6 +96,7 @@ private:
 				case components::TERRAIN_ENUM::FIRE:
 				{
 					if (terrain.team == 1.0f) {
+						mesh.material.texture_diffuse = terrain.fire_texture_id;
 						//mesh.material.texture_diffuse = components::terrain::fire_texture_id_p1;
 					}
 					else if (terrain.team == -1.0f) {

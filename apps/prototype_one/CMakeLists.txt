@@ -21,6 +21,7 @@ add_executable (prototype_one main.cpp
 				components/deck_ui.hpp
 				deck_ui_controller.cpp
 				deck_ui_controller.hpp
+				game_start_system.hpp
 				components/card_enum.hpp
 				components/pause.cpp)
 

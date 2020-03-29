@@ -24,12 +24,12 @@ namespace components
 		int damage = 0;
 		int charges = -1;
 		int duration = -1;
-		static uint32_t default_texture_id;
-		static uint32_t fire_texture_id;
-		static uint32_t fire_texture_id_p1;
-		static uint32_t fire_texture_id_p2;
+		uint32_t default_texture_id;
+		uint32_t fire_texture_id;
+		uint32_t fire_texture_id_p1;
+		uint32_t fire_texture_id_p2;
 		//type, team, diffus normal or ambient, stage
-		static uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3][5];
+		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3][5];
 
 	};
 }
