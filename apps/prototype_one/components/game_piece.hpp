@@ -41,6 +41,10 @@ namespace components
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space
 		std::vector<combats::COMBAT_EFFECTS> effects;
 		components::card_enum piece_type; //what kind of unit it is
+
+		components::UNIT_STATE last_rendered_state = UNIT_STATE::MOVE;
+		unsigned int last_sprite = 0;
+		float time_last_sprite = 0.f;
 	};
 }
 

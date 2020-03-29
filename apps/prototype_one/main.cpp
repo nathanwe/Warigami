@@ -48,6 +48,7 @@
 #include "spiderling_system.hpp"
 #include "spawner_system.hpp"
 #include "pause_system.hpp"
+#include "animator_system.hpp"
 
 int main(int argc, char** argv) {
 
@@ -131,6 +132,7 @@ int main(int argc, char** argv) {
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
 	pause_system pauser(input, timer, glfw);
+	animator_system animator(timer);
 
 	ecs::systems systems({
 		&energy_system,
@@ -139,8 +141,6 @@ int main(int argc, char** argv) {
 		&count_system,
 		&transformer,
 		&camera_updater,
-		&renderer,
-        &text_renderer,
 		&flycam,
 		&audio_system,
 		&physics_update,
@@ -152,6 +152,10 @@ int main(int argc, char** argv) {
 		&player_control,
 		&spawner,
 		//
+
+		&animator,
+		&renderer,
+		&text_renderer,
 
 		&game_start_system,
 		
