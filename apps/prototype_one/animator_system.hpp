@@ -24,7 +24,7 @@ public:
 	{
 		state.each<components::game_piece, rendering::renderable_mesh_static>([&](auto& piece, auto& render)
 		{
-			render.material.texture_scale = glm::vec2(0.3333f, 0.5f); // move this to json
+			render.material.texture_scale = glm::vec2(0.5f, 0.3333f); // move this to json
 
 			bool changedState = piece.state != piece.last_rendered_state;
 			bool changedSprite = false;
@@ -97,7 +97,7 @@ private:
 private:
 	core::frame_timer& m_timer;
 
-	const float m_time_between_sprites = 1.f;
+	const float m_time_between_sprites = 0.25f;
 	const std::array<glm::vec2, 2> m_attack_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.5f, 0.f) };
 	const std::array<glm::vec2, 1> m_dead_offsets   { glm::vec2(0.f, 0.3333f) };
 	const std::array<glm::vec2, 1> m_dying_offsets  { glm::vec2(0.f, 0.3333f) };
