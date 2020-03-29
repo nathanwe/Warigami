@@ -25,6 +25,7 @@ public:
 		state.each<components::game_piece, rendering::renderable_mesh_static>([&](auto& piece, auto& render)
 		{
 			render.material.texture_scale = glm::vec2(0.5f, 0.3333f); // move this to json
+			render.material.texture_scale.x *= -piece.team;
 
 			bool changedState = piece.state != piece.last_rendered_state;
 			bool changedSprite = false;
@@ -52,6 +53,10 @@ public:
 			if (changedSprite)
 			{
 				render.material.texture_offset = get_sprite(piece);
+				if (piece.team > 0.f)
+				{
+					render.material.texture_offset.x = render.material.texture_offset.x == 0.f ? 0.5f : 0.f;
+				}
 				piece.last_rendered_state = piece.state;
 			}
 		});
