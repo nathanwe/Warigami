@@ -8,8 +8,8 @@
         },
       {
         "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/spiderling/spiderling.gltf",
-        "texture_diffuse": "assets/meshes/spiderling/spiderling.png"
+        "mesh": "assets/meshes/unit/unit.obj",
+        "texture_diffuse": "assets/textures/spider/spiderling.png"
       },
       {
         "type": "game_piece",

@@ -6,11 +6,11 @@
                 "position": [ 0, 0, 0 ],
                 "scale": [ 1, 1, 1 ]
             },
-            {
-                "type": "renderable_mesh_static",
-                "mesh": "assets/meshes/unit_orange/unit_orange.obj",
-                "texture_diffuse": "assets/textures/colors/red.png"
-            },
+          {
+            "type": "renderable_mesh_static",
+            "mesh": "assets/meshes/unit/unit.obj",
+            "texture_diffuse": "assets/textures/colors/red.png"
+          },
             {
                 "type": "game_piece",
                 "speed": 1.0,

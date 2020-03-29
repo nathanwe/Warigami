@@ -40,7 +40,7 @@ namespace components
             auto world_x = coordinates.x - (total_h / 2.f) + 0.5f;
             auto world_z = coordinates.y - (total_w / 2.f) + 0.5f;
 
-            return glm::vec3(world_x, 1.8f, world_z);
+            return glm::vec3(world_x, 1.5f, world_z);
         }
 
         void print()
