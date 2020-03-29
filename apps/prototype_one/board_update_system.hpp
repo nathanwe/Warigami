@@ -77,25 +77,7 @@ private:
         resolver.Resolve_Combats();
         generate_new_board_state(r_state);
 
-        // If a unit is standing in fire, it takes damage;
-        r_state.each<components::game_piece, transforms::transform>([&](auto &game_piece, auto &transform) {
-            r_state.each<components::terrain>([&](auto &terrain) {
-                if (terrain.location == game_piece.board_source)
-                {
-                    if (terrain.type == components::TERRAIN_ENUM::FIRE)
-                    {
-                        if (terrain.team != game_piece.team)
-                        {
-                            game_piece.health -= terrain.damage;
-                            if (game_piece.health <= 0.f) // no. please refactor
-                            {
-                                game_piece.state = components::UNIT_STATE::DYING;
-                            }
-                        }
-                    }
-                }
-            });
-        });
+        
     }
 
     void handle_tick_progress(ecs::state &r_state, entity_id board_id, transforms::transform &board_t,
