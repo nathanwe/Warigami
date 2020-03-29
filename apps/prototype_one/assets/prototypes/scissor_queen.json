@@ -8,7 +8,7 @@
         },
       {
         "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/bm/bm.gltf",
+        "mesh": "assets/meshes/unit/unit.obj",
         "texture_diffuse": "assets/meshes/bm/bm.png"
       },
       {

@@ -87,9 +87,13 @@ void main()
 	const float gamma = 2.2f;
 	vec2 uv = vs_out.tex_coord * u_tex_scale + u_tex_offset;
 
+	vec4 tex_diffuse = texture(u_tex_diffuse, uv).rgba;
+	vec3 pre_diffuse = tex_diffuse.a != 0.f ? tex_diffuse.rgb : vec3(1.f);
+	vec3 diffuse = u_has_tex_diffuse ? pre_diffuse : u_param_diffuse;
+
 	// Material
 	vec3 n          = u_has_tex_normal            ? normal_from_tex(u_tex_normal, uv, vs_out.world_from_tangent) : vs_out.normal_world;
-  	vec3 diffuse    = u_has_tex_diffuse           ? texture(u_tex_diffuse, uv).rgb                               : u_param_diffuse;
+  	//vec3 diffuse    = u_has_tex_diffuse           ? texture(u_tex_diffuse, uv).rgb                               : u_param_diffuse;
 	//vec3 diffuse    = u_has_tex_diffuse           ? pow(texture(u_tex_diffuse, uv).rgb, vec3(gamma))             : u_param_diffuse;
 	float metalness = u_has_tex_metalness         ? texture(u_tex_metalness, uv).r                               : u_param_metalness;
 	float roughness = u_has_tex_roughness         ? texture(u_tex_roughness, uv).r                               : u_param_roughness;

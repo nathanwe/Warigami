@@ -8,8 +8,8 @@
         },
       {
         "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/egg/egg.gltf",
-        "texture_diffuse": "assets/meshes/egg/egg.png"
+        "mesh": "assets/meshes/unit/unit.obj",
+        "texture_diffuse": "assets/textures/spider/spiderEgg.png"
       },
       {
         "type": "game_piece",
