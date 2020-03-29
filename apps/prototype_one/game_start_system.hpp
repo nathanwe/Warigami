@@ -11,6 +11,8 @@
 #include "rendering/asset_cache.hpp"
 #include "components/terrain.hpp"
 
+#include <string>
+
 
 class game_start_system : public ecs::system_base
 {
@@ -34,11 +36,12 @@ public:
 	{
 		++updates;
 		if (updates == 1) {
+			using namespace std::string_literals;
 			//components::terrain::fire_texture_id = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png").id;
 			//components::terrain::fire_texture_id_p1 = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png").id;
 			//components::terrain::default_texture_id = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-albedo.png").id;
-			uint32_t f_id = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png").id;
-			uint32_t d_id = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-albedo.png").id;
+			uint32_t f_id = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png"s).id;
+			uint32_t d_id = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-albedo.png"s).id;
 			
 			r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, auto& board) {
 				r_state.each_id<components::board_square, transforms::transform, components::terrain>([&](
