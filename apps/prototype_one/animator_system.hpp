@@ -52,6 +52,7 @@ public:
 			if (changedSprite)
 			{
 				render.material.texture_offset = get_sprite(piece);
+				piece.last_rendered_state = piece.state;
 			}
 		});
 	}
