@@ -9,7 +9,7 @@
           {
             "type": "renderable_mesh_static",
             "mesh": "assets/meshes/unit/unit.obj",
-            "texture_diffuse": "assets/textures/spider/goliath.png"
+            "texture_diffuse": "assets/textures/cards/MediumTankSoldier.png"
           },
             {
                 "type": "game_piece",
