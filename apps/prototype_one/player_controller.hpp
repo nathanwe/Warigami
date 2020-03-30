@@ -132,7 +132,7 @@ private:
 		if (player.ticks_to_energy_grow < 0)
 		{
 			player.ticks_to_energy_grow = player.ticks_per_energy_grow;
-			player.energy = std::min(player.energy + 1.0f * square_percent, player.max_energy);
+			player.energy = std::min(player.energy + 2.0f * square_percent, player.max_energy);
 		}
 	}
 	void board_reset(ecs::state& r_state)

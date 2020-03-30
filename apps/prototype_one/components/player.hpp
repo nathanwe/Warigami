@@ -22,7 +22,7 @@ namespace components
 		WON
 	};
 
-	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 5, 5, 5, 8, 8, 8 };
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 3, 3, 3, 4, 4, 4 };
 	const static int dice_costanamos = 1;
 
 	const static std::vector<card_enum> spider_deck = {
@@ -67,7 +67,7 @@ namespace components
 		card_enum::HEAVY_RANGE_SOLDIER
 	};
 
-	const static std::vector<card_enum> start_deck = soldier_deck;
+	const static std::vector<card_enum> start_deck = { card_enum::HEAVY_FAST_SOLDIER, card_enum::HEAVY_RANGE_SOLDIER, card_enum::HEAVY_TANK_SOLDIER };
 
 	enum class dice_nets {
 		T = 0,

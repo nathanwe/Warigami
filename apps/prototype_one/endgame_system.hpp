@@ -12,6 +12,7 @@
 
 #include <math.h>
 
+
 class endgame_system : public ecs::system_base, event::Listener
 {
 public:
@@ -68,8 +69,7 @@ private:
 		});
 	}
 	void terrain_kill_condition(ecs::state& r_state)
-	{
-		int squares_needed_to_win = 40;
+	{		
 		int player_1_square_total = 0;
 		int player_minus_1_square_total = 0;
 		r_state.each<components::board_square>([&](auto& square)
@@ -173,6 +173,7 @@ private:
 	bool _did_game_end = false;
 	float _winner = 0.f;
 	float _tie = false;
+	static const int squares_needed_to_win = 45;
 };
 
 #endif

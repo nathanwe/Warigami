@@ -63,6 +63,7 @@ public:
 							board_square.team = -1.0f;
 						}
 						*/
+						/*
 						if (id % 7 == 0) {
 							terrain.type = components::TERRAIN_ENUM::FIRE;
 							terrain.team = 0.0f;
@@ -76,6 +77,7 @@ public:
 							terrain.charges = 5;
 							terrain.duration = -1;
 						}
+						*/
 					});
 				});
 		}
