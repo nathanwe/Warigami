@@ -8,7 +8,7 @@
       },
       {
         "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/unit_orange/unit_orange.obj",
+        "mesh": "assets/meshes/unit/unit.obj",
         "texture_diffuse": "assets/textures/colors/blue.png"
       },
       {

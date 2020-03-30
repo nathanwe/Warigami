@@ -50,6 +50,13 @@ public:
 
 	}
 
+	void initialize(ecs::state& state) override
+	{
+		state.each<components::player>([&](components::player& player)
+		{
+			player.selected_column = player.team > 0.f ? 0 : 8;
+		});
+	}
 
 	void update(ecs::state& r_state) override
 	{
@@ -187,17 +194,6 @@ private:
 			{
 				player.select_delay = 0.1f;
 				player.selected_row -= dir_v;
-			}
-
-			auto horizontal_input_active = std::abs(left) > .4f;
-			auto dir_h = -util::sign(left);
-			auto under_limit_h = dir_h < 0 ? player.selected_column < board.rows-1 : player.selected_column > 0;
-			player.select_delay = 0.1f;
-
-			if (horizontal_input_active && under_limit_h)
-			{
-				player.select_delay = 0.1f;
-				player.selected_column -= dir_h;
 			}
 		}
 	}

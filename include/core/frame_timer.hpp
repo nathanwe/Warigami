@@ -16,7 +16,7 @@ class frame_timer
 private:
     util::running_average<std::chrono::nanoseconds> _frame_average;
     std::chrono::high_resolution_clock _high_res_timer;
-    std::chrono::time_point<std::chrono::high_resolution_clock> _start, _end;
+    std::chrono::time_point<std::chrono::high_resolution_clock> _start, _end, _begin_total;
 
     std::chrono::nanoseconds _delta;
     std::chrono::nanoseconds _smoothed_delta;
@@ -29,6 +29,8 @@ public:
 		_delta(precision(0))
 	{}
 
+	void begin_total();
+
     void start();
     void end();
 
@@ -38,7 +40,8 @@ public:
     [[nodiscard]] float delta_secs() const;
 	[[nodiscard]] std::chrono::nanoseconds current_frame_time() const;
 	[[nodiscard]] float current_time_s() const;
-    [[nodiscard]] std::string frame_info() const;
+	[[nodiscard]] std::string frame_info() const;
+	[[nodiscard]] float total_s() const;
 };
 } // namespace core
 

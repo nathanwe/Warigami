@@ -6,11 +6,11 @@
                 "position": [ 0, 0, 0 ],
                 "scale": [ 0.5, 0.5, 0.1 ]
             },
-            {
-                "type": "renderable_mesh_static",
-                "mesh": "assets/meshes/cube/cube.obj",
-                "texture_diffuse": "assets/textures/cards/LightFastSoldier.png"
-            },
+          {
+            "type": "renderable_mesh_static",
+            "mesh": "assets/meshes/unit/unit.obj",
+            "texture_diffuse": "assets/textures/spider/spiderling.png"
+          },
             {
                 "type": "game_piece",
                 "speed": 3.0,

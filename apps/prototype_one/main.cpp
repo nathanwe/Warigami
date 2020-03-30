@@ -48,6 +48,7 @@
 #include "spiderling_system.hpp"
 #include "spawner_system.hpp"
 #include "pause_system.hpp"
+#include "animator_system.hpp"
 #include "terrain_update_system.hpp"
 #include "health_regenration_system.hpp"
 
@@ -135,6 +136,7 @@ int main(int argc, char** argv) {
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
 	pause_system pauser(input, timer, glfw);
+	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
 
 	ecs::systems systems({
@@ -158,10 +160,15 @@ int main(int argc, char** argv) {
 		&terrain_update_system,
 		&board_updater,
 		&player_control,
-		&spawner,		
+		&spawner,
 		//
+		&animator,
+		&renderer,
+		&text_renderer,
 
-	    &deck_ui_controller,
+		
+		
+	   	 &deck_ui_controller,
 		&endgame,
 		&pauser
 		});
