@@ -51,7 +51,7 @@
 #include "tick_update_system.hpp"
 #include "spiderling_system.hpp"
 #include "spawner_system.hpp"
-#include "deck_selection_system.hpp"
+#include "deck_selection_controller.hpp"
 #include "pause_system.hpp"
 
 int main(int argc, char** argv) {	
@@ -134,7 +134,8 @@ int main(int argc, char** argv) {
 	tick_update_system ticker(timer);
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
-	deck_selection_system deck_selection(hydrater, input);
+	deck_selection_controller deck_selection(hydrater, input, timer);
+	pause_system pauser(input, timer, glfw);
 
 	ecs::systems systems({
 		&energy_system,
