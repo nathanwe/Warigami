@@ -20,7 +20,7 @@ struct deck_ui : public ecs::component<deck_ui>
     std::optional<entity_id> p2_hand[player::MaxCards] {};
 
     std::uint32_t child_count = 0;
-    entity_id children[16];
+    entity_id children[32];
 
     float min_card_x { -16.f };
     float max_card_x { 16.f };

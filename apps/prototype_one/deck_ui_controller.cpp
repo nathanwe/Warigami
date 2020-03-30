@@ -38,6 +38,13 @@ void deck_ui_controller::handle_deck_ui(
     deck_t.position = glm::vec3(0);
     deck_t.is_matrix_dirty = true;
 
+    for (size_t i = 0; i < deck.child_count; ++i)
+    {
+        auto& e = state.find_entity(deck.children[i]);
+        auto& t = e.get_component<transforms::transform>();
+        t.is_matrix_dirty = true;
+    }
+
     handle_card_entities(state, deck, deck_t, deck_id);
 }
 

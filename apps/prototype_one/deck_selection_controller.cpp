@@ -77,6 +77,15 @@ void deck_selection_controller::hide_elements(ecs::state& state, components::boa
 	auto& transform = _deck_selection->get_component<transforms::transform>();
 	transform.position = MovePosition;
 	transform.is_matrix_dirty = true;
+
+	auto& deck_selection = _deck_selection->get_component<components::deck_selection>();
+
+	for (size_t i = 0; i < deck_selection.child_count; ++i)
+	{
+		auto& e = state.find_entity(deck_selection.children[i]);
+		auto& t = e.get_component<transforms::transform>();
+		t.is_matrix_dirty = true;
+	}
 }
 
 void deck_selection_controller::position_deck_option(
@@ -156,7 +165,7 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 void deck_selection_controller::on_start(ecs::state& state)
 {
 	auto& board_component = _board->get_component<components::board>();
-	board_component.state = components::game_state::countdown;
+	board_component.state = components::game_state::gameplay;
 
 	state.each<components::player>([&](components::player& player) {
 		player.deck = components::decks[player.deck_selection];

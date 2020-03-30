@@ -31,6 +31,12 @@ namespace components
 				else
 					deck_selection.p2_deck_options[deck_2_count++] = child_entity->id();
 			}
+
+
+			for (auto& child : asset_loader_node.children)
+			{
+				deck_selection.children[deck_selection.child_count++] = child.entity_resource.entity->id();
+			}
 		}
 
 		component_bitset components_to_load() override

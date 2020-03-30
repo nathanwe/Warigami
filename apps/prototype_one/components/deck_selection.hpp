@@ -31,6 +31,9 @@ namespace components
         float player_1_options_x{ -quarter_width - half_deck_container_width };
         float player_2_options_x{ quarter_width - half_deck_container_width };
 
+
+        std::uint32_t child_count = 0;
+        entity_id children[16];
     };
 }
 
