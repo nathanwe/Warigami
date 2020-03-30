@@ -1,4 +1,5 @@
 #include <asset/scene_hydrater.hpp>
+#include <iostream>
 
 asset::scene_hydrater::scene_hydrater(ecs::state &ecs_state, asset::scene &scene)
         : _ecs_state(ecs_state), _scene(scene)
@@ -37,10 +38,10 @@ void asset::scene_hydrater::load_recurse(asset_loader_node &entity)
 
         if ((arch & entity_arch) == arch)
             loader->load(entity);
-
-        for (auto &child : entity.children)
-            load_recurse(child);
     }
+
+    for (auto& child : entity.children)
+        load_recurse(child);
 }
 
 ecs::entity &asset::scene_hydrater::add_from_prototype(const std::string &path)

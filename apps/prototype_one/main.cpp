@@ -85,11 +85,11 @@ int main(int argc, char** argv) {
 	ecs::archetype_pools memory;
 	ecs::state state(memory);
 	ecs::register_component<components::game_piece>("game_piece");
-	ecs::register_component<components::board, 1>("board");
+	ecs::register_component<components::board>("board");
 	ecs::register_component<components::board_square>("board_square");
 	ecs::register_component<components::card>("card");
 	ecs::register_component<components::dice>("dice");
-	ecs::register_component<components::player, 2>("player");
+	ecs::register_component<components::player>("player");
 	ecs::register_component<components::energy_meter>("energy_meter");
 	ecs::register_component<components::health_meter>("health_meter");
 	ecs::register_component<components::tug_of_war_meter>("tug_of_war_meter");
@@ -97,10 +97,10 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::selection_arrow>("selection_arrow");
 	ecs::register_component<components::pause>("pause");
 	ecs::register_component<transforms::transform>("transform");
-    ecs::register_component<components::deck_ui, 1>("deck_ui");
+    ecs::register_component<components::deck_ui>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");
 	ecs::register_component<components::deck_option>("deck_option");
-	ecs::register_component<components::deck_selection, 1>("deck_selection");
+	ecs::register_component<components::deck_selection>("deck_selection");
 	ecs::register_component<transforms::transform>("transform");	
     ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");

@@ -26,6 +26,13 @@ void deck_ui_controller::update(ecs::state &state)
             handle_deck_ui(state, deck, deck_t, deck_id);
         else
             hide_deck_ui(state, deck, deck_t);
+
+        for (size_t i = 0; i < deck.child_count; ++i)
+        {
+            auto& e = state.find_entity(deck.children[i]);
+            auto& t = e.get_component<transforms::transform>();
+            t.is_matrix_dirty = true;
+        }
     });
 }
 
@@ -36,14 +43,7 @@ void deck_ui_controller::handle_deck_ui(
         entity_id deck_id)
 {
     deck_t.position = glm::vec3(0);
-    deck_t.is_matrix_dirty = true;
-
-    for (size_t i = 0; i < deck.child_count; ++i)
-    {
-        auto& e = state.find_entity(deck.children[i]);
-        auto& t = e.get_component<transforms::transform>();
-        t.is_matrix_dirty = true;
-    }
+    deck_t.is_matrix_dirty = true;   
 
     handle_card_entities(state, deck, deck_t, deck_id);
 }
@@ -61,7 +61,6 @@ void deck_ui_controller::hide_deck_ui(ecs::state& state, components::deck_ui& de
     }
 }
 
-#include <iostream>
 void deck_ui_controller::handle_card_entities(
     ecs::state &state,
     components::deck_ui &deck_ui,
@@ -85,6 +84,7 @@ void deck_ui_controller::handle_card_entities(
                     _hydrater.remove_entity(card_entity);
                     auto& new_card = spawn_card(card_val);
                     auto& new_card_t = new_card.get_component<transforms::transform>();
+                    deck_ui.replace_child(*card_entity_id, new_card.id());
                     card_entity_id = new_card.id();
                     position_card(i, new_card_t, p, deck_ui, deck_id);
                 } else
@@ -99,10 +99,12 @@ void deck_ui_controller::handle_card_entities(
                 auto& new_card = spawn_card(card_val);
                 auto& new_card_t = new_card.get_component<transforms::transform>();
                 card_entity_id = new_card.id();
+                //deck_ui.children[deck_ui.child_count++] = new_card.id();
                 position_card(i, new_card_t, p, deck_ui, deck_id);
             }
             else if (card_entity_id && card_val == components::card_enum::NO_CARD)
             {
+                deck_ui.remove_child(*card_entity_id);
                 _hydrater.remove_entity(card_entity_id.value());
                 card_entity_id = {};
             }
@@ -163,11 +165,11 @@ deck_ui_controller::position_card(
         components::deck_ui &deck,
         entity_id deck_id)
 {
-    float start_x = player.team == 1
+    auto start_x = player.team == 1
                     ? deck.min_card_x
                     : deck.deck_gap;
 
-    float x_increment = (deck.max_card_x - deck.deck_gap) /
+    auto x_increment = (deck.max_card_x - deck.deck_gap) /
             (components::player::MaxCards - 1.f);
 
     card_t.has_parent = true;
