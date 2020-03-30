@@ -19,7 +19,8 @@ namespace components
         gameplay,
         deck_selection,
         game_over,
-        paused
+        paused,
+        countdown
     };
 
 	struct board : ecs::component<board>

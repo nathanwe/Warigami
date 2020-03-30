@@ -1,3 +1,5 @@
+#pragma once
+
 
 #include <core/game_input_manager.hpp>
 #include "../components/player.hpp"
@@ -33,6 +35,7 @@ struct player_specific_data
 		values = { forward, left, team_color };
 	}
 
+private:
 	player_controls p1_controls{
 		core::CARD1_CONTROL,
 		core::CARD2_CONTROL,

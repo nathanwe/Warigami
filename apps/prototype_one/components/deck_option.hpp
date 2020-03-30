@@ -12,8 +12,7 @@ namespace components
 {
     struct deck_option : public ecs::component<deck_option>
     {
-        deck_type deck;
-        bool is_selected{ false };
+        deck_type deck;        
         float team{ 1.f };
     };
 }

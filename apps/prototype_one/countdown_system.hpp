@@ -37,24 +37,30 @@ public:
           _strings(strings),
           _glfw_context(config) {}
 
+
+	void initialize(ecs::state& r_state) override
+	{
+		r_state.each<components::countdown, rendering::renderable_text>([&](components::countdown& countdown, rendering::renderable_text& text)
+		{
+			// Prepare for start countdown
+			countdown.current_value = START_COUNT_SECONDS;
+			text.position = glm::ivec2(_glfw_context.width() / 2 - 100, _glfw_context.height() / 2);
+			text.scale = 5.0;
+			std::ostringstream oss;
+			oss << (int)countdown.current_value << "!";
+		});
+
+		_board = r_state.first<components::board>();
+		_go_string = _strings.hash_and_store("GO!");
+	}
+
 	// Note: Magic numbers in here are what looks good, chosen by looking at results
 	void update(ecs::state& r_state) override
-	{
-		if (is_first_run)
-		{
-			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
-			{
-				// Prepare for start countdown
-				countdown.current_value = START_COUNT_SECONDS;
-				text.position = glm::ivec2(_glfw_context.width()/2 - 100, _glfw_context.height()/2);
-				text.scale = 5.0;
-				std::ostringstream oss;
-				oss << (int)countdown.current_value << "!";
-			});
-			is_first_run = false;
-		}
+	{		
+		auto& board_component = _board->get_component<components::board>();
+
 		// Count before starting (3, 2, 1, GO!)
-		else if (is_start_count) {
+		if (board_component.state == components::game_state::countdown) {
 			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
 			{
 				if (countdown.current_value <= 0) {
@@ -71,7 +77,8 @@ public:
 					// Show "GO!"
 					text.position = glm::ivec2(_glfw_context.width() / 2 - 30*text.scale, _glfw_context.height() / 2);
 					text.scale += 0.02;
-					text.string_hash = _strings.hash_and_store("GO!");
+					text.string_hash = _go_string;
+					board_component.state = components::game_state::gameplay;
 				}
 				else {
 					text.scale += 0.01;
@@ -82,7 +89,7 @@ public:
 				countdown.current_value -= m_timer.delta_secs();
 			});
 		}
-		else if (!ended)
+		else if (board_component.state == components::game_state::gameplay)
 		{
 			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
 			{
@@ -109,13 +116,15 @@ public:
 	}
 
 private:
-	core::frame_timer& m_timer;
-	bool is_first_run = true;
+	core::frame_timer& m_timer;	
 	bool is_start_count = true;
 	bool ended = false;
 	event::EventManager& event_manager;
 	util::string_table& _strings;
 	core::glfw_context& _glfw_context;
+
+	ecs::entity* _board;
+	size_t _go_string;
 };
 
 #endif

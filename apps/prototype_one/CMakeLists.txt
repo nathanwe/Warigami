@@ -21,9 +21,12 @@ add_executable (prototype_one
 	components/health_meter.cpp
 	components/player_loader.cpp
 	components/player.cpp
+	components/pause.cpp
+	components/selection_arrow.cpp
+	components/selection_arrow_loader.cpp
 	components/terrain.cpp				
 	components/tug_of_war_meter.cpp 
-	deck_selection_system.cpp
+	deck_selection_controller.cpp
 	deck_ui_controller.cpp	
 	main.cpp)
 

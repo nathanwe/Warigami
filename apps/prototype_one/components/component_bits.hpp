@@ -22,10 +22,10 @@ namespace components
         deck_ui = 44,
 		terrain = 45,
 		countdown = 46,
-		selection_arrow = 47,
-		pause = 48,
-		deck_option = 49,
-		deck_selection = 50,
+		deck_selection = 47,
+		deck_option = 48,
+		selection_arrow = 49,
+		pause = 50
 	};
 }
 
