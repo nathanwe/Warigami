@@ -30,14 +30,6 @@ public:
 
 	}
 
-	void initialize(ecs::state& state) override
-	{
-		state.each<components::player>([&](components::player& player)
-		{
-			player.selected_column = player.team > 0.f ? 0 : 8;
-		});
-	}
-
 	void update(ecs::state& r_state) override
 	{
 		// Skip system when paused
