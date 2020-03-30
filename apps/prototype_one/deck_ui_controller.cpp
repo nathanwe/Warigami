@@ -99,7 +99,7 @@ void deck_ui_controller::handle_card_entities(
                 auto& new_card = spawn_card(card_val);
                 auto& new_card_t = new_card.get_component<transforms::transform>();
                 card_entity_id = new_card.id();
-                //deck_ui.children[deck_ui.child_count++] = new_card.id();
+                deck_ui.children[deck_ui.child_count++] = new_card.id();
                 position_card(i, new_card_t, p, deck_ui, deck_id);
             }
             else if (card_entity_id && card_val == components::card_enum::NO_CARD)

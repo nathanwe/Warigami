@@ -37,7 +37,7 @@ namespace components
         float ticker_dt{ 0.f };
         bool did_tick_elapse{ false };
 
-        game_state state{ game_state::gameplay };
+        game_state state{ game_state::deck_selection };
 
         std::vector<to_spawn> spawner;
 

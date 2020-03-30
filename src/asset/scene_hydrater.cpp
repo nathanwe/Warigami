@@ -30,6 +30,10 @@ void asset::scene_hydrater::hydrate_recurse(asset_loader_node &graph_entity)
 
 void asset::scene_hydrater::load_recurse(asset_loader_node &entity)
 {
+    // depth first
+    for (auto& child : entity.children)
+        load_recurse(child);
+
     for (auto *loader : _component_loaders)
     {
         auto arch = loader->components_to_load();
@@ -39,9 +43,6 @@ void asset::scene_hydrater::load_recurse(asset_loader_node &entity)
         if ((arch & entity_arch) == arch)
             loader->load(entity);
     }
-
-    for (auto& child : entity.children)
-        load_recurse(child);
 }
 
 ecs::entity &asset::scene_hydrater::add_from_prototype(const std::string &path)
