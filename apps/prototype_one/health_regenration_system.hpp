@@ -39,8 +39,8 @@ public:
 					{
 						state.each<components::game_piece>([&]
 						(components::game_piece& piece) {
-								piece.health += std::count(piece.effects.begin,
-									piece.effects.end, combats::COMBAT_EFFECTS::REGENERATE)	
+								piece.health += std::count(piece.effects.begin(),
+									piece.effects.end(), combats::COMBAT_EFFECTS::REGENERATE);
 							});
 					}
 						
