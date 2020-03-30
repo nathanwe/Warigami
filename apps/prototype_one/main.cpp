@@ -153,11 +153,11 @@ int main(int argc, char** argv) {
 		&physics_update,
 		
 		// order of these matters
-		&game_start_system,
-		&health_regen,
-		&ticker,		
-		&spiderlings,
+		&game_start_system,		
+		&ticker,
 		&terrain_update_system,
+		&health_regen,
+		&spiderlings,	
 		&board_updater,
 		&player_control,
 		&spawner,

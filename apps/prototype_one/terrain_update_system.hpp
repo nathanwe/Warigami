@@ -41,16 +41,16 @@ public:
 								terrain.duration--;
 							}
 							if (terrain.duration == 0) {
-								terrain.type == components::TERRAIN_ENUM::NONE;
+								terrain.type = components::TERRAIN_ENUM::NONE;
 								terrain.duration--;
 							}
 							if (terrain.charges == 0) {
-								terrain.type == components::TERRAIN_ENUM::NONE;
+								terrain.type = components::TERRAIN_ENUM::NONE;
 								terrain.charges--;
 							}
 							// If a unit is standing in fire, it takes damage;
 							state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
-								if (terrain.location == game_piece.board_source)
+								if (terrain.location == game_piece.board_destination)
 								{
 									if (terrain.type == components::TERRAIN_ENUM::FIRE)
 									{
@@ -64,6 +64,7 @@ public:
 										if (terrain.team != game_piece.team)
 										{
 											game_piece.speed -= terrain.damage;
+											terrain.charges--;
 										}
 									}
 								}									
@@ -85,8 +86,6 @@ private:
 				{
 				case components::TERRAIN_ENUM::NONE:
 				{
-					uint32_t foo = mesh.material.texture_diffuse;
-					int breakpoint = 69;
 
 					mesh.material.texture_diffuse = terrain.default_texture_id;
 					//mesh.material.texture_normal = (uint32_t)"assets/textures/board_paper/wrinkled-paper-normal-ogl.png";
@@ -95,8 +94,9 @@ private:
 				}
 				case components::TERRAIN_ENUM::FIRE:
 				{
+					mesh.material.texture_diffuse = terrain.fire_texture_id;
 					if (terrain.team == 1.0f) {
-						mesh.material.texture_diffuse = terrain.fire_texture_id;
+						
 						//mesh.material.texture_diffuse = components::terrain::fire_texture_id_p1;
 					}
 					else if (terrain.team == -1.0f) {
@@ -109,7 +109,9 @@ private:
 				}
 				case components::TERRAIN_ENUM::WEB:
 				{
+					mesh.material.texture_diffuse = terrain.web_texture_id;
 					if (terrain.team == 1.0f) {
+						
 						//mesh.material.texture_diffuse = (uint32_t)"assets/textures/terrain/web1.png";
 					}
 					else if (terrain.team == -1.0f) {

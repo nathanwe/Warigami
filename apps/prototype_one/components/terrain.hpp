@@ -28,6 +28,7 @@ namespace components
 		uint32_t fire_texture_id;
 		uint32_t fire_texture_id_p1;
 		uint32_t fire_texture_id_p2;
+		uint32_t web_texture_id;
 		//type, team, diffus normal or ambient, stage
 		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3][5];
 

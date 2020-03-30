@@ -314,22 +314,8 @@ private:
                 {
                     board.board_state[piece.board_destination.x][piece.board_destination.y] = 0;
                     board.board_state[next_pos.x][next_pos.y] = piece.team;
-                    piece.board_destination = next_pos;
-                    int speed_reduction = 1;
-                    r_state.each<components::terrain>([&](auto &terrain) {
-                        if (terrain.location == piece.board_source)
-                        { //TODO: i dont think board_source is the right thing to check against here
-                            if (terrain.type == components::TERRAIN_ENUM::WEB)
-                            {
-                                if (terrain.team != piece.team)
-                                {
-                                    ++speed_reduction;
-                                }
-                            }
-                        }
-                    });
-
-                    piece.remaining_speed -= speed_reduction;
+                    piece.board_destination = next_pos;                                    
+                    piece.remaining_speed--;
                     changed = true;
                 }
             });
