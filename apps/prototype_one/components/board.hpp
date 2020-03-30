@@ -22,7 +22,7 @@ namespace components
 		float cell_width{ 1.f };
 		float cell_height{ 1.f };
 
-        float tick_time{ 10.f };
+        float tick_time{ 1.f };
         float tick_time_remaining{ tick_time };
         float timer_t{ 0.f };
         float ticker_dt{ 0.f };
