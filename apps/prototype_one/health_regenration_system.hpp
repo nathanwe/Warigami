@@ -6,16 +6,17 @@
 #include <ecs/state.hpp>
 #include <transforms/transform.hpp>
 #include <rendering/renderable_mesh_static.hpp>
+#include <algorithm>
 
 #include "components/board.hpp"
 #include "components/pause.hpp"
 #include "components/terrain.hpp"
 
 
-class health_regeration_system : public ecs::system_base
+class health_regenration_system : public ecs::system_base
 {
 public:
-	health_regeneration_system(core::frame_timer& timer)
+	health_regenration_system(core::frame_timer& timer)
 		: _timer(timer)
 	{}
 
@@ -38,7 +39,8 @@ public:
 					{
 						state.each<components::game_piece>([&]
 						(components::game_piece& piece) {
-
+								piece.health += std::count(piece.effects.begin,
+									piece.effects.end, combats::COMBAT_EFFECTS::REGENERATE)	
 							});
 					}
 						

@@ -49,6 +49,7 @@
 #include "spawner_system.hpp"
 #include "pause_system.hpp"
 #include "terrain_update_system.hpp"
+#include "health_regenration_system.hpp"
 
 int main(int argc, char** argv) {
 
@@ -118,6 +119,7 @@ int main(int argc, char** argv) {
 	physics::physics_update physics_update(collision_manager, timer);
 	rendering::asset_cache render_asset_cache(assets);
 	game_start_system game_start_system(hydrater, render_asset_cache);
+	health_regenration_system health_regen(timer);
 	rendering::camera_updater camera_updater;
 	rendering::render_state render_state;
 	rendering::renderer renderer(window_view, is_debug, render_asset_cache, assets, timer, render_state);
@@ -150,6 +152,7 @@ int main(int argc, char** argv) {
 		
 		// order of these matters
 		&game_start_system,
+		&health_regen,
 		&ticker,		
 		&spiderlings,
 		&terrain_update_system,
