@@ -70,7 +70,10 @@ public:
 								}									
 								});
 						}
-						terrain_upkeep(terrain, mesh, square);
+						//type, team(-1,0,1), diffus normal or ambient,
+						mesh.material.texture_diffuse = terrain.textures[(int)terrain.type][(int)terrain.team + 1][0];
+						mesh.material.texture_normal = terrain.textures[(int)terrain.type][(int)terrain.team + 1][1];
+						mesh.material.texture_ambient_occlusion = terrain.textures[(int)terrain.type][(int)terrain.team + 1][2];						
 					});
 				
 			});
@@ -80,54 +83,6 @@ public:
 private:
 	core::frame_timer& _timer;
 	rendering::asset_cache& _asset_cache;
-	void terrain_upkeep(components::terrain& terrain,
-		rendering::renderable_mesh_static& mesh, components::board_square& square) {				
-				switch (terrain.type)
-				{
-				case components::TERRAIN_ENUM::NONE:
-				{
-
-					mesh.material.texture_diffuse = terrain.default_texture_id;
-					//mesh.material.texture_normal = (uint32_t)"assets/textures/board_paper/wrinkled-paper-normal-ogl.png";
-					//mesh.material.texture_ambient_occlusion = (uint32_t)"assets/textures/board_paper/wrinkled-paper-ao.png";
-					break;
-				}
-				case components::TERRAIN_ENUM::FIRE:
-				{
-					mesh.material.texture_diffuse = terrain.fire_texture_id;
-					if (terrain.team == 1.0f) {
-						
-						//mesh.material.texture_diffuse = components::terrain::fire_texture_id_p1;
-					}
-					else if (terrain.team == -1.0f) {
-						//mesh.material.texture_diffuse = components::terrain::fire_texture_id_p2;
-					}
-					else {
-						//mesh.material.texture_diffuse = components::terrain::fire_texture_id;
-					}
-					break;
-				}
-				case components::TERRAIN_ENUM::WEB:
-				{
-					mesh.material.texture_diffuse = terrain.web_texture_id;
-					if (terrain.team == 1.0f) {
-						
-						//mesh.material.texture_diffuse = (uint32_t)"assets/textures/terrain/web1.png";
-					}
-					else if (terrain.team == -1.0f) {
-						//mesh.material.texture_diffuse = (uint32_t)"assets/textures/terrain/web2.png";
-					}
-					else {
-						//mesh.material.texture_diffuse = (uint32_t)"assets/textures/terrain/web.png";
-					}
-					break;
-				}
-				default:
-					break;
-				}
-			
-	}
-
 };
 
 #endif

@@ -267,6 +267,8 @@ private:
 		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>(
 			[&](components::board_square& square, transforms::transform& transform, rendering::renderable_mesh_static& render_mesh_s)
 			{
+
+				
 				if (square.x == player.selected_row && square.y == player.selected_column) {
 					// Shine a little
 					//render_mesh_s.material.tint_color += glm::vec3(1,1,1) * 0.2f;
@@ -276,7 +278,7 @@ private:
 					arrow_pos.y += 1;
 					r_state.each<components::selection_arrow, transforms::transform, rendering::renderable_mesh_static>(
 						[&](components::selection_arrow& arrow, transforms::transform& transform_arrow, rendering::renderable_mesh_static& render_mesh_s_arrow)
-						{
+						{					
 							if (arrow.team == player.team) {
 								render_mesh_s_arrow.material.param_diffuse += player_specifics.values.team_color;
 								transform_arrow.position = arrow_pos;

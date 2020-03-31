@@ -11,8 +11,6 @@ namespace components
 		NONE,
 		FIRE,
 		WEB,
-		GLUE,
-		POINTY_HAT_SPIKES,
 		NUM
 	};
 
@@ -24,13 +22,8 @@ namespace components
 		int damage = 0;
 		int charges = -1;
 		int duration = -1;
-		uint32_t default_texture_id;
-		uint32_t fire_texture_id;
-		uint32_t fire_texture_id_p1;
-		uint32_t fire_texture_id_p2;
-		uint32_t web_texture_id;
-		//type, team, diffus normal or ambient, stage
-		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3][5];
+		//type, team(-1,0,1), diffus normal or ambient,
+		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3];
 
 	};
 }
