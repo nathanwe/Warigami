@@ -34,7 +34,7 @@ public:
 				{
 					state.each<components::player>([&](components::player& player)
 						{
-							if (player.team == 1) {
+							if (player.team == -1&& false) {
 								player.selected_row++;
 								if (player.selected_row >= board.columns) {
 									player.selected_row = 0;
@@ -76,7 +76,6 @@ private:
 
 				player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
 				player.hand[player.selected_card_location] = player.safe_draw();
-				player.state = components::PLAYER_STATE::BASE;
 			}
 		}
 	}

@@ -55,14 +55,14 @@ public:
 						terrain.fire_texture_id = f_id;
 						terrain.default_texture_id = d_id;
 						terrain.web_texture_id = w_id;
-						
+						/*
 						if (board_square.x+2 > board_square.y) {
 							board_square.team = 1.0f;
 						}
 						if (board_square.x+2 < board_square.y) {
 							board_square.team = -1.0f;
 						}
-						
+						*/
 						/*
 						if (id % 7 == 0) {
 							terrain.type = components::TERRAIN_ENUM::FIRE;

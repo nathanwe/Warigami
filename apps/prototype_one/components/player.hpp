@@ -67,7 +67,7 @@ namespace components
 		card_enum::HEAVY_RANGE_SOLDIER
 	};
 
-	const static std::vector<card_enum> start_deck = soldier_deck;//{ card_enum::HEAVY_FAST_SOLDIER, card_enum::HEAVY_RANGE_SOLDIER, card_enum::HEAVY_TANK_SOLDIER };
+	const static std::vector<card_enum> start_deck = { card_enum::HEAVY_FAST_SOLDIER, card_enum::HEAVY_RANGE_SOLDIER, card_enum::HEAVY_TANK_SOLDIER };
 
 	enum class dice_nets {
 		T = 0,

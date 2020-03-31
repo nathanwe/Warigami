@@ -255,7 +255,6 @@ private:
 
 				player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
 				player.hand[player.selected_card_location] = player.safe_draw();
-				player.state = components::PLAYER_STATE::BASE;
 			}
 		}
 	}

@@ -16,7 +16,6 @@ void combats::combat_resolution::Resolve_Combats()
 				{
 					if (effect2 == combats::COMBAT_EFFECTS::FLASH_STEP) {
 						instance.unit_two.board_source.x--;
-						instance.id_two;
 						if (instance.unit_two.board_source.x < 0) {
 							instance.unit_two.board_source.x = 0;
 						}
