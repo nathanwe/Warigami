@@ -51,6 +51,7 @@
 #include "animator_system.hpp"
 #include "terrain_update_system.hpp"
 #include "health_regenration_system.hpp"
+#include "AI_system.hpp"
 
 int main(int argc, char** argv) {
 
@@ -138,6 +139,7 @@ int main(int argc, char** argv) {
 	pause_system pauser(input, timer, glfw);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
+	AI_system AI_system;
 
 	ecs::systems systems({
 		&energy_system,
@@ -159,6 +161,7 @@ int main(int argc, char** argv) {
 		&health_regen,
 		&spiderlings,	
 		&board_updater,
+		&AI_system,
 		&player_control,
 		&spawner,
 		//
