@@ -1,5 +1,7 @@
 #include "combat.hpp"
 
+#include "rendering/renderable_mesh_static.hpp"
+
 #include "components/game_piece.hpp"
 
 void combats::combat_resolution::Resolve_Combats()
@@ -11,7 +13,13 @@ void combats::combat_resolution::Resolve_Combats()
 			switch (effect)
 			{
 			case combats::COMBAT_EFFECTS::DEAL_DAMAGE:
-				instance.unit_two.health -= instance.unit_one.damage;
+				for (int i = 0; i < instance.unit_one.damage; i++) {
+					if (instance.unit_two.health > 0) {
+						instance.unit_two.health--;
+						// Turn health spheres red
+						instance.unit_two.health_points[instance.unit_two.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+					}
+				}
 				break;
 			case::combats::COMBAT_EFFECTS::SLOW_TARGET:
 				instance.unit_two.speed = instance.unit_two.speed > 1 ? instance.unit_two.speed - 1 : instance.unit_two.speed;
@@ -44,7 +52,13 @@ void combats::combat_resolution::Resolve_Combats()
 				switch (effect)
 				{
 				case combats::COMBAT_EFFECTS::DEAL_DAMAGE:
-					instance.unit_one.health -= instance.unit_two.damage;
+					for (int i = 0; i < instance.unit_two.damage; i++) {
+						if (instance.unit_one.health > 0) {
+							instance.unit_one.health--;
+							// Turn health spheres red
+							instance.unit_one.health_points[instance.unit_one.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+						}
+					}
 					break;
 				case::combats::COMBAT_EFFECTS::SLOW_TARGET:
 					instance.unit_one.speed = instance.unit_one.speed > 1 ? instance.unit_one.speed - 1 : instance.unit_one.speed;

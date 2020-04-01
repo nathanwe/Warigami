@@ -26,6 +26,7 @@ public:
     {}
 
     entity_id id;
+    std::vector<entity_id> children;
 };
 
 class board_update : public ecs::system_base, public event::Listener
@@ -47,6 +48,11 @@ public:
     {
         if (event.mType == event::EVENT_TYPE::UNIT_DEATH)
         {
+            // Delete any children of the unit
+            for (entity_id id : ((unit_death_event&)event).children) {
+                hydrater.remove_entity(id);
+            }
+            // Delete unit
             hydrater.remove_entity(((unit_death_event &) event).id);
         }
     }
@@ -120,6 +126,10 @@ private:
                         case components::UNIT_STATE::DYING:
                         {
                             unit_death_event new_event(unit_id);
+                            // Delete also the health spheres
+                            for (ecs::entity e : unit.health_points) {
+                                new_event.children.push_back(e.id());
+                            }
                             event_manager.BroadcastEvent(new_event);
                             break;
                         }

@@ -3,7 +3,6 @@
 
 
 #include <asset/scene_hydrater.hpp>
-#include <asset/scene_hydrater.hpp>
 #include <ecs/state.hpp>
 #include <ecs/system_base.hpp>
 #include <transforms/transform.hpp>
@@ -61,6 +60,18 @@ private:
 		ecs::entity& nerd = _hydrater.add_from_prototype(CardPrototypes[type_index]);
 		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
 		components::game_piece& nerdP = nerd.get_component<components::game_piece>();
+
+		for (int i = 0; i < nerdP.health; i++) {
+			ecs::entity& health_unit = _hydrater.add_from_prototype("assets/prototypes/health_unit.json");
+			transforms::transform& health_unitT = health_unit.get_component<transforms::transform>();
+			health_unitT.has_parent = true;
+			health_unitT.parent = nerd.id();
+			nerdP.health_points.push_back(health_unit);
+
+			health_unitT.position = nerdT.position;
+			health_unitT.position.y += 5;
+			health_unitT.position.x += i - nerdP.health/2;
+		}
 
 		nerdP.team = team;
 		nerdP.board_source.x = lane;
