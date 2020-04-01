@@ -38,10 +38,10 @@ public:
 		{
 			meter.value = 5.f;
 			if (meter.team == 1) {
-				text.position = glm::ivec2(50, _glfw_context.height() / 2.5);
+				text.position = glm::ivec2(50, _glfw_context.height() - 150);
 			}
 			else if (meter.team == -1) {
-				text.position = glm::ivec2(_glfw_context.width() - 150, _glfw_context.height() / 2.5);
+				text.position = glm::ivec2(_glfw_context.width() - 200, _glfw_context.height() - 150);
 			}
 			text.scale = 3.0;
 			std::ostringstream oss;
