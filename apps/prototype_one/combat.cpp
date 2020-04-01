@@ -74,6 +74,7 @@ void combats::combat_resolution::Resolve_Combats()
 					if (!infested)
 					{
 						instance.unit_one.effects.push_back(combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH);
+
 					}
 					break;
 				}
