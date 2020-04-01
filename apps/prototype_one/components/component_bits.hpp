@@ -25,7 +25,13 @@ namespace components
 		deck_selection = 47,
 		deck_option = 48,
 		selection_arrow = 49,
-		pause = 50
+		pause = 50,
+		ready_display = 51
+
+		// careful: need to take action after 
+		// count reaches 63.
+		// change the component_bitset typedef to be a std::bitset<128>
+		// and fix what breaks.
 	};
 }
 

@@ -36,6 +36,6 @@ add_subdirectory(apps/boardgen)
 add_subdirectory(test)
 
 # Packaging
-INSTALL(TARGETS game COMPONENT game)
+INSTALL(TARGETS prototype_one COMPONENT prototype_one)
 include (cmake/CPackBuild.cmake)
 

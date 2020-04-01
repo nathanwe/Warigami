@@ -31,17 +31,22 @@ namespace components
 				else
 					deck_selection.p2_deck_options[deck_2_count++] = child_entity->id();
 			}
-
-
-			for (auto& child : asset_loader_node.children)
-			{
-				deck_selection.children[deck_selection.child_count++] = child.entity_resource.entity->id();
-			}
+			
+			find_children_recurse(asset_loader_node, deck_selection);
 		}
 
 		component_bitset components_to_load() override
 		{
 			return deck_selection::archetype_bit;
+		}
+
+		void find_children_recurse(asset::asset_loader_node& asset_loader_node, components::deck_selection& component)
+		{
+			for (auto& child : asset_loader_node.children)
+			{
+				component.children[component.child_count++] = child.entity_resource.entity->id();
+				find_children_recurse(child, component);
+			}
 		}
 	};
 }

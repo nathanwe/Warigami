@@ -39,6 +39,8 @@
 #include "components/deck_selection_loader.hpp"
 #include "components/deck_option_loader.hpp"
 #include "components/deck_ui_loader.hpp"
+#include "components/ready_display.hpp"
+#include "components/ready_display_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -59,6 +61,7 @@
 #include "deck_selection_controller.hpp"
 #include "pause_system.hpp"
 #include "animator_system.hpp"
+#include "ready_display_system.hpp"
 
 
 int main(int argc, char** argv) {	
@@ -101,8 +104,8 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::terrain>("terrain");
 	ecs::register_component<components::deck_option>("deck_option");
 	ecs::register_component<components::deck_selection>("deck_selection");
-	ecs::register_component<transforms::transform>("transform");	
-    ecs::register_component<transforms::transform>("transform");
+	ecs::register_component<components::ready_display>("ready_display");
+	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
 	ecs::register_component<rendering::light_point>("light_point");
@@ -144,6 +147,7 @@ int main(int argc, char** argv) {
 	deck_selection_controller deck_selection(hydrater, input, timer);
 	pause_system pauser(input, timer, glfw);
 	animator_system animator(timer);
+	ready_display_system ready_display(glfw);
 
 	ecs::systems systems({
 		&energy_system,
@@ -168,12 +172,11 @@ int main(int argc, char** argv) {
 		&animator,
 		&renderer,
 		&text_renderer,
-
-		&game_start_system,
-		
+		&game_start_system,		
 	    &deck_ui_controller,
 		&endgame,
-		&pauser });
+		&pauser,
+		&ready_display });
 
 	ecs::world world(systems, state);
 
@@ -203,6 +206,7 @@ int main(int argc, char** argv) {
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
+	components::ready_display_loader ready_display_loader;
 
 	hydrater.register_loaders(
 		&aabb_collider_loader,
@@ -229,7 +233,8 @@ int main(int argc, char** argv) {
 		&text_loader,
 		&deck_selection_loader,
 		&deck_option_loader,
-		&deck_ui_loader);
+		&deck_ui_loader,
+		&ready_display_loader);
 
 	hydrater.load();
 

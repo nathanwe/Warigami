@@ -22,13 +22,16 @@ add_executable (prototype_one
 	components/player_loader.cpp
 	components/player.cpp
 	components/pause.cpp
+	components/ready_display.cpp
+	components/ready_display_loader.cpp
 	components/selection_arrow.cpp
 	components/selection_arrow_loader.cpp
 	components/terrain.cpp				
 	components/tug_of_war_meter.cpp 
 	deck_selection_controller.cpp
 	deck_ui_controller.cpp	
-	main.cpp)
+	main.cpp
+	ready_display_system.cpp)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs

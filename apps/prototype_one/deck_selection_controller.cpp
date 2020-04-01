@@ -32,7 +32,7 @@ void deck_selection_controller::initialize(ecs::state& state)
 	assert(_board != nullptr);
 	assert(_deck_selection != nullptr);
 	assert(_players[0] != nullptr);
-	assert(_players[0] != nullptr);
+	assert(_players[1] != nullptr);
 }
 
 void deck_selection_controller::update(ecs::state& state)
@@ -43,6 +43,14 @@ void deck_selection_controller::update(ecs::state& state)
 		else
 			hide_elements(state, board);
 	});
+
+	auto& selection_component = _deck_selection->get_component<components::deck_selection>();
+	for (size_t i = 0; i < selection_component.child_count; ++i)
+	{
+		auto& e = state.find_entity(selection_component.children[i]);
+		auto& t = e.get_component<transforms::transform>();
+		t.is_matrix_dirty = true;
+	}
 }
 
 void deck_selection_controller::do_update(ecs::state& state, components::board& board)
@@ -77,15 +85,6 @@ void deck_selection_controller::hide_elements(ecs::state& state, components::boa
 	auto& transform = _deck_selection->get_component<transforms::transform>();
 	transform.position = MovePosition;
 	transform.is_matrix_dirty = true;
-
-	auto& deck_selection = _deck_selection->get_component<components::deck_selection>();
-
-	for (size_t i = 0; i < deck_selection.child_count; ++i)
-	{
-		auto& e = state.find_entity(deck_selection.children[i]);
-		auto& t = e.get_component<transforms::transform>();
-		t.is_matrix_dirty = true;
-	}
 }
 
 void deck_selection_controller::position_deck_option(

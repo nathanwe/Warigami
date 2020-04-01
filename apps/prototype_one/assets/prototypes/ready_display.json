@@ -1,0 +1,73 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      {
+        "type": "ready_display"
+      }
+    ]
+  },
+
+  "children": [
+    {
+      "components": [
+        {
+          "type": "renderable_text",
+          "position": [ 0, 0 ],
+          "color": [ 0, 0, 0 ],
+          "scale": 0.75,
+          "text": "READY"
+        },
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        }
+      ]
+    },
+    {
+      "parent_index": 0,
+      "prototype": "assets/prototypes/tooltip_a.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ]
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "renderable_text",
+          "position": [ 0, 0 ],
+          "scale": 0.75,
+          "color": [ 0, 0, 0 ],
+          "text": "BACK"
+        },
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        }
+      ]
+    },
+    {
+      "parent_index": 2,
+      "prototype": "assets/prototypes/tooltip_b.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ]
+        }
+      ]
+    }
+  ]
+}
