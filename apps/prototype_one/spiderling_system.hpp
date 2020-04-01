@@ -29,7 +29,7 @@ public:
 					state.each<components::game_piece>([&](components::game_piece& game_piece)
 						{
 							spiderling_egg_spawns(state, game_piece, board);
-							do_spaw_on_death_effect(game_piece, board);
+							do_spawn_on_death_effect(state, game_piece, board);
 						});
 				}
 			});
@@ -86,8 +86,8 @@ private:
 		}
 	}
 
-
-	void do_spaw_on_death_effect(components::game_piece& game_piece, components::board& board)
+	void do_spawn_on_death_effect(ecs::state r_state, components::game_piece& game_piece,
+		components::board& board)
 	{
 		if (game_piece.health <= 0)
 		{
@@ -115,7 +115,18 @@ private:
 				}
 				case combats::COMBAT_EFFECTS::CREATE_FIRE_TERRAIN_ON_DEATH:
 				{
-
+					r_state.each<components::terrain>([&](components::terrain& terrain)
+						{
+							if (terrain.location.x == game_piece.board_destination.x
+								&& (terrain.location.y == game_piece.board_destination.y
+									|| terrain.location.y == game_piece.board_destination.y + game_piece.team)) {
+								terrain.type = components::TERRAIN_ENUM::FIRE;
+								terrain.damage = 1;
+								terrain.charges = -1;
+								terrain.duration = 10;
+								terrain.team = game_piece.team;
+							}
+						});
 					break;
 				}
 				}

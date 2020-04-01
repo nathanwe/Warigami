@@ -49,6 +49,10 @@
 #include "spawner_system.hpp"
 #include "pause_system.hpp"
 #include "animator_system.hpp"
+#include "terrain_update_system.hpp"
+#include "health_regenration_system.hpp"
+#include "AI_system.hpp"
+#include "flash_step_system.hpp"
 
 int main(int argc, char** argv) {
 
@@ -111,12 +115,15 @@ int main(int argc, char** argv) {
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events, hydrater, resolver);
 	player_controller player_control(input, timer, events, hydrater);
-	game_start_system game_start_system(hydrater);
+	
 	deck_ui_controller deck_ui_controller(hydrater);
 	audio::audio_system audio_system(strings, assets);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
 	rendering::asset_cache render_asset_cache(assets);
+	game_start_system game_start_system(hydrater, render_asset_cache);
+	health_regenration_system health_regen;
+	
 	rendering::camera_updater camera_updater;
 	rendering::render_state render_state;
 	rendering::renderer renderer(window_view, is_debug, render_asset_cache, assets, timer, render_state);
@@ -133,6 +140,9 @@ int main(int argc, char** argv) {
 	spawner_system spawner(hydrater);
 	pause_system pauser(input, timer, glfw);
 	animator_system animator(timer);
+	terrain_update_system terrain_update_system(timer, render_asset_cache);
+	AI_system AI_system;
+	flash_step_system flash_step_system;
 
 	ecs::systems systems({
 		&energy_system,
@@ -141,27 +151,34 @@ int main(int argc, char** argv) {
 		&count_system,
 		&transformer,
 		&camera_updater,
+		&renderer,
+        &text_renderer,
 		&flycam,
 		&audio_system,
 		&physics_update,
 		
 		// order of these matters
-		&ticker,		
-		&spiderlings,
+		&game_start_system,		
+		&ticker,
+		&terrain_update_system,
+		&health_regen,
+		&spiderlings,	
 		&board_updater,
+		&flash_step_system,
+		&AI_system,
 		&player_control,
 		&spawner,
 		//
-
 		&animator,
 		&renderer,
 		&text_renderer,
 
-		&game_start_system,
 		
-	    &deck_ui_controller,
+		
+	   	 &deck_ui_controller,
 		&endgame,
-		&pauser });
+		&pauser
+		});
 
 	ecs::world world(systems, state);
 
