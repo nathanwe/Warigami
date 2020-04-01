@@ -268,9 +268,20 @@ private:
             components::board &board,
             entity_id board_id)
     {
-        unit_t.position = board.grid_to_board(game_piece.continuous_board_location, board_t);
+        auto new_position = board.grid_to_board(game_piece.continuous_board_location, board_t);
+        unit_t.position = new_position;
         //unit_t.scale = glm::vec3(0.2f); //I would like changig the scale in the json to do somthing
         unit_t.is_matrix_dirty = true;
+
+        // Change transform of health spheres
+        int i = 0;
+        for (ecs::entity e : game_piece.health_points) {
+            transforms::transform& health_t = e.get_component<transforms::transform>();
+            health_t.position = glm::vec3(new_position.x, 0, 0);
+            health_t.position.x += (i - game_piece.max_health/2)*0.5;
+            health_t.is_matrix_dirty = true;
+            i++;
+        }
     }
 
     void generate_new_board_state(ecs::state &r_state)

@@ -61,18 +61,6 @@ private:
 		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
 		components::game_piece& nerdP = nerd.get_component<components::game_piece>();
 
-		for (int i = 0; i < nerdP.health; i++) {
-			ecs::entity& health_unit = _hydrater.add_from_prototype("assets/prototypes/health_unit.json");
-			transforms::transform& health_unitT = health_unit.get_component<transforms::transform>();
-			health_unitT.has_parent = true;
-			health_unitT.parent = nerd.id();
-			nerdP.health_points.push_back(health_unit);
-
-			health_unitT.position = nerdT.position;
-			health_unitT.position.y += 5;
-			health_unitT.position.x += i - nerdP.health/2;
-		}
-
 		nerdP.team = team;
 		nerdP.board_source.x = lane;
 		nerdP.board_source.y = space;
@@ -81,6 +69,14 @@ private:
 			nerdT.rotation.y = glm::pi<float>() - glm::quarter_pi<float>() * 1.5f;
 		else
 			nerdT.rotation.y = glm::quarter_pi<float>() * 1.5f;
+
+		for (int i = 0; i < nerdP.health; i++) {
+			ecs::entity& health_unit = _hydrater.add_from_prototype("assets/prototypes/health_unit.json");
+			transforms::transform& health_unitT = health_unit.get_component<transforms::transform>();
+			health_unitT.has_parent = true;
+			health_unitT.parent = nerd.id();
+			nerdP.health_points.push_back(health_unit);
+		}
 
 		nerdP.continuous_board_location = nerdP.board_source;
 		nerdP.board_destination = nerdP.board_source;
