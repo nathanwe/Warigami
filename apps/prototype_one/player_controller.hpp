@@ -97,7 +97,8 @@ public:
 					draw_goalposts(r_state, player);
 					gather_points(r_state, player);					
 					handle_player_selection(player, forward, left, board);
-					handle_controls(player, r_state, player_specifics, board, board_id);										
+					handle_controls(player, r_state, player_specifics, board, board_id);
+					toggle_AI(player, player_specifics.controls);
 					gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
 					show_cursor(player, r_state, player_specifics);
 					
@@ -256,6 +257,11 @@ private:
 				player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
 				player.hand[player.selected_card_location] = player.safe_draw();
 			}
+		}
+	}
+	void toggle_AI(components::player& player, player_controls& controls) {
+		if (m_input.is_input_started(controls.dice_button)) {
+			player.controlled_by_AI = !player.controlled_by_AI;
 		}
 	}
 

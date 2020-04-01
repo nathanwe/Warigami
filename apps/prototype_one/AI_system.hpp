@@ -34,7 +34,7 @@ public:
 				{
 					state.each<components::player>([&](components::player& player)
 						{
-							if (player.team == -1&& false) {
+							if (player.controlled_by_AI) {
 								player.selected_row++;
 								if (player.selected_row >= board.columns) {
 									player.selected_row = 0;

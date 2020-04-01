@@ -1,7 +1,6 @@
 #ifndef __HEALTH_REGENERATION_SYSTEM_HPP_
 #define __HEALTH_REGENERATION_SYSTEM_HPP_
 
-#include <core/frame_timer.hpp>
 #include <ecs/system_base.hpp>
 #include <ecs/state.hpp>
 #include <transforms/transform.hpp>
@@ -10,14 +9,14 @@
 
 #include "components/board.hpp"
 #include "components/pause.hpp"
-#include "components/terrain.hpp"
+#include "combat.hpp"
+#include "components/game_piece.hpp"
 
 
 class health_regenration_system : public ecs::system_base
 {
 public:
-	health_regenration_system(core::frame_timer& timer)
-		: _timer(timer)
+	health_regenration_system()
 	{}
 
 	void update(ecs::state& state)
@@ -51,7 +50,6 @@ public:
 	}
 
 private:
-	core::frame_timer& _timer;
 
 };
 

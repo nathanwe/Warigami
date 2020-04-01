@@ -37,6 +37,7 @@ public:
 						
 						if (board.did_tick_elapse)
 						{
+							//terrain matenence
 							if (terrain.duration > 0) {
 								terrain.duration--;
 							}
@@ -48,7 +49,7 @@ public:
 								terrain.type = components::TERRAIN_ENUM::NONE;
 								terrain.charges--;
 							}
-							// If a unit is standing in fire, it takes damage;
+							// terrrain effects
 							state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
 								if (terrain.location == game_piece.board_destination)
 								{
@@ -56,7 +57,8 @@ public:
 									{
 										if (terrain.team != game_piece.team)
 										{
-											game_piece.health -= terrain.damage;											
+											game_piece.health -= terrain.damage;	
+											terrain.charges--;
 										}
 									}
 									if (terrain.type == components::TERRAIN_ENUM::WEB)
@@ -70,6 +72,7 @@ public:
 								}									
 								});
 						}
+						//terrain textures
 						//type, team(-1,0,1), diffus normal or ambient,
 						mesh.material.texture_diffuse = terrain.textures[(int)terrain.type][(int)terrain.team + 1][0];
 						mesh.material.texture_normal = terrain.textures[(int)terrain.type][(int)terrain.team + 1][1];

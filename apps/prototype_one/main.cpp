@@ -52,6 +52,7 @@
 #include "terrain_update_system.hpp"
 #include "health_regenration_system.hpp"
 #include "AI_system.hpp"
+#include "flash_step_system.hpp"
 
 int main(int argc, char** argv) {
 
@@ -121,7 +122,8 @@ int main(int argc, char** argv) {
 	physics::physics_update physics_update(collision_manager, timer);
 	rendering::asset_cache render_asset_cache(assets);
 	game_start_system game_start_system(hydrater, render_asset_cache);
-	health_regenration_system health_regen(timer);
+	health_regenration_system health_regen;
+	
 	rendering::camera_updater camera_updater;
 	rendering::render_state render_state;
 	rendering::renderer renderer(window_view, is_debug, render_asset_cache, assets, timer, render_state);
@@ -140,6 +142,7 @@ int main(int argc, char** argv) {
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
 	AI_system AI_system;
+	flash_step_system flash_step_system;
 
 	ecs::systems systems({
 		&energy_system,
@@ -161,6 +164,7 @@ int main(int argc, char** argv) {
 		&health_regen,
 		&spiderlings,	
 		&board_updater,
+		&flash_step_system,
 		&AI_system,
 		&player_control,
 		&spawner,
