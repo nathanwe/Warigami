@@ -38,8 +38,11 @@ public:
 					{
 						state.each<components::game_piece>([&]
 						(components::game_piece& piece) {
-								piece.health += std::count(piece.effects.begin(),
+								int health_to_add = std::count(piece.effects.begin(),
 									piece.effects.end(), combats::COMBAT_EFFECTS::REGENERATE);
+								if (health_to_add > 0) {
+									piece.health = std::min(piece.health + health_to_add, 3);//TODO give peces a max_health
+								}
 							});
 					}
 						
