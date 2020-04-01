@@ -53,15 +53,6 @@ void combats::combat_resolution::Resolve_Combats()
 				{
 				case combats::COMBAT_EFFECTS::DEAL_DAMAGE:
 					instance.unit_one.health -= instance.unit_two.damage;
-					for (auto& effect2 : instance.unit_one.effects)
-					{
-						if (effect2 == combats::COMBAT_EFFECTS::FLASH_STEP) {
-							instance.unit_one.board_source.x--;
-							if (instance.unit_one.board_source.x < 0) {
-								instance.unit_one.board_source.x = 0;
-							}
-						}
-					}
 					break;
 				case::combats::COMBAT_EFFECTS::SLOW_TARGET:
 				{

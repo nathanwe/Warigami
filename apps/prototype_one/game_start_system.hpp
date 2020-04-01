@@ -83,7 +83,7 @@ public:
 						if (board_square.x+2 < board_square.y) {
 							board_square.team = -1.0f;
 						}
-						*/
+						
 						
 						if (id % 11 == 0) {
 							terrain.type = components::TERRAIN_ENUM::FIRE;
@@ -124,7 +124,7 @@ public:
 							terrain.charges = 5;
 							terrain.duration = -1;
 						}
-
+						*/
 						
 					});
 				});
