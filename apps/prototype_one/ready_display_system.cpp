@@ -57,20 +57,21 @@ void ready_display_system::update(ecs::state& state)
 			: 14.5;
 
 		auto button_y = -9.5f;
-
 		auto text_y = 16;
+		auto button_z = -24.5f;
+		auto hide_x = 9999;
 
 		if (ready_dispaly.is_ready)
 		{
 			back_text.position = {offset, text_y};
-			ready_text.position.x = 9999;
+			ready_text.position.x = hide_x;
 			back_t.position = glm::vec3(button_x, button_y, -24.5f);
 			ready_t.position = HidePosition;			
 		}
 		else
 		{
 			ready_text.position = { offset, text_y };
-			back_text.position.x = 9999;
+			back_text.position.x = hide_x;
 			ready_t.position = glm::vec3(button_x, button_y, -24.5f);
 			back_t.position = HidePosition;
 		}
