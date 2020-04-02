@@ -71,6 +71,9 @@ namespace components
 		soldier_deck
 	};
 
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 5, 5, 5, 8, 8, 8 };
+	const static int dice_costanamos = 1;
+
 	const std::vector<card_enum> start_deck = soldier_deck;
 
 	enum class dice_nets {

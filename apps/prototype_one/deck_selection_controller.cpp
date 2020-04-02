@@ -6,6 +6,7 @@
 #include "components/countdown.hpp"
 #include "components/game_piece.hpp"
 #include "components/player.hpp"
+#include <rendering/renderable_text.hpp>
 
 deck_selection_controller::deck_selection_controller(
 	asset::scene_hydrater& hydrater, 
@@ -99,6 +100,21 @@ void deck_selection_controller::hide_elements(ecs::state& state, components::boa
 	auto& transform = _deck_selection->get_component<transforms::transform>();
 	transform.position = MovePosition;
 	transform.is_matrix_dirty = true;
+	auto& selection = _deck_selection->get_component<components::deck_selection>();
+
+	for (size_t i = 0; i < selection.child_count; ++i)
+	{
+		auto& child = state.find_entity(selection.children[i]);
+		auto& t = child.get_component<transforms::transform>();
+		t.position = MovePosition;
+		t.is_matrix_dirty = true;
+
+		auto text_opt = child.get_component_opt<rendering::renderable_text>();
+		if (text_opt)
+		{
+			text_opt->position.x = 9999;
+		}
+	}
 }
 
 void deck_selection_controller::position_deck_option(
@@ -196,14 +212,6 @@ void deck_selection_controller::on_start(ecs::state& state)
 	state.each_id<components::game_piece>([&](entity_id id, components::game_piece& unit) {
 		_hydrater.remove_entity(id);
 	});
-}
-
-void deck_selection_controller::layout_pieces(ecs::state& state)
-{
-	state.each<components::game_piece>([&](components::game_piece& unit)
-		{
-			
-		});
 }
 
 void deck_selection_controller::build_deck_set(components::deck_index index, const std::vector<components::card_enum>& deck)
