@@ -47,7 +47,7 @@ json core::startup_config::make_default() const
         {"fov", 45},
         {"backfaceCulling", true},
         {"free_mouse", true},
-        {"window_title", "Sample Window"},
+        {"window_title", "Warigami"},
         {"god_mode", false},
         {"auto_play", false}
     
