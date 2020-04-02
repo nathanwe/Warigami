@@ -30,6 +30,7 @@ namespace components
 		int speed; // How many squares a unit moves per second
 		int damage; // How much damage a unit does per attack
 		int health; // How much damage a unit can take before dying
+		int max_health; // Maximum health of the unit
 		int team; // Which team the unit is a part of
 		int remaining_speed;
 		int give_points = 0; //How many points a unit is currently worth for dice earning
@@ -46,6 +47,7 @@ namespace components
 		components::UNIT_STATE last_rendered_state = UNIT_STATE::MOVE;
 		unsigned int last_sprite = 0;
 		float time_last_sprite = 0.f;
+		std::vector<ecs::entity> health_points;
 		bool flash_step_flag = false;
 	};
 }

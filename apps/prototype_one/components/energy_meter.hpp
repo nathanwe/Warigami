@@ -11,6 +11,7 @@ namespace components
 	{
 		float team = 0;
 		glm::vec3 first_position;
+		float value;
 	};
 }
 
