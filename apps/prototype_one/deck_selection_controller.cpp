@@ -207,6 +207,9 @@ void deck_selection_controller::on_start(ecs::state& state)
 
 	state.each<components::player>([&](components::player& player) {
 		player.deck = components::decks[player.deck_selection];
+		player.start_deck = components::decks[player.deck_selection];
+		player.shuffle();
+		player.redraw();
 	});
 
 	state.each_id<components::game_piece>([&](entity_id id, components::game_piece& unit) {

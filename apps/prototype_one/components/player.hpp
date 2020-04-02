@@ -74,8 +74,6 @@ namespace components
 	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 5, 5, 5, 8, 8, 8 };
 	const static int dice_costanamos = 1;
 
-	const std::vector<card_enum> start_deck = soldier_deck;
-
 	enum class dice_nets {
 		T = 0,
 		SEVEN = 1,
@@ -110,8 +108,7 @@ namespace components
         {
             regrow_deck();
             shuffle();
-            for (auto & card_slot : hand)
-                card_slot = safe_draw();
+			redraw();
         }
 
 		float max_energy{ 10.0f };
@@ -139,6 +136,7 @@ namespace components
 		float ticks_per_energy_grow{ 2.f };
 		float ticks_to_energy_grow{ ticks_per_energy_grow };
 
+		std::vector<card_enum> start_deck{ soldier_deck };
 		deck_index deck_selection{ 0 };
 		bool is_ready{ false };
 
@@ -172,6 +170,13 @@ namespace components
 		void regrow_deck() {
 			deck = start_deck;
 		}
+
+		void redraw()
+		{
+			for (auto& card_slot : hand)
+				card_slot = safe_draw();
+		}
+
 		std::vector<glm::ivec2> create_shifted_net(glm::ivec2 center,
 			dice_nets net, rotate_states rotate, bool flip) {
 			std::vector<glm::ivec2> legal_placements;
