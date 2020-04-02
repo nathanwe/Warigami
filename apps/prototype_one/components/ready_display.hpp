@@ -17,6 +17,12 @@ namespace components
 
 		std::uint32_t child_count = 0;
 		entity_id children[32];
+
+		std::uint32_t p1_units_count = 0;
+		entity_id p1_units[32];
+		
+		std::uint32_t p2_units_count = 0;
+		entity_id p2_units[32];
 	};
 }
 

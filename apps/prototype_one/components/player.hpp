@@ -29,7 +29,7 @@ namespace components
 	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 5, 5, 5, 8, 8, 8 };
 	const static int dice_costanamos = 1;
 
-	const static std::vector<card_enum> spider_deck = {
+	const std::vector<card_enum> spider_deck = {
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
@@ -56,7 +56,7 @@ namespace components
 			card_enum::SCISSOR_QUEEN,
 	};
 
-	const static std::vector<card_enum> soldier_deck = { 
+	const std::vector<card_enum> soldier_deck = { 
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_RANGE_SOLDIER,
@@ -71,12 +71,12 @@ namespace components
 		card_enum::HEAVY_RANGE_SOLDIER
 	};
 
-	const static std::vector<card_enum> decks[]{
+	const std::vector<card_enum> decks[]{
 		spider_deck,
 		soldier_deck
 	};
 
-	const static std::vector<card_enum> start_deck = soldier_deck;
+	const std::vector<card_enum> start_deck = soldier_deck;
 
 	enum class dice_nets {
 		T = 0,
