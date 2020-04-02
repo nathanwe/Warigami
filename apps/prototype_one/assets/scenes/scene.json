@@ -36,6 +36,86 @@
       "parent_id": 1,
       "prototype": "assets/prototypes/deck_selection.json"
     },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_a.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -13.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_b.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -9.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_x.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -5.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_y.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -1.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_a.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_b.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 5.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_x.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 9.8, -3.5, -23.5 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/tooltip_y.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 13.8, -3.5, -23.5 ]
+        }
+      ]
+    },
 
 
     {
@@ -79,6 +159,42 @@
         {
           "type": "light_directional",
           "intensity": 3
+        }
+      ]
+    },
+    {
+      "entity_id": 6,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 50, 50, 0 ]
+        },
+        {
+          "type": "energy_meter",
+          "team": 1
+        },
+        {
+          "type": "renderable_text",
+          "position": [ 0, 0 ],
+          "color": [ 1, 0.2, 0.2 ]
+        }
+      ]
+    },
+    {
+      "entity_id": 7,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 50, 0 ]
+        },
+        {
+          "type": "energy_meter",
+          "team": -1
+        },
+        {
+          "type": "renderable_text",
+          "position": [ 0, 0 ],
+          "color": [ 0.2, 0.2, 1 ]
         }
       ]
     },

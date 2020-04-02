@@ -53,7 +53,7 @@ private:
 							open_space[0] = false;
 						}
 
-						if (game_piece.board_source == piece.board_source + glm::ivec2(1, 0) || piece.board_source.x >= 6)
+						if (game_piece.board_source == piece.board_source + glm::ivec2(1, 0) || piece.board_source.x >= board.columns-1)
 						{
 							open_space[1] = false;
 						}
@@ -69,18 +69,24 @@ private:
 					to_spawn new_spawn(piece.board_source.x, piece.board_source.y + (1 * piece.team), piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
 					piece.health -= 1;
+					// Turn health spheres red
+					piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
 				}
 				else if (open_space[1])
 				{
 					to_spawn new_spawn(piece.board_source.x + 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
 					piece.health -= 1;
+					// Turn health spheres red
+					piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
 				}
 				else if (open_space[2])
 				{
 					to_spawn new_spawn(piece.board_source.x - 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
 					piece.health -= 1;
+					// Turn health spheres red
+					piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
 				}
 			}
 		}

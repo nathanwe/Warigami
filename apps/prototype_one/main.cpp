@@ -143,7 +143,7 @@ int main(int argc, char** argv) {
 	rendering::freetype_system text_renderer(window_view, assets, strings, render_state);
 	transforms::transformer transformer;
 
-	energy_meter_system energy_system;
+	energy_meter_system energy_system(strings, glfw);
 	health_meter_system health_system;
 	tug_of_war_meter_system tug_system;
 	countdown_system count_system(timer, events, strings, glfw);
