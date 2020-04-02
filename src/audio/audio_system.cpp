@@ -65,7 +65,7 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
             glm::mat3 ltw = glm::mat3(t.local_to_world);
 
             l.listener_position = glm::vec3(t.local_to_world[3]);
-            l.listener_velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
+            l.listener_velocity = rb_opt ? rb_opt->velocity : glm::vec3(0.f);
             l.listener_up = ltw[1];
             l.listener_forward = ltw[2];
 
@@ -88,7 +88,7 @@ void audio::audio_system::update_emitters(ecs::state &state)
         auto position = glm::vec3(transform.local_to_world[3]);
         auto& entity = state.find_entity(id);
         auto rb_opt = entity.get_component_opt<collisions::rigid_body>();
-        auto velocity = rb_opt ? rb_opt->get().velocity : glm::vec3(0.f);
+        auto velocity = rb_opt ? rb_opt->velocity : glm::vec3(0.f);
 
         for (std::uint32_t i = 0; i < e.sound_count; ++i)
         {

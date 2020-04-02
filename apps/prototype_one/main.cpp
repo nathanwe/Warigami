@@ -27,14 +27,25 @@
 #include "components/countdown.hpp"
 #include "components/countdown_loader.hpp"
 #include "components/terrain.hpp"
+#include "components/deck_option.hpp"
+#include "components/deck_selection.hpp"
+#include "components/deck_selection_loader.hpp"
+#include "components/deck_option_loader.hpp"
+#include "components/deck_ui_loader.hpp"
 #include "components/selection_arrow.hpp"
 #include "components/selection_arrow_loader.hpp"
+#include "components/deck_option.hpp"
+#include "components/deck_selection.hpp"
+#include "components/deck_selection_loader.hpp"
+#include "components/deck_option_loader.hpp"
+#include "components/deck_ui_loader.hpp"
+#include "components/ready_display.hpp"
+#include "components/ready_display_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
 #include "board_update_system.hpp"
 #include "player_controller.hpp"
-#include "util/boardgen.hpp"
 #include "game_start_system.hpp"
 #include "energy_meter_system.hpp"
 #include "health_meter_system.hpp"
@@ -47,18 +58,17 @@
 #include "tick_update_system.hpp"
 #include "spiderling_system.hpp"
 #include "spawner_system.hpp"
+#include "deck_selection_controller.hpp"
 #include "pause_system.hpp"
 #include "animator_system.hpp"
 #include "terrain_update_system.hpp"
 #include "health_regenration_system.hpp"
 #include "AI_system.hpp"
 #include "flash_step_system.hpp"
+#include "ready_display_system.hpp"
 
-int main(int argc, char** argv) {
 
-	// Absolute dank
-	//boardgen::generateBoardJson("newboard.json", "assets/prototypes/boardsquare.json", "assets/prototypes/boardsquare2.json", 3, 4);
-
+int main(int argc, char** argv) {	
 #ifndef NDEBUG
 	bool is_debug = true;
 #else
@@ -96,7 +106,10 @@ int main(int argc, char** argv) {
 	ecs::register_component<transforms::transform>("transform");
     ecs::register_component<components::deck_ui>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");
-    ecs::register_component<transforms::transform>("transform");
+	ecs::register_component<components::deck_option>("deck_option");
+	ecs::register_component<components::deck_selection>("deck_selection");
+	ecs::register_component<components::ready_display>("ready_display");
+	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
 	ecs::register_component<rendering::light_point>("light_point");
@@ -138,11 +151,13 @@ int main(int argc, char** argv) {
 	tick_update_system ticker(timer);
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
+	deck_selection_controller deck_selection(hydrater, input, timer);
 	pause_system pauser(input, timer, glfw);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
 	AI_system AI_system;
 	flash_step_system flash_step_system;
+	ready_display_system ready_display(glfw);
 
 	ecs::systems systems({
 		&energy_system,
@@ -167,18 +182,17 @@ int main(int argc, char** argv) {
 		&flash_step_system,
 		&AI_system,
 		&player_control,
+		&deck_selection,
 		&spawner,
 		//
 		&animator,
 		&renderer,
 		&text_renderer,
-
-		
-		
-	   	 &deck_ui_controller,
+		&game_start_system,		
+	    &deck_ui_controller,
 		&endgame,
-		&pauser
-		});
+		&pauser,
+		&ready_display });
 
 	ecs::world world(systems, state);
 
@@ -202,9 +216,13 @@ int main(int argc, char** argv) {
 	components::tug_of_war_meter_loader tug_loader;
 	components::countdown_loader countdown_loader;
 	components::selection_arrow_loader selection_arrow_loader;
+	components::deck_selection_loader deck_selection_loader;
+	components::deck_option_loader deck_option_loader;
+	components::deck_ui_loader deck_ui_loader;
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
+	components::ready_display_loader ready_display_loader;
 
 	hydrater.register_loaders(
 		&aabb_collider_loader,
@@ -228,7 +246,11 @@ int main(int argc, char** argv) {
 		&tug_loader,
 		&countdown_loader,
 		&selection_arrow_loader,
-		&text_loader);
+		&text_loader,
+		&deck_selection_loader,
+		&deck_option_loader,
+		&deck_ui_loader,
+		&ready_display_loader);
 
 	hydrater.load();
 

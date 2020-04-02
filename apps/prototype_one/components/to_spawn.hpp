@@ -2,6 +2,7 @@
 #define __TO_SPAWN_HPP_
 
 #include "card_enum.hpp"
+#include "game_piece.hpp"
 
 struct to_spawn
 {
@@ -10,6 +11,7 @@ struct to_spawn
 	int y;
 	int team;
 	components::card_enum type;
+	components::UNIT_STATE state{ components::UNIT_STATE::WAIT };
 };
 
 

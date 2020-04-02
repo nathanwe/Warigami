@@ -22,8 +22,16 @@ namespace components
         deck_ui = 44,
 		terrain = 45,
 		countdown = 46,
-		selection_arrow = 47,
-		pause = 48
+		deck_selection = 47,
+		deck_option = 48,
+		selection_arrow = 49,
+		pause = 50,
+		ready_display = 51
+
+		// careful: need to take action after 
+		// count reaches 63.
+		// change the component_bitset typedef to be a std::bitset<128>
+		// and fix what breaks.
 	};
 }
 

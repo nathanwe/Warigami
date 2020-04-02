@@ -21,6 +21,7 @@ namespace components
 		WAIT,
 		DYING,
 		DEAD,
+		PREVIEW,
 		NUM
 	};
 

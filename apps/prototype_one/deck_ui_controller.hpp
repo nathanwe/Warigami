@@ -12,19 +12,26 @@
 
 class deck_ui_controller : public ecs::system_base
 {
+    glm::vec3 MovePosition{ -9999.f, 0.f, 0.f };
+
+
 public:
     deck_ui_controller(asset::scene_hydrater &hydrater);
 
+    void initialize(ecs::state& state) override;
     void update(ecs::state& state) override;
 
 private:
     asset::scene_hydrater& _hydrater;
+    ecs::entity* _board;
+
 
     void handle_deck_ui(ecs::state &state,
                         components::deck_ui &deck,
                         transforms::transform& deck_t,
                         entity_id deck_id);
 
+    void hide_deck_ui(ecs::state& state, components::deck_ui& deck, transforms::transform& deck_t);
 
     void handle_card_entities(ecs::state &state,
                               components::deck_ui &deck_ui,

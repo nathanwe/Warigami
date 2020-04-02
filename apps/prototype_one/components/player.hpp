@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <cstdint>
 
 namespace components
 {
@@ -21,8 +22,9 @@ namespace components
 		LOST,
 		WON
 	};
-
+	typedef std::uint8_t deck_index;
 	const static std::vector<card_enum> spider_deck = {
+
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
@@ -49,7 +51,7 @@ namespace components
 			card_enum::SCISSOR_QUEEN,
 	};
 
-	const static std::vector<card_enum> soldier_deck = { 
+	const std::vector<card_enum> soldier_deck = { 
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_RANGE_SOLDIER,
@@ -64,9 +66,12 @@ namespace components
 		card_enum::HEAVY_RANGE_SOLDIER
 	};
 
-	const static std::vector<card_enum> start_deck = soldier_deck;
-	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5 };
-	const static int dice_costanamos = 1;
+	const std::vector<card_enum> decks[]{
+		spider_deck,
+		soldier_deck
+	};
+
+	const std::vector<card_enum> start_deck = soldier_deck;
 
 	enum class dice_nets {
 		T = 0,
@@ -130,6 +135,9 @@ namespace components
 
 		float ticks_per_energy_grow{ 2.f };
 		float ticks_to_energy_grow{ ticks_per_energy_grow };
+
+		deck_index deck_selection{ 0 };
+		bool is_ready{ false };
 
 		card_enum draw() {
 			card_count++;

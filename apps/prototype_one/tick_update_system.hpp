@@ -29,6 +29,8 @@ public:
 		}
 
 		state.each<components::board>([&](components::board& board) {
+			if (board.state != components::game_state::gameplay) return;
+
 			board.tick_time_remaining -= _timer.smoothed_delta_secs();
 			
 			if (board.tick_time_remaining <= 0.f)

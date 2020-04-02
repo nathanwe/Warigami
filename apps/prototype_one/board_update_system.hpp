@@ -13,9 +13,7 @@
 #include "combat.hpp"
 #include "components/card_enum.hpp"
 #include "components/terrain.hpp"
-
 #include "components/to_spawn.hpp"
-
 #include <algorithm>
 
 
@@ -54,7 +52,9 @@ public:
     void update(ecs::state &r_state) override
     {
         r_state.each_id<transforms::transform, components::board>(
-                [&](entity_id board_id, auto &board_t, auto &board) {
+                [&](entity_id board_id, transforms::transform& board_t, components::board&board) {                    
+                    if (board.state != components::game_state::gameplay) return;
+
                     if (board.did_tick_elapse)
                         handle_tick_end(r_state, board_id, board_t, board);
                     else
