@@ -53,7 +53,7 @@ private:
 							open_space[0] = false;
 						}
 
-						if (game_piece.board_source == piece.board_source + glm::ivec2(1, 0) || piece.board_source.x >= 6)
+						if (game_piece.board_source == piece.board_source + glm::ivec2(1, 0) || piece.board_source.x >= board.columns-1)
 						{
 							open_space[1] = false;
 						}
