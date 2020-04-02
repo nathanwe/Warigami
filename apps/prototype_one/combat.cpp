@@ -17,7 +17,9 @@ void combats::combat_resolution::Resolve_Combats()
 					if (instance.unit_two.health > 0) {
 						instance.unit_two.health--;
 						// Turn health spheres red
-						//instance.unit_two.health_points[instance.unit_two.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+						if (instance.unit_two.health_points.size() >= instance.unit_two.health) {
+							instance.unit_two.health_points[instance.unit_two.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+						}
 					}
 				}
 				if (!instance.retaliation){
@@ -64,7 +66,9 @@ void combats::combat_resolution::Resolve_Combats()
 						if (instance.unit_one.health > 0) {
 							instance.unit_one.health--;
 							// Turn health spheres red
-							//instance.unit_one.health_points[instance.unit_one.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+							if (instance.unit_one.health_points.size() >= instance.unit_one.health) {
+								instance.unit_one.health_points[instance.unit_one.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+							}
 						}
 					}
 					break;

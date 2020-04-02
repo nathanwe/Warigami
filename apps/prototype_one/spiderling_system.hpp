@@ -70,7 +70,9 @@ private:
 					board.spawner.push_back(new_spawn);
 					piece.health -= 1;
 					// Turn health spheres red
-					//piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+					if (piece.health_points.size() >= piece.health) {
+						piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+					}
 				}
 				else if (open_space[1])
 				{
@@ -78,7 +80,9 @@ private:
 					board.spawner.push_back(new_spawn);
 					piece.health -= 1;
 					// Turn health spheres red
-					//piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+					if (piece.health_points.size() >= piece.health) {
+						piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+					}
 				}
 				else if (open_space[2])
 				{

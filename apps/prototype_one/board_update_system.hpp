@@ -46,10 +46,10 @@ public:
     {
         if (event.mType == event::EVENT_TYPE::UNIT_DEATH)
         {
-            //// Delete any children of the unit
-            //for (entity_id id : ((unit_death_event&)event).children) {
-            //    hydrater.remove_entity(id);
-            //}
+            // Delete any children of the unit
+            for (entity_id id : ((unit_death_event&)event).children) {
+                hydrater.remove_entity(id);
+            }
             // Delete unit
             hydrater.remove_entity(((unit_death_event &) event).id);
         }
