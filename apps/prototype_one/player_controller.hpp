@@ -30,6 +30,14 @@ public:
 
 	}
 
+	void initialize(ecs::state& state) override 
+	{
+		state.each<components::player>([&](components::player& player)
+			{
+				player.selected_column = player.team > 0.f ? 0 : 8;
+			});
+	}
+
 	void update(ecs::state& r_state) override
 	{
 		// Skip system when paused
@@ -37,9 +45,13 @@ public:
 		{
 			return true;
 		});
-		if (e && e->get_component<components::pause>().is_game_paused)
+		if (e)
 		{
-			return;
+			auto& pause = e->get_component<components::pause>();
+			if (pause.is_game_paused || !pause.is_game_started || pause.is_game_over)
+			{
+				return;
+			}
 		}
 
 		r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, components::board& board) {

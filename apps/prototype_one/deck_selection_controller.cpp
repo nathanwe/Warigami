@@ -6,6 +6,7 @@
 #include "components/countdown.hpp"
 #include "components/game_piece.hpp"
 #include "components/player.hpp"
+#include "components/pause.hpp"
 #include <rendering/renderable_text.hpp>
 
 deck_selection_controller::deck_selection_controller(
@@ -214,6 +215,10 @@ void deck_selection_controller::on_start(ecs::state& state)
 
 	state.each_id<components::game_piece>([&](entity_id id, components::game_piece& unit) {
 		_hydrater.remove_entity(id);
+	});
+
+	state.each<components::pause>([&](auto& pause) {
+		pause.is_game_started = true;
 	});
 }
 

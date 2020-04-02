@@ -23,9 +23,13 @@ public:
 		{
 			return true;
 		});
-		if (e && e->get_component<components::pause>().is_game_paused)
+		if (e)
 		{
-			return;
+			auto& pause = e->get_component<components::pause>();
+			if (pause.is_game_paused || !pause.is_game_started || pause.is_game_over)
+			{
+				return;
+			}
 		}
 
 		state.each<components::board>([&](components::board& board) {

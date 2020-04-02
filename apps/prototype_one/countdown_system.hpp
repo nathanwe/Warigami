@@ -7,6 +7,7 @@
 #include <util/string_table.hpp>
 
 #include "components/countdown.hpp"
+#include "components/pause.hpp"
 
 #define START_COUNT_SECONDS 4 // Including a "GO!" second
 
@@ -79,6 +80,10 @@ public:
 					text.scale += 0.02;
 					text.string_hash = _go_string;
 					board_component.state = components::game_state::gameplay;
+					r_state.each<components::pause>(auto& pause)
+					{
+						pause.is_game_started = true;
+					}
 				}
 				else {
 					text.scale += 0.01;

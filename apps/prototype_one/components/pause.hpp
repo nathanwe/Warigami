@@ -10,6 +10,8 @@ namespace components
 	struct pause : ecs::component<pause>
 	{
 		bool is_game_paused = false;
+		bool is_game_started = false;
+		bool is_game_over = false;
 	};
 }
 
