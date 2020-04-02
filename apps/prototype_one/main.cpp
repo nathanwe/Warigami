@@ -66,6 +66,7 @@
 #include "AI_system.hpp"
 #include "flash_step_system.hpp"
 #include "ready_display_system.hpp"
+#include "endgame_screen_system.hpp"
 
 
 int main(int argc, char** argv) {	
@@ -158,6 +159,7 @@ int main(int argc, char** argv) {
 	AI_system AI_system;
 	flash_step_system flash_step_system;
 	ready_display_system ready_display(glfw);
+	endgame_screen escreen(input, timer, glfw);
 
 	ecs::systems systems({
 		&energy_system,
@@ -191,6 +193,7 @@ int main(int argc, char** argv) {
 		&game_start_system,		
 	    &deck_ui_controller,
 		&endgame,
+		&escreen,
 		&pauser,
 		&ready_display });
 
