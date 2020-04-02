@@ -164,6 +164,10 @@ private:
 		{
 			_hydrater.add_from_prototype("assets/prototypes/endgame_lose_win_screen.json");
 		}
+		_state.each<components::pause>([&](auto& pause)
+			{
+				pause.is_game_over = true;
+			});
 	}
 
 private:
