@@ -214,6 +214,10 @@ void deck_selection_controller::on_start(ecs::state& state)
 	});
 
 	state.each_id<components::game_piece>([&](entity_id id, components::game_piece& unit) {
+		for (auto& hp : unit.health_points)
+		{
+			_hydrater.remove_entity(hp.id());
+		}
 		_hydrater.remove_entity(id);
 	});
 

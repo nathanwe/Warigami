@@ -192,9 +192,9 @@ int main(int argc, char** argv) {
 		&escreen,
 
 		//
-		& animator,
-		& renderer,
-		& text_renderer,
+		&animator,
+		&renderer,
+		&text_renderer,
 	});
 
 	ecs::world world(systems, state);
