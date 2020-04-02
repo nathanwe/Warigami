@@ -80,10 +80,10 @@ public:
 					text.scale += 0.02;
 					text.string_hash = _go_string;
 					board_component.state = components::game_state::gameplay;
-					r_state.each<components::pause>(auto& pause)
-					{
-						pause.is_game_started = true;
-					}
+					r_state.each<components::pause>([&](auto& pause)
+						{
+							pause.is_game_started = true;
+						});
 				}
 				else {
 					text.scale += 0.01;
