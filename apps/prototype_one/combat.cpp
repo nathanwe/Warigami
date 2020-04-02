@@ -20,6 +20,14 @@ void combats::combat_resolution::Resolve_Combats()
 						instance.unit_two.health_points[instance.unit_two.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
 					}
 				}
+				if (!instance.retaliation){
+					for (auto& effect2 : instance.unit_two.effects)
+					{
+						if (effect2 == combats::COMBAT_EFFECTS::FLASH_STEP) {
+							instance.unit_two.flash_step_flag = true;
+						}
+					}
+				}
 				break;
 			case::combats::COMBAT_EFFECTS::SLOW_TARGET:
 				instance.unit_two.speed = instance.unit_two.speed > 1 ? instance.unit_two.speed - 1 : instance.unit_two.speed;
@@ -41,7 +49,7 @@ void combats::combat_resolution::Resolve_Combats()
 					instance.unit_two.effects.push_back(combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH);
 				}
 				break;
-			}
+			}			
 			}
 		}
 
@@ -61,8 +69,29 @@ void combats::combat_resolution::Resolve_Combats()
 					}
 					break;
 				case::combats::COMBAT_EFFECTS::SLOW_TARGET:
+				{
 					instance.unit_one.speed = instance.unit_one.speed > 1 ? instance.unit_one.speed - 1 : instance.unit_one.speed;
 					break;
+				}
+				case::combats::COMBAT_EFFECTS::INFEST:
+				{
+					bool infested = false;
+					for (auto& effector : instance.unit_one.effects)
+					{
+						if (effector == combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH
+							|| effector == combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH
+							|| effector == combats::COMBAT_EFFECTS::SPAWN_SCISSOR_TROOPER_ON_DEATH)
+						{
+							infested = true;
+						}
+					}
+					if (!infested)
+					{
+						instance.unit_one.effects.push_back(combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH);
+
+					}
+					break;
+				}
 				}
 			}
 		}

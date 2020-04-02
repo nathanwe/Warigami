@@ -8,21 +8,23 @@
 namespace components
 {
 	enum class TERRAIN_ENUM {
+		NONE,
 		FIRE,
 		WEB,
-		GLUE,
-		POINTY_HAT_SPIKES,
 		NUM
 	};
 
 	struct terrain : ecs::component<terrain>
 	{
-		glm::ivec2 location;
-		components::TERRAIN_ENUM type;
-		float team;
-		int damage;
-		int charges;
-		int duration;
+		glm::ivec2 location = glm::ivec2(0,0);
+		components::TERRAIN_ENUM type = TERRAIN_ENUM::NONE;
+		float team = 0.0f;
+		int damage = 0;
+		int charges = -1;
+		int duration = -1;
+		//type, team(-1,0,1), diffus normal or ambient,
+		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3];
+
 	};
 }
 

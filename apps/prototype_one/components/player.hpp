@@ -22,9 +22,6 @@ namespace components
 		WON
 	};
 
-	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 2, 2, 2, 5, 5, 5, 8, 8, 8 };
-	const static int dice_costanamos = 1;
-
 	const static std::vector<card_enum> spider_deck = {
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSORLING_TWIN,
@@ -68,6 +65,8 @@ namespace components
 	};
 
 	const static std::vector<card_enum> start_deck = soldier_deck;
+	const static std::vector<int> card_costanamos = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5 };
+	const static int dice_costanamos = 1;
 
 	enum class dice_nets {
 		T = 0,
@@ -127,6 +126,7 @@ namespace components
 		components::dice_nets current_dice_shape = dice_nets::SEVEN;
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
+		bool controlled_by_AI = false;
 
 		float ticks_per_energy_grow{ 2.f };
 		float ticks_to_energy_grow{ ticks_per_energy_grow };

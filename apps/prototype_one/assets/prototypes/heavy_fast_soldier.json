@@ -6,11 +6,11 @@
                 "position": [ 0, 0, 0 ],
                 "scale": [ 0.5, 0.5, 0.5 ]
             },
-          {
-            "type": "renderable_mesh_static",
-            "mesh": "assets/meshes/unit/unit.obj",
-            "texture_diffuse": "assets/textures/spider/goliath.png"
-          },
+            {
+                "type": "renderable_mesh_static",
+                "mesh": "assets/meshes/unit/unit.obj",
+                "texture_diffuse": "assets/textures/cards/HeavyFastSoldier.png"
+            },
             {
                 "type": "game_piece",
                 "speed": 2.0,

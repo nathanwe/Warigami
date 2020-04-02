@@ -46,8 +46,8 @@ namespace components
 		components::UNIT_STATE last_rendered_state = UNIT_STATE::MOVE;
 		unsigned int last_sprite = 0;
 		float time_last_sprite = 0.f;
-
 		std::vector<ecs::entity> health_points;
+		bool flash_step_flag = false;
 	};
 }
 
