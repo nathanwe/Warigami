@@ -16,7 +16,7 @@ engineui::entities_view::entities_view(core::viewport& viewport, event::EventMan
 
 void engineui::entities_view::update(ecs::state state) {
     tree.clear();
-    m_r_ecs_state.each_id< transforms::transform>([&](auto id, auto transform)
+    m_r_ecs_state.each_id< transforms::transform>([&](auto id, auto& transform)
                                                   {
                                                       tree.insert(id);
                                                   });
