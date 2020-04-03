@@ -58,6 +58,44 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 			gp.effects.push_back(vec);
 		}
 	}
+
+	auto it = json.find("piece_type");
+	if (it != json.end())
+	{
+		std::string val = it->get<std::string>();
+		if (val == "spider_goliath")
+		{
+			gp.piece_type = components::card_enum::SCISSOR_GOLIATH;
+		}
+		else if (val == "spider_queen")
+		{
+			gp.piece_type = components::card_enum::SCISSOR_QUEEN;
+		}
+		else if (val == "spider_titan")
+		{
+			gp.piece_type = components::card_enum::SCISSOR_TITAN;
+		}
+		else if (val == "spider_trooper")
+		{
+			gp.piece_type = components::card_enum::SCISSOR_TROOPER;
+		}
+		else if (val == "spider_webber")
+		{
+			gp.piece_type = components::card_enum::SCISSOR_WEBBER;
+		}
+		else if (val == "spider_ling")
+		{
+			gp.piece_type = components::card_enum::SCISSORLING;
+		}
+		else if (val == "spider_egg")
+		{
+			gp.piece_type = components::card_enum::SCISSORLING_EGG;
+		}
+		else if (val == "spider_twin")
+		{
+			gp.piece_type = components::card_enum::SCISSORLING_TWIN;
+		}
+	}
 }
 
 component_bitset components::game_piece_loader::components_to_load()

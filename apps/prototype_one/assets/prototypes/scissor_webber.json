@@ -9,7 +9,7 @@
 			{
 				"type": "renderable_mesh_static",
 				"mesh": "assets/meshes/unit/unit.obj",
-				"param_diffuse": [ 0.5, 1.0, 0.0 ]
+				"texture_diffuse": "assets/textures/spider/webber.png"
 			},
 			{
 				"type": "game_piece",
@@ -25,10 +25,11 @@
 					[ 0.0, 3.0 ],
 					[ 1.0, 2.0 ],
 					[ 1.0, 3.0 ],
-					[-1.0, 2.0 ],
-					[-1.0, 3.0 ]
+					[ -1.0, 2.0 ],
+					[ -1.0, 3.0 ]
 				],
-				"effects": [ 0, 4 ]
+				"effects": [ 0, 4 ],
+				"piece_type": "spider_webber"
 			}
 		]
 	}

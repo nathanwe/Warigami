@@ -9,7 +9,7 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/unit/unit.obj",
-        "param_diffuse": [ 0.33, 0.0, 0.5 ]
+        "texture_diffuse": "assets/textures/spider/trooper.png"
       },
       {
         "type": "game_piece",
@@ -21,7 +21,8 @@
         "move_board": [ 0.0, 1.0 ],
         "move_world": [ 0.0, 0.0, 1.0 ],
         "attacks": [ [ 0.0, 1.0 ] ],
-        "effects": [ 0, 1 ]
+        "effects": [ 0, 1 ],
+        "piece_type": "spider_twin"
       }
     ]
   }

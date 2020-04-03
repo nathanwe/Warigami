@@ -9,7 +9,7 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/unit/unit.obj",
-        "param_diffuse": [ 1.0, 0.0, 0.0 ]
+        "texture_diffuse": "assets/textures/spider/goliath.png"
       },
       {
         "type": "game_piece",
@@ -22,15 +22,16 @@
         "move_world": [ 0.0, 0.0, 1.0 ],
         "attacks": [
           [ 1.0, 1.0 ],
-          [-1.0, 1.0 ],
+          [ -1.0, 1.0 ],
           [ 2.0, 2.0 ],
-          [-2.0, 2.0 ],
+          [ -2.0, 2.0 ],
           [ 1.0, 3.0 ],
-          [-1.0, 3.0 ],
+          [ -1.0, 3.0 ],
           [ 0.0, 2.0 ],
           [ 0.0, 4.0 ]
         ],
-        "effects": [ 0 ]      
+        "effects": [ 0 ],
+        "piece_type": "spider_titan"
       }
     ]
   }

@@ -24,8 +24,7 @@ public:
 	{
 		state.each<components::game_piece, rendering::renderable_mesh_static>([&](auto& piece, auto& render)
 		{
-			render.material.texture_scale = glm::vec2(0.5f, 0.3333f); // move this to json
-			render.material.texture_scale.x *= -piece.team;
+			render.material.texture_scale = get_sprite_scale(piece);
 
 			bool changedState = piece.state != piece.last_rendered_state;
 			bool changedSprite = false;
@@ -52,11 +51,7 @@ public:
 
 			if (changedSprite)
 			{
-				render.material.texture_offset = get_sprite(piece);
-				if (piece.team > 0.f)
-				{
-					render.material.texture_offset.x = render.material.texture_offset.x == 0.f ? 0.5f : 0.f;
-				}
+				render.material.texture_offset = get_sprite_offset(piece);
 				piece.last_rendered_state = piece.state;
 			}
 		});
@@ -82,7 +77,25 @@ private:
 		}
 	}
 
-	glm::vec2 get_sprite(components::game_piece& piece)
+	glm::vec2 get_sprite_offset(const components::game_piece& piece)
+	{
+		switch (piece.piece_type)
+		{
+		case components::card_enum::SCISSOR_GOLIATH:
+		case components::card_enum::SCISSOR_QUEEN:
+		case components::card_enum::SCISSOR_TITAN:
+		case components::card_enum::SCISSOR_TROOPER:
+		case components::card_enum::SCISSOR_WEBBER:
+		case components::card_enum::SCISSORLING_TWIN:
+			return get_walker_sprite(piece);
+		case components::card_enum::SCISSORLING_EGG:
+			return get_egg_sprite(piece);
+		default:
+			return { 0.f, 0.f };
+		}
+	}
+
+	glm::vec2 get_walker_sprite(const components::game_piece& piece)
 	{
 		switch (piece.state)
 		{
@@ -99,15 +112,35 @@ private:
 		}
 	}
 
+	glm::vec2 get_egg_sprite(const components::game_piece& piece)
+	{
+		return m_egg_offsets[piece.last_sprite];
+	}
+
+	glm::vec2 get_sprite_scale(const components::game_piece& piece)
+	{
+		glm::vec2 tex_scale(0.f);
+		if (piece.piece_type == components::card_enum::SCISSORLING_EGG)
+		{
+			tex_scale = glm::vec2(0.3333f, 1.0f);
+		}
+		else
+		{
+			tex_scale = glm::vec2(0.3333f, 0.5f);
+		}
+		tex_scale.x *= -piece.team;
+		return tex_scale;
+	}
 
 private:
 	core::frame_timer& m_timer;
 
-	const float m_time_between_sprites = 0.25f;
-	const std::array<glm::vec2, 2> m_attack_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.5f, 0.f) };
-	const std::array<glm::vec2, 1> m_dead_offsets   { glm::vec2(0.f, 0.3333f) };
-	const std::array<glm::vec2, 1> m_dying_offsets  { glm::vec2(0.f, 0.3333f) };
-	const std::array<glm::vec2, 3> m_move_offsets   { glm::vec2(0.f, 0.3333f), glm::vec2(0.5f, 0.3333f), glm::vec2(0.f, 0.6666f) };
+	static constexpr float m_time_between_sprites = 0.25f;
+	static constexpr std::array<glm::vec2, 2> m_attack_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f) };
+	static constexpr std::array<glm::vec2, 1> m_dead_offsets   { glm::vec2(0.f, 0.5f) };
+	static constexpr std::array<glm::vec2, 1> m_dying_offsets  { glm::vec2(0.f, 0.5f) };
+	static constexpr std::array<glm::vec2, 3> m_move_offsets   { glm::vec2(0.f, 0.5f), glm::vec2(0.3333f, 0.5f), glm::vec2(0.6666f, 0.5f) };
+	static constexpr std::array<glm::vec2, 3> m_egg_offsets    { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f), glm::vec2(0.6666f, 0.f) };
 };
 
 

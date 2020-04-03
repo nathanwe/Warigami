@@ -25,7 +25,8 @@
           [ 1.0, 1.0 ],
           [-1.0, 1.0 ]
         ],
-        "effects": [ 0 ]
+        "effects": [ 0 ],
+        "piece_type": "spider_goliath"
       }
     ]
   }
