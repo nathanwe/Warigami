@@ -88,11 +88,11 @@ public:
 						if (terrain.growth_stage == 3 && player.selected_row == terrain.location.x && square.team == player.team) {
 							terrain.growth_stage--;
 							square_t.rotation = glm::vec3(0, AI_MATH_HALF_PI * player.team, 0);
+							player.energy+=2;
 						}
 						if (terrain.growth_stage == 2 && player.selected_row != terrain.location.x && square.team == player.team) {
 							terrain.growth_stage--;
-							square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
-							player.energy++;
+							square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);							
 						}
 						});
 					//terrain textures
