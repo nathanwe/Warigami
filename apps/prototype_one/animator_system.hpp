@@ -133,6 +133,10 @@ private:
 			offset = m_move_offsets[piece.last_sprite];
 			break;
 		}
+		if (piece.team > 0.f)
+		{
+			offset.x += 0.3333f;
+		}
 		return offset;
 	}
 
