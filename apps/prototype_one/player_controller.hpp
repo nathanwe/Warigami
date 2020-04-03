@@ -32,10 +32,14 @@ public:
 
 	void initialize(ecs::state& state) override 
 	{
-		state.each<components::player>([&](components::player& player)
+		state.each<components::player>([&](auto& player)
+		{
+			state.first<components::board>([&](auto& board)
 			{
-				player.selected_column = player.team > 0.f ? 0 : 8;
+				player.selected_column = player.team > 0.f ? 0 : board.rows - 1;
+				return true;
 			});
+		});
 	}
 
 	void update(ecs::state& r_state) override
