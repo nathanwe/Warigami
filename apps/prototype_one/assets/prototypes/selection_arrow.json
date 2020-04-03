@@ -8,8 +8,9 @@
       },
       {
         "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/arrow/arrow.obj",
-        "param_diffuse": [ 0.1, 0.1, 0.1 ]
+        "mesh": "assets/meshes/quad/quad.obj",
+        "texture_diffuse": "assets/textures/spider/queen.png",
+        "texture_scale": [ 0.25, 0.3333 ]
       }
     ]
   }
