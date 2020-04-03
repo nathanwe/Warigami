@@ -70,13 +70,14 @@ private:
 		else
 			nerdT.rotation.y = glm::quarter_pi<float>() * 1.5f;
 
-		/*for (int i = 0; i < nerdP.health; i++) {
+		for (int i = 0; i < nerdP.health; i++) {
 			ecs::entity& health_unit = _hydrater.add_from_prototype("assets/prototypes/health_unit.json");
 			transforms::transform& health_unitT = health_unit.get_component<transforms::transform>();
 			health_unitT.has_parent = true;
 			health_unitT.parent = nerd.id();
+			health_unitT.is_matrix_dirty = true;
 			nerdP.health_points.push_back(health_unit);
-		}*/
+		}
 
 		nerdP.continuous_board_location = nerdP.board_source;
 		nerdP.board_destination = nerdP.board_source;

@@ -168,8 +168,6 @@ int main(int argc, char** argv) {
 		&count_system,
 		&transformer,
 		&camera_updater,
-		&renderer,
-        &text_renderer,
 		&flycam,
 		&audio_system,
 		&physics_update,
@@ -186,16 +184,18 @@ int main(int argc, char** argv) {
 		&player_control,
 		&deck_selection,
 		&spawner,
+
+		&deck_ui_controller,
+		&ready_display,
+		&pauser,
+		&endgame,
+		&escreen,
+
 		//
 		&animator,
 		&renderer,
 		&text_renderer,
-		&game_start_system,		
-	    &deck_ui_controller,
-		&endgame,
-		&escreen,
-		&pauser,
-		&ready_display });
+	});
 
 	ecs::world world(systems, state);
 
