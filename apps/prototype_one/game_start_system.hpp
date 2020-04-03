@@ -32,6 +32,8 @@ public:
 		nerdT.is_matrix_dirty = true;
 	}
 
+	void update(ecs::state& r_state) override {}
+
 	void initialize(ecs::state& r_state) override
 	{
 		using namespace std::string_literals;
@@ -109,10 +111,6 @@ public:
 					}
 				});
 			});
-	}
-
-	virtual void update(ecs::state& r_state) override
-	{
 	}
 
 private:
