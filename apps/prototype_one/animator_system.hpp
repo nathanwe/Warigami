@@ -56,10 +56,24 @@ public:
 			}
 		});
 	}
+
 private:
 	void loop_sprite(components::game_piece& piece, int steps)
 	{
 		piece.last_sprite += steps;
+		switch (piece.piece_type)
+		{
+		case components::card_enum::SCISSORLING_EGG:
+			loop_spider_egg(piece);
+			break;
+		default:
+			loop_spider_walker(piece);
+			break;
+		}
+	}
+
+	void loop_spider_walker(components::game_piece& piece)
+	{
 		switch (piece.state)
 		{
 		case components::UNIT_STATE::ATTACK:
@@ -75,6 +89,11 @@ private:
 			piece.last_sprite %= m_move_offsets.size();
 			break;
 		}
+	}
+
+	void loop_spider_egg(components::game_piece& piece)
+	{
+		piece.last_sprite %= m_egg_offsets.size();
 	}
 
 	glm::vec2 get_sprite_offset(const components::game_piece& piece)
@@ -98,19 +117,23 @@ private:
 
 	glm::vec2 get_walker_sprite(const components::game_piece& piece)
 	{
+		glm::vec2 offset(0.f);
 		switch (piece.state)
 		{
 		case components::UNIT_STATE::ATTACK:
-			return m_attack_offsets[piece.last_sprite];
+			offset = m_attack_offsets[piece.last_sprite];
+			break;
 		case components::UNIT_STATE::DEAD:
-			return m_dead_offsets[piece.last_sprite];
+			offset = m_dead_offsets[piece.last_sprite];
+			break;
 		case components::UNIT_STATE::DYING:
-			return m_dying_offsets[piece.last_sprite];
+			offset = m_dying_offsets[piece.last_sprite];
+			break;
 		case components::UNIT_STATE::MOVE:
-			return m_move_offsets[piece.last_sprite];
-		default:
-			return { 0.f, 0.f };
+			offset = m_move_offsets[piece.last_sprite];
+			break;
 		}
+		return offset;
 	}
 
 	glm::vec2 get_egg_sprite(const components::game_piece& piece)
