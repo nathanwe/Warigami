@@ -20,7 +20,7 @@ void test_transform()
     
     asset::asset_manager assets;
     asset::scene scene(ScenePath, assets);
-    asset::scene_hydrater hydrater(state, scene);
+    asset::scene_hydrater hydrater(state);
 
     transforms::transform_loader transform_loader;
     hydrater.register_loaders(&transform_loader);
@@ -35,7 +35,7 @@ void test_renderable()
 
     asset::asset_manager assets;
     asset::scene scene(ScenePath, assets);
-    asset::scene_hydrater hydrater(state, scene);
+    asset::scene_hydrater hydrater(state);
 
     rendering::asset_cache render_asset_cache(assets);
     rendering::render_loader render_loader(render_asset_cache);

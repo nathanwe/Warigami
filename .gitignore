@@ -24,3 +24,8 @@ cmake-build-release/*
 
 sh.exe.stackdump
 
+/installer/GAMEDIRECTORY/bin
+/installer/GAMEDIRECTORY/cmake
+/installer/GAMEDIRECTORY/lib
+/installer/GAMEDIRECTORY/include
+/installer/GAMEDIRECTORY/nlohmann*

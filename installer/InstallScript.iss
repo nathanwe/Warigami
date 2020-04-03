@@ -16,8 +16,8 @@
 ;   4) Update the redistributables required for your game.
 [Setup]
 
-#define ApplicationName 'YOUR_GAME_NAME_HERE'
-#define ApplicationVersion '0.0.0'
+#define ApplicationName 'prototype_one'
+#define ApplicationVersion '0.0.1'
 
 DisableWelcomePage=no
 WizardImageFile=INSTALLERFILES\panel_image_100.bmp
@@ -90,7 +90,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: ".\INSTALLERFILES\panel_image_*.bmp"; Flags: dontcopy
 
 ; The game directoy is exactly what you want your install directory in program files to look like
-Source: .\GAMEDIRECTORY\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: .\GAMEDIRECTORY\bin\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; Include the redistributable programs and install them to the temp directory
 ; TODO: Update this list with the correct redistributables for your game.
