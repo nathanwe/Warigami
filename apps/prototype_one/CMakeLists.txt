@@ -41,11 +41,10 @@ add_executable (prototype_one
 	components/tug_of_war_meter.cpp
 	deck_selection_controller.cpp
 	deck_ui_controller.cpp
-	deck_ui_controller.cpp
-	deck_ui_controller.hpp
 	game_start_system.hpp
 	main.cpp
-	ready_display_system.cpp)
+	ready_display_system.cpp
+	)
 
 target_link_libraries(prototype_one PRIVATE
 	ecs

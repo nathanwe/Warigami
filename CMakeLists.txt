@@ -37,5 +37,9 @@ add_subdirectory(test)
 
 # Packaging
 INSTALL(TARGETS prototype_one COMPONENT prototype_one)
+INSTALL(TARGETS prototype_one glbinding COMPONENT prototype_one)
+INSTALL(FILES ${FMOD_SO_FILE} ${FREETYPE_SO_FILE} DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT prototype_one)
+INSTALL(DIRECTORY ${CMAKE_BINARY_DIR}/bin/assets DESTINATION / COMPONENT prototype_one)
+
 include (cmake/CPackBuild.cmake)
 
