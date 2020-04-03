@@ -25,31 +25,7 @@ public:
 		state.each<components::game_piece, rendering::renderable_mesh_static>([&](auto& piece, auto& render)
 		{
 			render.material.texture_scale = get_sprite_scale(piece);
-
-			bool changedState = piece.state != piece.last_rendered_state;
-			bool changedSprite = false;
-
-			if (changedState)
-			{
-				piece.time_last_sprite = m_timer.total_s();
-				piece.last_sprite = 0;
-				changedSprite = true;
-			}
-			else
-			{
-				float curr = m_timer.total_s();
-				float time_diff = curr - piece.time_last_sprite;
-				float steps = time_diff / m_time_between_sprites;
-				int floored_steps = static_cast<int>(steps);
-				if (floored_steps > 0)
-				{
-					loop_sprite(piece, floored_steps);
-					changedSprite = true;
-					piece.time_last_sprite = curr;
-				}
-			}
-
-			if (changedSprite)
+			if (try_change_sprite(piece))
 			{
 				render.material.texture_offset = get_sprite_offset(piece);
 				piece.last_rendered_state = piece.state;
@@ -58,6 +34,32 @@ public:
 	}
 
 private:
+	bool try_change_sprite(components::game_piece& piece)
+	{
+		bool changedSprite = false;
+		bool changedState = piece.state != piece.last_rendered_state;
+		if (changedState)
+		{
+			piece.time_last_sprite = m_timer.total_s();
+			piece.last_sprite = 0;
+			changedSprite = true;
+		}
+		else
+		{
+			float curr = m_timer.total_s();
+			float time_diff = curr - piece.time_last_sprite;
+			float steps = time_diff / m_time_between_sprites;
+			int floored_steps = static_cast<int>(steps);
+			if (floored_steps > 0)
+			{
+				loop_sprite(piece, floored_steps);
+				changedSprite = true;
+				piece.time_last_sprite = curr;
+			}
+		}
+		return changedSprite;
+	}
+
 	void loop_sprite(components::game_piece& piece, int steps)
 	{
 		piece.last_sprite += steps;
@@ -77,16 +79,16 @@ private:
 		switch (piece.state)
 		{
 		case components::UNIT_STATE::ATTACK:
-			piece.last_sprite %= m_attack_offsets.size();
+			piece.last_sprite %= m_spider_attack_offsets.size();
 			break;
 		case components::UNIT_STATE::DEAD:
-			piece.last_sprite %= m_dead_offsets.size();
+			piece.last_sprite %= m_spider_dead_offsets.size();
 			break;
 		case components::UNIT_STATE::DYING:
-			piece.last_sprite %= m_dying_offsets.size();
+			piece.last_sprite %= m_spider_dying_offsets.size();
 			break;
 		case components::UNIT_STATE::MOVE:
-			piece.last_sprite %= m_move_offsets.size();
+			piece.last_sprite %= m_spider_move_offsets.size();
 			break;
 		}
 	}
@@ -121,16 +123,16 @@ private:
 		switch (piece.state)
 		{
 		case components::UNIT_STATE::ATTACK:
-			offset = m_attack_offsets[piece.last_sprite];
+			offset = m_spider_attack_offsets[piece.last_sprite];
 			break;
 		case components::UNIT_STATE::DEAD:
-			offset = m_dead_offsets[piece.last_sprite];
+			offset = m_spider_dead_offsets[piece.last_sprite];
 			break;
 		case components::UNIT_STATE::DYING:
-			offset = m_dying_offsets[piece.last_sprite];
+			offset = m_spider_dying_offsets[piece.last_sprite];
 			break;
 		case components::UNIT_STATE::MOVE:
-			offset = m_move_offsets[piece.last_sprite];
+			offset = m_spider_move_offsets[piece.last_sprite];
 			break;
 		}
 		if (piece.team > 0.f)
@@ -164,11 +166,17 @@ private:
 	core::frame_timer& m_timer;
 
 	static constexpr float m_time_between_sprites = 0.25f;
-	static constexpr std::array<glm::vec2, 2> m_attack_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f) };
-	static constexpr std::array<glm::vec2, 1> m_dead_offsets   { glm::vec2(0.f, 0.5f) };
-	static constexpr std::array<glm::vec2, 1> m_dying_offsets  { glm::vec2(0.f, 0.5f) };
-	static constexpr std::array<glm::vec2, 3> m_move_offsets   { glm::vec2(0.f, 0.5f), glm::vec2(0.3333f, 0.5f), glm::vec2(0.6666f, 0.5f) };
-	static constexpr std::array<glm::vec2, 3> m_egg_offsets    { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f), glm::vec2(0.6666f, 0.f) };
+
+	static constexpr std::array<glm::vec2, 2> m_spider_attack_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f) };
+	static constexpr std::array<glm::vec2, 1> m_spider_dead_offsets   { glm::vec2(0.f, 0.5f) };
+	static constexpr std::array<glm::vec2, 1> m_spider_dying_offsets  { glm::vec2(0.f, 0.5f) };
+	static constexpr std::array<glm::vec2, 3> m_spider_move_offsets   { glm::vec2(0.f, 0.5f), glm::vec2(0.3333f, 0.5f), glm::vec2(0.6666f, 0.5f) };
+
+	static constexpr std::array<glm::vec2, 3> m_egg_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f), glm::vec2(0.6666f, 0.f) };
+
+	static constexpr std::array<glm::vec2, 1> m_queen_energy_offsets { glm::vec2(0.f, 0.f) };
+	static constexpr std::array<glm::vec2, 2> m_queen_place_offsets  { glm::vec2(0.f, 0.3333f), glm::vec2(0.25f, 0.3333f) };
+	static constexpr std::array<glm::vec2, 4> m_queen_move_offsets   { glm::vec2(0.f, 0.6666f), glm::vec2(0.25f, 0.6666f), glm::vec2(0.5f, 0.6666f), glm::vec2(0.75f, 0.6666f) };
 };
 
 
