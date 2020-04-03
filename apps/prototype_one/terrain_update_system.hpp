@@ -35,49 +35,71 @@ public:
 				state.each<components::terrain, rendering::renderable_mesh_static, components::board_square>([&]
 				(components::terrain& terrain, rendering::renderable_mesh_static& mesh, components::board_square& square) {
 						
-						if (board.did_tick_elapse)
-						{
-							//terrain matenence
-							if (terrain.duration > 0) {
-								terrain.duration--;
-							}
-							if (terrain.duration == 0) {
-								terrain.type = components::TERRAIN_ENUM::NONE;
-								terrain.duration--;
-							}
-							if (terrain.charges == 0) {
-								terrain.type = components::TERRAIN_ENUM::NONE;
-								terrain.charges--;
-							}
-							// terrrain effects
-							state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
-								if (terrain.location == game_piece.board_destination)
-								{
-									if (terrain.type == components::TERRAIN_ENUM::FIRE)
-									{
-										if (terrain.team != game_piece.team)
-										{
-											game_piece.health -= terrain.damage;	
-											terrain.charges--;
-										}
-									}
-									if (terrain.type == components::TERRAIN_ENUM::WEB)
-									{
-										if (terrain.team != game_piece.team)
-										{
-											game_piece.speed -= terrain.damage;
-											terrain.charges--;
-										}
-									}
-								}									
-								});
+					if (board.did_tick_elapse)
+					{
+						//terrain matenence
+						if (terrain.duration > 0) {
+							terrain.duration--;
 						}
-						//terrain textures
-						//type, team(-1,0,1), diffus normal or ambient,
-						mesh.material.texture_diffuse = terrain.textures[(int)terrain.type][(int)terrain.team + 1][0];
-						mesh.material.texture_normal = terrain.textures[(int)terrain.type][(int)terrain.team + 1][1];
-						mesh.material.texture_ambient_occlusion = terrain.textures[(int)terrain.type][(int)terrain.team + 1][2];						
+						if (terrain.duration == 0) {
+							terrain.type = components::TERRAIN_ENUM::NONE;
+							terrain.duration--;
+						}
+						if (terrain.charges == 0) {
+							terrain.type = components::TERRAIN_ENUM::NONE;
+							terrain.charges--;
+						}
+						if (terrain.growth_stage == 0) {
+							terrain.type = components::TERRAIN_ENUM::NONE;
+						}
+						if (terrain.growth_stage > 3) {
+							terrain.growth_stage--;
+						}
+						if (terrain.growth_stage == 1) {
+							terrain.growth_stage--;
+						}
+						
+						// terrain effects
+						state.each<components::game_piece, transforms::transform>([&](auto& game_piece, auto& transform) {
+							if (terrain.location == game_piece.board_destination)
+							{								
+								if (terrain.type == components::TERRAIN_ENUM::FIRE)
+								{
+									if (terrain.team != game_piece.team)
+									{
+										game_piece.health -= terrain.damage;	
+										terrain.charges--;
+									}
+								}
+								if (terrain.type == components::TERRAIN_ENUM::WEB)
+								{
+									if (terrain.team != game_piece.team)
+									{
+										game_piece.speed -= terrain.damage;
+										terrain.charges--;
+									}
+								}
+							}									
+						});
+
+					}
+					state.each<components::player>([&](components::player& player) {
+						if (terrain.growth_stage == 3 && player.selected_row == terrain.location.x && square.team == player.team) {
+							terrain.growth_stage--;
+						}
+						if (terrain.growth_stage == 2 && player.selected_row != terrain.location.x && square.team == player.team) {
+							terrain.growth_stage--;
+							player.energy++;
+						}
+						});
+					//terrain textures
+					//type, team(-1,0,1), diffus normal or ambient,
+					mesh.material.texture_diffuse = terrain.textures[(int)terrain.type][(int)terrain.team + 1][0][(int)terrain.growth_stage];
+					mesh.material.texture_normal = terrain.textures[(int)terrain.type][(int)terrain.team + 1][1][(int)terrain.growth_stage];
+					mesh.material.texture_ambient_occlusion = terrain.textures[(int)terrain.type][(int)terrain.team + 1][2][(int)terrain.growth_stage];
+
 					});
+
 				
 			});
 		

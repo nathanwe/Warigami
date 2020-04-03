@@ -79,12 +79,12 @@ public:
 							}
 						});
 
-					draw_goalposts(r_state, player);
+					//draw_goalposts(r_state, player);
 					gather_points(r_state, player);					
 					handle_player_selection(player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, player_specifics.controls);
-					gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
+					//gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
 					show_cursor(player, r_state, player_specifics);
 					
 				});
@@ -138,10 +138,10 @@ private:
 				}
 				row_select(transform, 1);
 				if (square.team == 1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.tint_color += glm::vec3(0.2f, 0.2f, 0.2f);
+					render_mesh_s.material.tint_color += glm::vec3(0.2f, -0.1f, -0.1f);
 				}
 				if (square.team == -1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.tint_color += glm::vec3(-0.2f, -0.2f, -0.2f);
+					render_mesh_s.material.tint_color += glm::vec3(-0.1f, -0.1f, 0.2f);
 				}
 			});
 	}

@@ -11,6 +11,7 @@ namespace components
 		NONE,
 		FIRE,
 		WEB,
+		ENERGY_FLOWER,
 		NUM
 	};
 
@@ -22,8 +23,10 @@ namespace components
 		int damage = 0;
 		int charges = -1;
 		int duration = -1;
+		// 0,1 = dying, 2 = blowing, 3 = grown, 4+ = growing
+		int growth_stage = 0;
 		//type, team(-1,0,1), diffus normal or ambient,
-		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3];
+		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3][7];
 
 	};
 }
