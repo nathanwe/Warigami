@@ -49,8 +49,8 @@ public:
 					pause.is_game_paused = false;
 					renderable.is_enabled = false;
 
-					state.free_all();
-					m_r_hydrater.load();
+					//state.free_all();
+					//m_r_hydrater.load();
 					return;
 				}
 				/*
