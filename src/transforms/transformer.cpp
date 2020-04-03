@@ -7,6 +7,11 @@
 
 namespace transforms
 {
+	transformer::transformer(asset::scene_hydrater& hydrater) : _hydrater(hydrater)
+	{
+	}
+
+
 	void transformer::update(ecs::state& state)
 	{
 		state.each_id<transform>([&](auto id, auto& r_transform)
@@ -33,7 +38,7 @@ namespace transforms
 				r_transform.local_to_world = calculate_matrix(r_transform);
 				r_transform.is_matrix_dirty = false;
 				did_change = true;
-			}
+			}			
 		}
 		else
 		{
@@ -57,5 +62,14 @@ namespace transforms
 			}
 		}
 		return did_change;
+	}
+}
+
+void transforms::transformer::remove_if_orphaned(entity_id id, transforms::transform& r_transform)
+{
+	if (r_transform.parent != ecs::default_entity_id)
+	{
+		_hydrater.remove_entity(id);
+		return;
 	}
 }

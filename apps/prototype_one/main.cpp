@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
 	rendering::render_state render_state;
 	rendering::renderer renderer(window_view, is_debug, render_asset_cache, assets, timer, render_state);
 	rendering::freetype_system text_renderer(window_view, assets, strings, render_state);
-	transforms::transformer transformer;
+	transforms::transformer transformer(hydrater);
 
 	energy_meter_system energy_system(strings, glfw);
 	health_meter_system health_system;

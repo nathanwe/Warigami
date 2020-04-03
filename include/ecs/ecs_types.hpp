@@ -15,4 +15,10 @@ typedef unsigned long long component_bitset;
 typedef std::uint32_t entity_id;
 typedef std::uint8_t component_shift;
 
+namespace ecs
+{
+	const entity_id default_entity_id{};
+}
+
+
 #endif //ECS_DEV_ECS_TYPES_H

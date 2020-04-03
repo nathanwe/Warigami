@@ -4,6 +4,7 @@
 #include "ecs/state.hpp"
 #include "ecs/system_base.hpp"
 #include "transforms/transform.hpp"
+#include <asset/scene_hydrater.hpp>
 
 #include "glm/glm.hpp"
 
@@ -12,10 +13,15 @@ namespace transforms
 	class transformer : public ecs::system_base
 	{
 	public:
+		transformer(asset::scene_hydrater& hydrater);
+
 		virtual void update(ecs::state& state) override;
 
 	private:
+		asset::scene_hydrater& _hydrater;
+
 		bool clean_transform_hierarchy(ecs::state& r_state, entity_id id, transform& r_transform);
+		void remove_if_orphaned(entity_id id, transform& r_transform);
 	};
 }
 
