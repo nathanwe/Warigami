@@ -6,6 +6,7 @@
 #include <ecs/state.hpp>
 #include <transforms/transform.hpp>
 #include <rendering/renderable_mesh_static.hpp>
+#include <math.h>
 
 #include "components/board.hpp"
 #include "components/pause.hpp"
@@ -32,8 +33,8 @@ public:
 		}
 		state.each_id<transforms::transform, components::board>(
 			[&](entity_id board_id, transforms::transform& board_t, components::board& board) {
-				state.each<components::terrain, rendering::renderable_mesh_static, components::board_square>([&]
-				(components::terrain& terrain, rendering::renderable_mesh_static& mesh, components::board_square& square) {
+				state.each<components::terrain, rendering::renderable_mesh_static, components::board_square, transforms::transform>([&]
+				(components::terrain& terrain, rendering::renderable_mesh_static& mesh, components::board_square& square, transforms::transform& square_t) {
 						
 					if (board.did_tick_elapse)
 					{
@@ -86,9 +87,11 @@ public:
 					state.each<components::player>([&](components::player& player) {
 						if (terrain.growth_stage == 3 && player.selected_row == terrain.location.x && square.team == player.team) {
 							terrain.growth_stage--;
+							square_t.rotation = glm::vec3(0, AI_MATH_HALF_PI * player.team, 0);
 						}
 						if (terrain.growth_stage == 2 && player.selected_row != terrain.location.x && square.team == player.team) {
 							terrain.growth_stage--;
+							square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
 							player.energy++;
 						}
 						});
