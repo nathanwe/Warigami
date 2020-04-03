@@ -100,15 +100,7 @@ public:
 					}
 					if (board_square.x + 2 < board_square.y) {
 						board_square.team = -1.0f;
-					}
-
-					if (id % 4 == 0) {
-						terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
-						terrain.team = 0.0f;
-						terrain.damage = -1;
-						terrain.duration = -1;
-						terrain.growth_stage = 5;
-					}
+					}					
 				});
 			});
 	}

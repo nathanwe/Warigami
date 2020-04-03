@@ -66,6 +66,7 @@
 #include "flash_step_system.hpp"
 #include "ready_display_system.hpp"
 #include "endgame_screen_system.hpp"
+#include "energy_flower_creation_system.hpp"
 
 
 
@@ -161,6 +162,7 @@ int main(int argc, char** argv) {
 	flash_step_system flash_step_system;
 	ready_display_system ready_display(glfw);
 	endgame_screen escreen(input, timer, glfw);
+	energy_flower_creation_system energy_flower_creation_system;
 
 	ecs::systems systems({
 		&energy_system,
@@ -176,6 +178,7 @@ int main(int argc, char** argv) {
 		// order of these matters
 		&game_start_system,		
 		&ticker,
+		&energy_flower_creation_system,
 		&terrain_update_system,
 		&health_regen,
 		&spiderlings,	
