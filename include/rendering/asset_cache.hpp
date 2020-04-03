@@ -23,6 +23,14 @@ namespace rendering
 		template <typename TAsset, typename TPath>
 		TAsset& get(TPath const& filepath);
 
+		void clear()
+		{
+			_cube_maps.clear();
+			_mesh_statics.clear();
+			_textures.clear();
+			_models.clear();
+		}
+
 	private:
 		mesh_static mesh_from_aimesh(const aiScene* scene, aiMesh* mesh);
 		void texture_from_assimp(unsigned int& out, const std::string& filepath, aiMaterial* aimat, aiTextureType type, unsigned int i);
@@ -52,6 +60,8 @@ namespace rendering
 
 	template <>
 	model& asset_cache::get<model>(std::string const& filepath);
+
+
 }
 
 #endif

@@ -208,9 +208,20 @@ void deck_selection_controller::on_start(ecs::state& state)
 	auto& board_component = _board->get_component<components::board>();
 	board_component.state = components::game_state::countdown;
 
+	auto& selection = _deck_selection->get_component<components::deck_selection>();	
+
 	state.each<components::player>([&](components::player& player) {
-		player.deck = components::decks[player.deck_selection];
-		player.start_deck = components::decks[player.deck_selection];
+		
+		auto& option_id = player.team == 1.f 
+			? selection.p1_deck_options[player.deck_selection]
+			: selection.p2_deck_options[player.deck_selection];
+
+		auto& option = state.find_entity(option_id);
+		auto& option_c = option.get_component<components::deck_option>();
+		auto deck_index = option_c.deck;
+
+		player.deck = components::decks[(size_t)deck_index];
+		player.start_deck = components::decks[(size_t)deck_index];
 		player.shuffle();
 		player.redraw();
 	});
@@ -264,17 +275,27 @@ void deck_selection_controller::spawn_preview_units(ecs::state& state)
 	auto& board = _board->get_component<components::board>();
 	auto& board_t = _board->get_component<transforms::transform>();
 	auto board_id = _board->id();
+	auto& selection = _deck_selection->get_component<components::deck_selection>();
 
 	for (size_t i = 0; i < 2; ++i)
 	{
 		auto& player_c = _players[i]->get_component<components::player>();
-		auto& deck = _decks[player_c.deck_selection];
-		auto& preview_offsets = _preview_positions[player_c.deck_selection];
+
+		auto& option_id = player_c.team == 1.f
+			? selection.p1_deck_options[player_c.deck_selection]
+			: selection.p2_deck_options[player_c.deck_selection];
+
+		auto& option = state.find_entity(option_id);
+		auto& option_c = option.get_component<components::deck_option>();
+		auto deck_index = (size_t) option_c.deck;
+
+		auto& deck = _decks[deck_index];
+		auto& preview_offsets = _preview_positions[deck_index];
 		
 		size_t offset_index = 0;
 		for (auto card : deck)
 		{
-			auto& offset = _preview_positions[player_c.deck_selection][offset_index++];
+			auto& offset = _preview_positions[deck_index][offset_index++];
 
 			auto coords = player_c.team == 1.f
 				? offset

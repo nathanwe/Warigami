@@ -82,8 +82,6 @@ private:
         do_game_piece_actions(r_state);
         resolver.Resolve_Combats();
         generate_new_board_state(r_state);
-
-        
     }
 
     void handle_tick_progress(ecs::state &r_state, entity_id board_id, transforms::transform &board_t,

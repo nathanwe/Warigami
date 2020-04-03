@@ -289,6 +289,6 @@ int main(int argc, char** argv) {
 		}
 
 		hydrater.clear();
-		state.free_all();		
+		state.free_all();
 	}
 }

@@ -59,7 +59,7 @@
         {
           "type": "deck_option",
           "team": 1,
-          "deck": 1
+          "deck": 0
         },
         {
           "type": "transform",
@@ -70,7 +70,7 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/cards/wizard_back.png"
+          "texture_diffuse": "assets/textures/cards/spider_back.png"
         }
       ]
     },
@@ -103,7 +103,7 @@
         {
           "type": "deck_option",
           "team": -1,
-          "deck": 1
+          "deck": 0
         },
         {
           "type": "transform",
@@ -114,7 +114,7 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/cards/wizard_back.png"
+          "texture_diffuse": "assets/textures/cards/spider_back.png"
         }
       ]
     }
