@@ -161,7 +161,7 @@ int main(int argc, char** argv) {
 	AI_system AI_system;
 	flash_step_system flash_step_system;
 	ready_display_system ready_display(glfw);
-	endgame_screen escreen(input, timer, glfw);
+	endgame_screen escreen(input, timer, glfw, events);
 	energy_flower_creation_system energy_flower_creation_system;
 
 	ecs::systems systems({

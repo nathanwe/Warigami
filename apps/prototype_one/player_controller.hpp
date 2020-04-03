@@ -32,10 +32,14 @@ public:
 
 	void initialize(ecs::state& state) override 
 	{
-		state.each<components::player>([&](components::player& player)
+		state.each<components::player>([&](auto& player)
+		{
+			state.first<components::board>([&](auto& board)
 			{
-				player.selected_column = player.team > 0.f ? 0 : 8;
+				player.selected_column = player.team > 0.f ? 0 : board.rows - 1;
+				return true;
 			});
+		});
 	}
 
 	void update(ecs::state& r_state) override
@@ -80,7 +84,7 @@ public:
 						});
 
 					//draw_goalposts(r_state, player);
-					gather_points(r_state, player);					
+					//gather_points(r_state, player);					
 					handle_player_selection(player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, player_specifics.controls);
@@ -248,29 +252,30 @@ private:
 		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>(
 			[&](components::board_square& square, transforms::transform& transform, rendering::renderable_mesh_static& render_mesh_s)
 			{
-
-				
 				if (square.x == player.selected_row && square.y == player.selected_column) {
-					// Shine a little
-					//render_mesh_s.material.tint_color += glm::vec3(1,1,1) * 0.2f;
 
 					// Place arrow in selected tile
 					glm::vec3 arrow_pos = transform.position;
 					arrow_pos.y += 1;
+
 					r_state.each<components::selection_arrow, transforms::transform, rendering::renderable_mesh_static>(
 						[&](components::selection_arrow& arrow, transforms::transform& transform_arrow, rendering::renderable_mesh_static& render_mesh_s_arrow)
 						{					
-							if (arrow.team == player.team) {
-								render_mesh_s_arrow.material.param_diffuse += player_specifics.values.team_color;
+							if (arrow.team == player.team) 
+							{
 								transform_arrow.position = arrow_pos;
-								// Tilt arrow a little
-								transform_arrow.rotation.x = -(player.selected_column - 4) * 0.1;
+								transform_arrow.position.z -= player.team;
+
 								transform_arrow.is_matrix_dirty = true;
+
+								render_mesh_s_arrow.material.texture_offset = player.team > 0.f ? glm::vec2(0.25f, 0.f) : glm::vec2(0.f, 0.f);
 							}
 						});
 				}
 			});
 	}
+
+
 
 	static components::card_enum card_select(components::player& player, components::PLAYER_STATE* playerState, int num)
 	{

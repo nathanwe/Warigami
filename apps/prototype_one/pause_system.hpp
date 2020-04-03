@@ -58,9 +58,6 @@ public:
 
 					asset::scene_change_event restart_event("assets/scenes/scene.json");
 					m_r_events.BroadcastEvent(restart_event);
-
-					//state.free_all();
-					//m_r_hydrater.load();
 					return;
 				}
 				/*
