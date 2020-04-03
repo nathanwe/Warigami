@@ -1,5 +1,7 @@
 if (WIN32)
 
+    set (FMOD_SO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/windows/Win64/fmod.dll PARENT_SCOPE)
+
     #Windows-specific example of imported library
     #From Professional Cmake book
     add_library(fmod SHARED IMPORTED GLOBAL)
@@ -28,6 +30,9 @@ endif (WIN32)
 
 
 if (UNIX)
+
+    set (FMOD_SO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/linux/api/core/lib/x86_64/libfmod.so PARENT_SCOPE)
+
     add_library(fmod SHARED IMPORTED GLOBAL)
     set_target_properties(fmod PROPERTIES
         IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/linux/api/core/lib/x86_64/libfmod.so

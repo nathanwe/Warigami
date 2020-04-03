@@ -1,5 +1,7 @@
 if (WIN32)
 
+    set (FREETYPE_SO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/windows/freetype.dll PARENT_SCOPE)
+
     #Windows-specific example of imported library
     #From Professional Cmake book
     add_library(freetype SHARED IMPORTED GLOBAL)
@@ -21,6 +23,8 @@ endif (WIN32)
 
 
 if (UNIX)    
+
+    set (FREETYPE_SO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/linux/libfreetype.so PARENT_SCOPE)
 
     add_library(freetype SHARED IMPORTED GLOBAL)
     set_target_properties(freetype PROPERTIES

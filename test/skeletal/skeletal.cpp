@@ -32,7 +32,8 @@ int main(int argc, char** argv)
 	transforms::transformer transformer;
 	rendering::asset_cache render_asset_cache(assets);
 	rendering::camera_updater camera_updater;
-	rendering::renderer renderer(glfw.window(), window_view, true, render_asset_cache, assets, timer);
+	rendering::render_state render_state;
+	rendering::renderer renderer(window_view, true, render_asset_cache, assets, timer, render_state);
 	rendering::animator animator(timer);
 	fly_cam flycam(input, timer, events);
 
