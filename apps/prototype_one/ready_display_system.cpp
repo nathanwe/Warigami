@@ -31,6 +31,9 @@ void ready_display_system::initialize(ecs::state& state)
 
 void ready_display_system::update(ecs::state& state)
 {
+	auto& board = _board->get_component<components::board>();
+	
+
 	auto& p1 = _players[0]->get_component<components::player>();
 	auto& p2 = _players[1]->get_component<components::player>();
 
@@ -55,7 +58,14 @@ void ready_display_system::update(ecs::state& state)
 		auto text_y = 16;		
 		auto hide_x = 9999;
 
-		if (ready_dispaly.is_ready)
+		if (board.state != components::game_state::deck_selection)
+		{
+			ready_text.position.x = hide_x;
+			ready_t.position = HidePosition;
+			back_text.position.x = hide_x;
+			back_t.position = HidePosition;			
+		}
+		else if (ready_dispaly.is_ready)
 		{
 			back_text.position = {offset, text_y};
 			ready_text.position.x = hide_x;
