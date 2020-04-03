@@ -47,6 +47,7 @@ public:
 						textures[k][i][j][l] = 0;
 
 					}
+					textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-greyscale.png"s).id;					
 				}
 				textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-albedo.png"s).id;
 				textures[(int)components::TERRAIN_ENUM::NONE][i][1][l] = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-normal-ogl.png"s).id;
