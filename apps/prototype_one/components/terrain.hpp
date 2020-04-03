@@ -26,7 +26,7 @@ namespace components
 		// 0,1 = dying, 2 = blowing, 3 = grown, 4+ = growing
 		int growth_stage = 0;
 		//type, team(-1,0,1), diffus normal or ambient,
-		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3][7];
+		uint32_t textures[(int)TERRAIN_ENUM::NUM][3][3][8];
 
 	};
 }

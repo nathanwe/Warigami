@@ -50,7 +50,7 @@ public:
 								terrain.team = 0.0f;
 								terrain.damage = -1;
 								terrain.duration = -1;
-								terrain.growth_stage = 6;
+								terrain.growth_stage = 7;
 							}
 
 

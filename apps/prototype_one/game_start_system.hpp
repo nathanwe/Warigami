@@ -37,7 +37,7 @@ public:
 	void initialize(ecs::state& r_state) override
 	{
 		using namespace std::string_literals;
-		const int growth_stages = 7;
+		const int growth_stages = 8;
 		//type, team(-1,0,1), diffus normal or ambient, stage
 		uint32_t textures[(int)components::TERRAIN_ENUM::NUM][3][3][growth_stages];
 
@@ -61,13 +61,14 @@ public:
 			textures[(int)components::TERRAIN_ENUM::WEB][2][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/web1.png"s).id;
 		}
 		for (int i = 0; i < 3; i++) {
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][0] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_dying.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][1] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_dying.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][2] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_blown.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][3] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_grown.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][4] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_growing_two.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][5] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_growing_one.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][6] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_bud.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][0] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_dying_color.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][1] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_dying_color.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][2] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_blown_color.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][3] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_grown_color.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][4] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_growing_three_color.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][5] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_growing_two_color.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][6] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_growing_one_color.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][7] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower_bud_color.png"s).id;
 		}
 
 
