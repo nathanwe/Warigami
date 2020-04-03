@@ -87,6 +87,7 @@ private:
 		case components::card_enum::SCISSOR_TROOPER:
 		case components::card_enum::SCISSOR_WEBBER:
 		case components::card_enum::SCISSORLING_TWIN:
+		case components::card_enum::SCISSORLING:
 			return get_walker_sprite(piece);
 		case components::card_enum::SCISSORLING_EGG:
 			return get_egg_sprite(piece);
