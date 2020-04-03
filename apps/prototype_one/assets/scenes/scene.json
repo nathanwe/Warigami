@@ -212,6 +212,9 @@
     {
       "entity_id": 70,
       "prototype": "assets/prototypes/pause.json"
+    },
+    {
+      "prototype": "assets/prototypes/countdown.json"
     }
   ]
 }

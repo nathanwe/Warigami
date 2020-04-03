@@ -204,7 +204,7 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 void deck_selection_controller::on_start(ecs::state& state)
 {
 	auto& board_component = _board->get_component<components::board>();
-	board_component.state = components::game_state::gameplay;
+	board_component.state = components::game_state::countdown;
 
 	state.each<components::player>([&](components::player& player) {
 		player.deck = components::decks[player.deck_selection];

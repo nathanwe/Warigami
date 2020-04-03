@@ -62,7 +62,7 @@ public:
 
 		// Count before starting (3, 2, 1, GO!)
 		if (board_component.state == components::game_state::countdown) {
-			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
+			r_state.each_id<components::countdown, rendering::renderable_text>([&](auto id, auto& countdown, rendering::renderable_text& text)
 			{
 				if (countdown.current_value <= 0) {
 					// Prepare for the real countdown
@@ -82,8 +82,9 @@ public:
 					board_component.state = components::game_state::gameplay;
 					r_state.each<components::pause>([&](auto& pause)
 						{
-							pause.is_game_started = true;
+							pause.is_game_countdown_over = true;
 						});
+					r_state.remove_entity(r_state.find_entity(id));
 				}
 				else {
 					text.scale += 0.01;
@@ -92,30 +93,6 @@ public:
 					text.string_hash = _strings.hash_and_store(oss.str());
 				}
 				countdown.current_value -= m_timer.delta_secs();
-			});
-		}
-		else if (board_component.state == components::game_state::gameplay)
-		{
-			r_state.each<components::countdown, rendering::renderable_text>([&](auto& countdown, rendering::renderable_text& text)
-			{
-				countdown.current_value -= m_timer.delta_secs();
-				int minutes = countdown.current_value / 60;
-				int seconds = (int)countdown.current_value % 60;
-				std::ostringstream oss;
-				oss << std::setfill('0') << std::setw(2) << minutes << ":" << std::setfill('0') << std::setw(2) << seconds;
-				text.string_hash = _strings.hash_and_store(oss.str());
-				if (minutes == 0) {
-					text.scale = 2.0;
-					text.color = glm::vec3(1, 0, 0);
-					text.position = glm::ivec2(_glfw_context.width() / 2 - 100, _glfw_context.height() - 80);
-				}
-				if (countdown.current_value <= 0) {
-					countdown.current_value = countdown.count_duration;
-					ended = true;
-					game_over_event go;
-					event_manager.BroadcastEvent(go);
-					std::cerr << "Game Over!" << std::endl;
-				}
 			});
 		}
 	}

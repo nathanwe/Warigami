@@ -11,6 +11,7 @@ namespace components
 	{
 		bool is_game_paused = false;
 		bool is_game_started = false;
+		bool is_game_countdown_over = false;
 		bool is_game_over = false;
 	};
 }

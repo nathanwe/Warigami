@@ -1,6 +1,7 @@
 #ifndef WIZARD_GAME_PAUSE_SYSTEM_HPP
 #define WIZARD_GAME_PAUSE_SYSTEM_HPP
 
+#include <asset/scene_hydrater.hpp>
 #include <core/frame_timer.hpp>
 #include <core/game_input_manager.hpp>
 #include <core/glfw_context.hpp>
@@ -14,8 +15,8 @@
 class pause_system : public ecs::system_base
 {
 public:
-	pause_system(core::game_input_manager& input, core::frame_timer& timer, core::glfw_context& glfw)
-		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw)
+	pause_system(core::game_input_manager& input, core::frame_timer& timer, core::glfw_context& glfw, asset::scene_hydrater& hydrater)
+		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater)
 	{}
 
 	void update(ecs::state& state)
@@ -29,23 +30,44 @@ public:
 			auto& pause = e->get_component<components::pause>();
 			auto& renderable = e->get_component<rendering::renderable_mesh_static>();
 
+			if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
+			{
+				return;
+			}
+
 			if (pause.is_game_paused)
 			{
-				// Resume
+				// Resume Game
 				if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2))
 				{
 					pause.is_game_paused = false;
 					renderable.is_enabled = false;
 				}
-				// Return to menu
+				// Replay Game
 				else if (m_r_input.is_input_started(core::controls::CARD2_CONTROL) || m_r_input.is_input_started(core::controls::CARD2_CONTROL_PLAYER2))
 				{
 					pause.is_game_paused = false;
 					renderable.is_enabled = false;
 
-					// CONNECT WITH SAV ON MAIN MENU
+					state.free_all();
+					m_r_hydrater.load();
+					return;
 				}
-				// Exit
+				/*
+				// Quit to Menu
+				else if (m_r_input.is_input_started(core::controls::CARD3_CONTROL) || m_r_input.is_input_started(core::controls::CARD3_CONTROL_PLAYER2))
+				{
+					pause.is_game_paused = false;
+					renderable.is_enabled = false;
+
+					state.free_all();
+					m_r_hydrater.load();
+					return;
+
+				}
+				*/
+				// Quit Game
+				//else if (m_r_input.is_input_started(core::controls::CARD4_CONTROL) || m_r_input.is_input_started(core::controls::CARD4_CONTROL_PLAYER2))
 				else if (m_r_input.is_input_started(core::controls::CARD3_CONTROL) || m_r_input.is_input_started(core::controls::CARD3_CONTROL_PLAYER2))
 				{
 					m_r_glfw.set_should_close(true);
@@ -67,6 +89,7 @@ private:
 	core::frame_timer& m_r_timer;
 	core::game_input_manager& m_r_input;
 	core::glfw_context& m_r_glfw;
+	asset::scene_hydrater& m_r_hydrater;
 };
 
 #endif

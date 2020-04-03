@@ -40,13 +40,6 @@ public:
 
 	void HandleEvent(event::Event& event) override
 	{
-		if (event.mType == event::EVENT_TYPE::GAME_OVER && !_did_game_end)
-		{
-			_did_game_end = true;
-			tug_timeout_condition(event);
-			//health_timeout_condition(event);
-			check_endgame();
-		}
 	}
 
 private:
