@@ -96,3 +96,10 @@ void asset::scene_hydrater::populate_entities(asset::scene& scene)
         hydrate_recurse(graph_entity);
     }
 }
+
+void asset::scene_hydrater::clear()
+{
+    _entity_refs.clear();
+    _component_loaders.clear();
+    _to_remove.clear();
+}

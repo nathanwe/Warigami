@@ -31,6 +31,8 @@ namespace asset
         void remove_entity(entity_id id);
 		void flush_removed();
 
+		void clear();
+
 	private:
 		ecs::state& _ecs_state;
 		scene* _scene{ nullptr };
