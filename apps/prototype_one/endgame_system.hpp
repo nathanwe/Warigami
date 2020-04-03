@@ -9,7 +9,7 @@
 #include <ecs/system_base.hpp>
 #include <event/event.hpp>
 #include <event/event_manager.hpp>
-
+#include <asset/scene_change_event.hpp>
 #include <math.h>
 
 

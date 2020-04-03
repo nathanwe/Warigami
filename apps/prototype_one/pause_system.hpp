@@ -9,14 +9,21 @@
 #include <ecs/state.hpp>
 #include <rendering/renderable_mesh_static.hpp>
 #include <transforms/transform.hpp>
+#include <asset/scene_change_event.hpp>
+#include <event/event_manager.hpp>
 
 #include "components/pause.hpp"
 
 class pause_system : public ecs::system_base
 {
 public:
-	pause_system(core::game_input_manager& input, core::frame_timer& timer, core::glfw_context& glfw, asset::scene_hydrater& hydrater)
-		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater)
+	pause_system(
+		core::game_input_manager& input, 
+		core::frame_timer& timer, 
+		core::glfw_context& glfw, 
+		asset::scene_hydrater& hydrater,
+		event::EventManager& events)
+		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events)
 	{}
 
 	void update(ecs::state& state)
@@ -48,6 +55,9 @@ public:
 				{
 					pause.is_game_paused = false;
 					renderable.is_enabled = false;
+
+					asset::scene_change_event restart_event("assets/scenes/scene.json");
+					m_r_events.BroadcastEvent(restart_event);
 
 					//state.free_all();
 					//m_r_hydrater.load();
@@ -90,6 +100,7 @@ private:
 	core::game_input_manager& m_r_input;
 	core::glfw_context& m_r_glfw;
 	asset::scene_hydrater& m_r_hydrater;
+	event::EventManager& m_r_events;
 };
 
 #endif

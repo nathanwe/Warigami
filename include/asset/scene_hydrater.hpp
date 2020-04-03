@@ -8,6 +8,7 @@
 #include <ecs/entity.hpp>
 #include <asset/asset_loader_node.hpp>
 #include <asset/component_loader.hpp>
+#include <asset/scene.hpp>
 
 namespace asset
 {
@@ -15,7 +16,7 @@ namespace asset
 	class scene_hydrater
 	{
 	public:
-		scene_hydrater(ecs::state& ecs_state, scene& scene);
+		scene_hydrater(ecs::state& ecs_state);
 
 		template<typename... T>
 		void register_loaders(T*... args)
@@ -23,12 +24,8 @@ namespace asset
 			_component_loaders.insert(_component_loaders.end(), { args... });
 		}
 
-		void load()
-		{
-			for (auto& e : _entity_refs) 
-				load_recurse(e);
-		}
-
+		void populate_entities(asset::scene& scene);
+		void load();
 		ecs::entity& add_from_prototype(const std::string& path);
         void remove_entity(ecs::entity& entity);
         void remove_entity(entity_id id);
@@ -36,7 +33,7 @@ namespace asset
 
 	private:
 		ecs::state& _ecs_state;
-		scene& _scene;
+		scene* _scene{ nullptr };
 		std::vector<asset_loader_node> _entity_refs;
 		std::vector<component_loader*> _component_loaders;
 		std::vector<ecs::entity*> _to_remove;
@@ -44,7 +41,6 @@ namespace asset
 		void hydrate_recurse(asset_loader_node& graph_entity);
 		void load_recurse(asset_loader_node& entity);
 	};
-
 }
 
 

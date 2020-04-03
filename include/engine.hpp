@@ -4,6 +4,7 @@
 #include <asset/asset_manager.hpp>
 #include <asset/scene_hydrater.hpp>
 #include <asset/scene.hpp>
+#include <asset/scene_tracker.hpp>
 #include <audio/audio_system.hpp>
 #include <audio/loader_emitter.hpp>
 #include <collisions/aabb_collider_loader.hpp>
@@ -36,6 +37,7 @@
 #include <transforms/transform_loader.hpp>
 #include <transforms/transform.hpp>
 #include <transforms/transformer.hpp>
+
 
 // Overlays
 #include <engine-ui/imgui_overlay.hpp>

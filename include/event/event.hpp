@@ -16,6 +16,8 @@ namespace event {
 		UNIT_DEATH,
 		GAME_OVER,
 		GAME_START,
+		SCENE_CHANGE,
+		EXIT,
 		NUM
 	};
 

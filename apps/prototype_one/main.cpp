@@ -2,7 +2,6 @@
 #include <rendering/freetype_system.hpp>
 #include <rendering/loader_renderable_text.hpp>
 #include <rendering/renderable_text.hpp>
-
 #include "core/frame_limiter.hpp"
 
 // Components
@@ -69,6 +68,8 @@
 #include "endgame_screen_system.hpp"
 
 
+
+
 int main(int argc, char** argv) {	
 #ifndef NDEBUG
 	bool is_debug = true;
@@ -76,17 +77,18 @@ int main(int argc, char** argv) {
 	bool is_debug = false;
 #endif
 
-	asset::asset_manager assets;
-	core::startup_config config;
-	core::glfw_context glfw(config);
-
 	util::string_table strings;
+	event::EventManager events;
+	asset::scene_tracker scene_tracker("assets/scenes/scene.json", events);
+	asset::asset_manager assets;	
+	core::startup_config config;
+	core::glfw_context glfw(config);	
 	core::viewport window_view{ 0, 0, glfw.width(), glfw.height() };
 	core::game_input_manager input(glfw.window());
 	core::frame_timer timer;
 	core::frame_limiter limiter(timer, 60);
-	core::cursor_state cursor(glfw.window());
-	event::EventManager events;
+	core::cursor_state cursor(glfw.window());	
+	
 	combats::combat_resolution resolver;
 
 	// init ecs state
@@ -123,8 +125,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 
-	asset::scene scene("assets/scenes/scene.json", assets);
-	asset::scene_hydrater hydrater(state, scene);
+	asset::scene_hydrater hydrater(state);
 
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events, hydrater, resolver);
@@ -153,7 +154,7 @@ int main(int argc, char** argv) {
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
 	deck_selection_controller deck_selection(hydrater, input, timer);
-	pause_system pauser(input, timer, glfw, hydrater);
+	pause_system pauser(input, timer, glfw, hydrater, events);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
 	AI_system AI_system;
@@ -227,6 +228,8 @@ int main(int argc, char** argv) {
 	collisions::rigid_body_loader rigid_body_loader;
 	components::ready_display_loader ready_display_loader;
 
+
+
 	hydrater.register_loaders(
 		&aabb_collider_loader,
 		&board_loader,
@@ -255,7 +258,8 @@ int main(int argc, char** argv) {
 		&deck_ui_loader,
 		&ready_display_loader);
 
-	hydrater.load();
+
+	
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);
@@ -264,25 +268,31 @@ int main(int argc, char** argv) {
 	rendering::debug_view render_debug_view(window_view, renderer);
 	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
-	//cursor.disable();
+	//cursor.disable();	
 
-	world.initialize();
+	while (scene_tracker.has_next())
+	{
+		asset::scene scene(scene_tracker.next(), assets);
+		hydrater.populate_entities(scene);
+		hydrater.load();
+		world.initialize();
 
-	//game loop
-	while (!glfwWindowShouldClose(glfw.window())) {
-		timer.start();
-		glfwPollEvents();
+		//game loop
+		while (!glfwWindowShouldClose(glfw.window()) && !scene_tracker.has_next()) {
+			timer.start();
+			glfwPollEvents();
 
-		input.update();
-		world.update();
+			input.update();
+			world.update();
 
-		entities_view.update(state);
-		overlay.update();
+			entities_view.update(state);
+			overlay.update();
 
-		glfw.swap_buffers();
-		hydrater.flush_removed();		
-		
-		limiter.wait_remainder();
-		timer.end();
+			glfw.swap_buffers();
+			hydrater.flush_removed();
+
+			limiter.wait_remainder();
+			timer.end();
+		}
 	}
 }

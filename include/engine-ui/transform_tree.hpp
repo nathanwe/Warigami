@@ -25,8 +25,22 @@ namespace engineui
 
 		void insert(entity_id id)
 		{
+			if (!_ecs_state.has_entity(id))
+			{
+				int i = 0;
+				i++;
+			}
+
 			assert(_ecs_state.has_entity(id));
 			ecs::entity& e = _ecs_state.find_entity(id);
+			
+			
+			if (!e.has<transforms::transform>())
+			{
+				int i = 0;
+				i++;
+			}
+			
 			assert(e.has<transforms::transform>());
 
 			if (contains(id))

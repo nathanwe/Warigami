@@ -31,7 +31,6 @@ add_subdirectory(apps/game)
 add_subdirectory(apps/prototype_one)
 add_subdirectory(apps/boardgen)
 
-
 # Tests
 add_subdirectory(test)
 

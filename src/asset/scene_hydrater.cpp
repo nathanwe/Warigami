@@ -1,18 +1,9 @@
 #include <asset/scene_hydrater.hpp>
 #include <iostream>
 
-asset::scene_hydrater::scene_hydrater(ecs::state &ecs_state, asset::scene &scene)
-        : _ecs_state(ecs_state), _scene(scene)
+asset::scene_hydrater::scene_hydrater(ecs::state &ecs_state) : _ecs_state(ecs_state)
 {
-    for (auto &scene_entity : scene.entities())
-    {
-        auto &ecs_entity = scene_entity.has_id()
-                           ? ecs_state.add_entity(scene_entity.archetype_id(), scene_entity.id())
-                           : ecs_state.add_entity(scene_entity.archetype_id());
-
-        auto &graph_entity = _entity_refs.emplace_back(ecs_entity, scene_entity);
-        hydrate_recurse(graph_entity);
-    }
+   
 }
 
 void asset::scene_hydrater::hydrate_recurse(asset_loader_node &graph_entity)
@@ -27,6 +18,7 @@ void asset::scene_hydrater::hydrate_recurse(asset_loader_node &graph_entity)
         hydrate_recurse(graph_child);
     }
 }
+
 
 void asset::scene_hydrater::load_recurse(asset_loader_node &entity)
 {
@@ -47,7 +39,7 @@ void asset::scene_hydrater::load_recurse(asset_loader_node &entity)
 
 ecs::entity &asset::scene_hydrater::add_from_prototype(const std::string &path)
 {
-    auto &scene_entity = _scene.add_from_prototype(path);
+    auto &scene_entity = _scene->add_from_prototype(path);
     auto &ecs_entity = _ecs_state.add_entity(scene_entity.archetype_id());
     auto &graph_entity = _entity_refs.emplace_back(ecs_entity, scene_entity);
     hydrate_recurse(graph_entity);
@@ -82,4 +74,25 @@ void asset::scene_hydrater::flush_removed()
         _ecs_state.remove_entity(*e);
     
     _to_remove.clear();
+}
+
+void asset::scene_hydrater::load()
+{
+    for (auto& e : _entity_refs)
+        load_recurse(e);
+}
+
+void asset::scene_hydrater::populate_entities(asset::scene& scene)
+{
+    _scene = &scene;
+
+    for (auto& scene_entity : scene.entities())
+    {
+        auto& ecs_entity = scene_entity.has_id()
+            ? _ecs_state.add_entity(scene_entity.archetype_id(), scene_entity.id())
+            : _ecs_state.add_entity(scene_entity.archetype_id());
+
+        auto& graph_entity = _entity_refs.emplace_back(ecs_entity, scene_entity);
+        hydrate_recurse(graph_entity);
+    }
 }
