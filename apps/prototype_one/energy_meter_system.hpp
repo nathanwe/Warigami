@@ -19,17 +19,15 @@ public:
 		: _strings(strings),
 		_glfw_context(config) {}
 
+	void initialize(ecs::state& r_state) override
+	{
+		first_run(r_state);
+		
+	}
+
 	void update(ecs::state& r_state) override
 	{
-		if (is_first_run)
-		{
-			first_run(r_state);
-			is_first_run = false;
-		}
-		else
-		{
-			not_first_run(r_state);
-		}
+		not_first_run(r_state);		
 	}
 
 	void first_run(ecs::state& r_state)
@@ -70,10 +68,10 @@ public:
 		});
 	}
 
-private:
-	bool is_first_run = true;
+private:	
 	util::string_table& _strings;
 	core::glfw_context& _glfw_context;
+	ecs::entity* _board;
 };
 
 #endif

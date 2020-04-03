@@ -268,27 +268,34 @@ int main(int argc, char** argv) {
 	rendering::debug_view render_debug_view(window_view, renderer);
 	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
-	//cursor.disable();	
-	asset::scene scene(scene_tracker.next(), assets);
-	hydrater.populate_entities(scene);
-	hydrater.load();
-	world.initialize();
+	while (scene_tracker.has_next() && !glfwWindowShouldClose(glfw.window()))
+	{
+		//cursor.disable();	
+		asset::scene scene(scene_tracker.next(), assets);
+		hydrater.populate_entities(scene);
+		hydrater.load();
+		world.initialize();
 
-	//game loop
-	while (!glfwWindowShouldClose(glfw.window())) {
-		timer.start();
-		glfwPollEvents();
+		//game loop
+		while (!scene_tracker.has_next() && !glfwWindowShouldClose(glfw.window())) {
+			timer.start();
+			glfwPollEvents();
 
-		input.update();
-		world.update();
+			input.update();
+			world.update();
 
-		entities_view.update(state);
-		overlay.update();
+			entities_view.update(state);
+			overlay.update();
 
-		glfw.swap_buffers();
-		hydrater.flush_removed();
+			glfw.swap_buffers();
+			hydrater.flush_removed();
 
-		limiter.wait_remainder();
-		timer.end();
+			limiter.wait_remainder();
+			timer.end();
+		}
+
+		hydrater.clear();
+		state.free_all();		
 	}
+
 }

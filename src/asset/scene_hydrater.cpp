@@ -99,7 +99,6 @@ void asset::scene_hydrater::populate_entities(asset::scene& scene)
 
 void asset::scene_hydrater::clear()
 {
-    _entity_refs.clear();
-    _component_loaders.clear();
+    _entity_refs.clear();    
     _to_remove.clear();
 }

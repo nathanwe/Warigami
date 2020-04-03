@@ -23,19 +23,14 @@ void deck_selection_controller::initialize(ecs::state& state)
 {
 	_board = state.first<components::board>();
 	_deck_selection = state.first<components::deck_selection>();
-
-	
 		
-		/*state.first<components::player>([&](components::player& p) {
+	_players[0] = state.first<components::player>([&](components::player& p) {
 		return p.team == 1.f;
-	});*/
+	});
 
-	_players[0] = &(state.find_entity(2));
-	_players[1] = &(state.find_entity(3));
-		
-		/*state.first<components::player>([&](components::player& p) {
+	_players[1] = state.first<components::player>([&](components::player& p) {
 		return p.team == -1.f;
-	});*/
+	});
 
 	assert(_board != nullptr);
 	assert(_deck_selection != nullptr);

@@ -12,6 +12,8 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
 	// read a JSON file
 	auto j = assets.get_json(file_path);
 
+    auto str = j.dump();
+
 	std::vector<json> descendant_children;
 	std::vector<scene_entity*> inserted_children;
 

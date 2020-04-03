@@ -12,17 +12,14 @@
 class health_meter_system : public ecs::system_base
 {
 public:
+	void initialize(ecs::state& r_state) override
+	{
+		first_run(r_state);
+	}
+
 	void update(ecs::state& r_state) override
 	{
-		if (is_first_run)
-		{
-			first_run(r_state);
-			is_first_run = false;
-		}
-		else
-		{
-			not_first_run(r_state);
-		}
+		not_first_run(r_state);
 	}
 
 	void first_run(ecs::state& r_state)
@@ -52,7 +49,6 @@ public:
 
 private:
 	static constexpr float max_scale = 7.f;
-	bool is_first_run = true;
 };
 
 #endif
