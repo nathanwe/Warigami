@@ -32,6 +32,8 @@ public:
 		nerdT.is_matrix_dirty = true;
 	}
 
+	void update(ecs::state& r_state) override {}
+
 	void initialize(ecs::state& r_state) override
 	{
 		using namespace std::string_literals;
@@ -48,10 +50,7 @@ public:
 
 					}
 					textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-greyscale.png"s).id;					
-				}
-				textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-albedo.png"s).id;
-				textures[(int)components::TERRAIN_ENUM::NONE][i][1][l] = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-normal-ogl.png"s).id;
-				textures[(int)components::TERRAIN_ENUM::NONE][i][2][l] = _asset_cache.get<rendering::texture>("assets/textures/board_paper/wrinkled-paper-ao.png"s).id;
+				}			
 			}
 			textures[(int)components::TERRAIN_ENUM::FIRE][0][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/fire2.png"s).id;
 			textures[(int)components::TERRAIN_ENUM::FIRE][1][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png"s).id;
@@ -98,21 +97,9 @@ public:
 					}
 					if (board_square.x + 2 < board_square.y) {
 						board_square.team = -1.0f;
-					}
-
-					if (id % 4 == 0) {
-						terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
-						terrain.team = 0.0f;
-						terrain.damage = -1;
-						terrain.duration = -1;
-						terrain.growth_stage = 5;
-					}
+					}					
 				});
 			});
-	}
-
-	virtual void update(ecs::state& r_state) override
-	{
 	}
 
 private:
