@@ -228,8 +228,6 @@ int main(int argc, char** argv) {
 	collisions::rigid_body_loader rigid_body_loader;
 	components::ready_display_loader ready_display_loader;
 
-
-
 	hydrater.register_loaders(
 		&aabb_collider_loader,
 		&board_loader,
@@ -256,10 +254,7 @@ int main(int argc, char** argv) {
 		&deck_selection_loader,
 		&deck_option_loader,
 		&deck_ui_loader,
-		&ready_display_loader);
-
-
-	
+		&ready_display_loader);	
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);
@@ -269,8 +264,7 @@ int main(int argc, char** argv) {
 	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
 
 	while (scene_tracker.has_next() && !glfwWindowShouldClose(glfw.window()))
-	{
-		//cursor.disable();	
+	{		
 		asset::scene scene(scene_tracker.next(), assets);
 		hydrater.populate_entities(scene);
 		hydrater.load();
@@ -297,5 +291,4 @@ int main(int argc, char** argv) {
 		hydrater.clear();
 		state.free_all();		
 	}
-
 }
