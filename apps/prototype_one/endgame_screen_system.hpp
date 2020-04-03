@@ -14,8 +14,8 @@
 class endgame_screen : public ecs::system_base
 {
 public:
-	endgame_screen(core::game_input_manager& input, core::frame_timer& timer, core::glfw_context& glfw)
-		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw)
+	endgame_screen(core::game_input_manager& input, core::frame_timer& timer, core::glfw_context& glfw, event::EventManager& events)
+		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_events(events)
 	{}
 
 	void update(ecs::state& state)
@@ -31,20 +31,27 @@ public:
 
 			if (pause.is_game_over)
 			{
-				// Resume
+				// Return to menu
 				if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2))
 				{
-					//
+
+					asset::scene_change_event restart_event("assets/scenes/scene.json");
+					m_r_events.BroadcastEvent(restart_event);
+					return;
 				}
-				// Return to menu
+				// Return to deck selection
 				else if (m_r_input.is_input_started(core::controls::CARD2_CONTROL) || m_r_input.is_input_started(core::controls::CARD2_CONTROL_PLAYER2))
 				{
-					//
+
+					asset::scene_change_event restart_event("assets/scenes/scene.json");
+					m_r_events.BroadcastEvent(restart_event);
+					return;
 				}
 				// Exit
 				else if (m_r_input.is_input_started(core::controls::CARD3_CONTROL) || m_r_input.is_input_started(core::controls::CARD3_CONTROL_PLAYER2))
 				{
 					m_r_glfw.set_should_close(true);
+					return;
 				}
 			}
 		}
@@ -54,6 +61,7 @@ private:
 	core::frame_timer& m_r_timer;
 	core::game_input_manager& m_r_input;
 	core::glfw_context& m_r_glfw;
+	event::EventManager& m_r_events;
 };
 
 #endif
