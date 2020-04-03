@@ -50,7 +50,7 @@ public:
 
 						}
 					}
-					textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass.png"s).id;					
+					textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-greyscale.png"s).id;					
 				}
 				textures[(int)components::TERRAIN_ENUM::FIRE][0][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/fire2.png"s).id;
 				textures[(int)components::TERRAIN_ENUM::FIRE][1][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/12fire2.png"s).id;
