@@ -83,18 +83,7 @@ public:
 							}									
 						});
 
-					}
-					state.each<components::player>([&](components::player& player) {
-						if (terrain.growth_stage == 3 && player.selected_row == terrain.location.x && square.team == player.team) {
-							terrain.growth_stage--;
-							square_t.rotation = glm::vec3(0, AI_MATH_HALF_PI * player.team, 0);
-							player.energy+=2;
-						}
-						if (terrain.growth_stage == 2 && player.selected_row != terrain.location.x && square.team == player.team) {
-							terrain.growth_stage--;
-							square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);							
-						}
-						});
+					}					
 					//terrain textures
 					//type, team(-1,0,1), diffus normal or ambient,
 					mesh.material.texture_diffuse = terrain.textures[(int)terrain.type][(int)terrain.team + 1][0][(int)terrain.growth_stage];

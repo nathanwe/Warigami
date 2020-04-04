@@ -89,6 +89,7 @@ public:
 					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, player_specifics.controls);
 					//gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
+					gain_flower_energy(r_state, player, controls);
 					show_cursor(player, r_state, player_specifics);
 					
 				});
@@ -128,6 +129,22 @@ private:
 			player.ticks_to_energy_grow = player.ticks_per_energy_grow;
 			player.energy = std::min(player.energy + 2.0f * square_percent, player.max_energy);
 		}
+	}
+	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls&controls ) {
+		r_state.each<components::terrain, components::board_square, transforms::transform>
+			([&](components::terrain& terrain, components::board_square& square, transforms::transform& square_t) {
+			if (terrain.growth_stage == 3 && player.selected_row == terrain.location.x
+				&& square.team == player.team && (m_input.is_input_active(controls.dice_button2)||player.controlled_by_AI)) {
+				terrain.growth_stage--;
+				square_t.rotation = glm::vec3(0, AI_MATH_HALF_PI * player.team, 0);
+				player.energy += 2;
+			}
+			if (terrain.growth_stage == 2 && square.team == player.team 
+				&& (player.selected_row != terrain.location.x || !m_input.is_input_active(controls.dice_button2))) {
+				terrain.growth_stage--;
+				square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
+			}
+			});
 	}
 	void board_reset(ecs::state& r_state)
 	{
@@ -208,8 +225,9 @@ private:
 	{
 		auto& controls = player_specifics.controls;
 		int loc = find_selected_card_index(controls);
-
-		place_card(loc, player, r_state, board);
+		if (!m_input.is_input_active(controls.dice_button2)) {
+			place_card(loc, player, r_state, board);
+		}
 		
 	}
 	void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {

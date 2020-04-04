@@ -11,6 +11,7 @@ struct player_controls
 	core::controls card3;
 	core::controls card4;
 	core::controls dice_button;
+	core::controls dice_button2;
 };
 
 struct player_values
@@ -41,7 +42,8 @@ private:
 		core::CARD2_CONTROL,
 		core::CARD3_CONTROL,
 		core::CARD4_CONTROL,
-		core::DIE1_CONTROL
+		core::DIE1_CONTROL,
+		core::DIE2_CONTROL
 	};
 
 	player_controls p2_controls{
@@ -49,6 +51,7 @@ private:
 		core::CARD2_CONTROL_PLAYER2,
 		core::CARD3_CONTROL_PLAYER2,
 		core::CARD4_CONTROL_PLAYER2,
-		core::DIE1_CONTROL_PLAYER2
+		core::DIE1_CONTROL_PLAYER2,
+		core::DIE2_CONTROL_PLAYER2
 	};
 };
