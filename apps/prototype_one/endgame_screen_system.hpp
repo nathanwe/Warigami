@@ -35,7 +35,7 @@ public:
 				if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2))
 				{
 
-					asset::scene_change_event restart_event("assets/scenes/scene.json");
+					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
 					m_r_events.BroadcastEvent(restart_event);
 					return;
 				}
