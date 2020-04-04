@@ -138,6 +138,10 @@ private:
 				terrain.growth_stage--;
 				square_t.rotation = glm::vec3(0, AI_MATH_HALF_PI * player.team, 0);
 				player.energy += 2;
+				if (player.energy > player.max_energy)
+				{
+					player.energy = player.max_energy;
+				}
 			}
 			if (terrain.growth_stage == 2 && square.team == player.team 
 				&& (player.selected_row != terrain.location.x || 
