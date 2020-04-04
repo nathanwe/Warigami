@@ -104,7 +104,6 @@ public:
 	}
 
 private:
-	int updates = 0;
 	asset::scene_hydrater& hydrater;
 	rendering::asset_cache& _asset_cache;
 };
