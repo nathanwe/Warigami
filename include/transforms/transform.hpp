@@ -20,6 +20,7 @@ namespace transforms
 		bool is_matrix_dirty      = true;
 		entity_id parent          = 0;
 		bool has_parent           = false;
+		bool just_cleaned         = false;
 	};
 }
 

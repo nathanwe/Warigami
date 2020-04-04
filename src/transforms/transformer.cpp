@@ -16,6 +16,10 @@ namespace transforms
 	{
 		state.each_id<transform>([&](auto id, auto& r_transform)
 		{
+			r_transform.just_cleaned = false;
+		});
+		state.each_id<transform>([&](auto id, auto& r_transform)
+		{
 			clean_transform_hierarchy(state, id, r_transform);
 		});
 	};
@@ -28,16 +32,15 @@ namespace transforms
 		return translation * rotation * scale;
 	}
 
-	bool transformer::clean_transform_hierarchy(ecs::state& r_state, entity_id id, transform& r_transform)
+	void transformer::clean_transform_hierarchy(ecs::state& r_state, entity_id id, transform& r_transform)
 	{
-		bool did_change = false;
-		if (!r_state.has_entity(r_transform.parent))
+		if (!r_transform.has_parent)
 		{
 			if (r_transform.is_matrix_dirty)
 			{
 				r_transform.local_to_world = calculate_matrix(r_transform);
 				r_transform.is_matrix_dirty = false;
-				did_change = true;
+				r_transform.just_cleaned = true;
 			}			
 		}
 		else
@@ -45,7 +48,7 @@ namespace transforms
 			// recursively clean dependencies
 			auto& parent_entity = r_state.find_entity(r_transform.parent);
 			auto& parent_transform = parent_entity.get_component<transform>();
-			auto did_ancestor_change = clean_transform_hierarchy(r_state, r_transform.parent, parent_transform);
+			clean_transform_hierarchy(r_state, r_transform.parent, parent_transform);
 
 			// calculate local transformation
 			if (r_transform.is_matrix_dirty)
@@ -54,14 +57,13 @@ namespace transforms
 			}
 
 			// apply inheritance
-			if (r_transform.is_matrix_dirty || did_ancestor_change)
+			if (r_transform.is_matrix_dirty || parent_transform.just_cleaned)
 			{
 				r_transform.local_to_world = parent_transform.local_to_world * r_transform.local_to_parent;
 				r_transform.is_matrix_dirty = false;
-				did_change = true;
+				r_transform.just_cleaned = true;
 			}
 		}
-		return did_change;
 	}
 }
 
