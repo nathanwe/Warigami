@@ -81,42 +81,6 @@
       ]
     },
     {
-      "entity_id": 6,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 50, 50, 0 ]
-        },
-        {
-          "type": "energy_meter",
-          "team": 1
-        },
-        {
-          "type": "renderable_text",
-          "position": [ 0, 0 ],
-          "color": [ 1, 0.2, 0.2 ]
-        }
-      ]
-    },
-    {
-      "entity_id": 7,
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 0, 50, 0 ]
-        },
-        {
-          "type": "energy_meter",
-          "team": -1
-        },
-        {
-          "type": "renderable_text",
-          "position": [ 0, 0 ],
-          "color": [ 0.2, 0.2, 1 ]
-        }
-      ]
-    },
-    {
       "entity_id": 69,
       "prototype": "assets/prototypes/gameboard.json",
       "components": [
