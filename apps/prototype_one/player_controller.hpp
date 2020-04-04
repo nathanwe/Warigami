@@ -140,7 +140,8 @@ private:
 				player.energy += 2;
 			}
 			if (terrain.growth_stage == 2 && square.team == player.team 
-				&& (player.selected_row != terrain.location.x || !m_input.is_input_active(controls.dice_button2))) {
+				&& (player.selected_row != terrain.location.x || 
+					(!player.controlled_by_AI &&!m_input.is_input_active(controls.dice_button2)))) {
 				terrain.growth_stage--;
 				square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
 			}
