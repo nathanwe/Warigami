@@ -16,7 +16,7 @@
 ;   4) Update the redistributables required for your game.
 [Setup]
 
-#define ApplicationName 'prototype_one'
+#define ApplicationName 'warigami'
 #define ApplicationVersion '0.0.1'
 
 DisableWelcomePage=no

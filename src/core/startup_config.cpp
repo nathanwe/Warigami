@@ -22,6 +22,7 @@ void core::startup_config::load()
     }
     else
     {
+        config_json = make_default();
         stream.open(user_data_path, std::fstream::out);
         stream << config_json;
     }
