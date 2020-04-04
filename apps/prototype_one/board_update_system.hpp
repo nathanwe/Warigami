@@ -257,7 +257,7 @@ private:
         int i = 0;
         for (ecs::entity e : game_piece.health_points) {
             transforms::transform& health_t = e.get_component<transforms::transform>();
-            health_t.position = glm::vec3(new_position.x, 0, 0);
+            health_t.position = glm::vec3(0, 0, 0);
             health_t.position.x += (i - game_piece.max_health/2)*0.5;
             health_t.is_matrix_dirty = true;
             i++;
