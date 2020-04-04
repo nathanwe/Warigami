@@ -40,12 +40,12 @@ public:
 				{
 					std::random_device rd;
 					auto rng = std::default_random_engine{ rd() };
-					std::uniform_int_distribution<int> dice(0, 49);
-					auto d50 = std::bind(dice, rng);
+					std::uniform_int_distribution<int> dice(0, 99);
+					auto d100 = std::bind(dice, rng);
 
 					state.each_id<components::board_square, components::terrain>([&]
 					(entity_id board_square_id, components::board_square& square, components::terrain& terrain) {
-							if (d50() == 1 && terrain.type == components::TERRAIN_ENUM::NONE) {
+							if (d100() == 1 && terrain.type == components::TERRAIN_ENUM::NONE) {
 								terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
 								terrain.team = 0.0f;
 								terrain.damage = -1;
