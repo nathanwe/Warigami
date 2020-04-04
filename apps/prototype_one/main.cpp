@@ -165,7 +165,7 @@ int main(int argc, char** argv) {
 	ready_display_system ready_display(glfw);
 	endgame_screen escreen(input, timer, glfw, events);
 	energy_flower_creation_system energy_flower_creation_system;
-	main_menu_controller main_menu_controller(events, glfw, input);
+	main_menu_controller main_menu_controller(events, glfw, input, timer);
 
 	ecs::systems systems({
 		&energy_system,

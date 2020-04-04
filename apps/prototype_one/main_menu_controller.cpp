@@ -9,10 +9,12 @@
 main_menu_controller::main_menu_controller(
 	event::EventManager& events, 
 	core::glfw_context& glfw,
-	core::game_input_manager& input)
+	core::game_input_manager& input,
+	core::frame_timer& timer)
 	: _events(events)
 	, _glfw(glfw)
 	, _input(input)
+	, _timer(timer)
 {
 }
 
@@ -91,6 +93,11 @@ void main_menu_controller::update(ecs::state& state)
 				t.is_matrix_dirty = true;
 			}			
 		}
+
+		auto& board = state.find_entity(69);
+		auto& transform = board.get_component<transforms::transform>();
+		transform.rotation.y += 0.4f * _timer.delta_secs();
+		transform.is_matrix_dirty = true;
 
 	});
 }
