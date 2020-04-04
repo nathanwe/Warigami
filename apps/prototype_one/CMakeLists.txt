@@ -1,5 +1,5 @@
 
-add_executable (prototype_one
+add_executable (warigami
 	board_update_system.hpp
 	combat.cpp
 	components/board_loader.cpp
@@ -39,7 +39,7 @@ add_executable (prototype_one
 	main_menu_controller.cpp
 	)
 
-target_link_libraries(prototype_one PRIVATE
+target_link_libraries(warigami PRIVATE
 	ecs
 	transforms
 	rendering
@@ -53,19 +53,19 @@ target_link_libraries(prototype_one PRIVATE
 	engineui
 	freetype)
 
-add_custom_target(copy_prototype_one_assets
+add_custom_target(copy_warigami_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )
 
-add_dependencies (prototype_one copy_prototype_one_assets)
+add_dependencies (warigami copy_warigami_assets)
 
 if (UNIX)
-    target_link_libraries(prototype_one PRIVATE PRIVATE X11)
+    target_link_libraries(warigami PRIVATE PRIVATE X11)
 endif (UNIX)
 
 if (CMAKE_DL_LIBS)
-    target_link_libraries(prototype_one PRIVATE ${CMAKE_DL_LIBS})
+    target_link_libraries(warigami PRIVATE ${CMAKE_DL_LIBS})
 endif ()
 
-set_target_properties(prototype_one PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
-cotire(prototype_one)
+set_target_properties(warigami PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+cotire(warigami)

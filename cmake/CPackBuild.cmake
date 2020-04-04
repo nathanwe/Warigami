@@ -16,24 +16,24 @@ SET(CPACK_PACKAGE_VERSION_PATCH "0")
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY WizardGame)
 
 set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
-set(CPACK_COMPONENTS_ALL prototype_one)
+set(CPACK_COMPONENTS_ALL warigami)
 
 IF(WIN32 AND NOT UNIX)
   # There is a bug in NSI that does not handle full unix paths properly. Make
   # sure there is at least one set of four (4) backlasshes.
   # SET(CPACK_GENERATOR "NSIS")
   # SET(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}\\\\hat.ico")
-  SET(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\prototype_one.exe")
+  SET(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\warigami.exe")
   SET(CPACK_NSIS_DISPLAY_NAME "WizardGame")
   SET(CPACK_NSIS_HELP_LINK "http:\\\\\\\\localhost")
   SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\localhost")
   SET(CPACK_NSIS_CONTACT "saveliy.baranov@digipen.edu")
   SET(CPACK_NSIS_MODIFY_PATH ON)
 ELSE(WIN32 AND NOT UNIX)
-  SET(CPACK_STRIP_FILES "bin/prototype_one")
+  SET(CPACK_STRIP_FILES "bin/warigami")
   SET(CPACK_SOURCE_STRIP_FILES "")
 ENDIF(WIN32 AND NOT UNIX)
 
-SET(CPACK_PACKAGE_EXECUTABLES "prototype_one" "Wizard Game")
+SET(CPACK_PACKAGE_EXECUTABLES "warigami" "Wizard Game")
 
 INCLUDE(CPack)

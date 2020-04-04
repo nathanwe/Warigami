@@ -25,6 +25,7 @@ public:
 	void initialize(ecs::state& r_state) override
 	{
 		_event_manager.Subscribe(this, event::EVENT_TYPE::GAME_OVER);
+		_did_game_end = false;
 	}
 
 	void update(ecs::state& r_state) override
