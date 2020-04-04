@@ -93,10 +93,10 @@ public:
 						}
 					}
 
-					if (board_square.x + 2 > board_square.y) {
+					if (board_square.x + 1 > board_square.y) {
 						board_square.team = 1.0f;
 					}
-					if (board_square.x + 2 < board_square.y) {
+					if (board_square.x + 3 < board_square.y) {
 						board_square.team = -1.0f;
 					}					
 				});
