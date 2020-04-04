@@ -169,7 +169,6 @@ int main(int argc, char** argv) {
 		&health_system,
 		&tug_system,
 		&count_system,
-		&transformer,
 		&camera_updater,
 		&flycam,
 		&audio_system,
@@ -197,6 +196,7 @@ int main(int argc, char** argv) {
 
 		//
 		&animator,
+		&transformer,
 		&renderer,
 		&text_renderer,
 	});
