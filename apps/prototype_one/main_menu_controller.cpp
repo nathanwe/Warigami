@@ -38,16 +38,6 @@ void main_menu_controller::update(ecs::state& state)
 		auto& howto_text = howto.get_component<rendering::renderable_text>();
 		auto& options_text = options.get_component<rendering::renderable_text>();
 		auto& exit_text = exit.get_component<rendering::renderable_text>();
-		
-		options_text.position.x = _glfw.width() - 272;
-		options_text.position.y = 8;
-
-		howto_text.position.x = 8;
-		howto_text.position.y = 8;
-
-		exit_text.position.x = _glfw.width() - 280;
-		exit_text.position.y = _glfw.height() - 64;
-
 
 		if (_input.is_input_ended(core::controls::START))
 		{
@@ -55,7 +45,7 @@ void main_menu_controller::update(ecs::state& state)
 			_events.BroadcastEvent(game_start);
 		}
 
-		if (_input.is_input_ended(core::controls::CARD1_CONTROL))
+		if (_input.is_input_started(core::controls::CARD1_CONTROL))
 		{
 			menu.how_to_page++;
 			if (menu.how_to_page > 3)
@@ -66,9 +56,14 @@ void main_menu_controller::update(ecs::state& state)
 
 		if (menu.how_to_page == components::main_menu::NoPage)
 		{
-
 			start_text.position.x = half_width - 150;
 			start_text.position.y = half_height + 64;
+			exit_text.position.x = 8;
+			exit_text.position.y = 8;
+			options_text.position.x = 8;
+			options_text.position.y = 64;
+			howto_text.position.x = 8;
+			howto_text.position.y = 128;
 
 			for (size_t i = 0; i < 4; ++i)
 			{
@@ -82,6 +77,12 @@ void main_menu_controller::update(ecs::state& state)
 		{
 			start_text.position.x = HidePosition.x;
 			start_text.position.y = HidePosition.y;
+			exit_text.position.x = HidePosition.x;
+			exit_text.position.y = HidePosition.y;
+			options_text.position.x = HidePosition.x;
+			options_text.position.y = HidePosition.y;
+			howto_text.position.x = HidePosition.x;
+			howto_text.position.y = HidePosition.y;
 
 			for (size_t i = 0; i < 4; ++i)
 			{
@@ -98,6 +99,5 @@ void main_menu_controller::update(ecs::state& state)
 		auto& transform = board.get_component<transforms::transform>();
 		transform.rotation.y += 0.4f * _timer.delta_secs();
 		transform.is_matrix_dirty = true;
-
 	});
 }
