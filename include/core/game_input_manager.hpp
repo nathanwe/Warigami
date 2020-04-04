@@ -32,7 +32,11 @@ namespace core {
 		CONFIRM_CONTROL,
 		BACK_CONTROL,
 		DEVELOPER_CONSOLE,
-		CONTROL_COUNT
+		
+		START,
+		BACK,
+		
+		CONTROL_COUNT		
 	};
 
 	// -1 to 1

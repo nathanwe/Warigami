@@ -26,7 +26,8 @@ namespace components
 		deck_option = 48,
 		selection_arrow = 49,
 		pause = 50,
-		ready_display = 51
+		ready_display = 51,
+		main_menu = 52
 
 		// careful: need to take action after 
 		// count reaches 63.

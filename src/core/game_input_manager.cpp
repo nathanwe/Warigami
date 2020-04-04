@@ -30,6 +30,8 @@
 #define CARD4_BUTTON		Xbuttons.Y
 #define DIE1_BUTTON			Xbuttons.Lbumper
 #define DIE2_BUTTON			Xbuttons.Rbumper
+#define START_BUTTON		Xbuttons.start_button
+#define BACK_BUTTON			Xbuttons.back_button
 
 // A lower number is a higher sensitivity
 #define MOUSE_SENSITIVITY 32.f
@@ -164,6 +166,12 @@ void core::game_input_manager::update() {
 	_current_game_state[DIE2_CONTROL_PLAYER2] = _input.is_key_down(DIE2_KEY_PLAYER2)
 		|| _input.get_gamepads()[1]->is_button_held(DIE2_BUTTON);
 
+
+	_current_game_state[START] = _input.is_key_down(GLFW_KEY_SPACE) || _input.is_key_down(GLFW_KEY_ENTER) ||
+		_input.get_gamepads()[0]->is_button_held(START_BUTTON);
+
+	_current_game_state[BACK] = _input.is_key_down(GLFW_KEY_I) ||
+		_input.get_gamepads()[0]->is_button_held(BACK_BUTTON);
 
 	// DEVELOPER CONSOLE
 	// ~ on keyboard (no gamepad)

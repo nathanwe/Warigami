@@ -24,22 +24,16 @@ void ready_display_system::initialize(ecs::state& state)
 	_players[1] = state.first<components::player>([&](components::player& p) {
 		return p.team == -1.f;
 	});
-	
-	assert(_players[0] != nullptr);
-	assert(_players[1] != nullptr);
 }
 
 void ready_display_system::update(ecs::state& state)
 {
-	auto& board = _board->get_component<components::board>();
-	
-
-	auto& p1 = _players[0]->get_component<components::player>();
-	auto& p2 = _players[1]->get_component<components::player>();
-
 	state.each<components::ready_display>([&](components::ready_display& ready_dispaly) {
-		ready_dispaly.is_ready = ready_dispaly.team == 1.f ? p1.is_ready : p2.is_ready;
+		auto& board = _board->get_component<components::board>();
+		auto& p1 = _players[0]->get_component<components::player>();
+		auto& p2 = _players[1]->get_component<components::player>();
 
+		ready_dispaly.is_ready = ready_dispaly.team == 1.f ? p1.is_ready : p2.is_ready;
 		auto& ready_entity = state.find_entity(ready_dispaly.ready_entity);
 		auto& back_entity = state.find_entity(ready_dispaly.back_entity);
 		auto& ready_t = ready_entity.get_component<transforms::transform>();

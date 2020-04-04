@@ -40,6 +40,7 @@
 #include "components/deck_ui_loader.hpp"
 #include "components/ready_display.hpp"
 #include "components/ready_display_loader.hpp"
+#include "components/main_menu.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -67,7 +68,7 @@
 #include "ready_display_system.hpp"
 #include "endgame_screen_system.hpp"
 #include "energy_flower_creation_system.hpp"
-
+#include "main_menu_controller.hpp"
 
 
 
@@ -80,10 +81,10 @@ int main(int argc, char** argv) {
 
 	util::string_table strings;
 	event::EventManager events;
-	asset::scene_tracker scene_tracker("assets/scenes/scene.json", events);
-	asset::asset_manager assets;	
+	asset::scene_tracker scene_tracker("assets/scenes/main_menu.json", events);
+	asset::asset_manager assets;
 	core::startup_config config;
-	core::glfw_context glfw(config);	
+	core::glfw_context glfw(config);
 	core::viewport window_view{ 0, 0, glfw.width(), glfw.height() };
 	core::game_input_manager input(glfw.window());
 	core::frame_timer timer;
@@ -113,6 +114,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::deck_option>("deck_option");
 	ecs::register_component<components::deck_selection>("deck_selection");
 	ecs::register_component<components::ready_display>("ready_display");
+	ecs::register_component<components::main_menu>("main_menu");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -163,6 +165,7 @@ int main(int argc, char** argv) {
 	ready_display_system ready_display(glfw);
 	endgame_screen escreen(input, timer, glfw, events);
 	energy_flower_creation_system energy_flower_creation_system;
+	main_menu_controller main_menu_controller(events, glfw, input);
 
 	ecs::systems systems({
 		&energy_system,
@@ -199,12 +202,11 @@ int main(int argc, char** argv) {
 		&transformer,
 		&renderer,
 		&text_renderer,
+		&main_menu_controller
 	});
 
 	ecs::world world(systems, state);
-
 	audio::loader_emitter eloader(strings);
-
 	transforms::transform_loader transform_loader;
 	rendering::loader_camera camera_loader(render_asset_cache);
 	rendering::loader_light_directional dir_light_loader;
@@ -225,7 +227,7 @@ int main(int argc, char** argv) {
 	components::selection_arrow_loader selection_arrow_loader;
 	components::deck_selection_loader deck_selection_loader;
 	components::deck_option_loader deck_option_loader;
-	components::deck_ui_loader deck_ui_loader;
+	components::deck_ui_loader deck_ui_loader;	
 	collisions::aabb_collider_loader aabb_collider_loader;
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;

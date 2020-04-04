@@ -3,40 +3,32 @@ add_executable (prototype_one
 	board_update_system.hpp
 	combat.cpp
 	components/board_loader.cpp
-	components/board_square_loader.cpp
-	components/board_square.cpp
-	components/board_square.cpp components/board_square_loader.cpp
-	components/board.cpp
-	components/board.cpp components/board_loader.cpp
+	components/board_square_loader.cpp	
+	components/board_square.cpp 	
+	components/board.cpp	
 	components/card_enum.hpp
 	components/card_loader.cpp
-	components/card.cpp
-	components/card.cpp components/card_loader.cpp
+	components/card.cpp	
 	components/countdown.cpp
 	components/deck_option.cpp
 	components/deck_selection.cpp
-	components/deck_ui.cpp
-	components/deck_ui.cpp
-	components/deck_ui.hpp
+	components/deck_ui.cpp	
 	components/dice_loader.cpp
-	components/dice.cpp
-	components/dice.cpp components/dice_loader.cpp
+	components/dice.cpp	
 	components/energy_meter.cpp
 	components/game_piece_loader.cpp
 	components/game_piece.cpp
-	components/game_piece.cpp components/game_piece_loader.cpp
+	components/game_piece.cpp 
 	components/health_meter.cpp
+	components/main_menu.cpp
 	components/pause.cpp
 	components/player_loader.cpp
 	components/player.cpp
-	components/player.cpp components/player_loader.cpp
+	components/player.cpp 
 	components/ready_display_loader.cpp
 	components/ready_display.cpp
-	components/selection_arrow_loader.cpp
-	components/selection_arrow_loader.cpp components/selection_arrow_loader.cpp
+	components/selection_arrow_loader.cpp	
 	components/selection_arrow.cpp
-	components/selection_arrow.cpp components/selection_arrow.cpp
-	components/terrain.cpp
 	components/terrain.cpp
 	components/tug_of_war_meter.cpp
 	deck_selection_controller.cpp
@@ -44,6 +36,7 @@ add_executable (prototype_one
 	game_start_system.hpp
 	main.cpp
 	ready_display_system.cpp
+	main_menu_controller.cpp
 	)
 
 target_link_libraries(prototype_one PRIVATE

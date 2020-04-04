@@ -1,0 +1,204 @@
+{
+  "entities": [
+    {
+      "entity_id": 1,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -40, 18, 0 ],
+          "scale": [ 1, 1, 1 ],
+          "rotation": [ 0, -90, -48 ]
+        },
+        {
+          "type": "camera",
+          "field_of_view": 0.785,
+          "clear_setting": "sky_box",
+          "clear_sky_box": [
+            "assets/cubemaps/beach/env/px.hdr",
+            "assets/cubemaps/beach/env/nx.hdr",
+            "assets/cubemaps/beach/env/py.hdr",
+            "assets/cubemaps/beach/env/ny.hdr",
+            "assets/cubemaps/beach/env/pz.hdr",
+            "assets/cubemaps/beach/env/nz.hdr"
+          ]
+        },
+        {
+          "type": "audio_listener"
+        }
+      ]
+    },
+
+
+    {
+      "entity_id": 100,
+      "parent_id": 1,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, -6 ],
+          "scale": [ 3.55555555556, 2, 1]
+
+        },
+        {
+          "type": "main_menu"
+        }
+      ]
+    },
+    {
+      "entity_id": 101,
+      "parent_id": 100,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_text",
+          "text": "START to begin"
+        }
+      ]
+    },
+    {
+      "entity_id": 102,
+      "parent_id": 100,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_text",
+          "text": "A for how-to"
+        }
+      ]
+    },
+
+    {
+      "entity_id": 103,
+      "parent_id": 100,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_text",
+          "text": "X for options"
+        }
+      ]
+    },
+
+    {
+      "entity_id": 108,
+      "parent_id": 100,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ]
+        },
+        {
+          "type": "renderable_text",
+          "text": "BACK to exit to desktop"
+        }
+      ]
+    },
+
+
+    {
+      "parent_id": 100,
+      "entity_id": 104,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay1.png"
+        }
+      ]
+    },
+    {
+      "parent_id": 100,
+      "entity_id": 105,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay2.png"
+        }
+      ]
+    },
+    {
+      "parent_id": 100,
+      "entity_id": 106,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay3.png"
+        }
+      ]
+    },
+    {
+      "parent_id": 100,
+      "entity_id": 107,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay4.png"
+        }
+      ]
+    },
+
+
+
+    {
+      "entity_id": 4,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 50, 0 ],
+          "rotation": [ -120, 0, 0 ]
+        },
+        {
+          "type": "light_directional",
+          "intensity": 3
+        }
+      ]
+    },
+    {
+      "entity_id": 69,
+      "prototype": "assets/prototypes/gameboard.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, -20, 0 ],
+          "scale": [ 5, 5, 5 ]
+        }
+      ]
+    }
+  ]
+}

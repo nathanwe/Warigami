@@ -31,35 +31,39 @@ void deck_selection_controller::initialize(ecs::state& state)
 	_players[1] = state.first<components::player>([&](components::player& p) {
 		return p.team == -1.f;
 	});
+	
+	if (can_run())
+	{
+		auto& p1 = _players[0]->get_component < components::player>();
 
-	assert(_board != nullptr);
-	assert(_deck_selection != nullptr);
-	assert(_players[0] != nullptr);
-	assert(_players[1] != nullptr);
+		build_deck_set(0, components::decks[0]);
+		build_deck_set(1, components::decks[1]);
 
-	auto& p1 = _players[0]->get_component < components::player>();
-
-	build_deck_set(0, components::decks[0]);
-	build_deck_set(1, components::decks[1]);
-
-	spawn_preview_units(state);
+		spawn_preview_units(state);
+	}
 }
 
 void deck_selection_controller::update(ecs::state& state)
 {
 	state.each<components::board>([&](components::board& board) {
+		if (!can_run())					
+			return;
+
 		if (board.state == components::game_state::deck_selection) 
 			do_update(state, board);
 		else
 			hide_elements(state, board);
 	});
 
-	auto& selection_component = _deck_selection->get_component<components::deck_selection>();
-	for (size_t i = 0; i < selection_component.child_count; ++i)
+	if (can_run())
 	{
-		auto& e = state.find_entity(selection_component.children[i]);
-		auto& t = e.get_component<transforms::transform>();
-		t.is_matrix_dirty = true;
+		auto& selection_component = _deck_selection->get_component<components::deck_selection>();
+		for (size_t i = 0; i < selection_component.child_count; ++i)
+		{
+			auto& e = state.find_entity(selection_component.children[i]);
+			auto& t = e.get_component<transforms::transform>();
+			t.is_matrix_dirty = true;
+		}
 	}
 }
 
@@ -316,4 +320,12 @@ void deck_selection_controller::handle_unit_transform(
 	game_piece.continuous_board_location = game_piece.board_source;
 	unit_t.position = board.grid_to_board(game_piece.continuous_board_location, board_t);
 	unit_t.is_matrix_dirty = true;
+}
+
+bool deck_selection_controller::can_run() const
+{
+	return _players[0] != nullptr &&
+		_players[1] != nullptr &&
+		_deck_selection != nullptr &&
+		_board != nullptr;
 }

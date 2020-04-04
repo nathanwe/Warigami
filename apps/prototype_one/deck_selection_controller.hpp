@@ -71,6 +71,8 @@ private:
 		components::game_piece& game_piece,
 		components::board& board,
 		entity_id board_id);
+
+	bool can_run() const;
 };
 
 
