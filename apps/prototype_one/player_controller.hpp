@@ -58,6 +58,21 @@ public:
 			}
 		}
 
+		r_state.each<components::player>([&](auto& player)
+		{
+			r_state.each<components::selection_arrow>([&](auto& selector)
+			{
+				if (player.team == selector.team)
+				{
+					for (unsigned int i = 0; i < selector.energy_orbs.size(); ++i)
+					{
+						auto& render = selector.energy_orbs[i].get_component<rendering::renderable_mesh_static>();
+						render.is_enabled = player.energy > i;
+					}
+				}
+			});
+		});
+
 		r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, components::board& board) {
 			if (board.state != components::game_state::gameplay) return;
 
@@ -83,12 +98,9 @@ public:
 							}
 						});
 
-					//draw_goalposts(r_state, player);
-					//gather_points(r_state, player);					
 					handle_player_selection(player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, player_specifics.controls);
-					//gain_energy(r_state, player, board, p_1_squares, p_minus1_squares);
 					show_cursor(player, r_state, player_specifics);
 					
 				});
@@ -117,18 +129,6 @@ private:
 
 		return -1;
 	}
-	void gain_energy(ecs::state& r_state, components::player& player
-		, components::board& board, float p1_squares, float pminus1_squares) {
-
-		float square_percent = player.team == 1.0f ? p1_squares : pminus1_squares;
-		square_percent /= (board.columns * board.rows);
-		player.ticks_to_energy_grow -= board.ticker_dt;
-		if (player.ticks_to_energy_grow < 0)
-		{
-			player.ticks_to_energy_grow = player.ticks_per_energy_grow;
-			player.energy = std::min(player.energy + 2.0f * square_percent, player.max_energy);
-		}
-	}
 	void board_reset(ecs::state& r_state)
 	{
 		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>([&](
@@ -147,17 +147,6 @@ private:
 				if (square.team == -1.0f) { //TODO: refactor so team color is not hardcoded
 					render_mesh_s.material.tint_color += glm::vec3(-0.1f, -0.1f, 0.2f);
 				}
-			});
-	}
-	void draw_goalposts(ecs::state& r_state, components::player& player) {
-		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>([&](
-			components::board_square& square,
-			transforms::transform& transform,
-			rendering::renderable_mesh_static& render_mesh_s)
-			{
-				if (square.y == player.score_column) {
-					render_mesh_s.material.tint_color += glm::vec3(0.112f, 0.107f, 0.0f);
-				} 
 			});
 	}
 
@@ -182,23 +171,6 @@ private:
 		}
 	}
 
-	void gather_points(ecs::state& r_state, components::player& player)
-	{
-		r_state.each<components::game_piece>([&](components::game_piece& game_piece)
-			{
-				if (game_piece.team != player.team) {
-					player.points += game_piece.give_points;
-				}
-				else
-				{
-					player.points += game_piece.give_points / 2;
-				}
-			});
-		if (player.points >= 20) { //TODO: fix hardcode
-			player.points -= 20;
-			player.bonus_dice++;
-		}
-	}
 	void handle_controls(
 		components::player& player,
 		ecs::state& r_state,

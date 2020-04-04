@@ -1,0 +1,16 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "scale": [ 0.125, 0.125, 0.125 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/sphere/sphere.obj",
+        "param_diffuse": [ 1, 1, 0 ]
+      }
+    ]
+  }
+}

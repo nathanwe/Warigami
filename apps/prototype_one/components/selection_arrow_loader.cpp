@@ -7,6 +7,11 @@ void components::selection_arrow_loader::load(asset::asset_loader_node& asset_lo
 	auto& json = entity_data->component_data(components::selection_arrow::component_bitshift);
 	auto& sa = entity->get_component<selection_arrow>();
 	sa.team = json.value("team", 1);
+
+	for (auto& child : asset_loader_node.children)
+	{
+		sa.energy_orbs.push_back(*child.entity_resource.entity);
+	}
 }
 
 component_bitset components::selection_arrow_loader::components_to_load()
