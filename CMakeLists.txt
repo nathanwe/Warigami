@@ -12,6 +12,13 @@ set(OpenGL_GL_PREFERENCE "GLVND")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/bin)
 set(COTIRE_MINIMUM_NUMBER_OF_TARGET_SOURCES 5)
 
+# Hide the console window in visual studio projects
+if(MSVC)
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /subsystem:windows /ENTRY:mainCRTStartup")
+	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} /subsystem:windows /ENTRY:mainCRTStartup")
+endif()
+
+
 # Dependencies
 include(add_glfw)
 include(add_glbinding)
