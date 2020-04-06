@@ -52,7 +52,7 @@ void energy_ball_system::update(ecs::state& state)
 
 			player_specific_data specifis(player_c, _input);
 
-			if (_input.is_input_active(specifis.controls.dice_button2))
+			if (_input.is_input_active(specifis.controls.dice_button2) || player_c.controlled_by_AI)
 			{
 				auto target_pos = find_target_position(sa);
 				glm::vec3 source_pos = transform.local_to_world[3];

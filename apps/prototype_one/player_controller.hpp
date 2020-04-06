@@ -218,11 +218,8 @@ private:
 		entity_id board_id)
 	{
 		auto& controls = player_specifics.controls;
-		int loc = find_selected_card_index(controls);
-		if (!m_input.is_input_active(controls.dice_button2)) {
-			place_card(loc, player, r_state, board);
-		}
-		
+		int loc = find_selected_card_index(controls);		
+		place_card(loc, player, r_state, board);
 	}
 	void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
 		if (loc != -1) {

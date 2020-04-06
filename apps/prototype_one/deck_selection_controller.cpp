@@ -34,7 +34,7 @@ void deck_selection_controller::initialize(ecs::state& state)
 	
 	if (can_run())
 	{
-		auto& p1 = _players[0]->get_component < components::player>();
+		auto& p1 = _players[0]->get_component<components::player>();
 
 		build_deck_set(0, components::decks[0]);
 		build_deck_set(1, components::decks[1]);
