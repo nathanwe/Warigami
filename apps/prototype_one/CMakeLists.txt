@@ -15,16 +15,15 @@ add_executable (warigami
 	components/deck_ui.cpp	
 	components/dice_loader.cpp
 	components/dice.cpp	
+	components/energy_ball.cpp
 	components/energy_meter.cpp
 	components/game_piece_loader.cpp
-	components/game_piece.cpp
-	components/game_piece.cpp 
+	components/game_piece.cpp	
 	components/health_meter.cpp
 	components/main_menu.cpp
 	components/pause.cpp
 	components/player_loader.cpp
-	components/player.cpp
-	components/player.cpp 
+	components/player.cpp	
 	components/ready_display_loader.cpp
 	components/ready_display.cpp
 	components/selection_arrow_loader.cpp	
@@ -33,6 +32,7 @@ add_executable (warigami
 	components/tug_of_war_meter.cpp
 	deck_selection_controller.cpp
 	deck_ui_controller.cpp
+	energy_ball_system.cpp
 	game_start_system.hpp
 	main.cpp
 	ready_display_system.cpp

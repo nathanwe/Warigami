@@ -41,6 +41,7 @@
 #include "components/ready_display.hpp"
 #include "components/ready_display_loader.hpp"
 #include "components/main_menu.hpp"
+#include "components/energy_ball.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -69,6 +70,7 @@
 #include "endgame_screen_system.hpp"
 #include "energy_flower_creation_system.hpp"
 #include "main_menu_controller.hpp"
+#include "energy_ball_system.hpp"
 
 
 
@@ -115,6 +117,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::deck_selection>("deck_selection");
 	ecs::register_component<components::ready_display>("ready_display");
 	ecs::register_component<components::main_menu>("main_menu");
+	ecs::register_component<components::energy_ball>("energy_ball");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -166,6 +169,7 @@ int main(int argc, char** argv) {
 	endgame_screen escreen(input, timer, glfw, events);
 	energy_flower_creation_system energy_flower_creation_system;
 	main_menu_controller main_menu_controller(events, glfw, input, timer);
+	energy_ball_system energy_balls(input, hydrater, timer);
 
 	ecs::systems systems({
 		&energy_system,
@@ -202,7 +206,8 @@ int main(int argc, char** argv) {
 		&transformer,
 		&renderer,
 		&text_renderer,
-		&main_menu_controller
+		&main_menu_controller,
+		&energy_balls
 	});
 
 	ecs::world world(systems, state);
@@ -296,4 +301,6 @@ int main(int argc, char** argv) {
 		hydrater.clear();
 		state.free_all();
 	}
+
+	return 0;
 }

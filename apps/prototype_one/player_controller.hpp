@@ -133,22 +133,39 @@ private:
 	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls&controls ) {
 		r_state.each<components::terrain, components::board_square, transforms::transform>
 			([&](components::terrain& terrain, components::board_square& square, transforms::transform& square_t) {
-			if (terrain.growth_stage == 3 && player.selected_row == terrain.location.x
-				&& square.team == player.team && (m_input.is_input_active(controls.dice_button2)||player.controlled_by_AI)) {
+
+			if (
+				terrain.growth_stage == 3 && 
+				player.selected_row == terrain.location.x && 
+				square.team == player.team && 
+				(m_input.is_input_active(controls.dice_button2)||player.controlled_by_AI)) 
+			{
 				terrain.growth_stage--;
 				square_t.rotation = glm::vec3(0, AI_MATH_HALF_PI * player.team, 0);
-				player.energy += 2;
+				
+				auto& ball = hydrater.add_from_prototype("assets/prototypes/energy_ball_detached.json");
+				auto& ball_t = ball.get_component<transforms::transform>();
+				auto& ball_c = ball.get_component<components::energy_ball>();
+				ball_t.position = square_t.local_to_world[3];
+				ball_t.local_to_world = square_t.local_to_world;
+				ball_t.position[1] = ball_t.local_to_world[3][1] += 4.f;
+				ball_c.team = player.team;
+
+
+				/*player.energy += 2;
 				if (player.energy > player.max_energy)
 				{
 					player.energy = player.max_energy;
-				}
+				}*/
 			}
-			if (terrain.growth_stage == 2 && square.team == player.team 
-				&& (player.selected_row != terrain.location.x || 
-					(!player.controlled_by_AI &&!m_input.is_input_active(controls.dice_button2)))) {
+			if (terrain.growth_stage == 2 && 
+				square.team == player.team && 
+				(player.selected_row != terrain.location.x || (!player.controlled_by_AI &&!m_input.is_input_active(controls.dice_button2)))) 
+			{
 				terrain.growth_stage--;
 				square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
 			}
+
 			});
 	}
 	void board_reset(ecs::state& r_state)

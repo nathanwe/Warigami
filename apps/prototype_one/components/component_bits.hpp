@@ -27,7 +27,8 @@ namespace components
 		selection_arrow = 49,
 		pause = 50,
 		ready_display = 51,
-		main_menu = 52
+		main_menu = 52,
+		energy_ball = 53
 
 		// careful: need to take action after 
 		// count reaches 63.
