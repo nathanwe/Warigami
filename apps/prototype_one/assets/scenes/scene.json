@@ -86,7 +86,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -5, -15, 0 ],
+          "position": [ 0, -20, 0 ],
           "scale": [ 5, 5, 5 ]
         }
       ]
