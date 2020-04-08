@@ -173,10 +173,6 @@ private:
 	static constexpr std::array<glm::vec2, 3> m_spider_move_offsets   { glm::vec2(0.f, 0.5f), glm::vec2(0.3333f, 0.5f), glm::vec2(0.6666f, 0.5f) };
 
 	static constexpr std::array<glm::vec2, 3> m_egg_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f), glm::vec2(0.6666f, 0.f) };
-
-	static constexpr std::array<glm::vec2, 1> m_queen_energy_offsets { glm::vec2(0.f, 0.f) };
-	static constexpr std::array<glm::vec2, 2> m_queen_place_offsets  { glm::vec2(0.f, 0.3333f), glm::vec2(0.25f, 0.3333f) };
-	static constexpr std::array<glm::vec2, 4> m_queen_move_offsets   { glm::vec2(0.f, 0.6666f), glm::vec2(0.25f, 0.6666f), glm::vec2(0.5f, 0.6666f), glm::vec2(0.75f, 0.6666f) };
 };
 
 
