@@ -70,7 +70,11 @@ namespace physics
 		state.each< transforms::transform, collisions::sphere_collider>([&](transforms::transform& transform, collisions::sphere_collider& collider)
 			{
 				collider.position_absolute = transform.position + collider.position_relative;
-				collider.radius = 0.5f * transform.scale.x;
+				collider.radius = std::max({
+					transform.scale[0],
+					transform.scale[1],
+					transform.scale[2]
+					}) * collider.original_radius;
 			});
 	}
 

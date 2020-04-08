@@ -38,6 +38,8 @@ bool core::startup_config::free_mouse() const { return config_json["free_mouse"]
 std::string core::startup_config::window_title() const { return config_json["window_title"].get<std::string>(); }
 bool core::startup_config::god_mode() const { return config_json["god_mode"].get<bool>(); }
 bool core::startup_config::auto_play() const { return config_json["auto_play"].get<bool>(); }
+float core::startup_config::music_volume() const { return config_json["music_volume"]; }
+float core::startup_config::sfx_volume() const { return config_json["sfx_volume"]; }
 
 json core::startup_config::make_default() const
 {
@@ -50,7 +52,8 @@ json core::startup_config::make_default() const
         {"free_mouse", true},
         {"window_title", "Warigami"},
         {"god_mode", false},
-        {"auto_play", false}
-    
+        {"auto_play", false},
+        {"music_volume", 1.f},
+        {"sfx_volume", 1.f}
     };
 }

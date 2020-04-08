@@ -21,7 +21,13 @@ FMOD_RESULT F_CALLBACK channelGroupCallback(FMOD_CHANNELCONTROL *channelControl,
                                             void *commandData2);
 
 
-audio::audio_system::audio_system(util::string_table &app_strings, asset::asset_manager& assets) : _app_strings(app_strings), _assets(assets)
+audio::audio_system::audio_system(
+    util::string_table &app_strings, 
+    asset::asset_manager& assets,
+    core::startup_config& config)
+    : _app_strings(app_strings)
+    , _assets(assets)
+    , _startup_config(config)
 {
     FMOD_RESULT result;
 
@@ -123,7 +129,7 @@ void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
 
     auto fmod_sound = get_sound(sound.path_hash, mode);
-    play_sound(fmod_sound, sound);    
+    play_sound(fmod_sound, sound, _startup_config.music_volume());
 }
 
 void audio::audio_system::play_sound_non3d(audio::emitter_sound& sound)
@@ -132,23 +138,13 @@ void audio::audio_system::play_sound_non3d(audio::emitter_sound& sound)
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
 
     auto fmod_sound = get_sound(sound.path_hash, mode);
-    play_sound(fmod_sound, sound);
+    play_sound(fmod_sound, sound, _startup_config.sfx_volume());
 }
 
-FMOD::Sound *audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
-{
-    if (_sounds.find(hash) == _sounds.end())
-    {
-        FMOD::Sound *sound = nullptr;
-        auto& track = _app_strings[hash];
-        sound = _assets.get_sound(track, _system, mode);
-        _sounds.insert({hash, sound});
-    }
-
-    return _sounds.find(hash)->second;
-}
-
-void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& emitter_sound)
+void audio::audio_system::play_sound(
+    FMOD::Sound *sound, 
+    audio::emitter_sound& emitter_sound, 
+    float volume_scale)
 {
     FMOD_RESULT result;
 
@@ -158,7 +154,7 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     if (!succeededOrWarn("FMOD: Failed to play sound_wrapper", result))
         return;
 
-    channel->setVolume(emitter_sound.volume);
+    channel->setVolume(emitter_sound.volume * volume_scale);
     channel->set3DMinMaxDistance(emitter_sound.volume * 30.f, 100000.f);
 
     // Assign the channel to the group.
@@ -173,6 +169,19 @@ void audio::audio_system::play_sound(FMOD::Sound *sound, audio::emitter_sound& e
     emitter_sound.state = sound_state::playing;
     emitter_sound.fmod_channel = channel;
     emitter_sound.fmod_sound = sound;
+}
+
+FMOD::Sound* audio::audio_system::get_sound(size_t hash, FMOD_MODE mode)
+{
+    if (_sounds.find(hash) == _sounds.end())
+    {
+        FMOD::Sound* sound = nullptr;
+        auto& track = _app_strings[hash];
+        sound = _assets.get_sound(track, _system, mode);
+        _sounds.insert({ hash, sound });
+    }
+
+    return _sounds.find(hash)->second;
 }
 
 void audio::audio_system::handle_emitter_sound(

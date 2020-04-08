@@ -59,8 +59,6 @@ private:
 
 	void on_start(ecs::state& state);
 
-	void layout_pieces(ecs::state& state);
-
 	void build_deck_set(components::deck_index index, const std::vector<components::card_enum>& deck);
 
 	void spawn_preview_units(ecs::state& state);

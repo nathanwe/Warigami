@@ -41,10 +41,17 @@ namespace transforms
 				r_transform.local_to_world = calculate_matrix(r_transform);
 				r_transform.is_matrix_dirty = false;
 				r_transform.just_cleaned = true;
-			}			
+			}
 		}
 		else
 		{
+			if (!r_state.has_entity(r_transform.parent))
+			{
+				r_transform.has_parent = false;
+				_hydrater.remove_entity(id);				
+				return;
+			}
+
 			// recursively clean dependencies
 			auto& parent_entity = r_state.find_entity(r_transform.parent);
 			auto& parent_transform = parent_entity.get_component<transform>();
@@ -64,14 +71,5 @@ namespace transforms
 				r_transform.just_cleaned = true;
 			}
 		}
-	}
-}
-
-void transforms::transformer::remove_if_orphaned(entity_id id, transforms::transform& r_transform)
-{
-	if (r_transform.parent != ecs::default_entity_id)
-	{
-		_hydrater.remove_entity(id);
-		return;
 	}
 }

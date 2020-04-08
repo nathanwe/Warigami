@@ -9,7 +9,9 @@ void collisions::sphere_collider_loader::load(asset::asset_loader_node& asset_lo
 
 	c.owner_id = entity->id();
 
+	c.original_radius = json.value("radius", 0.f);
 	c.radius = json.value("radius", 0.f);
+
 	if (json.find("relative") != json.end())
 	{
 		c.position_relative = glm::vec3(

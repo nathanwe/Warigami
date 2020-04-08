@@ -5,7 +5,8 @@
 #ifndef WIZARDENGINE_AUDIO_SYSTEM_HPP
 #define WIZARDENGINE_AUDIO_SYSTEM_HPP
 
-#include "asset/asset_manager.hpp"
+#include <core/startup_config.hpp>
+#include <asset/asset_manager.hpp>
 #include <audio/audio_listener.hpp>
 #include <audio/audio_emitter.hpp>
 #include <ecs/system_base.hpp>
@@ -20,23 +21,29 @@ namespace audio
     class audio_system : public ecs::system_base
     {
     public:
-        explicit audio_system(util::string_table &app_strings, asset::asset_manager& assets);
+        explicit audio_system(
+            util::string_table &app_strings, 
+            asset::asset_manager& assets,
+            core::startup_config& config);
 
         void update(ecs::state &state) override;
 
     private:
+        util::string_table& _app_strings;
         asset::asset_manager& _assets;
+        core::startup_config& _startup_config;
+
         FMOD::ChannelGroup *_channelGroup { nullptr };
-        FMOD::System *_system = { nullptr };
+        FMOD::System *_system { nullptr };
         std::unordered_map<size_t, FMOD::Sound *> _sounds {};
-        util::string_table &_app_strings;
+        
 
         void sync_transform_to_listener(ecs::state &state);
         void update_emitters(ecs::state &state);
         void stop_sound(audio::emitter_sound& sound);
         void play_sound_3d(audio::emitter_sound& sound);
         void play_sound_non3d(audio::emitter_sound& sound);
-        void play_sound(FMOD::Sound *sound, audio::emitter_sound& emitter);
+        void play_sound(FMOD::Sound *sound, audio::emitter_sound& emitter, float volume_scale);
         void handle_emitter_sound(emitter_sound& sound, glm::vec3& t_pos, glm::vec3& velocity);
         void handle_music_sound(emitter_sound& sound);
         void check_sound_stopped(emitter_sound& sound);

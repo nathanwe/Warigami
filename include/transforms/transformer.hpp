@@ -21,7 +21,7 @@ namespace transforms
 		asset::scene_hydrater& _hydrater;
 
 		void clean_transform_hierarchy(ecs::state& r_state, entity_id id, transform& r_transform);
-		void remove_if_orphaned(entity_id id, transform& r_transform);
+		bool remove_if_orphaned(ecs::state& state, entity_id id, transform& r_transform);
 	};
 }
 

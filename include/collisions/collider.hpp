@@ -30,6 +30,7 @@ namespace collisions {
 		glm::vec3 position_absolute;
 		entity_id owner_id;
 		float radius;
+		float original_radius;
 	};
 
 	class AABB_collider : public collider, public ecs::component<AABB_collider> {

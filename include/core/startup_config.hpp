@@ -33,6 +33,9 @@ public:
     bool god_mode() const;
     bool auto_play() const;
 
+    float music_volume() const;
+    float sfx_volume() const;
+
 private:
     json make_default() const;
     void load();

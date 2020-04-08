@@ -7,7 +7,7 @@ namespace components
 {
 	struct energy_ball : public ecs::component<energy_ball>
 	{
-		float gravity_constant{ 700.f };
+		float gravity_constant{ 3500.f };
 		float team{ 1.f };
 	};
 }

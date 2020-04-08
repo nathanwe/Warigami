@@ -95,6 +95,12 @@ ecs::query_cache ecs::state::build_query_cache(component_bitset archetype)
 
 ecs::entity& ecs::state::find_entity(entity_id id)
 {
+    if (_entity_lookup.find(id) == _entity_lookup.end())
+    {
+        int i = 0;
+        i++;
+    }
+
     return _entity_lookup.find(id)->second;
 }
 

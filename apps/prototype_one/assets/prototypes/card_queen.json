@@ -17,5 +17,22 @@
         "card_type": 7
       }
     ]
-  }
+  },
+  "children": [
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, -0.1 ],
+          "rotation": [ 0, 180, 0 ],
+          "scale": [ 2, 3, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/cards/spider_back.png"
+        }
+      ]
+    }
+  ]
 }

@@ -43,8 +43,7 @@ void deck_ui_controller::handle_deck_ui(
         entity_id deck_id)
 {
     deck_t.position = glm::vec3(0);
-    deck_t.is_matrix_dirty = true;   
-
+    deck_t.is_matrix_dirty = true;
     handle_card_entities(state, deck, deck_t, deck_id);
 }
 
