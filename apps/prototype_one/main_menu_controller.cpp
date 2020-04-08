@@ -24,80 +24,82 @@ void main_menu_controller::initialize(ecs::state& state)
 
 void main_menu_controller::update(ecs::state& state)
 {
-	auto half_height = _glfw.height() / 2.f;
-	auto half_width = _glfw.width() / 2.f;
-
-
 	state.each<components::main_menu>([&](components::main_menu& menu) {
-		auto& start = state.find_entity(101);
-		auto& howto = state.find_entity(102);
-		auto& options = state.find_entity(103);
-		auto& exit = state.find_entity(108);
-		
-		auto& start_text = start.get_component<rendering::renderable_text>();
-		auto& howto_text = howto.get_component<rendering::renderable_text>();
-		auto& options_text = options.get_component<rendering::renderable_text>();
-		auto& exit_text = exit.get_component<rendering::renderable_text>();
-
-		if (_input.is_input_ended(core::controls::START))
-		{
-			asset::scene_change_event game_start("assets/scenes/scene.json");
-			_events.BroadcastEvent(game_start);
-		}
-
-		if (_input.is_input_started(core::controls::CARD1_CONTROL))
-		{
-			menu.how_to_page++;
-			if (menu.how_to_page > 3)
-			{
-				menu.how_to_page = components::main_menu::NoPage;
-			}
-		}
 
 		if (menu.how_to_page == components::main_menu::NoPage)
-		{
-			start_text.position.x = half_width - 150;
-			start_text.position.y = half_height + 64;
-			exit_text.position.x = 8;
-			exit_text.position.y = 8;
-			options_text.position.x = 8;
-			options_text.position.y = 64;
-			howto_text.position.x = 8;
-			howto_text.position.y = 128;
-
-			for (size_t i = 0; i < 4; ++i)
-			{
-				auto& e = state.find_entity(menu.how_to_play_images[i]);
-				auto& t = e.get_component<transforms::transform>();
-				t.position = HidePosition;
-				t.is_matrix_dirty = true;
-			}
-		}
+			handle_main_menu_case(state, menu);
 		else
-		{
-			start_text.position.x = HidePosition.x;
-			start_text.position.y = HidePosition.y;
-			exit_text.position.x = HidePosition.x;
-			exit_text.position.y = HidePosition.y;
-			options_text.position.x = HidePosition.x;
-			options_text.position.y = HidePosition.y;
-			howto_text.position.x = HidePosition.x;
-			howto_text.position.y = HidePosition.y;
-
-			for (size_t i = 0; i < 4; ++i)
-			{
-				auto& e = state.find_entity(menu.how_to_play_images[i]);
-				auto& t = e.get_component<transforms::transform>();
-				t.position = i == menu.how_to_page
-					? glm::vec3(0.f, 0.f, 0.f)
-					: HidePosition;
-				t.is_matrix_dirty = true;
-			}			
-		}
+			handle_howto_case(state, menu);
 
 		auto& board = state.find_entity(69);
 		auto& transform = board.get_component<transforms::transform>();
 		transform.rotation.y += 0.4f * _timer.delta_secs();
 		transform.is_matrix_dirty = true;
 	});
+}
+
+void main_menu_controller::handle_howto_case(ecs::state& state, components::main_menu& menu)
+{
+	texts menu_items(state);
+
+	menu_items.start_text.position.x = HidePosition.x;
+	menu_items.start_text.position.y = HidePosition.y;
+	menu_items.exit_text.position.x = HidePosition.x;
+	menu_items.exit_text.position.y = HidePosition.y;
+	menu_items.options_text.position.x = HidePosition.x;
+	menu_items.options_text.position.y = HidePosition.y;
+	menu_items.howto_text.position.x = HidePosition.x;
+	menu_items.howto_text.position.y = HidePosition.y;
+
+	for (size_t i = 0; i < 4; ++i)
+	{
+		auto& e = state.find_entity(menu.how_to_play_images[i]);
+		auto& t = e.get_component<transforms::transform>();
+		t.position = i == menu.how_to_page
+			? glm::vec3(0.f, 0.f, 0.f)
+			: HidePosition;
+		t.is_matrix_dirty = true;
+	}
+
+	if (_input.any_button_pressed())
+	{
+		menu.how_to_page++;
+		if (menu.how_to_page > 3)
+			menu.how_to_page = components::main_menu::NoPage;
+	}
+}
+
+void main_menu_controller::handle_main_menu_case(ecs::state& state, components::main_menu& menu)
+{
+	texts menu_items(state);
+	auto half_height = _glfw.height() / 2.f;
+	auto half_width = _glfw.width() / 2.f;
+
+	if (_input.is_input_ended(core::controls::START))
+	{
+		asset::scene_change_event game_start("assets/scenes/scene.json");
+		_events.BroadcastEvent(game_start);
+	}
+
+	if (_input.is_input_started(core::controls::CARD1_CONTROL))
+	{
+		menu.how_to_page++;	
+	}
+
+	menu_items.start_text.position.x = half_width - 150;
+	menu_items.start_text.position.y = half_height + 64;
+	menu_items.exit_text.position.x = 8;
+	menu_items.exit_text.position.y = 8;
+	menu_items.options_text.position.x = 8;
+	menu_items.options_text.position.y = 64;
+	menu_items.howto_text.position.x = 8;
+	menu_items.howto_text.position.y = 128;
+
+	for (size_t i = 0; i < 4; ++i)
+	{
+		auto& e = state.find_entity(menu.how_to_play_images[i]);
+		auto& t = e.get_component<transforms::transform>();
+		t.position = HidePosition;
+		t.is_matrix_dirty = true;
+	}
 }

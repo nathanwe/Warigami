@@ -63,10 +63,13 @@ namespace core {
 		view_axis pitch_player2() const { return _pitch_player2; }
 		view_axis yaw_player2() const { return _yaw_player2; }
 
+		bool any_button_pressed() const { return _any_button_pressed; }
+
 	private:
 		input_manager _input;
 		bool _prev_game_state[CONTROL_COUNT];
 		bool _current_game_state[CONTROL_COUNT];
+		bool _any_button_pressed;
 
 		input_axis _forward{ 0 };
 		input_axis _strafe{ 0 };

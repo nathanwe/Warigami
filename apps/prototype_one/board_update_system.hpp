@@ -84,8 +84,11 @@ private:
         generate_new_board_state(r_state);
     }
 
-    void handle_tick_progress(ecs::state &r_state, entity_id board_id, transforms::transform &board_t,
-                              components::board &board)
+    void handle_tick_progress(
+        ecs::state &r_state, 
+        entity_id board_id, 
+        transforms::transform &board_t,
+        components::board &board)
     {
         r_state.each_id<transforms::transform, components::game_piece>(
                 [&](entity_id unit_id, auto &unit_t, auto &unit) {

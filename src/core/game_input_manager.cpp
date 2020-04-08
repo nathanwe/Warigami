@@ -176,6 +176,12 @@ void core::game_input_manager::update() {
 	// DEVELOPER CONSOLE
 	// ~ on keyboard (no gamepad)
 	_current_game_state[DEVELOPER_CONSOLE] = _input.is_key_down(GLFW_KEY_GRAVE_ACCENT);
+
+	_any_button_pressed = false;
+	for (size_t i = 0; i < controls::CONTROL_COUNT; ++i)
+	{
+		_any_button_pressed = _any_button_pressed || is_input_started((controls)i);
+	}
 }
 
 bool core::game_input_manager::is_input_active(controls control) {
