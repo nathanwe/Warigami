@@ -138,7 +138,7 @@ int main(int argc, char** argv) {
 	player_controller player_control(input, timer, events, hydrater);
 	
 	deck_ui_controller deck_ui_controller(hydrater);
-	audio::audio_system audio_system(strings, assets);
+	audio::audio_system audio_system(strings, assets, config);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
 	rendering::asset_cache render_asset_cache(assets);
