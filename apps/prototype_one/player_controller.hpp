@@ -8,16 +8,20 @@
 #include <asset/scene_hydrater.hpp>
 #include <event/event_manager.hpp>
 #include <transforms/transform.hpp>
+#include <util/math.hpp>
+#include <util/sign.hpp>
 
 #include "components/player.hpp" 
 #include "components/board_square.hpp"
 #include "components/terrain.hpp"
 #include "components/game_piece.hpp"
-#include <util/sign.hpp>
 #include "components/to_spawn.hpp"
 #include "components/pause.hpp"
 
 #include "game_util/player_specifics.hpp"
+
+#include <algorithm>
+
 
 class player_controller : public ecs::system_base
 {
@@ -299,10 +303,23 @@ private:
 				auto under_limit_v = dir_v < 0 ? player.selected_row < board.columns - 1 : player.selected_row > 0;
 				player.select_delay = 0.1f;
 
+				bool changed_selection = false;
 				if (vertical_input_active && under_limit_v)
 				{
 					player.select_delay = 0.1f;
 					player.selected_row -= dir_v;
+					changed_selection = true;
+				}
+
+				auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+				if (changed_selection)
+				{
+					anim_data.m_walked_recently = true;
+					anim_data.m_time_last_walked = m_timer.total_s();
+				}
+				else if (anim_data.m_walked_recently && m_timer.total_s() - anim_data.m_time_last_walked > m_walk_recency_duration)
+				{
+					anim_data.m_walked_recently = false;
 				}
 			}
 		}
@@ -386,7 +403,7 @@ private:
 		player_specific_data& player_specifics)
 	{
 		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>(
-			[&](components::board_square& square, transforms::transform& transform, rendering::renderable_mesh_static& render_mesh_s)
+			[&](auto& square, auto& transform, auto& render_mesh_s)
 			{
 				if (square.x == player.selected_row && square.y == player.selected_column) {
 
@@ -396,25 +413,21 @@ private:
 					arrow_pos.z -= player.team;
 
 					r_state.each<components::selection_arrow, transforms::transform, rendering::renderable_mesh_static>(
-						[&](components::selection_arrow& arrow, transforms::transform& transform_arrow, rendering::renderable_mesh_static& render_mesh_s_arrow)
+						[&](auto& arrow, auto& transform_arrow, auto& render_mesh_s_arrow)
 						{					
 							if (arrow.team == player.team) 
 							{
-								auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 								if (transform_arrow.position != arrow_pos)
 								{
-									transform_arrow.position = arrow_pos;
+									auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+									float t = (m_timer.total_s() - anim_data.m_time_last_walked) / 0.125f;
+									t = std::clamp(t, 0.f, 1.f);
+									transform_arrow.position = util::lerp(transform_arrow.position, arrow_pos, t);
 									transform_arrow.is_matrix_dirty = true;
-									anim_data.m_walked_recently = true;
-									anim_data.m_time_last_walked = m_timer.total_s();
 								}
-								else if (anim_data.m_walked_recently && m_timer.total_s() - anim_data.m_time_last_walked > m_walk_recency_duration)
-								{
-									anim_data.m_walked_recently = false;
-								}
-								render_mesh_s_arrow.material.texture_offset = player.team > 0.f ? glm::vec2(0.25f, 0.f) : glm::vec2(0.f, 0.f);
 							}
-						});
+						}
+					);
 				}
 			});
 	}
