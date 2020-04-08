@@ -221,7 +221,7 @@ private:
 	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls&controls ) 
 	{
 		auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
-		anim_data.m_is_vacuuming_energy = m_input.is_input_active(controls.dice_button2) || player.controlled_by_AI;
+		anim_data.m_is_vacuuming_energy = player.controlled_by_AI || (!anim_data.m_is_placing_unit && m_input.is_input_active(controls.dice_button2));
 		if (anim_data.m_is_vacuuming_energy)
 		{
 			r_state.each<components::terrain, components::board_square, transforms::transform>(
@@ -290,16 +290,20 @@ private:
 			player.select_delay -= m_timer.smoothed_delta_secs();
 		}
 		else
-		{		
-			auto vertical_input_active = std::abs(forward) > .4f;
-			auto dir_v = util::sign(forward);
-			auto under_limit_v = dir_v < 0 ? player.selected_row < board.columns-1 : player.selected_row > 0;
-			player.select_delay = 0.1f;
-
-			if (vertical_input_active && under_limit_v)
+		{
+			auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+			if (!anim_data.m_is_placing_unit)
 			{
+				auto vertical_input_active = std::abs(forward) > .4f;
+				auto dir_v = util::sign(forward);
+				auto under_limit_v = dir_v < 0 ? player.selected_row < board.columns - 1 : player.selected_row > 0;
 				player.select_delay = 0.1f;
-				player.selected_row -= dir_v;
+
+				if (vertical_input_active && under_limit_v)
+				{
+					player.select_delay = 0.1f;
+					player.selected_row -= dir_v;
+				}
 			}
 		}
 	}
