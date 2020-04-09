@@ -38,10 +38,18 @@ public:
 					{
 						state.each<components::game_piece>([&]
 						(components::game_piece& piece) {
-								int health_to_add = std::count(piece.effects.begin(),
-									piece.effects.end(), combats::COMBAT_EFFECTS::REGENERATE);
-								if (health_to_add > 0) {
-									piece.health = std::min(piece.health + health_to_add, 3);//TODO give peces a max_health
+								if (piece.health > 0) {
+									int health_to_add = std::count(piece.effects.begin(),
+										piece.effects.end(), combats::COMBAT_EFFECTS::REGENERATE);
+									health_to_add = std::min(health_to_add, piece.max_health - piece.health);
+									if (health_to_add > 0) {
+										for (int i = 0; i < health_to_add; i++) {
+
+											piece.health_points[piece.health].get_component
+												<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(0, 1, 0);
+											piece.health++;
+										}
+									}
 								}
 							});
 					}
