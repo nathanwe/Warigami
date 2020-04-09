@@ -132,6 +132,7 @@ namespace components
         card_enum hand[MaxCards];
         std::uint8_t card_count = 0;
 		bool controlled_by_AI = false;
+		int AI_movement_direction = 1;
 
 		float ticks_per_energy_grow{ 2.f };
 		float ticks_to_energy_grow{ ticks_per_energy_grow };
