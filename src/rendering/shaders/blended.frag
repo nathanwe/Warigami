@@ -41,22 +41,13 @@ layout(location = 22) uniform vec3 u_light_point_position_world[NUM_LIGHT_POINTS
 layout(location = 26) uniform float u_light_point_intensity[NUM_LIGHT_POINTS];
 layout(location = 30) uniform vec3 u_light_point_color[NUM_LIGHT_POINTS];
 layout(location = 34) uniform int u_light_point_count;
-/*
-struct Light_Point
-{
-	vec3 position_world;
-	float intensity;
-	vec3 color;
-	float radius;
-}
-*/
 
 layout(location = 36) uniform vec3 u_ambient_light_color;
 layout(location = 37) uniform float u_ambient_light_intensity;
 layout(location = 38) uniform bool u_has_dir_light;
 
 // Output ---------------------------------------------------------------------------------------
-layout(location = 0) out vec3 fs_out;
+layout(location = 0) out vec4 fs_out;
 
 // Functions ---------------------------------------------------------------------------------------
 vec3 normal_from_tex(sampler2D tex, vec2 uv, mat3 TBN)
@@ -101,7 +92,7 @@ void main()
 	float ao        = u_has_tex_ambient_occlusion ? texture(u_tex_ambient_occlusion, uv).r                       : 1.0f;
 
 	vec3 specular = mix(vec3(0.04f), diffuse, metalness);
-	
+
 	// Light ambient
 	vec3 reflected_indirect = diffuse * ao * u_ambient_light_color * u_ambient_light_intensity;
 
@@ -121,7 +112,6 @@ void main()
 		reflected_specular = light_direct_specular_blinn_phong_conserved(n_dot_h, specular, roughness, u_light_directional_color);
 		reflected_direct   = (reflected_diffuse + reflected_specular) * u_light_directional_intensity; // * light_directional_shadow;
 	}
-
 	vec3 pixel_color = reflected_direct + reflected_indirect;
 
 	// Light points
@@ -149,7 +139,11 @@ void main()
 		*/
 	}
 
-	fs_out = pixel_color * u_tint_color;
+	vec3 rgb = pixel_color * u_tint_color;
+
+	float a = texture(u_tex_diffuse, uv).a;
+
+	fs_out = vec4(rgb, a);
 }
 
 #undef NUM_LIGHT_POINTS

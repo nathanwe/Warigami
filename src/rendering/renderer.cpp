@@ -23,9 +23,15 @@ namespace rendering
 {
     void draw_mesh_static(const mesh_static &mesh);
 
-    void
-    gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message,
-                      const void *user_parameter);
+    void gl_debug_callback(
+        GLenum source, 
+        GLenum type, 
+        GLuint id, 
+        GLenum severity, 
+        GLsizei length, 
+        const GLchar *message,
+        const void *user_parameter
+    );
 
     renderer::renderer(
         core::viewport window_view, 
@@ -48,7 +54,6 @@ namespace rendering
     void renderer::initialize_backend()
     {
         glbinding::initialize(glfwGetProcAddress, true);
-
         if (_is_debug)
         {
             std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
@@ -59,63 +64,74 @@ namespace rendering
 
     void renderer::initialize_passes(asset::asset_manager &assets)
     {
-        render_pass::description pass_default_desc
-                (
-                        assets.get_proto_shader("assets/shaders/default.vert"),
-                        assets.get_proto_shader("assets/shaders/default.frag")
-                );
-        pass_default_desc.state.polygon_mode = GL_FILL;
-        pass_default_desc.state.uses_cull_face = GL_TRUE;
+        render_pass::description pass_default_desc (
+            assets.get_proto_shader("assets/shaders/default.vert"),
+            assets.get_proto_shader("assets/shaders/default.frag")
+        );
+        pass_default_desc.state.polygon_mode    = GL_FILL;
+        pass_default_desc.state.uses_cull_face  = GL_TRUE;
         pass_default_desc.state.uses_depth_test = GL_TRUE;
-        pass_default_desc.state.uses_blend = GL_FALSE;
-        pass_default_desc.state.culled_face = GL_BACK;
-        pass_default_desc.state.depth_func = GL_LESS;
-        pass_default_desc.state.depth_mask = GL_TRUE;
+        pass_default_desc.state.uses_blend      = GL_FALSE;
+        pass_default_desc.state.culled_face     = GL_BACK;
+        pass_default_desc.state.depth_func      = GL_LESS;
+        pass_default_desc.state.depth_mask      = GL_TRUE;
         _pass_default = std::make_unique<render_pass>(pass_default_desc);
-        assert(_pass_default.get());
+        assert(_pass_default);
 
-        render_pass::description pass_animated_desc
-                (
-                        assets.get_proto_shader("assets/shaders/animated.vert"),
-                        assets.get_proto_shader("assets/shaders/animated.frag")
-                );
-        pass_default_desc.state.polygon_mode = GL_FILL;
-        pass_default_desc.state.uses_cull_face = GL_TRUE;
+        render_pass::description pass_animated_desc(
+            assets.get_proto_shader("assets/shaders/animated.vert"),
+            assets.get_proto_shader("assets/shaders/animated.frag")
+        );
+        pass_default_desc.state.polygon_mode    = GL_FILL;
+        pass_default_desc.state.uses_cull_face  = GL_TRUE;
         pass_default_desc.state.uses_depth_test = GL_TRUE;
-        pass_default_desc.state.uses_blend = GL_FALSE;
-        pass_default_desc.state.culled_face = GL_BACK;
-        pass_default_desc.state.depth_func = GL_LESS;
-        pass_default_desc.state.depth_mask = GL_TRUE;
+        pass_default_desc.state.uses_blend      = GL_FALSE;
+        pass_default_desc.state.culled_face     = GL_BACK;
+        pass_default_desc.state.depth_func      = GL_LESS;
+        pass_default_desc.state.depth_mask      = GL_TRUE;
         _pass_animated = std::make_unique<render_pass>(pass_animated_desc);
-        assert(_pass_animated.get());
+		assert(_pass_animated);
 
-        render_pass::description pass_cubemap_desc
-                (
-                        assets.get_proto_shader("assets/shaders/cubemap.vert"),
-                        assets.get_proto_shader("assets/shaders/cubemap.frag")
-                );
-        pass_cubemap_desc.state.polygon_mode = GL_FILL;
-        pass_cubemap_desc.state.uses_cull_face = GL_FALSE;
+		render_pass::description pass_blended_desc(
+			assets.get_proto_shader("assets/shaders/default.vert"),
+			assets.get_proto_shader("assets/shaders/blended.frag")
+		);
+		pass_blended_desc.state.polygon_mode    = GL_FILL;
+		pass_blended_desc.state.uses_cull_face  = GL_FALSE;
+		pass_blended_desc.state.uses_depth_test = GL_TRUE;
+		pass_blended_desc.state.uses_blend      = GL_TRUE;
+		pass_blended_desc.state.blend_src       = GL_SRC_ALPHA;
+		pass_blended_desc.state.blend_dest      = GL_ONE_MINUS_SRC_ALPHA;
+		pass_blended_desc.state.depth_func      = GL_LESS;
+		pass_blended_desc.state.depth_mask      = GL_FALSE;
+		_pass_blended = std::make_unique<render_pass>(pass_blended_desc);
+		assert(_pass_blended);
+
+        render_pass::description pass_cubemap_desc(
+			assets.get_proto_shader("assets/shaders/cubemap.vert"),
+			assets.get_proto_shader("assets/shaders/cubemap.frag")
+		);
+        pass_cubemap_desc.state.polygon_mode    = GL_FILL;
+        pass_cubemap_desc.state.uses_cull_face  = GL_FALSE;
         pass_cubemap_desc.state.uses_depth_test = GL_TRUE;
-        pass_cubemap_desc.state.uses_blend = GL_FALSE;
-        pass_cubemap_desc.state.depth_func = GL_LEQUAL;
-        pass_cubemap_desc.state.depth_mask = GL_FALSE;
+        pass_cubemap_desc.state.uses_blend      = GL_FALSE;
+        pass_cubemap_desc.state.depth_func      = GL_LEQUAL;
+        pass_cubemap_desc.state.depth_mask      = GL_FALSE;
         _pass_cubemap = std::make_unique<render_pass>(pass_cubemap_desc);
-        assert(_pass_cubemap.get());
+        assert(_pass_cubemap);
 
-        render_pass::description pass_debug_desc
-                (
-                        assets.get_proto_shader("assets/shaders/debug.vert"),
-                        assets.get_proto_shader("assets/shaders/debug.frag")
-                );
-        pass_debug_desc.state.polygon_mode = GL_LINE;
-        pass_debug_desc.state.uses_cull_face = GL_FALSE;
+        render_pass::description pass_debug_desc(
+            assets.get_proto_shader("assets/shaders/debug.vert"),
+            assets.get_proto_shader("assets/shaders/debug.frag")
+        );
+        pass_debug_desc.state.polygon_mode    = GL_LINE;
+        pass_debug_desc.state.uses_cull_face  = GL_FALSE;
         pass_debug_desc.state.uses_depth_test = GL_TRUE;
-        pass_debug_desc.state.uses_blend = GL_FALSE;
-        pass_debug_desc.state.depth_func = GL_LESS;
-        pass_debug_desc.state.depth_mask = GL_TRUE;
+        pass_debug_desc.state.uses_blend      = GL_FALSE;
+        pass_debug_desc.state.depth_func      = GL_LESS;
+        pass_debug_desc.state.depth_mask      = GL_TRUE;
         _pass_debug = std::make_unique<render_pass>(pass_debug_desc);
-        assert(_pass_debug.get());
+        assert(_pass_debug);
     }
 
     void renderer::initialize_assets(asset_cache &cache)
@@ -189,11 +205,15 @@ namespace rendering
         if (_is_debug_colliders)
         {
             run_pass_debug_colliders(ecs_state, *active_camera);
-        }
+		}
         if (active_camera->clear_setting == camera::clear_mode::sky_box)
         {
             run_pass_cubemap(*active_camera);
-        }
+		}
+		if (_is_default_pass_enabled)
+		{
+			run_pass_blended(ecs_state, *active_camera_transform, *active_camera);
+		}
     }
 
     void renderer::find_active_camera(ecs::state &ecs_state, transforms::transform *&active_camera_transform,
@@ -234,11 +254,19 @@ namespace rendering
     {
         _pass_default->bind(_render_state);
 
-        default_bind_camera(camera_transform, cam);
+		default_bind_camera(camera_transform, cam);
 
-        ecs_state.each<transforms::transform, light_directional>([&](auto &transform, auto &light) {
-            default_bind_light(transform, light);
-        });
+		_pass_default->set_float3(36, _ambient_light_color);
+		_pass_default->set_float(37, _ambient_light_intensity);
+
+        bool has_dir = false;
+        ecs_state.each<transforms::transform, light_directional>(
+            [&](auto &transform, auto &light) 
+            {
+                default_bind_light(transform, light);
+                has_dir = true;
+            });
+        _pass_default->set_bool(38, has_dir);
 
         unsigned int i = 0;
         constexpr unsigned int max_num_lights = 4; // must match NUM_LIGHT_POINTS in "assets/shaders/default.frag"
@@ -249,9 +277,10 @@ namespace rendering
                 ++i;
             }
         });
+        _pass_default->set_int(34, i);
 
         ecs_state.each<transforms::transform, renderable_mesh_static>([&](auto &transform, auto &renderable) {
-            if (renderable.is_enabled)
+            if (renderable.is_enabled && !renderable.is_alpha_blended)
 			{
 				default_bind_renderable(transform, renderable.material);
 				draw_mesh_static(renderable.mesh);
@@ -329,6 +358,126 @@ namespace rendering
         _pass_default->set_texture(3, 0);
         _pass_default->set_texture(4, 0);
     }
+
+	void renderer::run_pass_blended(ecs::state& ecs_state, const transforms::transform& camera_transform, const camera& cam)
+	{
+		_pass_blended->bind(_render_state);
+
+		blended_bind_camera(camera_transform, cam);
+
+		_pass_blended->set_float3(36, _ambient_light_color);
+		_pass_blended->set_float(37, _ambient_light_intensity);
+
+        bool has_dir = false; 
+		ecs_state.each<transforms::transform, light_directional>(
+            [&](auto& transform, auto& light) 
+            {
+			    blended_bind_light(transform, light);
+                has_dir = true;
+			});
+        _pass_blended->set_bool(38, has_dir);
+
+		unsigned int i = 0;
+		constexpr unsigned int max_num_lights = 4; // must match NUM_LIGHT_POINTS in "assets/shaders/blended.frag"
+		ecs_state.each<transforms::transform, light_point>(
+            [&](auto& transform, auto& light) 
+            {
+			    if (i < max_num_lights) // should sort and use those closest to mesh
+			    {
+                    blended_bind_light(transform, light, i);
+				    ++i;
+			    }
+			});
+        _pass_blended->set_int(34, i);
+
+        // sort meshes
+        using blended_mesh = std::pair<const transforms::transform&, const renderable_mesh_static&>;
+        std::map<float, std::vector<blended_mesh>> sorted_meshes;
+		ecs_state.each<transforms::transform, renderable_mesh_static>(
+			[&](auto& transform, auto& renderable)
+			{
+                if (renderable.is_enabled && renderable.is_alpha_blended)
+				{
+					float distSqr = glm::length2(camera_transform.position - transform.position);
+                    sorted_meshes[distSqr].emplace_back(transform, renderable);
+                }
+			}
+        );
+
+		// bind meshes
+        for (auto it = sorted_meshes.rbegin(); it != sorted_meshes.rend(); ++it)
+		{
+            for (auto& pair : it->second)
+			{
+				auto& transform = pair.first;
+				auto& renderable = pair.second;
+
+				blended_bind_renderable(transform, renderable.material);
+				draw_mesh_static(renderable.mesh);
+				blended_unbind_renderable();
+            }
+        }
+	}
+
+	void renderer::blended_bind_camera(const transforms::transform& transform, const camera& cam)
+	{
+		_pass_blended->set_mat4(4, cam.view_projection);
+		_pass_blended->set_float3(18, transform.position);
+	}
+
+	void renderer::blended_bind_light(const transforms::transform& transform, const light_directional& light)
+	{
+		glm::vec3 light_inverse_direction = -1.f *
+			glm::eulerAngleZXY(transform.rotation.z, transform.rotation.x,
+				transform.rotation.y) *
+			glm::vec4(0, 0, -1, 0);
+
+		_pass_blended->set_float3(19, light_inverse_direction);
+		_pass_blended->set_float(20, light.intensity);
+		_pass_blended->set_float3(21, light.color);
+	}
+
+	void renderer::blended_bind_light(const transforms::transform& transform, const light_point& light, int i)
+	{
+		_pass_blended->set_float3(22 + i, transform.position);
+		_pass_blended->set_float(26 + i, light.intensity);
+		_pass_blended->set_float3(30 + i, light.color);
+	}
+
+	void renderer::blended_bind_renderable(const transforms::transform& transform, const material_pbr& material)
+	{
+		_pass_blended->set_mat4(0, transform.local_to_world);
+
+		_pass_blended->set_texture(0, material.texture_diffuse);
+		_pass_blended->set_texture(1, material.texture_metalness);
+		_pass_blended->set_texture(2, material.texture_normal);
+		_pass_blended->set_texture(3, material.texture_roughness);
+		_pass_blended->set_texture(4, material.texture_ambient_occlusion);
+
+		_pass_blended->set_float2(8, material.texture_scale);
+		_pass_blended->set_float2(9, material.texture_offset);
+
+		_pass_blended->set_bool(10, material.texture_diffuse != 0);
+		_pass_blended->set_bool(11, material.texture_metalness != 0);
+		_pass_blended->set_bool(12, material.texture_normal != 0);
+		_pass_blended->set_bool(13, material.texture_roughness != 0);
+		_pass_blended->set_bool(14, material.texture_ambient_occlusion != 0);
+
+		_pass_blended->set_float3(15, material.param_diffuse);
+		_pass_blended->set_float(16, material.param_metalness);
+		_pass_blended->set_float(17, material.param_roughness);
+
+		_pass_blended->set_float3(35, material.tint_color);
+	}
+
+	void renderer::blended_unbind_renderable()
+	{
+		_pass_blended->set_texture(0, 0);
+		_pass_blended->set_texture(1, 0);
+		_pass_blended->set_texture(2, 0);
+		_pass_blended->set_texture(3, 0);
+		_pass_blended->set_texture(4, 0);
+	}
 
 	void renderer::default_bind_sub_model(const transforms::transform& transform, const sub_model& sub)
 	{

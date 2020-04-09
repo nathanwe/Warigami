@@ -73,6 +73,10 @@ void rendering::render_loader::load(asset::asset_loader_node& asset_loader_node)
 	{
 		renderable.is_enabled = it->get<bool>();
 	}
+	if (auto it = json.find("is_alpha_blended"); it != json.end())
+	{
+		renderable.is_alpha_blended = it->get<bool>();
+	}
 }
 
 component_bitset rendering::render_loader::components_to_load()
