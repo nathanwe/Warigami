@@ -1,0 +1,17 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, -20, 0 ],
+        "rotation": [ -90, 0, 0 ],
+        "scale": [ 50, 60, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/quad/quad.obj",
+        "texture_diffuse": "assets/textures/background/wood.jpg"
+      }
+    ]
+  }
+}
