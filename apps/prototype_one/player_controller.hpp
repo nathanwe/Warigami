@@ -284,6 +284,9 @@ private:
 				if (square.team == -1.0f) { //TODO: refactor so team color is not hardcoded
 					render_mesh_s.material.tint_color += glm::vec3(-0.1f, -0.1f, 0.2f);
 				}
+				if (square.team == 0.0f) { //TODO: refactor so team color is not hardcoded
+					render_mesh_s.material.tint_color += glm::vec3(-0.1f, 0.2f, -0.1f);
+				}
 			});
 	}
 
