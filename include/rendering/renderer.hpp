@@ -41,7 +41,7 @@ namespace rendering
 			render_state& render_state);
 
 	public:
-		virtual void update(ecs::state& state) override;
+		void update(ecs::state& state) override;
 
 	public:
 		bool _is_default_pass_enabled = true;
@@ -65,6 +65,13 @@ namespace rendering
 		void default_bind_sub_model(const transforms::transform& transform, const sub_model& sub);
 		void default_unbind_renderable();
 
+		void run_pass_blended(ecs::state& ecs_state, const transforms::transform& camera_transform, const camera& cam);
+		void blended_bind_camera(const transforms::transform& transform, const camera& cam);
+		void blended_bind_light(const transforms::transform& transform, const light_directional& light);
+		void blended_bind_light(const transforms::transform& transform, const light_point& light, int i);
+		void blended_bind_renderable(const transforms::transform& transform, const material_pbr& material);
+		void blended_unbind_renderable();
+
 		void run_pass_cubemap(const camera& cam);
 		void cubemap_bind_camera(const camera& cam);
 		void cubemap_unbind();
@@ -81,7 +88,8 @@ namespace rendering
 		render_state& _render_state;
 		
 		std::unique_ptr<render_pass> _pass_default;
-        std::unique_ptr<render_pass> _pass_animated;
+		std::unique_ptr<render_pass> _pass_animated;
+		std::unique_ptr<render_pass> _pass_blended;
 		std::unique_ptr<render_pass> _pass_cubemap;
 		std::unique_ptr<render_pass> _pass_debug;
 		mesh_static _mesh_cube;
@@ -91,6 +99,8 @@ namespace rendering
 		glm::vec3 _debug_collider_color = glm::vec3(0, 1, 0);
 		float time_between_messages = 0.25f;
 		float last_message_time = 0.f;
+		glm::vec3 _ambient_light_color = glm::vec3(1, 1, 1);
+		float _ambient_light_intensity = 1.f;
 
 		std::vector<glm::mat4> _bone_buffer;
 	};
