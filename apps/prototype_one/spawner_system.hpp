@@ -53,7 +53,9 @@ private:
 			"assets/prototypes/medium_fast_soldier.json",
 			"assets/prototypes/heavy_tank_soldier.json",
 			"assets/prototypes/heavy_range_soldier.json",
-			"assets/prototypes/heavy_fast_soldier.json"
+			"assets/prototypes/heavy_fast_soldier.json",
+			"assets/prototypes/two_dwarves.json",
+			"assets/prototypes/one_dwarf.json"
 		};
 
 		size_t type_index = (size_t)type;

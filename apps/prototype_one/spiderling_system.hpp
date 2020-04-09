@@ -123,6 +123,18 @@ private:
 					board.spawner.push_back(newSpawn3);
 					break;
 				}
+				case combats::COMBAT_EFFECTS::SPAWN_TWO_DWARVES_ON_DEATH:
+				{
+					to_spawn newSpawn4(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::TWO_DWARVES);
+					board.spawner.push_back(newSpawn4);
+					break;
+				}
+				case combats::COMBAT_EFFECTS::SPAWN_ONE_DWARF_ON_DEATH:
+				{
+					to_spawn newSpawn5(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::ONE_DWARF);
+					board.spawner.push_back(newSpawn5);
+					break;
+				}
 				case combats::COMBAT_EFFECTS::CREATE_FIRE_TERRAIN_ON_DEATH:
 				{
 					r_state.each<components::terrain>([&](components::terrain& terrain)

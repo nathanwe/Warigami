@@ -30,7 +30,10 @@ namespace components
         HEAVY_RANGE_SOLDIER = 16,
         HEAVY_FAST_SOLDIER = 17,
 
-        TOTAL_CARDS = 18
+        TWO_DWARVES = 18,
+        ONE_DWARF = 19,
+
+        TOTAL_CARDS = 20
     };
 
 }
