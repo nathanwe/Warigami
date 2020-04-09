@@ -36,8 +36,8 @@ public:
 						{
 							if (player.controlled_by_AI) {
 								player.selected_row++;
-								if (player.selected_row >= board.columns) {
-									player.selected_row = 0;
+								if (player.selected_row >= board.columns - (player.team == 1.0f ? 1 : 0)) {
+									player.selected_row = player.team == 1.0f?0:1;
 								}
 								place_card(1, player, state, board);
 							}
