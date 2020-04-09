@@ -95,9 +95,11 @@ public:
 
 					if (board_square.x + 1 > board_square.y) {
 						board_square.team = 1.0f;
+						board_square.next_team = 1.0f;
 					}
 					if (board_square.x + 3 < board_square.y) {
 						board_square.team = -1.0f;
+						board_square.next_team = -1.0f;
 					}					
 				});
 			});

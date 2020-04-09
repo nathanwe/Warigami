@@ -317,7 +317,7 @@ private:
             changed = false;
             r_state.each<components::game_piece>([&](components::game_piece &piece) {
                 ecs::entity* foo = get_square_at_location(r_state, piece.board_destination);
-                foo->get_component<components::board_square>().team = piece.team;
+                foo->get_component<components::board_square>().next_team = piece.team;
                 
                 if (piece.remaining_speed <= 0) return;
 

@@ -71,6 +71,7 @@
 #include "energy_flower_creation_system.hpp"
 #include "main_menu_controller.hpp"
 #include "energy_ball_system.hpp"
+#include "territory_claim_system.hpp"
 
 
 
@@ -170,6 +171,7 @@ int main(int argc, char** argv) {
 	energy_flower_creation_system energy_flower_creation_system;
 	main_menu_controller main_menu_controller(events, glfw, input, timer);
 	energy_ball_system energy_balls(input, hydrater, timer);
+	territory_claim_system territory_claim_system;
 
 	ecs::systems systems({
 		&energy_system,
@@ -183,15 +185,16 @@ int main(int argc, char** argv) {
 		
 		// order of these matters
 		&game_start_system,		
-		&ticker,
+		&ticker,			
 		&energy_flower_creation_system,
 		&terrain_update_system,
+		&territory_claim_system,
 		&health_regen,
 		&spiderlings,	
 		&board_updater,
 		&flash_step_system,
-		&AI_system,
-		&player_control,
+		&AI_system,		
+		&player_control,	
 		&deck_selection,
 		&spawner,
 

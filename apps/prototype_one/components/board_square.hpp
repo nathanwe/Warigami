@@ -16,6 +16,7 @@ namespace components
 		int x;
 		int y;
 		float team = 0;
+		float next_team = 0;
 	};
 }
 
