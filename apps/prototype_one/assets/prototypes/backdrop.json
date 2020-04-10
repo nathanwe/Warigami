@@ -10,7 +10,9 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/quad/quad.obj",
-        "texture_diffuse": "assets/textures/background/wood.jpg"
+        "texture_diffuse": "assets/textures/background/woodTex.png",
+        "texture_scale": [ 7, 7 ],
+        "tint_color": [ 0.4, 0.4, 0.4 ]
       }
     ]
   }
