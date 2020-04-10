@@ -70,24 +70,11 @@ public:
 					auto& controls = player_specifics.controls;
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
-
-					//count the board squares controled by both players at the same time
-					int p_1_squares = 0;
-					int p_minus1_squares = 0;
-					r_state.each<components::board_square>([&](components::board_square& square)
-						{
-							if (square.team == 1.0f) {
-								++p_1_squares;
-							}
-							if (square.team == -1.0f) {
-								++p_minus1_squares;
-							}
-						});
-
+				
 					handle_player_selection(player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
-					update_succ(player, player_specifics.controls);
-					toggle_AI(player, player_specifics.controls);
+					update_succ(player, controls);
+					toggle_AI(player, controls);
 					gain_flower_energy(r_state, player, controls);
 					show_cursor(player, r_state, player_specifics);
 					
