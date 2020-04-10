@@ -27,29 +27,29 @@ public:
 			return;
 		}
 		state.each_id<transforms::transform, components::board>(
-			[&](entity_id board_id, transforms::transform& board_t, components::board& board) {
-
-
-				if (board.did_tick_elapse)
-				{
-					state.each<components::player>([&](components::player& player)
+			[&](entity_id board_id, transforms::transform& board_t, components::board& board) 
+			{				
+				state.each<components::player>([&](components::player& player)
+				{															
+					if (player.controlled_by_AI) 
+					{
+						player.succ = true;
+						if (board.did_tick_elapse)
 						{
-							if (player.controlled_by_AI) {
-								player.selected_row += player.AI_movement_direction;
-								if (player.selected_row >= board.columns - 2) {
-									player.AI_movement_direction = -1;
-								}
-								if (player.selected_row <= 0) {
-									player.AI_movement_direction = 1;
-								}
+							player.succ = false;
+							player.selected_row += player.AI_movement_direction;
+							if (player.selected_row >= board.columns - 1) {
+								player.AI_movement_direction = -1;
+							}
+							if (player.selected_row <= 0) {
+								player.AI_movement_direction = 1;
+							}
+							if (player.selected_row != board.columns - 1) {
 								place_card(1, player, state, board);
 							}
-						});
-					
-				}
-
-
-
+						}
+					}
+				});					
 			});
 
 	}

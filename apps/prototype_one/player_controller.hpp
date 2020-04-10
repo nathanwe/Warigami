@@ -86,6 +86,7 @@ public:
 
 					handle_player_selection(player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
+					update_succ(player, player_specifics.controls);
 					toggle_AI(player, player_specifics.controls);
 					gain_flower_energy(r_state, player, controls);
 					show_cursor(player, r_state, player_specifics);
@@ -225,7 +226,7 @@ private:
 	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls&controls ) 
 	{
 		auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
-		anim_data.m_is_vacuuming_energy = player.controlled_by_AI || (!anim_data.m_is_placing_unit && m_input.is_input_active(controls.dice_button2));
+		anim_data.m_is_vacuuming_energy = !anim_data.m_is_placing_unit && player.succ;
 		if (anim_data.m_is_vacuuming_energy)
 		{
 			r_state.each<components::terrain, components::board_square, transforms::transform>(
@@ -246,24 +247,24 @@ private:
 						ball_t.local_to_world = square_t.local_to_world;
 						ball_t.position[1] = ball_t.local_to_world[3][1] += 4.f;
 						ball_c.team = player.team;
-
-
-						/*player.energy += 2;
-						if (player.energy > player.max_energy)
-						{
-							player.energy = player.max_energy;
-						}*/
 					}
-					if (terrain.growth_stage == 2 &&
-						square.team == player.team &&
-						(player.selected_row != terrain.location.x || (!player.controlled_by_AI && !m_input.is_input_active(controls.dice_button2))))
-					{
-						terrain.growth_stage--;
-						square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
-					}
+					
 				}
 			);
 		}
+		r_state.each<components::terrain, components::board_square, transforms::transform>(
+			[&](auto& terrain, auto& square, auto& square_t)
+			{				
+				bool is_flower_selected = player.selected_row == terrain.location.x;
+				bool is_flower_captured = square.team == player.team;
+				bool is_flower_bent = terrain.growth_stage == 2;
+				if (is_flower_bent && is_flower_captured &&
+					(!is_flower_selected || !player.succ))
+				{
+					terrain.growth_stage--;
+					square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
+				}
+			});
 	}
 
 	void board_reset(ecs::state& r_state)
@@ -393,6 +394,11 @@ private:
 			}
 		}
 		start_end_place_animation(placed, player);
+	}
+	void update_succ(components::player& player, player_controls& controls) {
+		if (!player.controlled_by_AI) {
+			player.succ = m_input.is_input_active(controls.dice_button2);
+		}
 	}
 	void toggle_AI(components::player& player, player_controls& controls) {
 		if (m_input.is_input_started(controls.dice_button)) {
