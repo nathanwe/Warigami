@@ -97,9 +97,10 @@ namespace rendering
 			assets.get_proto_shader("assets/shaders/blended.frag")
 		);
 		pass_blended_desc.state.polygon_mode    = GL_FILL;
-		pass_blended_desc.state.uses_cull_face  = GL_FALSE;
+		pass_blended_desc.state.uses_cull_face  = GL_TRUE;
 		pass_blended_desc.state.uses_depth_test = GL_TRUE;
 		pass_blended_desc.state.uses_blend      = GL_TRUE;
+		pass_default_desc.state.culled_face     = GL_BACK;
 		pass_blended_desc.state.blend_src       = GL_SRC_ALPHA;
 		pass_blended_desc.state.blend_dest      = GL_ONE_MINUS_SRC_ALPHA;
 		pass_blended_desc.state.depth_func      = GL_LESS;

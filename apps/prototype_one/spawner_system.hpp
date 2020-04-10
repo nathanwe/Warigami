@@ -67,10 +67,7 @@ private:
 		nerdP.board_source.x = lane;
 		nerdP.board_source.y = space;
 
-		if (nerdP.team >= 0)
-			nerdT.rotation.y = glm::pi<float>() - glm::quarter_pi<float>() * 1.5f;
-		else
-			nerdT.rotation.y = glm::quarter_pi<float>() * 1.5f;
+		nerdT.rotation.y = glm::half_pi<float>();
 
 		for (int i = 0; i < nerdP.health; i++) {
 			ecs::entity& health_unit = _hydrater.add_from_prototype("assets/prototypes/health_unit.json");
