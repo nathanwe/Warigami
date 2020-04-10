@@ -55,7 +55,13 @@ private:
 			"assets/prototypes/heavy_range_soldier.json",
 			"assets/prototypes/heavy_fast_soldier.json",
 			"assets/prototypes/two_dwarves.json",
-			"assets/prototypes/one_dwarf.json"
+			"assets/prototypes/one_dwarf.json",
+			"assets/prototypes/eraser.json",
+			"assets/prototypes/troll.json",
+			"assets/prototypes/wizard.json",
+			"assets/prototypes/archer.json",
+			"assets/prototypes/unicorn.json",
+			"assets/prototypes/knight.json"
 		};
 
 		size_t type_index = (size_t)type;

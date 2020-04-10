@@ -1,0 +1,33 @@
+{
+    "root": {
+        "components": [
+            {
+                "type": "transform",
+                "position": [ 0, 0, 0 ],
+                "scale": [ 0.5, 0.5, 0.1 ]
+            },
+            {
+                "type": "renderable_mesh_static",
+                "mesh": "assets/meshes/unit/unit.obj",
+                "texture_diffuse": "assets/textures/fantasy/wizard.png"
+            },
+            {
+                "type": "game_piece",
+                "speed": 1.0,
+                "damage": 1.0,
+                "health": 1.0,
+                "team": 1.0,
+                "board_location": [ 0.0, 0.0 ],
+                "move_board": [ 0.0, 1.0 ],
+                "move_world": [ 0.0, 0.0, 1.0 ],
+                "attacks": [
+                    [ 0.0, 2.0 ],
+                    [ 0.0, 3.0 ],
+                    [ 0.0, 4.0 ],
+                    [ 0.0, 5.0 ]
+                ],
+                "effects": [ 0, 13 ]
+            }
+        ]
+    }
+}

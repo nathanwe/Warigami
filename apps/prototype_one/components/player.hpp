@@ -65,13 +65,22 @@ namespace components
 		card_enum::HEAVY_FAST_SOLDIER,
 		card_enum::HEAVY_RANGE_SOLDIER
 	};
+	const std::vector<card_enum> fantasy_deck = {
+		card_enum::ERASER,
+		card_enum::TROLL,
+		card_enum::WIZARD,
+		card_enum::ARCHER,
+		card_enum::UNICORN,
+		card_enum::KNIGHT
+	};
 
 	const std::vector<card_enum> decks[]{
 		spider_deck,
-		soldier_deck
+		fantasy_deck
 	};
 
-	const static std::vector<int> card_costanamos = { 0, 0, 3, 3, 6, 4, 5, 5, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5 };
+	const static std::vector<int> card_costanamos = 
+	{ 0, 0, 3, 3, 6, 4, 5, 5, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 2, 3, 2, 3, 2, 3 };
 	const static int dice_costanamos = 1;
 
 	enum class dice_nets {

@@ -33,7 +33,14 @@ namespace components
         TWO_DWARVES = 18,
         ONE_DWARF = 19,
 
-        TOTAL_CARDS = 20
+        ERASER = 20,
+        TROLL = 21,
+        WIZARD = 22,
+        ARCHER = 23,
+        UNICORN = 24,
+        KNIGHT = 25,
+
+        TOTAL_CARDS = 26
     };
 
 }

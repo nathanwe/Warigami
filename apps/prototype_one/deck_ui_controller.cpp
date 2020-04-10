@@ -151,6 +151,19 @@ ecs::entity &deck_ui_controller::spawn_card(components::card_enum type)
         case components::card_enum::HEAVY_FAST_SOLDIER:
             return _hydrater.add_from_prototype("assets/prototypes/card_heavy_fast_soldier.json");
 
+        case components::card_enum::ERASER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_eraser.json");
+        case components::card_enum::TROLL:
+            return _hydrater.add_from_prototype("assets/prototypes/card_troll.json");
+        case components::card_enum::WIZARD:
+            return _hydrater.add_from_prototype("assets/prototypes/card_wizard.json");
+        case components::card_enum::ARCHER:
+            return _hydrater.add_from_prototype("assets/prototypes/card_archer.json");
+        case components::card_enum::UNICORN:
+            return _hydrater.add_from_prototype("assets/prototypes/card_unicorn.json");
+        case components::card_enum::KNIGHT:
+            return _hydrater.add_from_prototype("assets/prototypes/card_knight.json");
+
         default:
             return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
     }
