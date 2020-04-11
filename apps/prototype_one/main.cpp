@@ -174,7 +174,7 @@ int main(int argc, char** argv) {
 	main_menu_controller main_menu_controller(events, glfw, input, timer);
 	energy_ball_system energy_balls(input, hydrater, timer);
 	territory_claim_system territory_claim_system;
-	logo_system logo(timer, events);
+	logo_system logo(timer, events, input);
 
 	ecs::systems systems({
 		&energy_system,

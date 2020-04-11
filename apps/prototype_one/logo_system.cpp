@@ -8,9 +8,11 @@
 
 logo_system::logo_system(
 	core::frame_timer& timer,
-	event::EventManager& events) 
+	event::EventManager& events,
+	core::game_input_manager& input)
 	: _timer(timer)
 	, _events(events)
+	, _input(input)
 {
 }
 
@@ -20,6 +22,13 @@ void logo_system::update(ecs::state& state)
 		[&](transforms::transform& transform, components::logo& logo, rendering::renderable_mesh_static& mesh) {
 			logo.display_time += _timer.smoothed_delta_secs();
 			
+			if (_input.is_input_started(core::controls::CARD1_CONTROL))
+			{
+				asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
+				_events.BroadcastEvent(menu_scene);
+				return;
+			}
+
 			if (logo.display_time > logo.duration)
 			{
 				logo.fade_time += _timer.smoothed_delta_secs();
