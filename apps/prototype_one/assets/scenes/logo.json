@@ -1,0 +1,44 @@
+{
+  "entities": [
+    {
+      "entity_id": 1,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "camera",
+          "field_of_view": 0.785,
+          "clear_setting": "flat_color",
+          "clear_color": [ 0, 0, 0 ]
+        },
+        {
+          "type": "audio_listener"
+        }
+      ]
+    },
+
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, -0.9, -10 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 4, 3, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "is_alpha_blended": true,
+          "texture_diffuse": "assets/textures/DigiPen_RGB_White.png"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+}

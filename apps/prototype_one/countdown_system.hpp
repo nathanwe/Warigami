@@ -58,6 +58,8 @@ public:
 	// Note: Magic numbers in here are what looks good, chosen by looking at results
 	void update(ecs::state& r_state) override
 	{		
+		if (_board == nullptr) return;
+
 		auto& board_component = _board->get_component<components::board>();
 
 		// Count before starting (3, 2, 1, GO!)
@@ -105,7 +107,7 @@ private:
 	util::string_table& _strings;
 	core::glfw_context& _glfw_context;
 
-	ecs::entity* _board;
+	ecs::entity* _board {nullptr};
 	size_t _go_string;
 };
 

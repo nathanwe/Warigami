@@ -57,9 +57,10 @@ void energy_ball_system::update(ecs::state& state)
 				auto target_pos = find_target_position(sa);
 				glm::vec3 source_pos = transform.local_to_world[3];
 				glm::vec3 to_target = target_pos - source_pos;
+				to_target.x = 0;
 				glm::vec3 to_target_norm = glm::normalize(to_target);
 				auto lengthsq = glm::length2(to_target);
-				auto magnitude = ball.gravity_constant / lengthsq;
+				auto magnitude = std::max(200.f, ball.gravity_constant / lengthsq);
 
 				auto fwd = glm::vec3(0, 0, 1) * player_c.team;
 				auto past_selector = glm::dot(fwd, -to_target) < 0;

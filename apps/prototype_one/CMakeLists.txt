@@ -20,6 +20,7 @@ add_executable (warigami
 	components/game_piece_loader.cpp
 	components/game_piece.cpp	
 	components/health_meter.cpp
+	components/logo.cpp
 	components/main_menu.cpp
 	components/pause.cpp
 	components/player_loader.cpp
@@ -37,6 +38,7 @@ add_executable (warigami
 	main.cpp
 	ready_display_system.cpp
 	main_menu_controller.cpp
+	logo_system.cpp
 	)
 
 target_link_libraries(warigami PRIVATE

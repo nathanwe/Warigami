@@ -19,6 +19,8 @@ void deck_ui_controller::initialize(ecs::state& state)
 
 void deck_ui_controller::update(ecs::state &state)
 {
+    if (_board == nullptr) return;
+
     auto& board_component = _board->get_component<components::board>();
 
     state.each_id<transforms::transform, components::deck_ui>([&](entity_id deck_id, auto& deck_t, auto& deck) {

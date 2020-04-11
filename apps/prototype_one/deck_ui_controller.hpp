@@ -23,7 +23,7 @@ public:
 
 private:
 	asset::scene_hydrater& _hydrater;
-	ecs::entity* _board;
+	ecs::entity* _board{ nullptr };
 
 
 	void handle_deck_ui(

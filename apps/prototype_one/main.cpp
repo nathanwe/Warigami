@@ -42,6 +42,7 @@
 #include "components/ready_display_loader.hpp"
 #include "components/main_menu.hpp"
 #include "components/energy_ball.hpp"
+#include "components/logo.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -72,7 +73,7 @@
 #include "main_menu_controller.hpp"
 #include "energy_ball_system.hpp"
 #include "territory_claim_system.hpp"
-
+#include "logo_system.hpp"
 
 
 int main(int argc, char** argv) {	
@@ -84,7 +85,7 @@ int main(int argc, char** argv) {
 
 	util::string_table strings;
 	event::EventManager events;
-	asset::scene_tracker scene_tracker("assets/scenes/main_menu.json", events);
+	asset::scene_tracker scene_tracker("assets/scenes/logo.json", events);
 	asset::asset_manager assets;
 	core::startup_config config;
 	core::glfw_context glfw(config);
@@ -119,6 +120,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::ready_display>("ready_display");
 	ecs::register_component<components::main_menu>("main_menu");
 	ecs::register_component<components::energy_ball>("energy_ball");
+	ecs::register_component<components::logo>("logo");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -172,6 +174,7 @@ int main(int argc, char** argv) {
 	main_menu_controller main_menu_controller(events, glfw, input, timer);
 	energy_ball_system energy_balls(input, hydrater, timer);
 	territory_claim_system territory_claim_system;
+	logo_system logo(timer, events);
 
 	ecs::systems systems({
 		&energy_system,
@@ -210,7 +213,8 @@ int main(int argc, char** argv) {
 		&renderer,
 		&text_renderer,
 		&main_menu_controller,
-		&energy_balls
+		&energy_balls,
+		&logo
 	});
 
 	ecs::world world(systems, state);
