@@ -52,33 +52,30 @@ void energy_ball_system::update(ecs::state& state)
 
 			player_specific_data specifis(player_c, _input);
 
+			auto fwd = glm::vec3(0, 0, 1) * player_c.team;
+			auto target_pos = find_target_position(sa);
+			glm::vec3 source_pos = transform.local_to_world[3];
+			glm::vec3 to_target = target_pos - source_pos;
+			glm::vec3 to_target_norm = glm::normalize(to_target);
+			auto lengthsq = glm::length2(to_target);
+			auto magnitude = std::max(200.f, ball.gravity_constant / lengthsq);
+			auto past_selector = glm::dot(fwd, -to_target_norm) < 0;
+
 			if (_input.is_input_active(specifis.controls.dice_button2) || player_c.controlled_by_AI)
 			{
-				auto target_pos = find_target_position(sa);
-				glm::vec3 source_pos = transform.local_to_world[3];
-				glm::vec3 to_target = target_pos - source_pos;
-				to_target.x = 0;
-				glm::vec3 to_target_norm = glm::normalize(to_target);
-				auto lengthsq = glm::length2(to_target);
-				auto magnitude = std::max(200.f, ball.gravity_constant / lengthsq);
-
-				auto fwd = glm::vec3(0, 0, 1) * player_c.team;
-				auto past_selector = glm::dot(fwd, -to_target) < 0;
-
-				if (lengthsq < 0.5f || past_selector)
-				{
-					player_c.energy = glm::min(player_c.energy + 2, player_c.max_energy);
-					_hydrater.remove_entity(ball_id);
-				}
-				else
-				{
-					rb.forces += to_target_norm * magnitude;
-				}
+				rb.forces += to_target_norm * magnitude;
+				rb.forces.x = 0;				
 			}
 			else
 			{
 				rb.velocity *= (1.f - 2.f * _timer.smoothed_delta_secs());
 			}
+
+			if (lengthsq < 0.5f || past_selector)
+			{
+				player_c.energy = glm::min(player_c.energy + 2, player_c.max_energy);
+				_hydrater.remove_entity(ball_id);
+			}			
 		});
 }
 
