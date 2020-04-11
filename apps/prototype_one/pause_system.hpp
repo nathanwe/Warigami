@@ -14,16 +14,28 @@
 
 #include "components/pause.hpp"
 
+enum pause_options {
+	RESUME,
+	REPLAY,
+	MAIN_MENU,
+	DECK_MENU,
+	QUIT,
+	HOW_TO,
+	OPTIONS,
+	CREDITS,
+	NUM_PAUSE_OPTIONS
+};
+
 class pause_system : public ecs::system_base
 {
 public:
 	pause_system(
-		core::game_input_manager& input, 
-		core::frame_timer& timer, 
-		core::glfw_context& glfw, 
+		core::game_input_manager& input,
+		core::frame_timer& timer,
+		core::glfw_context& glfw,
 		asset::scene_hydrater& hydrater,
 		event::EventManager& events)
-		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events)
+		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events), _current_selection(0)
 	{}
 
 	void update(ecs::state& state)
@@ -44,40 +56,62 @@ public:
 
 			if (pause.is_game_paused)
 			{
-				// Resume Game
-				if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2))
-				{
-					pause.is_game_paused = false;
-					renderable.is_enabled = false;
-				}
-				// Replay Game
-				else if (m_r_input.is_input_started(core::controls::CARD2_CONTROL) || m_r_input.is_input_started(core::controls::CARD2_CONTROL_PLAYER2))
-				{
-					pause.is_game_paused = false;
-					renderable.is_enabled = false;
+				// Change selected
+				if (m_r_input.is_input_started(core::controls::UP_CONTROL) || m_r_input.is_input_started(core::controls::UP_CONTROL_PLAYER2)) {
+					if (_current_selection == 0) {
+						_current_selection = NUM_PAUSE_OPTIONS;
+					}
+					_current_selection--;
+					// TODO: Move selector image
 
-					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
-					m_r_events.BroadcastEvent(restart_event);
-					return;
+				} else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2)) {
+					_current_selection = (++_current_selection) % NUM_PAUSE_OPTIONS;
+					// TODO: Move selector image
 				}
-				/*
-				// Quit to Menu
-				else if (m_r_input.is_input_started(core::controls::CARD3_CONTROL) || m_r_input.is_input_started(core::controls::CARD3_CONTROL_PLAYER2))
-				{
-					pause.is_game_paused = false;
-					renderable.is_enabled = false;
 
-					state.free_all();
-					m_r_hydrater.load();
-					return;
+				// Choose the selected option
+				else if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
+					// Note: I tried this with a switch statement but it ended up being messier because of bypassing initialization of variables
+					if (_current_selection == RESUME) {
+						// Resume
+						pause.is_game_paused = false;
+						renderable.is_enabled = false;
+					}
+					else if (_current_selection == REPLAY) {
+						// Replay
+						// TODO: Confirm destructive action
+						pause.is_game_paused = false;
+						renderable.is_enabled = false;
+						asset::scene_change_event restart_event("assets/scenes/main_menu.json");
+						m_r_events.BroadcastEvent(restart_event);
+						return;
+					}
+					else if (_current_selection == MAIN_MENU) {
+						// Main Menu
+						/*pause.is_game_paused = false;
+						renderable.is_enabled = false;
 
-				}
-				*/
-				// Quit Game
-				//else if (m_r_input.is_input_started(core::controls::CARD4_CONTROL) || m_r_input.is_input_started(core::controls::CARD4_CONTROL_PLAYER2))
-				else if (m_r_input.is_input_started(core::controls::CARD3_CONTROL) || m_r_input.is_input_started(core::controls::CARD3_CONTROL_PLAYER2))
-				{
-					m_r_glfw.set_should_close(true);
+						state.free_all();
+						m_r_hydrater.load();
+						return;*/
+					}
+					else if (_current_selection == DECK_MENU) {
+						// Deck Menu
+					}
+					else if (_current_selection == QUIT) {
+						// Quit
+						// TODO: Confirm destructive action
+						m_r_glfw.set_should_close(true);
+					}
+					else if (_current_selection == HOW_TO) {
+						// How To
+					}
+					else if (_current_selection == OPTIONS) {
+						// Options
+					}
+					else if (_current_selection == CREDITS) {
+						// Credits
+					}
 				}
 			}
 			else
@@ -98,6 +132,7 @@ private:
 	core::glfw_context& m_r_glfw;
 	asset::scene_hydrater& m_r_hydrater;
 	event::EventManager& m_r_events;
+	int _current_selection;
 };
 
 #endif
