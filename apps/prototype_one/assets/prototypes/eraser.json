@@ -9,7 +9,8 @@
             {
                 "type": "renderable_mesh_static",
                 "mesh": "assets/meshes/unit/unit.obj",
-                "texture_diffuse": "assets/textures/fantasy/eraser.png"
+                "is_alpha_blended": true,
+                "texture_diffuse": "assets/textures/fantasy/ghost.png"
             },
             {
                 "type": "game_piece",
