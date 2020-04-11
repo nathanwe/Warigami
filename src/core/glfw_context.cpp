@@ -18,9 +18,14 @@ core::glfw_context::glfw_context(startup_config& conf) : _conf(conf)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-	glfwWindowHint(GLFW_RED_BITS, 32);
-	glfwWindowHint(GLFW_GREEN_BITS, 32);
-	glfwWindowHint(GLFW_BLUE_BITS, 32);
+
+	GLFWmonitor* p_monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(p_monitor);
+	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
 	glfwWindowHint(GLFW_ALPHA_BITS, 32);
 	glfwWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwWindowHint(GLFW_STENCIL_BITS, 8);
@@ -31,8 +36,7 @@ core::glfw_context::glfw_context(startup_config& conf) : _conf(conf)
 
     if (conf.fullscreen())
     {
-        const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        _window = glfwCreateWindow(mode->width, mode->height, conf.window_title().c_str(), glfwGetPrimaryMonitor(), NULL);
+        _window = glfwCreateWindow(mode->width, mode->height, conf.window_title().c_str(), p_monitor, NULL);
 		_width = mode->width;
 		_height = mode->height;
     } else
