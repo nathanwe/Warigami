@@ -26,6 +26,8 @@ namespace core
 		std::uint32_t height() const;
 
 		void set_should_close(bool);
+		void set_minimize_callback(GLFWwindowiconifyfun);
+		bool is_minimized();
 
 	private:
 		GLFWwindow* _window;

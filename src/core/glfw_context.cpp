@@ -89,3 +89,14 @@ void core::glfw_context::set_should_close(bool value)
 {
 	glfwSetWindowShouldClose(_window, value);
 }
+
+
+void core::glfw_context::set_minimize_callback(GLFWwindowiconifyfun callback)
+{
+	glfwSetWindowIconifyCallback(_window, callback);
+}
+
+bool core::glfw_context::is_minimized()
+{
+	return glfwGetWindowAttrib(_window, GLFW_ICONIFIED);
+}

@@ -38,90 +38,98 @@ public:
 		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events), _current_selection(0)
 	{}
 
-	void update(ecs::state& state)
+	void update(ecs::state& state) override
 	{
-		auto e = state.first<components::pause>([&](auto& pause)
-		{
-			return true;
-		});
-		if (e != nullptr)
-		{
-			auto& pause = e->get_component<components::pause>();
-			auto& renderable = e->get_component<rendering::renderable_mesh_static>();
-
-			if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
+		auto e = state.first<components::pause>(
+			[&](auto& pause)
 			{
-				return;
+				return true;
+			});
+		if (e == nullptr)
+		{
+			return;
+		}
+		auto& pause = e->get_component<components::pause>();
+		auto& renderable = e->get_component<rendering::renderable_mesh_static>();
+
+		if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
+		{
+			return;
+		}
+
+		if (m_r_glfw.is_minimized())
+		{
+			pause.is_game_paused = true;
+			renderable.is_enabled = true;
+		}
+
+		if (pause.is_game_paused)
+		{
+			// Change selected
+			if (m_r_input.is_input_started(core::controls::UP_CONTROL) || m_r_input.is_input_started(core::controls::UP_CONTROL_PLAYER2)) {
+				if (_current_selection == 0) {
+					_current_selection = NUM_PAUSE_OPTIONS;
+				}
+				_current_selection--;
+				// TODO: Move selector image
+
+			} else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2)) {
+				_current_selection = (++_current_selection) % NUM_PAUSE_OPTIONS;
+				// TODO: Move selector image
 			}
 
-			if (pause.is_game_paused)
-			{
-				// Change selected
-				if (m_r_input.is_input_started(core::controls::UP_CONTROL) || m_r_input.is_input_started(core::controls::UP_CONTROL_PLAYER2)) {
-					if (_current_selection == 0) {
-						_current_selection = NUM_PAUSE_OPTIONS;
-					}
-					_current_selection--;
-					// TODO: Move selector image
-
-				} else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2)) {
-					_current_selection = (++_current_selection) % NUM_PAUSE_OPTIONS;
-					// TODO: Move selector image
+			// Choose the selected option
+			else if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
+				// Note: I tried this with a switch statement but it ended up being messier because of bypassing initialization of variables
+				if (_current_selection == RESUME) {
+					// Resume
+					pause.is_game_paused = false;
+					renderable.is_enabled = false;
 				}
+				else if (_current_selection == REPLAY) {
+					// Replay
+					// TODO: Confirm destructive action
+					pause.is_game_paused = false;
+					renderable.is_enabled = false;
+					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
+					m_r_events.BroadcastEvent(restart_event);
+					return;
+				}
+				else if (_current_selection == MAIN_MENU) {
+					// Main Menu
+					/*pause.is_game_paused = false;
+					renderable.is_enabled = false;
 
-				// Choose the selected option
-				else if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
-					// Note: I tried this with a switch statement but it ended up being messier because of bypassing initialization of variables
-					if (_current_selection == RESUME) {
-						// Resume
-						pause.is_game_paused = false;
-						renderable.is_enabled = false;
-					}
-					else if (_current_selection == REPLAY) {
-						// Replay
-						// TODO: Confirm destructive action
-						pause.is_game_paused = false;
-						renderable.is_enabled = false;
-						asset::scene_change_event restart_event("assets/scenes/main_menu.json");
-						m_r_events.BroadcastEvent(restart_event);
-						return;
-					}
-					else if (_current_selection == MAIN_MENU) {
-						// Main Menu
-						/*pause.is_game_paused = false;
-						renderable.is_enabled = false;
-
-						state.free_all();
-						m_r_hydrater.load();
-						return;*/
-					}
-					else if (_current_selection == DECK_MENU) {
-						// Deck Menu
-					}
-					else if (_current_selection == QUIT) {
-						// Quit
-						// TODO: Confirm destructive action
-						m_r_glfw.set_should_close(true);
-					}
-					else if (_current_selection == HOW_TO) {
-						// How To
-					}
-					else if (_current_selection == OPTIONS) {
-						// Options
-					}
-					else if (_current_selection == CREDITS) {
-						// Credits
-					}
+					state.free_all();
+					m_r_hydrater.load();
+					return;*/
+				}
+				else if (_current_selection == DECK_MENU) {
+					// Deck Menu
+				}
+				else if (_current_selection == QUIT) {
+					// Quit
+					// TODO: Confirm destructive action
+					m_r_glfw.set_should_close(true);
+				}
+				else if (_current_selection == HOW_TO) {
+					// How To
+				}
+				else if (_current_selection == OPTIONS) {
+					// Options
+				}
+				else if (_current_selection == CREDITS) {
+					// Credits
 				}
 			}
-			else
+		}
+		else
+		{
+			// Pause
+			if (m_r_input.is_input_started(core::controls::MENU_CONTROL))
 			{
-				// Pause
-				if (m_r_input.is_input_started(core::controls::MENU_CONTROL))
-				{
-					pause.is_game_paused = true;
-					renderable.is_enabled = true;
-				}
+				pause.is_game_paused = true;
+				renderable.is_enabled = true;
 			}
 		}
 	}
