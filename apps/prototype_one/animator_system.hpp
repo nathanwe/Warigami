@@ -102,18 +102,10 @@ private:
 	{
 		switch (piece.piece_type)
 		{
-		case components::card_enum::SCISSOR_GOLIATH:
-		case components::card_enum::SCISSOR_QUEEN:
-		case components::card_enum::SCISSOR_TITAN:
-		case components::card_enum::SCISSOR_TROOPER:
-		case components::card_enum::SCISSOR_WEBBER:
-		case components::card_enum::SCISSORLING_TWIN:
-		case components::card_enum::SCISSORLING:
-			return get_walker_sprite(piece);
 		case components::card_enum::SCISSORLING_EGG:
 			return get_egg_sprite(piece);
 		default:
-			return { 0.f, 0.f };
+			return get_walker_sprite(piece);
 		}
 	}
 
