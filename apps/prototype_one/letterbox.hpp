@@ -25,7 +25,7 @@ core::viewport letterbox(const core::viewport& view)
 		else
 		{
 			letterboxed.width = view.width;
-			letterboxed.height = view.height / desired_aspect;
+			letterboxed.height = view.width / desired_aspect;
 			float diff = view.height - letterboxed.height;
 			letterboxed.x = 0.f;
 			letterboxed.y = diff / 2.f;
