@@ -145,17 +145,6 @@ public:
 					// Credits
 				}
 			}
-			else
-			{
-				// Pause
-				if (m_r_input.is_input_started(core::controls::MENU_CONTROL))
-				{
-					pause.is_game_paused = true;
-					renderable.is_enabled = true;
-
-					arrow_renderable.is_enabled = true;
-				}
-			}
 		}
 	}
 
