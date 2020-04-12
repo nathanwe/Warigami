@@ -77,8 +77,6 @@ void deck_selection_controller::update(ecs::state& state)
 
 		handle_animation(state, selection_component);
 	}
-
-	
 }
  
 void deck_selection_controller::do_update(ecs::state& state, components::board& board)
@@ -279,8 +277,8 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 	state.each<components::player>([&](components::player& player) {
 		player_specific_data player_specifics(player, _input);
 
-		auto pressed_ready = _input.is_input_ended(player_specifics.controls.card1);
-		auto pressed_cancel = _input.is_input_ended(player_specifics.controls.card2);
+		auto pressed_ready = _input.is_input_started(player_specifics.controls.card1);
+		auto pressed_cancel = _input.is_input_started(player_specifics.controls.card2);
 
 		if (pressed_ready)
 			player.is_ready = true;
