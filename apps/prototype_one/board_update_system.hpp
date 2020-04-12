@@ -116,12 +116,7 @@ private:
                         }
                         case components::UNIT_STATE::DEAD:
                         {
-                            unit_death_event new_event(unit_id);
-                            // Delete also the health spheres
-                            for (ecs::entity e : unit.health_points) {
-                                new_event.children.push_back(e.id());
-                            }
-                            event_manager.BroadcastEvent(new_event);
+                            //now in kill dying
                             break;
                         }
                     }
@@ -158,10 +153,17 @@ private:
     }
 
     void kill_dying(ecs::state& r_state) {
-        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
-            if (game_piece.state == components::UNIT_STATE::DYING)
+        r_state.each_id<transforms::transform, components::game_piece>(
+            [&](entity_id unit_id, auto& unit_t, auto& unit) {
+            if (unit.state == components::UNIT_STATE::DYING)
             {
-                game_piece.state = components::UNIT_STATE::DEAD;
+                //unit.state = components::UNIT_STATE::DEAD;
+                unit_death_event new_event(unit_id);
+                // Delete also the health spheres
+                for (ecs::entity e : unit.health_points) {
+                    new_event.children.push_back(e.id());
+                }
+                event_manager.BroadcastEvent(new_event);
             }
 
             });
@@ -326,7 +328,7 @@ private:
                 if ((piece.board_source.y >= p.score_column && p.team == -1) ||
                     (piece.board_source.y <= p.score_column && p.team == 1)) {
 
-                    piece.state = components::UNIT_STATE::DEAD;
+                    piece.state = components::UNIT_STATE::DYING;
                     p.health -= piece.damage * 10.f;
                     if (p.health < 0.f)
                     {
