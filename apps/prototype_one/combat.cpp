@@ -51,7 +51,7 @@ void combats::combat_resolution::Resolve_Combats()
 						instance.unit_two.flash_step_flag = true;
 					}
 					if (unit_two_speed_enrage) {
-						instance.unit_two.speed += 5;
+						instance.unit_two.speed += 9;
 					}
 				}
 				break;
@@ -117,7 +117,7 @@ void combats::combat_resolution::Resolve_Combats()
 						}
 					}
 					if (unit_one_speed_enrage) {
-						instance.unit_one.speed += 5;
+						instance.unit_one.speed += 9;
 					}
 					break;
 				}

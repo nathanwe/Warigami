@@ -85,6 +85,8 @@ private:
 		}
 
 		nerdP.continuous_board_location = nerdP.board_source;
+		nerdP.continuous_board_rotation = glm::vec3(0, 0, 0);
+		nerdP.continuous_board_rotation.y = glm::half_pi<float>();
 		nerdP.board_destination = nerdP.board_source;
 		nerdP.move_board = nerdP.move_board * nerdP.team;
 		nerdP.move_world = nerdP.move_world * (float)nerdP.team;

@@ -45,7 +45,7 @@ public:
 								player.AI_movement_direction = 1;
 							}
 							if (player.selected_row != board.columns - 1) {
-								place_card(1, player, state, board);
+								place_card(0, player, state, board);
 							}
 						}
 					}
@@ -55,7 +55,7 @@ public:
 	}
 
 private:
-	//this should be a refrence to the version in player_controler, but i dont want to deal with statics and externs right now.
+	//TODO: this should be a refrence to the version in player_controler, but i dont want to deal with statics and externs right now.
 	void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
 		if (loc != -1) {
 			player.selected_card = player.hand[loc];

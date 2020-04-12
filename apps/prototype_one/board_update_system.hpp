@@ -79,7 +79,9 @@ private:
     void
     handle_tick_end(ecs::state &r_state, entity_id board_id, transforms::transform &board_t, components::board &board)
     {
-        do_game_piece_actions(r_state);
+        kill_dying(r_state);
+        death_check(r_state);
+        do_game_piece_actions(r_state);       
         resolver.Resolve_Combats();
         generate_new_board_state(r_state);
     }
@@ -108,12 +110,13 @@ private:
                         }
                         case components::UNIT_STATE::DYING:
                         {
-                            unit_death_event new_event(unit_id);
-                            // Delete also the health spheres
-                            for (ecs::entity e : unit.health_points) {
-                                new_event.children.push_back(e.id());
-                            }
-                            event_manager.BroadcastEvent(new_event);
+                            fall_unit(unit, board.timer_t);
+                            handle_unit_transform(board_t, unit_t, unit, board, board_id);
+                            break;
+                        }
+                        case components::UNIT_STATE::DEAD:
+                        {
+                            //now in kill dying
                             break;
                         }
                     }
@@ -124,10 +127,12 @@ private:
     {
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
             game_piece.board_source = game_piece.board_destination;
-
-            game_piece.state = check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state)
-                               ? components::UNIT_STATE::ATTACK
-                               : components::UNIT_STATE::MOVE;
+            if (game_piece.state != components::UNIT_STATE::DEAD && game_piece.state != components::UNIT_STATE::DYING)
+            {
+                game_piece.state = check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state)
+                    ? components::UNIT_STATE::ATTACK
+                    : components::UNIT_STATE::MOVE;
+            }
 
         });
 
@@ -144,15 +149,34 @@ private:
                         game_piece.team,
                         r_state);
             }
-        });
+        });       
+    }
 
-        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
-            if (game_piece.health <= 0)
+    void kill_dying(ecs::state& r_state) {
+        r_state.each_id<transforms::transform, components::game_piece>(
+            [&](entity_id unit_id, auto& unit_t, auto& unit) {
+            if (unit.state == components::UNIT_STATE::DYING)
+            {
+                //unit.state = components::UNIT_STATE::DEAD;
+                unit_death_event new_event(unit_id);
+                // Delete also the health spheres
+                for (ecs::entity e : unit.health_points) {
+                    new_event.children.push_back(e.id());
+                }
+                event_manager.BroadcastEvent(new_event);
+            }
+
+            });
+    }
+
+    void death_check(ecs::state& r_state) {
+        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
+            if (game_piece.health <= 0 && game_piece.state != components::UNIT_STATE::DEAD)
             {
                 game_piece.state = components::UNIT_STATE::DYING;
             }
 
-        });
+            });
     }
 
     static void score_for_team(ecs::state &state, float team, float damage)
@@ -216,6 +240,11 @@ private:
         glm::vec2 interpolated = glm::vec2(game_piece.board_source) + t * to_dst;
         game_piece.continuous_board_location = source + t * (destination - source);
     }
+    // Helper function for dieing in board space
+    static void fall_unit(components::game_piece& game_piece, float ticker_t)
+    {       
+        game_piece.continuous_board_rotation.z = ticker_t;
+    }
 
     // Helper function for attacking
     static void attack_unit(components::game_piece &game_piece, float ticker_t)
@@ -253,6 +282,7 @@ private:
     {
         auto new_position = board.grid_to_board(game_piece.continuous_board_location, board_t);
         unit_t.position = new_position;
+        unit_t.rotation = game_piece.continuous_board_rotation;
         //unit_t.scale = glm::vec3(0.2f); //I would like changig the scale in the json to do somthing
         unit_t.is_matrix_dirty = true;
 
@@ -360,7 +390,7 @@ private:
         auto attacked = r_state.first<components::game_piece>([&](components::game_piece &game_piece) {
             for (auto &target : targets)
             {
-                if (game_piece.board_source == target && game_piece.team != teammates)
+                if (game_piece.board_source == target && game_piece.team != teammates && game_piece.state != components::UNIT_STATE::DEAD && game_piece.state != components::UNIT_STATE::DYING)
                     return true;
             }
 
