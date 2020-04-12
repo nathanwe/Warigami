@@ -44,7 +44,7 @@ float core::startup_config::sfx_volume() const { return config_json["sfx_volume"
 json core::startup_config::make_default() const
 {
     return {
-        {"fullscreen", false},
+        {"fullscreen", true},
         {"height", 768 },
         {"width", 1366 },
         {"fov", 45},
