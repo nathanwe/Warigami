@@ -14,31 +14,31 @@ core::glfw_context::glfw_context(startup_config& conf) : _conf(conf)
 	uint32_t window_height = conf.height();
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 
-	GLFWmonitor* p_monitor = glfwGetPrimaryMonitor();
-	const GLFWvidmode* mode = glfwGetVideoMode(p_monitor);
-	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+	_monitor = glfwGetPrimaryMonitor();
+	_mode = glfwGetVideoMode(_monitor);
+	glfwWindowHint(GLFW_RED_BITS, _mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, _mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, _mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, _mode->refreshRate);
 
 	glfwWindowHint(GLFW_ALPHA_BITS, 32);
 	glfwWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwWindowHint(GLFW_STENCIL_BITS, 8);
 
 #ifndef NDEBUG	
-		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 
     if (conf.fullscreen())
     {
-        _window = glfwCreateWindow(mode->width, mode->height, conf.window_title().c_str(), p_monitor, NULL);
-		_width = mode->width;
-		_height = mode->height;
+        _window = glfwCreateWindow(_mode->width, _mode->height, conf.window_title().c_str(), _monitor, NULL);
+		_width = _mode->width;
+		_height = _mode->height;
     } else
     {
         _window = glfwCreateWindow(conf.width(), conf.height(), conf.window_title().c_str(), nullptr, nullptr);
@@ -103,4 +103,16 @@ void core::glfw_context::set_minimize_callback(GLFWwindowiconifyfun callback)
 bool core::glfw_context::is_minimized()
 {
 	return glfwGetWindowAttrib(_window, GLFW_ICONIFIED);
+}
+
+void core::glfw_context::set_fullscreen(bool val)
+{
+	if (val)
+	{
+		glfwSetWindowMonitor(_window, _monitor, 0, 0, _mode->width, _mode->height, _mode->refreshRate);
+	}
+	else
+	{
+		glfwSetWindowMonitor(_window, NULL, 0, 0, _conf.width(), _conf.height(), GLFW_DONT_CARE);
+	}
 }

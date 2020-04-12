@@ -28,9 +28,12 @@ namespace core
 		void set_should_close(bool);
 		void set_minimize_callback(GLFWwindowiconifyfun);
 		bool is_minimized();
+		void set_fullscreen(bool);
 
 	private:
 		GLFWwindow* _window;
+		GLFWmonitor* _monitor;
+		const GLFWvidmode* _mode;
 		startup_config& _conf;
 
 		std::uint32_t _width;
