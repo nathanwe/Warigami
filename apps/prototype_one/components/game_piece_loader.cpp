@@ -63,6 +63,8 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 	if (it != json.end())
 	{
 		std::string val = it->get<std::string>();
+
+		// haha elseif goes brrr
 		if (val == "spider_goliath")
 		{
 			gp.piece_type = components::card_enum::SCISSOR_GOLIATH;
@@ -94,6 +96,38 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 		else if (val == "spider_twin")
 		{
 			gp.piece_type = components::card_enum::SCISSORLING_TWIN;
+		}
+		else if (val == "two_dwarves")
+		{
+			gp.piece_type = components::card_enum::TWO_DWARVES;
+		}
+		else if (val == "one_dwarf")
+		{
+			gp.piece_type = components::card_enum::ONE_DWARF;
+		}
+		else if (val == "eraser")
+		{
+			gp.piece_type = components::card_enum::ERASER;
+		}
+		else if (val == "troll")
+		{
+			gp.piece_type = components::card_enum::TROLL;
+		}
+		else if (val == "wizard")
+		{
+			gp.piece_type = components::card_enum::WIZARD;
+		}
+		else if (val == "archer")
+		{
+			gp.piece_type = components::card_enum::ARCHER;
+		}
+		else if (val == "unicorn")
+		{
+			gp.piece_type = components::card_enum::UNICORN;
+		}
+		else if (val == "knight")
+		{
+			gp.piece_type = components::card_enum::KNIGHT;
 		}
 	}
 }

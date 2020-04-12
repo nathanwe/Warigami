@@ -9,6 +9,7 @@
 #include <asset/scene_hydrater.hpp>
 #include <transforms/transform.hpp>
 #include "components/deck_ui.hpp"
+#include "game_util/card_spawner.hpp"
 
 class deck_ui_controller : public ecs::system_base
 {
@@ -16,13 +17,14 @@ class deck_ui_controller : public ecs::system_base
 
 
 public:
-	deck_ui_controller(asset::scene_hydrater& hydrater);
+	deck_ui_controller(card_spawner& card_spawner);
 
 	void initialize(ecs::state& state) override;
 	void update(ecs::state& state) override;
 
-private:
-	asset::scene_hydrater& _hydrater;
+private:	
+	card_spawner& _card_spawner;
+
 	ecs::entity* _board{ nullptr };
 
 
@@ -41,9 +43,6 @@ private:
 		components::deck_ui& deck_ui,
 		transforms::transform& deck_ui_t,
 		entity_id deck_id);
-
-	ecs::entity& spawn_card(
-		components::card_enum type);
 
 	static void position_card(
 		size_t card_index,

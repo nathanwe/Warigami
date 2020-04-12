@@ -139,11 +139,13 @@ int main(int argc, char** argv) {
 
 	asset::scene_hydrater hydrater(state);
 
+	card_spawner card_spawn_helper(hydrater);
+
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events, hydrater, resolver);
 	player_controller player_control(input, timer, events, hydrater);
 	
-	deck_ui_controller deck_ui_controller(hydrater);
+	deck_ui_controller deck_ui_controller(card_spawn_helper);
 	audio::audio_system audio_system(strings, assets, config);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
@@ -166,7 +168,7 @@ int main(int argc, char** argv) {
 	tick_update_system ticker(timer);
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
-	deck_selection_controller deck_selection(hydrater, input, timer);
+	deck_selection_controller deck_selection(hydrater, card_spawn_helper, input, timer);
 	pause_system pauser(input, timer, glfw, hydrater, events);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);

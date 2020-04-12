@@ -12,18 +12,19 @@
                 "is_alpha_blended": true,
                 "texture_diffuse": "assets/textures/fantasy/knight.png"
             },
-            {
-                "type": "game_piece",
-                "speed": 1.0,
-                "damage": 2.0,
-                "health": 6.0,
-                "team": 1.0,
-                "board_location": [ 0.0, 0.0 ],
-                "move_board": [ 0.0, 1.0 ],
-                "move_world": [ 0.0, 0.0, 1.0 ],
-                "attacks": [ [ 0.0, 1.0 ] ],
-                "effects": [ 0, 14 ]
-            }
+          {
+            "type": "game_piece",
+            "speed": 1.0,
+            "damage": 2.0,
+            "health": 6.0,
+            "team": 1.0,
+            "board_location": [ 0.0, 0.0 ],
+            "move_board": [ 0.0, 1.0 ],
+            "move_world": [ 0.0, 0.0, 1.0 ],
+            "attacks": [ [ 0.0, 1.0 ] ],
+            "effects": [ 0, 14 ],
+            "piece_type": "knight"
+          }
         ]
     }
 }
