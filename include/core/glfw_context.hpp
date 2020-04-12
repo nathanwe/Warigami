@@ -29,6 +29,7 @@ namespace core
 		void set_minimize_callback(GLFWwindowiconifyfun);
 		bool is_minimized();
 		void set_fullscreen(bool);
+		bool is_fullscreen();
 
 	private:
 		GLFWwindow* _window;

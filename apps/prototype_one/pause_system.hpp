@@ -146,22 +146,27 @@ public:
 				else if (_current_selection == REPLAY) {
 					// Replay
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == MAIN_MENU) {
 					// Main Menu
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == QUIT) {
 					// Quit
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == HOW_TO) {
 					// How To
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == OPTIONS) {
 					// Options
 					_seeing_message = true;
+					_current_options_selection = 0;
 					arrow_transform.position = glm::vec3(-27, 8, -5);
 					arrow_transform.is_matrix_dirty = true;
 				}
@@ -234,6 +239,12 @@ public:
 			
 			if (_current_options_selection == FULLSCREEN) {
 				// Fullscreen
+				if (m_r_glfw.is_fullscreen()) {
+					m_r_glfw.set_fullscreen(false);
+				}
+				else {
+					m_r_glfw.set_fullscreen(true);
+				}
 			}
 			else if (_current_options_selection == MUTE_ALL) {
 				// Mute all
