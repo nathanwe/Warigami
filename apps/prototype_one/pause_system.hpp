@@ -66,19 +66,19 @@ public:
 		auto& arrow_renderable = a->get_component<rendering::renderable_mesh_static>();
 		auto& arrow_transform = a->get_component<transforms::transform>();
 
-		/*if (m_r_glfw.is_minimized())
+		if (m_r_glfw.is_minimized())
 		{
 			pause.is_game_paused = true;
 			renderable.is_enabled = true;
 			arrow_renderable.is_enabled = true;
-		}*/
+		}
 
 		// Toggle pause
 		if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
 		{
 			pause.is_game_paused = !pause.is_game_paused;
 			renderable.is_enabled = !renderable.is_enabled;
-			arrow_renderable.is_enabled = !renderable.is_enabled;
+			arrow_renderable.is_enabled = !arrow_renderable.is_enabled;
 		}
 
 		if (pause.is_game_paused)
