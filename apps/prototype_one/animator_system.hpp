@@ -22,7 +22,13 @@ public:
 public:
 	void update(ecs::state& state) override
 	{
-		state.each<components::game_piece, rendering::renderable_mesh_static>([&](auto& piece, auto& render)
+		if (should_skip_update(state))
+		{
+			return;
+		}
+
+		state.each<components::game_piece, rendering::renderable_mesh_static>(
+			[&](auto& piece, auto& render)
 		{
 			render.material.texture_scale = get_sprite_scale(piece);
 			if (try_change_sprite(piece))
@@ -34,6 +40,22 @@ public:
 	}
 
 private:
+	bool should_skip_update(ecs::state& state)
+	{
+		bool should_skip = false;
+		state.first<components::pause>(
+			[&](auto& pause)
+			{
+				if (pause.is_game_paused)
+				{
+					should_skip = true;
+					return true;
+				}
+				return false;
+			});
+		return should_skip;
+	}
+
 	bool try_change_sprite(components::game_piece& piece)
 	{
 		bool changedSprite = false;
