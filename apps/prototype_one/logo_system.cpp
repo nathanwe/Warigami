@@ -22,7 +22,7 @@ void logo_system::update(ecs::state& state)
 		[&](transforms::transform& transform, components::logo& logo, rendering::renderable_mesh_static& mesh) {
 			logo.display_time += _timer.smoothed_delta_secs();
 			
-			if (_input.is_input_started(core::controls::CARD1_CONTROL))
+			if (_input.any_button_pressed())
 			{
 				asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
 				_events.BroadcastEvent(menu_scene);

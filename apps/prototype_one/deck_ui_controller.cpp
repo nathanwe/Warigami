@@ -8,7 +8,7 @@
 #include "components/card.hpp"
 #include "components/board.hpp"
 
-deck_ui_controller::deck_ui_controller(asset::scene_hydrater &hydrater) : _hydrater(hydrater)
+deck_ui_controller::deck_ui_controller(card_spawner& card_spawner) : _card_spawner(card_spawner)
 {}
 
 
@@ -82,8 +82,8 @@ void deck_ui_controller::handle_card_entities(
 
                 if (card_component.card_type != card_val)
                 {
-                    _hydrater.remove_entity(card_entity);
-                    auto& new_card = spawn_card(card_val);
+                    _card_spawner.remove(card_entity_id.value());
+                    auto& new_card = _card_spawner.spawn(card_val);
                     auto& new_card_t = new_card.get_component<transforms::transform>();
                     deck_ui.replace_child(*card_entity_id, new_card.id());
                     card_entity_id = new_card.id();
@@ -97,7 +97,7 @@ void deck_ui_controller::handle_card_entities(
             }
             else if (!card_entity_id && card_val != components::card_enum::NO_CARD)
             {
-                auto& new_card = spawn_card(card_val);
+                auto& new_card = _card_spawner.spawn(card_val);
                 auto& new_card_t = new_card.get_component<transforms::transform>();
                 card_entity_id = new_card.id();
                 deck_ui.children[deck_ui.child_count++] = new_card.id();
@@ -106,70 +106,13 @@ void deck_ui_controller::handle_card_entities(
             else if (card_entity_id && card_val == components::card_enum::NO_CARD)
             {
                 deck_ui.remove_child(*card_entity_id);
-                _hydrater.remove_entity(card_entity_id.value());
+                _card_spawner.remove(card_entity_id.value());
                 card_entity_id = {};
             }
         }
     });
 }
 
-ecs::entity &deck_ui_controller::spawn_card(components::card_enum type)
-{
-    switch (type)
-    {
-        case components::card_enum::SCISSORLING_TWIN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_tandem.json");
-        case components::card_enum::SCISSOR_TROOPER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_trooper.json");
-        case components::card_enum::SCISSORLING_EGG:
-            return _hydrater.add_from_prototype("assets/prototypes/card_egg.json");
-        case components::card_enum::SCISSORLING:
-            return _hydrater.add_from_prototype("assets/prototypes/card_scissorling.json");
-        case components::card_enum::SCISSOR_WEBBER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_webber.json");
-        case components::card_enum::SCISSOR_GOLIATH:
-            return _hydrater.add_from_prototype("assets/prototypes/card_goliath.json");
-        case components::card_enum ::SCISSOR_TITAN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
-        case components::card_enum::SCISSOR_QUEEN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_queen.json"); 
-
-        case components::card_enum::LIGHT_TANK_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_light_tank_soldier.json");
-        case components::card_enum::LIGHT_RANGE_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_light_range_soldier.json");
-        case components::card_enum::LIGHT_FAST_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_light_fast_soldier.json");
-        case components::card_enum::MEDIUM_TANK_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_medium_tank_soldier.json");
-        case components::card_enum::MEDIUM_RANGE_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_medium_range_soldier.json");
-        case components::card_enum::MEDIUM_FAST_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_medium_fast_soldier.json");
-        case components::card_enum::HEAVY_TANK_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_heavy_tank_soldier.json");
-        case components::card_enum::HEAVY_RANGE_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_heavy_range_soldier.json");
-        case components::card_enum::HEAVY_FAST_SOLDIER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_heavy_fast_soldier.json");
-
-        case components::card_enum::ERASER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_eraser.json");
-        case components::card_enum::TROLL:
-            return _hydrater.add_from_prototype("assets/prototypes/card_troll.json");
-        case components::card_enum::WIZARD:
-            return _hydrater.add_from_prototype("assets/prototypes/card_wizard.json");
-        case components::card_enum::ARCHER:
-            return _hydrater.add_from_prototype("assets/prototypes/card_archer.json");
-        case components::card_enum::UNICORN:
-            return _hydrater.add_from_prototype("assets/prototypes/card_unicorn.json");
-        case components::card_enum::KNIGHT:
-            return _hydrater.add_from_prototype("assets/prototypes/card_knight.json");
-
-        default:
-            return _hydrater.add_from_prototype("assets/prototypes/card_dragon.json");
-    }
-}
 
 void
 deck_ui_controller::position_card(
