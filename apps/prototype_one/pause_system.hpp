@@ -36,14 +36,15 @@ public:
 		asset::scene_hydrater& hydrater,
 		event::EventManager& events)
 		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events), _current_selection(0),
-		_seeing_message(false), how_to_page(0)
+		_seeing_message(false), how_to_page(0), _current_options_selection(0)
 	{}
 
 	void initialize(ecs::state& state) {
 		_current_selection = 0;
 
-		bool _seeing_message = false;
-		int how_to_page = 0;
+		_seeing_message = false;
+		how_to_page = 0;
+		_current_options_selection = 0;
 	}
 
 	void update(ecs::state& state) override
@@ -66,13 +67,6 @@ public:
 
 		auto& pause = e->get_component<components::pause>();
 
-		if (_seeing_message) {
-			if (_current_selection == HOW_TO) {
-				handle_howto_case(state, pause);
-			}
-			return;
-		}
-
 		if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
 		{
 			return;
@@ -81,6 +75,17 @@ public:
 		auto& renderable = e->get_component<rendering::renderable_mesh_static>();
 		auto& arrow_renderable = a->get_component<rendering::renderable_mesh_static>();
 		auto& arrow_transform = a->get_component<transforms::transform>();
+
+		// Handle the popup screens instead of the pause menu
+		if (_seeing_message) {
+			if (_current_selection == HOW_TO) {
+				handle_howto_case(state);
+			}
+			else if (_current_selection == OPTIONS) {
+				handle_options_case(state, arrow_transform, renderable);
+			}
+			return;
+		}
 
 		if (m_r_glfw.is_minimized())
 		{
@@ -146,6 +151,7 @@ public:
 				}
 				else if (_current_selection == MAIN_MENU) {
 					// Main Menu
+					// TODO: Confirm destructive action
 					pause.is_game_paused = false;
 					renderable.is_enabled = false;
 					arrow_renderable.is_enabled = false;
@@ -161,10 +167,14 @@ public:
 				else if (_current_selection == HOW_TO) {
 					// How To
 					_seeing_message = true;
-					handle_howto_case(state, pause);
+					handle_howto_case(state);
 				}
 				else if (_current_selection == OPTIONS) {
 					// Options
+					_seeing_message = true;
+					arrow_transform.position = glm::vec3(-27, 8, -5);
+					arrow_transform.is_matrix_dirty = true;
+					handle_options_case(state, arrow_transform, renderable);
 				}
 				else if (_current_selection == CREDITS) {
 					// Credits
@@ -173,7 +183,7 @@ public:
 		}
 	}
 
-	void handle_howto_case(ecs::state& state, components::pause pause)
+	void handle_howto_case(ecs::state& state)
 	{
 		for (size_t i = 0; i < 4; ++i)
 		{
@@ -200,6 +210,58 @@ public:
 		}
 	}
 
+	enum options_choices {
+		FULLSCREEN,
+		MUTE_ALL,
+		MUTE_MUSIC,
+		BACK,
+		NUM_OPTIONS
+	};
+
+	void handle_options_case(ecs::state& state, transforms::transform& arrow_transform, rendering::renderable_mesh_static& pause_renderable) {
+		auto& e = state.find_entity(108); // Options image
+		auto& r = e.get_component<rendering::renderable_mesh_static>();
+		r.is_enabled = true;
+		pause_renderable.is_enabled = false;
+
+		// Change selected
+		if (m_r_input.is_input_started(core::controls::UP_CONTROL) || m_r_input.is_input_started(core::controls::UP_CONTROL_PLAYER2))
+		{
+			if (_current_options_selection == 0) {
+				_current_options_selection = NUM_OPTIONS;
+			}
+			_current_options_selection--;
+			arrow_transform.position = glm::vec3(-27 - _current_options_selection * 0.7, 8 - _current_options_selection * 0.9, -5);
+			arrow_transform.is_matrix_dirty = true;
+		}
+		else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2))
+		{
+			_current_options_selection = (++_current_options_selection) % NUM_OPTIONS;
+			arrow_transform.position = glm::vec3(-27 - _current_options_selection * 0.7, 8 - _current_options_selection * 0.9, -5);
+			arrow_transform.is_matrix_dirty = true;
+		}
+		// Choose selected
+		else if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
+			
+			if (_current_options_selection == FULLSCREEN) {
+				// Fullscreen
+			}
+			else if (_current_options_selection == MUTE_ALL) {
+				// Mute all
+			}
+			else if (_current_options_selection == MUTE_MUSIC) {
+				// Mute music
+			}
+			else if (_current_options_selection == BACK) {
+				_seeing_message = false;
+				r.is_enabled = false;
+				pause_renderable.is_enabled = true;
+				arrow_transform.position = glm::vec3(-27 - _current_selection * 0.7, 8 - _current_selection * 0.9, -5);
+				arrow_transform.is_matrix_dirty = true;
+			}
+		}
+	}
+
 private:
 	core::frame_timer& m_r_timer;
 	core::game_input_manager& m_r_input;
@@ -211,6 +273,7 @@ private:
 	bool _seeing_message;
 	int how_to_page;
 	entity_id how_to_play_images[4]{ 104, 105, 106, 107 };
+	int _current_options_selection;
 };
 
 #endif

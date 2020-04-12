@@ -154,6 +154,24 @@
           "is_enabled": false
         }
       ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 108,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0.7, 0.7, 0.7 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/pause/options.png",
+          "is_enabled": false
+        }
+      ]
     }
   ]
 }
