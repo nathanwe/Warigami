@@ -74,6 +74,9 @@
       "prototype": "assets/prototypes/pause.json"
     },
     {
+      "prototype": "assets/prototypes/pause_arrow.json"
+    },
+    {
       "prototype": "assets/prototypes/countdown.json"
     },
     {

@@ -43,6 +43,7 @@
 #include "components/main_menu.hpp"
 #include "components/energy_ball.hpp"
 #include "components/logo.hpp"
+#include "components/pause_arrow.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -113,6 +114,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::countdown>("countdown");
 	ecs::register_component<components::selection_arrow>("selection_arrow");
 	ecs::register_component<components::pause>("pause");
+	ecs::register_component<components::pause_arrow>("pause_arrow");
 	ecs::register_component<transforms::transform>("transform");
     ecs::register_component<components::deck_ui>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");

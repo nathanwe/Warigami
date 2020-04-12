@@ -1,0 +1,22 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ -27, 8, -5 ],
+        "rotation": [ 0, -90, -48 ],
+        "scale": [ 2, 0.5, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/quad/quad.obj",
+        "texture_diffuse": "assets/textures/pause/pencil.png",
+        "is_alpha_blended": true,
+        "is_enabled": false
+      },
+      {
+        "type": "pause_arrow"
+      }
+    ]
+  }
+}
