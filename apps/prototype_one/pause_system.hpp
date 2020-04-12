@@ -39,6 +39,13 @@ public:
 		_seeing_message(false), how_to_page(0)
 	{}
 
+	void initialize(ecs::state& state) {
+		_current_selection = 0;
+
+		bool _seeing_message = false;
+		int how_to_page = 0;
+	}
+
 	void update(ecs::state& state) override
 	{
 		auto e = state.first<components::pause>(
