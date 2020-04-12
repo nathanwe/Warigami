@@ -23,6 +23,7 @@ add_executable (warigami
 	components/logo.cpp
 	components/main_menu.cpp
 	components/pause.cpp
+	components/pause_arrow.cpp
 	components/player_loader.cpp
 	components/player.cpp	
 	components/ready_display_loader.cpp

@@ -18,7 +18,6 @@ enum pause_options {
 	RESUME,
 	REPLAY,
 	MAIN_MENU,
-	DECK_MENU,
 	QUIT,
 	HOW_TO,
 	OPTIONS,
@@ -44,10 +43,17 @@ public:
 		{
 			return true;
 		});
-		if (e != nullptr)
+		auto a = state.first<components::pause_arrow>([&](auto& pause_arrow)
+		{
+			return true;
+		});
+		if (e != nullptr && a != nullptr)
 		{
 			auto& pause = e->get_component<components::pause>();
 			auto& renderable = e->get_component<rendering::renderable_mesh_static>();
+
+			auto& arrow_renderable = a->get_component<rendering::renderable_mesh_static>();
+			auto& arrow_transform = a->get_component<transforms::transform>();
 
 			if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
 			{
@@ -62,11 +68,13 @@ public:
 						_current_selection = NUM_PAUSE_OPTIONS;
 					}
 					_current_selection--;
-					// TODO: Move selector image
+					arrow_transform.position = glm::vec3(-27 - _current_selection * 0.7, 8 - _current_selection * 0.9, -5);
+					arrow_transform.is_matrix_dirty = true;
 
 				} else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2)) {
 					_current_selection = (++_current_selection) % NUM_PAUSE_OPTIONS;
-					// TODO: Move selector image
+					arrow_transform.position = glm::vec3(-27 - _current_selection*0.7, 8 - _current_selection*0.9, -5);
+					arrow_transform.is_matrix_dirty = true;
 				}
 
 				// Choose the selected option
@@ -76,6 +84,8 @@ public:
 						// Resume
 						pause.is_game_paused = false;
 						renderable.is_enabled = false;
+
+						arrow_renderable.is_enabled = false;
 					}
 					else if (_current_selection == REPLAY) {
 						// Replay
@@ -94,9 +104,6 @@ public:
 						state.free_all();
 						m_r_hydrater.load();
 						return;*/
-					}
-					else if (_current_selection == DECK_MENU) {
-						// Deck Menu
 					}
 					else if (_current_selection == QUIT) {
 						// Quit
@@ -121,6 +128,8 @@ public:
 				{
 					pause.is_game_paused = true;
 					renderable.is_enabled = true;
+
+					arrow_renderable.is_enabled = true;
 				}
 			}
 		}
