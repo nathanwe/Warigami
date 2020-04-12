@@ -117,18 +117,18 @@ public:
 					pause.is_game_paused = false;
 					renderable.is_enabled = false;
 					arrow_renderable.is_enabled = false;
-					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
+					asset::scene_change_event restart_event("assets/scenes/scene.json");
 					m_r_events.BroadcastEvent(restart_event);
 					return;
 				}
 				else if (_current_selection == MAIN_MENU) {
 					// Main Menu
-					/*pause.is_game_paused = false;
+					pause.is_game_paused = false;
 					renderable.is_enabled = false;
-
-					state.free_all();
-					m_r_hydrater.load();
-					return;*/
+					arrow_renderable.is_enabled = false;
+					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
+					m_r_events.BroadcastEvent(restart_event);
+					return;
 				}
 				else if (_current_selection == QUIT) {
 					// Quit
