@@ -3,7 +3,7 @@
 
 // This can also help us in the future if we want to give the option of changing keys/buttons
 // Shared inputs
-#define MENU_KEY		GLFW_KEY_M
+#define MENU_KEY		GLFW_KEY_ESCAPE
 #define BACK_KEY		GLFW_KEY_ESCAPE
 #define CONFIRM_KEY		GLFW_KEY_ENTER
 
