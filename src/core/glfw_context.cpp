@@ -121,9 +121,18 @@ void core::glfw_context::set_fullscreen(bool val)
 		_width = _conf.width();
 		_height = _conf.height();
 	}
+	for (auto& func : _window_changed_callbacks)
+	{
+		func();
+	}
 }
 
 bool core::glfw_context::is_fullscreen()
 {
 	return _is_fullscreen;
+}
+
+void core::glfw_context::set_window_changed_callback(std::function<void()> callback)
+{
+	_window_changed_callbacks.push_back(callback);
 }

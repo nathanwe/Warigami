@@ -16,6 +16,7 @@
 #include <iostream>
 #include <string>
 #include <rendering/renderable_mesh_rigged.hpp>
+#include <rendering/letterbox.hpp>
 
 using namespace gl;
 
@@ -39,16 +40,24 @@ namespace rendering
         asset_cache &cache,
         asset::asset_manager &assets, 
         const core::frame_timer &time,
-        render_state& render_state)
+        render_state& render_state,
+        core::glfw_context& glfw)
         : _window_view(window_view)
         , _is_debug(is_debug)
         , _time(time)
         , _render_state(render_state)
+        , _glfw(glfw)
     {
         initialize_backend();
         initialize_passes(assets);
         initialize_assets(cache);
         initialize_state(window_view);
+
+        _glfw.set_window_changed_callback([&]() 
+			{
+                _window_view = letterbox({ 0, 0, _glfw.width(), _glfw.height() });
+				glViewport(_window_view.x, _window_view.y, _window_view.width, _window_view.height);
+            });
     }
 
     void renderer::initialize_backend()
@@ -148,7 +157,8 @@ namespace rendering
 
     void renderer::initialize_state(core::viewport window_view)
     {
-        glViewport(window_view.x, window_view.y, window_view.width, window_view.height);
+        _window_view = letterbox(window_view);
+        glViewport(_window_view.x, _window_view.y, _window_view.width, _window_view.height);
         glClearColor(1, 0, 0, 1);
         glClearDepth(1);
 

@@ -4,7 +4,7 @@
 #include "asset/asset_manager.hpp"
 #include "core/frame_timer.hpp"
 #include "core/viewport.hpp"
-#include <core/glfw_context.hpp>
+#include "core/glfw_context.hpp"
 #include "ecs/ecs_types.hpp"
 #include "ecs/state.hpp"
 #include "ecs/system_base.hpp"
@@ -38,7 +38,8 @@ namespace rendering
 			asset_cache& cache, 
 			asset::asset_manager& assets, 
 			const core::frame_timer& time,
-			render_state& render_state);
+			render_state& render_state,
+			core::glfw_context& glfw);
 
 	public:
 		void update(ecs::state& state) override;
@@ -86,6 +87,7 @@ namespace rendering
 		bool _is_debug = false;
 		const core::frame_timer& _time;
 		render_state& _render_state;
+		core::glfw_context& _glfw;
 		
 		std::unique_ptr<render_pass> _pass_default;
 		std::unique_ptr<render_pass> _pass_animated;

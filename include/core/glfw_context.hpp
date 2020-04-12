@@ -30,6 +30,7 @@ namespace core
 		bool is_minimized();
 		void set_fullscreen(bool);
 		bool is_fullscreen();
+		void set_window_changed_callback(std::function<void()>);
 
 	private:
 		GLFWwindow* _window;
@@ -40,6 +41,7 @@ namespace core
 		std::uint32_t _width;
 		std::uint32_t _height;
 		bool _is_fullscreen;
+		std::vector<std::function<void()>> _window_changed_callbacks;
 	};
 
 }

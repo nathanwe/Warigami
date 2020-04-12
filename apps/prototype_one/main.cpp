@@ -75,7 +75,6 @@
 #include "energy_ball_system.hpp"
 #include "territory_claim_system.hpp"
 #include "logo_system.hpp"
-#include "letterbox.hpp"
 
 
 int main(int argc, char** argv) {	
@@ -155,8 +154,7 @@ int main(int argc, char** argv) {
 	
 	rendering::camera_updater camera_updater;
 	rendering::render_state render_state;
-	core::viewport letterboxed_view = letterbox(window_view);
-	rendering::renderer renderer(letterboxed_view, is_debug, render_asset_cache, assets, timer, render_state);
+	rendering::renderer renderer(window_view, is_debug, render_asset_cache, assets, timer, render_state, glfw);
 	rendering::freetype_system text_renderer(window_view, assets, strings, render_state);
 	transforms::transformer transformer(hydrater);
 
