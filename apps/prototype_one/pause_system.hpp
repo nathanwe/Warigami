@@ -25,6 +25,7 @@ enum pause_options {
 	NUM_PAUSE_OPTIONS
 };
 
+
 class pause_system : public ecs::system_base
 {
 public:
@@ -34,7 +35,8 @@ public:
 		core::glfw_context& glfw,
 		asset::scene_hydrater& hydrater,
 		event::EventManager& events)
-		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events), _current_selection(0)
+		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events), _current_selection(0),
+		_seeing_message(false), how_to_page(0)
 	{}
 
 	void update(ecs::state& state) override
@@ -56,6 +58,13 @@ public:
 		}
 
 		auto& pause = e->get_component<components::pause>();
+
+		if (_seeing_message) {
+			if (_current_selection == HOW_TO) {
+				handle_howto_case(state, pause);
+			}
+			return;
+		}
 
 		if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
 		{
@@ -137,6 +146,8 @@ public:
 				}
 				else if (_current_selection == HOW_TO) {
 					// How To
+					_seeing_message = true;
+					handle_howto_case(state, pause);
 				}
 				else if (_current_selection == OPTIONS) {
 					// Options
@@ -159,6 +170,33 @@ public:
 		}
 	}
 
+	void handle_howto_case(ecs::state& state, components::pause pause)
+	{
+		for (size_t i = 0; i < 4; ++i)
+		{
+			auto& e = state.find_entity(how_to_play_images[i]);
+			auto& r = e.get_component<rendering::renderable_mesh_static>();
+			if (i == how_to_page) {
+				r.is_enabled = true;
+			}
+			else {
+				r.is_enabled = false;
+			}
+		}
+
+		if (m_r_input.any_button_pressed())
+		{
+			how_to_page++;
+			if (how_to_page > 3) {
+				auto& e = state.find_entity(how_to_play_images[3]);
+				auto& r = e.get_component<rendering::renderable_mesh_static>();
+				r.is_enabled = false;
+				how_to_page = 0;
+				_seeing_message = false;
+			}
+		}
+	}
+
 private:
 	core::frame_timer& m_r_timer;
 	core::game_input_manager& m_r_input;
@@ -166,6 +204,10 @@ private:
 	asset::scene_hydrater& m_r_hydrater;
 	event::EventManager& m_r_events;
 	int _current_selection;
+
+	bool _seeing_message;
+	int how_to_page;
+	entity_id how_to_play_images[4]{ 104, 105, 106, 107 };
 };
 
 #endif

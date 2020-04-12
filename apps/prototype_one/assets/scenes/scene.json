@@ -82,6 +82,78 @@
     {
       "entity_id": 72,
       "prototype": "assets/prototypes/backdrop.json"
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 104,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay1.png",
+          "is_enabled": false
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 105,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay2.png",
+          "is_enabled": false
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 106,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay3.png",
+          "is_enabled": false
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 107,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/HowToPlay4.png",
+          "is_enabled": false
+        }
+      ]
     }
   ]
 }
