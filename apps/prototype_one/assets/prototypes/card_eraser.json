@@ -10,7 +10,7 @@
 			{
 				"type": "renderable_mesh_static",
 				"mesh": "assets/meshes/quad/quad.obj",
-				"texture_diffuse": "assets/textures/fantasy/eraser.png"
+				"texture_diffuse": "assets/textures/fantasy/ghost.png"
 			},
 			{
 				"type": "card",
