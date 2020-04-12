@@ -22,6 +22,7 @@ namespace components
 		DYING,
 		DEAD,
 		PREVIEW,
+		DANCING,
 		NUM
 	};
 

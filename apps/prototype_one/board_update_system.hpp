@@ -15,6 +15,7 @@
 #include "components/terrain.hpp"
 #include "components/to_spawn.hpp"
 #include <algorithm>
+#include <math.h>
 
 
 class unit_death_event : public event::Event
@@ -79,7 +80,7 @@ private:
     void
     handle_tick_end(ecs::state &r_state, entity_id board_id, transforms::transform &board_t, components::board &board)
     {
-        kill_dying(r_state);
+        kill_dying_and_dancing(r_state);
         death_check(r_state);
         do_game_piece_actions(r_state);       
         resolver.Resolve_Combats();
@@ -114,9 +115,10 @@ private:
                             handle_unit_transform(board_t, unit_t, unit, board, board_id);
                             break;
                         }
-                        case components::UNIT_STATE::DEAD:
+                        case components::UNIT_STATE::DANCING:
                         {
-                            //now in kill dying
+                            dance_unit(unit, board.timer_t);
+                            handle_unit_transform(board_t, unit_t, unit, board, board_id);
                             break;
                         }
                     }
@@ -127,7 +129,7 @@ private:
     {
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
             game_piece.board_source = game_piece.board_destination;
-            if (game_piece.state != components::UNIT_STATE::DEAD && game_piece.state != components::UNIT_STATE::DYING)
+            if (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK)
             {
                 game_piece.state = check_attacks(game_piece.board_source, game_piece.attacks, game_piece.team, r_state)
                     ? components::UNIT_STATE::ATTACK
@@ -152,10 +154,10 @@ private:
         });       
     }
 
-    void kill_dying(ecs::state& r_state) {
+    void kill_dying_and_dancing(ecs::state& r_state) {
         r_state.each_id<transforms::transform, components::game_piece>(
             [&](entity_id unit_id, auto& unit_t, auto& unit) {
-            if (unit.state == components::UNIT_STATE::DYING)
+            if (unit.state == components::UNIT_STATE::DYING || unit.state == components::UNIT_STATE::DANCING)
             {
                 //unit.state = components::UNIT_STATE::DEAD;
                 unit_death_event new_event(unit_id);
@@ -171,7 +173,7 @@ private:
 
     void death_check(ecs::state& r_state) {
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
-            if (game_piece.health <= 0 && game_piece.state != components::UNIT_STATE::DEAD)
+            if (game_piece.health <= 0 && (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK))
             {
                 game_piece.state = components::UNIT_STATE::DYING;
             }
@@ -244,6 +246,11 @@ private:
     static void fall_unit(components::game_piece& game_piece, float ticker_t)
     {       
         game_piece.continuous_board_rotation.z = ticker_t;
+    }
+    // Helper function for danceing in board space
+    static void dance_unit(components::game_piece& game_piece, float ticker_t)
+    {
+        game_piece.continuous_board_rotation.x = .5 * sinf(ticker_t * 10);
     }
 
     // Helper function for attacking
@@ -328,7 +335,7 @@ private:
                 if ((piece.board_source.y >= p.score_column && p.team == -1) ||
                     (piece.board_source.y <= p.score_column && p.team == 1)) {
 
-                    piece.state = components::UNIT_STATE::DYING;
+                    piece.state = components::UNIT_STATE::DANCING;
                     p.health -= piece.damage * 10.f;
                     if (p.health < 0.f)
                     {
@@ -390,8 +397,11 @@ private:
         auto attacked = r_state.first<components::game_piece>([&](components::game_piece &game_piece) {
             for (auto &target : targets)
             {
-                if (game_piece.board_source == target && game_piece.team != teammates && game_piece.state != components::UNIT_STATE::DEAD && game_piece.state != components::UNIT_STATE::DYING)
+
+                if (game_piece.board_source == target && game_piece.team != teammates && (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK))
+                {
                     return true;
+                }
             }
 
             return false;
