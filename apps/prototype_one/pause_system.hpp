@@ -94,13 +94,6 @@ public:
 			arrow_renderable.is_enabled = !arrow_renderable.is_enabled;
 		}
 
-		if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
-		{
-			pause.is_game_paused = false;
-			renderable.is_enabled = false;
-			arrow_renderable.is_enabled = false;
-		}
-
 		if (pause.is_game_paused)
 		{
 			// Change selected
