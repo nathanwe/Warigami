@@ -2,6 +2,7 @@
 #define WIZARD_GAME_PAUSE_SYSTEM_HPP
 
 #include <asset/scene_hydrater.hpp>
+#include <audio/audio_system.hpp>
 #include <core/frame_timer.hpp>
 #include <core/game_input_manager.hpp>
 #include <core/glfw_context.hpp>
@@ -34,9 +35,18 @@ public:
 		core::frame_timer& timer,
 		core::glfw_context& glfw,
 		asset::scene_hydrater& hydrater,
-		event::EventManager& events)
-		: m_r_input(input), m_r_timer(timer), m_r_glfw(glfw), m_r_hydrater(hydrater), m_r_events(events), _current_selection(0),
-		_seeing_message(false), how_to_page(0), _current_options_selection(0), _current_warning_selection(0)
+		event::EventManager& events,
+		audio::audio_system& audioo)
+		: m_r_input(input), 
+		m_r_timer(timer),
+		m_r_glfw(glfw),
+		m_r_hydrater(hydrater),
+		m_r_events(events), 
+		_current_selection(0),
+		_seeing_message(false), 
+		how_to_page(0), 
+		_current_options_selection(0),
+		m_r_audio(audioo)
 	{}
 
 	void initialize(ecs::state& state) {
@@ -75,7 +85,7 @@ public:
 				handle_howto_case(state);
 			}
 			else if (_current_selection == OPTIONS) {
-				handle_options_case(state, arrow_transform, renderable);
+				handle_options_case(state, arrow_transform, renderable, false);
 			}
 			else if (_current_selection == MAIN_MENU || _current_selection == REPLAY || _current_selection == QUIT) {
 				confirm_destructive_action(state, arrow_transform, arrow_renderable, renderable, pause);
@@ -149,6 +159,7 @@ public:
 					_seeing_message = true;
 					arrow_transform.position = glm::vec3(-27, 8, -5);
 					arrow_transform.is_matrix_dirty = true;
+					handle_options_case(state, arrow_transform, renderable, true);
 				}
 				else if (_current_selection == CREDITS) {
 					// Credits
@@ -192,11 +203,19 @@ public:
 		NUM_OPTIONS
 	};
 
-	void handle_options_case(ecs::state& state, transforms::transform& arrow_transform, rendering::renderable_mesh_static& pause_renderable) {
+	void handle_options_case(ecs::state& state, transforms::transform& arrow_transform, rendering::renderable_mesh_static& pause_renderable, bool is_new_opened) {
 		auto& e = state.find_entity(108); // Options image
 		auto& r = e.get_component<rendering::renderable_mesh_static>();
 		r.is_enabled = true;
 		pause_renderable.is_enabled = false;
+
+		if (is_new_opened)
+		{
+			_current_options_selection = 0;
+			arrow_transform.position = glm::vec3(-27 - _current_options_selection * 0.7, 8 - _current_options_selection * 0.9, -5);
+			arrow_transform.is_matrix_dirty = true;
+			return;
+		}
 
 		// Change selected
 		if (m_r_input.is_input_started(core::controls::UP_CONTROL) || m_r_input.is_input_started(core::controls::UP_CONTROL_PLAYER2))
@@ -219,6 +238,7 @@ public:
 			
 			if (_current_options_selection == FULLSCREEN) {
 				// Fullscreen
+				m_r_glfw.set_fullscreen(!m_r_glfw.is_fullscreen());
 			}
 			else if (_current_options_selection == MUTE_ALL) {
 				// Mute all
@@ -298,6 +318,7 @@ private:
 	core::glfw_context& m_r_glfw;
 	asset::scene_hydrater& m_r_hydrater;
 	event::EventManager& m_r_events;
+	audio::audio_system& m_r_audio;
 	int _current_selection;
 
 	bool _seeing_message;

@@ -169,7 +169,7 @@ int main(int argc, char** argv) {
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
 	deck_selection_controller deck_selection(hydrater, card_spawn_helper, input, timer);
-	pause_system pauser(input, timer, glfw, hydrater, events);
+	pause_system pauser(input, timer, glfw, hydrater, events, audio_system);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
 	AI_system AI_system;
