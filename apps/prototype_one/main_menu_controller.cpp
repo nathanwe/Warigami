@@ -42,14 +42,10 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 {
 	texts menu_items(state);
 
-	menu_items.start_text.position.x = HidePosition.x;
-	menu_items.start_text.position.y = HidePosition.y;
-	menu_items.exit_text.position.x = HidePosition.x;
-	menu_items.exit_text.position.y = HidePosition.y;
-	menu_items.options_text.position.x = HidePosition.x;
-	menu_items.options_text.position.y = HidePosition.y;
-	menu_items.howto_text.position.x = HidePosition.x;
-	menu_items.howto_text.position.y = HidePosition.y;
+	menu_items.start_text.position = HidePosition;	
+	menu_items.exit_text.position = HidePosition;	
+	menu_items.options_text.position = HidePosition;
+	menu_items.howto_text.position = HidePosition;	
 
 	for (size_t i = 0; i < 4; ++i)
 	{

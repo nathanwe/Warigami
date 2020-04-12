@@ -66,13 +66,18 @@ private:
 		player_specific_data& player_specifics,
 		components::deck_selection& deck_selection);
 
-	void check_players_ready(ecs::state& state);
+	void check_players_ready(
+		ecs::state& state);
 
-	void on_start(ecs::state& state);
+	void on_start(
+		ecs::state& state);
 
-	void build_deck_set(components::deck_index index, const std::vector<components::card_enum>& deck);
+	void build_deck_set(
+		components::deck_index index, 
+		const std::vector<components::card_enum>& deck);
 
-	void spawn_preview_units(ecs::state& state);
+	void spawn_preview_units(
+		ecs::state& state);
 
 	static void handle_unit_transform(
 		transforms::transform& board_t,
@@ -81,8 +86,14 @@ private:
 		components::board& board,
 		entity_id board_id);
 
-	void handle_animation(ecs::state& state, components::deck_selection& selection);
-	void animate(ecs::state& state, size_t player_index, components::deck_selection& selection);
+	void handle_animation(
+		ecs::state& state, 
+		components::deck_selection& selection);
+
+	void animate(
+		ecs::state& state, 
+		size_t player_index, 
+		components::deck_selection& selection);
 
 	void animate_position(
 		float animation_t,
@@ -101,7 +112,10 @@ private:
 
 	bool can_run() const;
 
-	void interrupt_animation(ecs::state& state, components::deck_selection& selection, unsigned short player_index);
+	void interrupt_animation(
+		ecs::state& state, 
+		components::deck_selection& selection, 
+		unsigned short player_index);
 };
 
 

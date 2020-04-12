@@ -49,16 +49,8 @@ public:
 
 	void update(ecs::state& state) override
 	{
-		auto e = state.first<components::pause>(
-			[&](auto& pause)
-			{
-				return true;
-			});
-
-		auto a = state.first<components::pause_arrow>([&](auto& pause_arrow)
-		{
-			return true;
-		});
+		auto e = state.first<components::pause>();
+		auto a = state.first<components::pause_arrow>();
 
 		if (e == nullptr || a == nullptr)
 		{
@@ -95,11 +87,18 @@ public:
 		}
 
 		// Toggle pause
-		if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
+		if (m_r_input.is_input_started(core::controls::MENU_CONTROL))
 		{
 			pause.is_game_paused = !pause.is_game_paused;
 			renderable.is_enabled = !renderable.is_enabled;
 			arrow_renderable.is_enabled = !arrow_renderable.is_enabled;
+		}
+
+		if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
+		{
+			pause.is_game_paused = false;
+			renderable.is_enabled = false;
+			arrow_renderable.is_enabled = false;
 		}
 
 		if (pause.is_game_paused)
