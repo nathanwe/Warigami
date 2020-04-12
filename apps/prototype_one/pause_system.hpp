@@ -91,21 +91,9 @@ public:
 					// TODO: Confirm destructive action
 					pause.is_game_paused = false;
 					renderable.is_enabled = false;
-					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
+					asset::scene_change_event restart_event("assets/scenes/scene.json");
 					m_r_events.BroadcastEvent(restart_event);
 					return;
-				}
-				else if (_current_selection == MAIN_MENU) {
-					// Main Menu
-					/*pause.is_game_paused = false;
-					renderable.is_enabled = false;
-
-					state.free_all();
-					m_r_hydrater.load();
-					return;*/
-				}
-				else if (_current_selection == DECK_MENU) {
-					// Deck Menu
 				}
 				else if (_current_selection == QUIT) {
 					// Quit
@@ -126,7 +114,7 @@ public:
 		else
 		{
 			// Pause
-			if (m_r_input.is_input_started(core::controls::MENU_CONTROL))
+			if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
 			{
 				pause.is_game_paused = true;
 				renderable.is_enabled = true;
