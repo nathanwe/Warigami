@@ -63,6 +63,13 @@ public:
 			renderable.is_enabled = true;
 		}
 
+		// Toggle pause
+		if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
+		{
+			pause.is_game_paused = !pause.is_game_paused;
+			renderable.is_enabled = !renderable.is_enabled;
+		}
+
 		if (pause.is_game_paused)
 		{
 			// Change selected
@@ -109,15 +116,6 @@ public:
 				else if (_current_selection == CREDITS) {
 					// Credits
 				}
-			}
-		}
-		else
-		{
-			// Pause
-			if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
-			{
-				pause.is_game_paused = true;
-				renderable.is_enabled = true;
 			}
 		}
 	}
