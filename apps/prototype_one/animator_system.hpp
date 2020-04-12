@@ -22,7 +22,13 @@ public:
 public:
 	void update(ecs::state& state) override
 	{
-		state.each<components::game_piece, rendering::renderable_mesh_static>([&](auto& piece, auto& render)
+		if (should_skip_update(state))
+		{
+			return;
+		}
+
+		state.each<components::game_piece, rendering::renderable_mesh_static>(
+			[&](auto& piece, auto& render)
 		{
 			render.material.texture_scale = get_sprite_scale(piece);
 			if (try_change_sprite(piece))
@@ -34,6 +40,22 @@ public:
 	}
 
 private:
+	bool should_skip_update(ecs::state& state)
+	{
+		bool should_skip = false;
+		state.first<components::pause>(
+			[&](auto& pause)
+			{
+				if (pause.is_game_paused)
+				{
+					should_skip = true;
+					return true;
+				}
+				return false;
+			});
+		return should_skip;
+	}
+
 	bool try_change_sprite(components::game_piece& piece)
 	{
 		bool changedSprite = false;
@@ -102,18 +124,10 @@ private:
 	{
 		switch (piece.piece_type)
 		{
-		case components::card_enum::SCISSOR_GOLIATH:
-		case components::card_enum::SCISSOR_QUEEN:
-		case components::card_enum::SCISSOR_TITAN:
-		case components::card_enum::SCISSOR_TROOPER:
-		case components::card_enum::SCISSOR_WEBBER:
-		case components::card_enum::SCISSORLING_TWIN:
-		case components::card_enum::SCISSORLING:
-			return get_walker_sprite(piece);
 		case components::card_enum::SCISSORLING_EGG:
 			return get_egg_sprite(piece);
 		default:
-			return { 0.f, 0.f };
+			return get_walker_sprite(piece);
 		}
 	}
 

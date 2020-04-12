@@ -22,6 +22,7 @@ namespace components
 		DYING,
 		DEAD,
 		PREVIEW,
+		DANCING,
 		NUM
 	};
 
@@ -36,6 +37,7 @@ namespace components
 		int give_points = 0; //How many points a unit is currently worth for dice earning
 		glm::ivec2 board_source; // A unit's board coordinates
 		glm::vec2 continuous_board_location; // Interpolated position on board
+		glm::vec3 continuous_board_rotation; //rotation
 		glm::ivec2 board_destination; // A unit's discrete tile coordinates
 		components::UNIT_STATE state = components::UNIT_STATE::MOVE; // A unit's state of action
 		std::vector< glm::ivec2 > attacks; // A list of offsets in board-space that the unit can attack from its own space
