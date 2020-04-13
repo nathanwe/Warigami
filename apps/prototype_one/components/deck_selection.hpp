@@ -39,8 +39,8 @@ namespace components
         std::pair<float, glm::vec3> position_keyframes[6]{
             {std::numeric_limits<float>::min(), glm::vec3(0.f)},
             {0.0f, glm::vec3(0.f)},
-            {0.4f,glm::vec3(0.f, 5.f, 0.5f)},
-            {0.6f,glm::vec3(0.f, 5.f, 0.5f)},
+            {0.5f,glm::vec3(0.f, 5.f, 5.f)},
+            {0.6f,glm::vec3(0.f, 5.f, 5.f)},
             {1.f, glm::vec3(0.f, 10.f, 0.f) },
             {std::numeric_limits<float>::max(), glm::vec3(0.f, 10.f, 0.f) }
         };
@@ -48,22 +48,11 @@ namespace components
         std::pair<float, glm::vec3> position_keyframes_under[6]{
             {std::numeric_limits<float>::min(), glm::vec3(0.f)},
             {0.0f, glm::vec3(0.f)},
-            {0.4f,glm::vec3(0.f, 5.f, -0.5f)},
-            {0.6f,glm::vec3(0.f, 5.f, -0.5)},
+            {0.5f,glm::vec3(0.f, 5.f, -5.f)},
+            {0.6f,glm::vec3(0.f, 5.f, -5.f)},
             {1.f, glm::vec3(0.f, 10.f, 0.f) } ,
             {std::numeric_limits<float>::max(), glm::vec3(0.f, 10.f, 0.f)}
         };
-                
-        std::pair<float, glm::quat> rotation_keyframes[7]{
-            std::make_pair<float, glm::quat>(std::numeric_limits<float>::min(), glm::angleAxis(0.f, glm::vec3(0.f, 1.f, 0.f))),
-            std::make_pair<float, glm::quat>(0.0f, glm::angleAxis(0.f, glm::vec3(0.f, 1.f, 0.f))),
-            std::make_pair<float, glm::quat>(0.25f, glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(0.f, 1.f, 0.f))),
-            std::make_pair<float, glm::quat>(0.5f, glm::angleAxis(glm::half_pi<float>(), glm::vec3(0.f, 1.f, 0.f))),
-            std::make_pair<float, glm::quat>(0.75f, glm::angleAxis(glm::quarter_pi<float>() + glm::half_pi<float>(), glm::vec3(0.f, 1.f, 0.f))),
-            std::make_pair<float, glm::quat>(3.0f, glm::angleAxis(glm::pi<float>(), glm::vec3(0.f, 1.f, 0.f))),
-            std::make_pair<float, glm::quat>(std::numeric_limits<float>::max(), glm::angleAxis(glm::pi<float>(), glm::vec3(0.f, 1.f, 0.f))),
-        };
-
 
         float card_y{ -6.f };
         float card_depth{ 25.f };
