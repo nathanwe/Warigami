@@ -130,7 +130,11 @@ namespace components
 		float ticks_to_energy_grow{ ticks_per_energy_grow };
 
 		std::vector<card_enum> start_deck{ soldier_deck };
+
+		static constexpr components::deck_index spider_deck = 0;
+		static constexpr components::deck_index fantasy_deck = 1;
 		deck_index deck_selection{ 0 };
+
 		bool is_ready{ false };
 
 		card_enum draw() {

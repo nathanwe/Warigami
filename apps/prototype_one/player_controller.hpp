@@ -78,11 +78,9 @@ public:
 					toggle_AI(player, controls);
 					gain_flower_energy(r_state, player, controls);
 					show_cursor(player, r_state, player_specifics);
-					
 				});
 			});
-		select_sprite(r_state);
-
+		select_sprite_for_player(r_state);
 	}
 
 	void public_place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
@@ -133,50 +131,77 @@ private:
 		return false;
 	}
 
-	void select_sprite(ecs::state& state)
+	void select_sprite(components::player& player, components::selection_arrow& selector, rendering::renderable_mesh_static& render)
 	{
-		state.each<components::selection_arrow, rendering::renderable_mesh_static>(
-			[&](auto& selector, auto& render)
-			{
-				auto& anim_data = selector.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
-				auto& offset = render.material.texture_offset;
-				float time = m_timer.total_s();
+		auto& anim_data = selector.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+		auto& offset = render.material.texture_offset;
+		float time = m_timer.total_s();
 
-				if (anim_data.m_is_placing_unit)
-				{
-					float time_diff = time - anim_data.m_time_started_placing_unit;
-					if (time_diff < m_time_between_place_sprites)
-					{
-						offset = m_queen_place_offsets[0];
-					}
-					else
-					{
-						offset = m_queen_place_offsets[1];
-					}
-				}
-				else if (anim_data.m_is_vacuuming_energy)
-				{
-					offset = m_queen_energy_offsets[0];
-				}
-				else if (anim_data.m_walked_recently)
-				{
-					float time_diff = time - anim_data.m_time_last_walked;
-					float steps = time_diff / m_time_between_walk_sprites;
-					int floored_steps = static_cast<int>(steps);
-					anim_data.m_current_move_sprite = floored_steps;
-					anim_data.m_current_move_sprite %= m_queen_move_offsets.size();
-					offset = m_queen_move_offsets[anim_data.m_current_move_sprite];
-				}
-				else
-				{
-					offset = m_queen_move_offsets[0];
-				}
-				if (selector.team > 0.f)
-				{
-					offset += glm::vec2(0.25f, 0.f);
-				}
+		if (anim_data.m_is_placing_unit)
+		{
+			float time_diff = time - anim_data.m_time_started_placing_unit;
+			if (time_diff < m_time_between_place_sprites)
+			{
+				offset = m_queen_place_offsets[0];
 			}
-		);
+			else
+			{
+				offset = m_queen_place_offsets[1];
+			}
+		}
+		else if (anim_data.m_is_vacuuming_energy)
+		{
+			offset = m_queen_energy_offsets[0];
+		}
+		else if (anim_data.m_walked_recently)
+		{
+			float time_diff = time - anim_data.m_time_last_walked;
+			float steps = time_diff / m_time_between_walk_sprites;
+			int floored_steps = static_cast<int>(steps);
+			anim_data.m_current_move_sprite = floored_steps;
+			anim_data.m_current_move_sprite %= m_queen_move_offsets.size();
+			offset = m_queen_move_offsets[anim_data.m_current_move_sprite];
+		}
+		else
+		{
+			offset = m_queen_move_offsets[0];
+		}
+		if (player.deck_selection == components::player::spider_deck)
+		{
+			if (selector.team > 0.f)
+			{
+				offset += glm::vec2(0.25f, 0.f);
+			}
+		}
+		else if (player.deck_selection == components::player::fantasy_deck)
+		{
+			if (selector.team > 0.f)
+			{
+				render.material.texture_scale = { 0.25f, 0.3333f };
+			}
+			else
+			{
+				render.material.texture_scale = { -0.25f, 0.3333f };
+				offset += glm::vec2(0.25f, 0.f);
+			}
+		}
+	}
+
+	void select_sprite_for_player(ecs::state& state)
+	{
+		state.each<components::player>(
+			[&](auto& player)
+			{
+				state.each<components::selection_arrow, rendering::renderable_mesh_static>(
+					[&](auto& selector, auto& render)
+					{
+						if (player.team == selector.team)
+						{
+							select_sprite(player, selector, render);
+						}
+					}
+				);
+			});
 	}
 
 	void toggle_owned_energy_orbs(ecs::state& r_state)
