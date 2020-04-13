@@ -29,7 +29,7 @@ namespace components
         // for players 1 and 2
         entity_id card_entity_current[2] {0, 0};
         entity_id card_entity_next[2]{ 0,0 };
-        preview_card_state preview_card_state[2] { preview_card_state::changing_forward, preview_card_state::changing_forward };
+        preview_card_state preview_state[2] {preview_card_state::changing_forward, preview_card_state::changing_forward };
         std::pair<float, glm::vec3>* current_position_keyframes[2];
         std::set<components::card_enum>::iterator card_iterators[2];
 

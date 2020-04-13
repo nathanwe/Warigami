@@ -188,7 +188,7 @@ private:
 				{
 					for (unsigned int i = 0; i < selector.energy_orbs.size(); ++i)
 					{
-						auto& render = selector.energy_orbs[i].get_component<rendering::renderable_mesh_static>();
+						auto& render = selector.energy_orbs[i].template get_component<rendering::renderable_mesh_static>();
 						render.is_enabled = player.energy > i;
 					}
 				}
