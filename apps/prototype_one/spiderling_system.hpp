@@ -99,7 +99,7 @@ private:
 	void do_spawn_on_death_effect(ecs::state r_state, components::game_piece& game_piece,
 		components::board& board)
 	{
-		if (game_piece.health <= 0)
+		if (game_piece.health <= 0 && (game_piece.state == components::UNIT_STATE::ATTACK || game_piece.state == components::UNIT_STATE::MOVE))
 		{
 			for (auto& effect : game_piece.effects)
 			{
