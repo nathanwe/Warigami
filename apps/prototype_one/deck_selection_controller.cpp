@@ -525,22 +525,27 @@ void deck_selection_controller::animate_rotation(
 	size_t deck_index,
 	ecs::entity& entity)
 {
-	auto rotation_keyframes = selection.rotation_keyframes;
-	auto& transform = entity.get_component<transforms::transform>();
-	
-	size_t index_rot = 0;
-	while (rotation_keyframes[index_rot].first < animation_t)
-		index_rot++;
+	//auto rotation_keyframes = selection.rotation_keyframes;
+	//auto& transform = entity.get_component<transforms::transform>();
+	//
+	//size_t index_rot = 0;
+	//while (rotation_keyframes[index_rot].first < animation_t)
+	//	index_rot++;
 
-	auto source_rot = rotation_keyframes[index_rot - 1].second;
-	auto destination_rot = rotation_keyframes[index_rot].second;
-	float t_first_rot = rotation_keyframes[index_rot - 1].first;
-	float t_second_rot = rotation_keyframes[index_rot].first;
-	float t_range_rot = t_second_rot - t_first_rot;
-	float t_rot = (animation_t - t_first_rot) / t_range_rot;
+	//auto source_rot = rotation_keyframes[index_rot - 1].second;
+	//auto destination_rot = rotation_keyframes[index_rot].second;
+	//float t_first_rot = rotation_keyframes[index_rot - 1].first;
+	//float t_second_rot = rotation_keyframes[index_rot].first;
+	//float t_range_rot = t_second_rot - t_first_rot;
+	//float t_rot = (animation_t - t_first_rot) / t_range_rot;
 
-	auto interpolated_rot = glm::slerp(source_rot, destination_rot, t_rot);
+	//auto interpolated_rot = glm::slerp(source_rot, destination_rot, t_rot);
 	//transform.rotation = glm::vec3(glm::pi<float>()) - glm::eulerAngles(interpolated_rot);
+
+	auto& transform = entity.get_component<transforms::transform>();
+	float yaw = glm::pi<float>() * (1 - animation_t);
+	transform.rotation.y = yaw;
+	transform.is_matrix_dirty = true;
 }
 
 void deck_selection_controller::animate(ecs::state& state, size_t player_index, components::deck_selection& selection)
