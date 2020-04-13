@@ -176,7 +176,7 @@ int main(int argc, char** argv) {
 	pause_system pauser(input, timer, glfw, hydrater, events, audio_system);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
-	AI_system AI_system(player_control);
+	AI_system AI_system(timer);
 	flash_step_system flash_step_system;
 	ready_display_system ready_display(glfw);
 	endgame_screen escreen(input, timer, glfw, events);

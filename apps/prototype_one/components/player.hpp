@@ -1,16 +1,21 @@
 #ifndef GAME_COMPONENTS_PLAYER_HPP
 #define GAME_COMPONENTS_PLAYER_HPP
 
-#include "ecs/component.hpp"
-#include "ecs/ecs_types.hpp"
-#include "component_bits.hpp"
-#include "card_enum.hpp"
-
 #include <glm/glm.hpp>
 #include <vector>
 #include <algorithm>
 #include <random>
 #include <cstdint>
+
+
+#include <ecs/component.hpp>
+#include <ecs/ecs_types.hpp>
+#include <ecs/state.hpp>
+#include "component_bits.hpp"
+#include "card_enum.hpp"
+#include "../param_models/anim_params.hpp"
+#include "to_spawn.hpp"
+
 
 namespace components
 {
@@ -91,10 +96,15 @@ namespace components
 
 	struct player : ecs::component<player>
 	{
-	    static constexpr std::uint8_t MaxCards = 4;
-        using row_t = std::int16_t;
+		using row_t = std::int16_t;
 		using column_t = std::int16_t;
 
+		static constexpr float m_walk_recency_duration = 1.0f;
+		static constexpr float m_time_between_place_sprites = 0.25f;
+		static constexpr float m_time_between_walk_sprites = 0.25f;
+	    static constexpr std::uint8_t MaxCards = 4;
+
+        
         player()
         {
             regrow_deck();
@@ -136,6 +146,8 @@ namespace components
 		deck_index deck_selection{ 0 };
 
 		bool is_ready{ false };
+
+		anim_params animation_parameters{};
 
 		card_enum draw() {
 			card_count++;
@@ -319,6 +331,64 @@ namespace components
 
 			return ret;
 		}
+
+
+		void place_card(int loc, float total_s, ecs::state& r_state, std::vector<to_spawn>& spawner)
+		{
+			bool placed = false;
+			if (loc != -1) {
+				selected_card = hand[loc];
+				selected_card_location = loc;
+				bool taken = false;
+				r_state.each<components::game_piece>([&](components::game_piece& piece)
+					{
+						if (piece.board_source == glm::ivec2(selected_row, score_column))
+						{
+							taken = true;
+						}
+					});
+
+				if (!taken && energy >= components::card_costanamos[(int)hand[selected_card_location]])
+				{
+					spawner.emplace_back(
+						selected_row,
+						spawn_column,
+						team,
+						hand[selected_card_location]);
+
+					energy -= components::card_costanamos[(int)hand[selected_card_location]];
+					hand[selected_card_location] = safe_draw();
+					placed = true;
+				}
+			}
+
+			start_end_place_animation(placed, total_s);
+		}
+
+		void start_end_place_animation(bool placed, float total_s)
+		{
+			auto& anim_data = animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+			if (placed)
+			{
+				if (!anim_data.m_is_placing_unit)
+				{
+					anim_data.m_is_placing_unit = true;
+					anim_data.m_time_started_placing_unit = total_s;
+				}
+			}
+			else
+			{
+				if (anim_data.m_is_placing_unit)
+				{
+					bool is_finished_placing = total_s - anim_data.m_time_started_placing_unit > m_time_between_place_sprites * 2.f;
+					if (is_finished_placing)
+					{
+						anim_data.m_is_placing_unit = false;
+					}
+				}
+			}
+		}
+
 	};
 }
 

@@ -21,22 +21,12 @@
 #include "components/spawn_effect.hpp"
 
 #include "game_util/player_specifics.hpp"
-
+#include "param_models/anim_params.hpp"
 #include <algorithm>
 
 
 class player_controller : public ecs::system_base
 {
-	struct anim_params
-	{
-		bool m_walked_recently            = false;
-		float m_time_last_walked          = 0.f;
-		int m_current_move_sprite         = 0;
-		bool m_is_placing_unit            = false;
-		float m_time_started_placing_unit = 0.f;
-		bool m_is_vacuuming_energy        = false;
-	};
-
 public:
 
 	player_controller(core::game_input_manager& input, core::frame_timer& timer,
@@ -49,8 +39,8 @@ public:
 	void initialize(ecs::state& state) override 
 	{
 		select_spawn_column(state);
-		m_player_0_anim_data = anim_params();
-		m_player_1_anim_data = anim_params();
+		/*m_player_0_anim_data = anim_params();
+		m_player_1_anim_data = anim_params();*/
 	}
 
 	void update(ecs::state& r_state) override
@@ -83,20 +73,21 @@ public:
 		select_sprite_for_player(r_state);
 	}
 
-	void public_place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
+	/*void public_place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
 		place_card(loc, player, r_state, board);
-	}
+	}*/
+
 private:
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
 	asset::scene_hydrater& hydrater;
-	anim_params m_player_0_anim_data;
-	anim_params m_player_1_anim_data;
+	/*anim_params m_player_0_anim_data;
+	anim_params m_player_1_anim_data;*/
 
-	static constexpr float m_walk_recency_duration = 1.0f;
-	static constexpr float m_time_between_place_sprites = 0.25f;
-	static constexpr float m_time_between_walk_sprites = 0.25f;
+	//static constexpr float m_walk_recency_duration = 1.0f;
+	//static constexpr float m_time_between_place_sprites = 0.25f;
+	//static constexpr float m_time_between_walk_sprites = 0.25f;
 	static constexpr std::array<glm::vec2, 1> m_queen_energy_offsets{ glm::vec2(0.f, 0.f) };
 	static constexpr std::array<glm::vec2, 2> m_queen_place_offsets{ glm::vec2(0.f, 0.3333f), glm::vec2(0.25f, 0.3333f) };
 	static constexpr std::array<glm::vec2, 4> m_queen_move_offsets{ glm::vec2(0.f, 0.6666f), glm::vec2(0.25f, 0.6666f), glm::vec2(0.5f, 0.6666f), glm::vec2(0.75f, 0.6666f) };
@@ -133,14 +124,14 @@ private:
 
 	void select_sprite(components::player& player, components::selection_arrow& selector, rendering::renderable_mesh_static& render)
 	{
-		auto& anim_data = selector.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+		auto& anim_data = player.animation_parameters; // selector.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 		auto& offset = render.material.texture_offset;
 		float time = m_timer.total_s();
 
 		if (anim_data.m_is_placing_unit)
 		{
 			float time_diff = time - anim_data.m_time_started_placing_unit;
-			if (time_diff < m_time_between_place_sprites)
+			if (time_diff < components::player::m_time_between_place_sprites)
 			{
 				offset = m_queen_place_offsets[0];
 			}
@@ -156,7 +147,7 @@ private:
 		else if (anim_data.m_walked_recently)
 		{
 			float time_diff = time - anim_data.m_time_last_walked;
-			float steps = time_diff / m_time_between_walk_sprites;
+			float steps = time_diff / components::player::m_time_between_walk_sprites;
 			int floored_steps = static_cast<int>(steps);
 			anim_data.m_current_move_sprite = floored_steps;
 			anim_data.m_current_move_sprite %= m_queen_move_offsets.size();
@@ -239,7 +230,7 @@ private:
 
 	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls&controls ) 
 	{
-		auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+		auto& anim_data = player.animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 		anim_data.m_is_vacuuming_energy = !anim_data.m_is_placing_unit && player.succ;
 		if (anim_data.m_is_vacuuming_energy)
 		{
@@ -315,7 +306,7 @@ private:
 		}
 		else if (!player.succ)
 		{
-			auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+			auto& anim_data = player.animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 			if (!anim_data.m_is_placing_unit)
 			{
 				auto vertical_input_active = std::abs(forward) > .4f;
@@ -331,13 +322,13 @@ private:
 					changed_selection = true;
 				}
 
-				auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+				auto& anim_data = player.animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 				if (changed_selection)
 				{
 					anim_data.m_walked_recently = true;
 					anim_data.m_time_last_walked = m_timer.total_s();
 				}
-				else if (anim_data.m_walked_recently && m_timer.total_s() - anim_data.m_time_last_walked > m_walk_recency_duration)
+				else if (anim_data.m_walked_recently && m_timer.total_s() - anim_data.m_time_last_walked > components::player::m_walk_recency_duration)
 				{
 					anim_data.m_walked_recently = false;
 				}
@@ -355,7 +346,7 @@ private:
 		auto& controls = player_specifics.controls;
 		int loc = find_selected_card_index(controls);
 		if (!player.succ) {
-			place_card(loc, player, r_state, board);
+			player.place_card(loc, m_timer.total_s(), r_state, board.spawner);
 		}
 	}
 
@@ -382,7 +373,7 @@ private:
 
 	void start_end_place_animation(bool placed, components::player& player)
 	{
-		auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+		auto& anim_data = player.animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 		if (placed)
 		{
 			try_start_place_animation(anim_data);
@@ -423,8 +414,7 @@ private:
 		}
 	}
 
-	void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) 
-	{
+	/*{
 		bool placed = false;
 		if (loc != -1) {
 			player.selected_card = player.hand[loc];
@@ -454,7 +444,8 @@ private:
 			}
 		}
 		start_end_place_animation(placed, player);
-	}
+	}*/
+
 	void update_succ(components::player& player, player_controls& controls) {
 		if (!player.controlled_by_AI) {
 			player.succ = m_input.is_input_active(controls.dice_button2);
@@ -488,7 +479,7 @@ private:
 							{
 								if (transform_arrow.position != arrow_pos)
 								{
-									auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+									auto& anim_data = player.animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 									float t = (m_timer.total_s() - anim_data.m_time_last_walked) / 0.125f;
 									t = std::clamp(t, 0.f, 1.f);
 									transform_arrow.position = util::lerp(transform_arrow.position, arrow_pos, t);
