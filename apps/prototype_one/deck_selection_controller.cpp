@@ -227,14 +227,14 @@ void deck_selection_controller::handle_player_selection(
 
 			auto& deck = _decks[player.deck_selection];
 			deck_selection.card_iterators[player_index] = deck.begin();
-			deck_selection.preview_card_state[player_index] = components::preview_card_state::changing_forward;
+			deck_selection.preview_state[player_index] = components::preview_card_state::changing_forward;
 			spawn_preview_units(state);
 			interrupt_animation(state, deck_selection, player_index);
 		}
 
 		auto vertical_input_active = std::abs(vert) > .4f;
 		auto dir_v = util::sign(vert);
-		auto can_cycle = deck_selection.preview_card_state[player_index] == components::preview_card_state::displaying;
+		auto can_cycle = deck_selection.preview_state[player_index] == components::preview_card_state::displaying;
 
 		if (vertical_input_active && can_cycle)
 		{
@@ -249,7 +249,7 @@ void deck_selection_controller::handle_player_selection(
 			else
 				deck_selection.card_iterators[player_index]++;
 
-			deck_selection.preview_card_state[player_index] = dir_v > 0
+			deck_selection.preview_state[player_index] = dir_v > 0
 				? components::preview_card_state::changing_forward
 				: components::preview_card_state::changing_back;						
 
@@ -438,7 +438,7 @@ void deck_selection_controller::interrupt_animation(
 	selection.card_entity_current[player_index] = 0;
 	selection.card_entity_next[player_index] = 0;
 	selection.card_animation_time[player_index] = 0;
-	selection.preview_card_state[player_index] = components::preview_card_state::changing_forward;
+	selection.preview_state[player_index] = components::preview_card_state::changing_forward;
 }
 
 void deck_selection_controller::handle_animation(ecs::state& state, components::deck_selection& selection)
@@ -448,7 +448,7 @@ void deck_selection_controller::handle_animation(ecs::state& state, components::
 		auto player = _players[i];
 		auto& player_comp = player->get_component<components::player>();
 
-		switch (selection.preview_card_state[i])
+		switch (selection.preview_state[i])
 		{
 			case components::preview_card_state::displaying:
 				break;
@@ -459,7 +459,7 @@ void deck_selection_controller::handle_animation(ecs::state& state, components::
 				position_card(player_comp.deck_selection, card_entity, *player, selection, glm::vec3(0.f, 0.f, 0.5f));
 				selection.current_position_keyframes[i] = selection.position_keyframes;
 				selection.card_entity_next[i] = card_entity.id();
-				selection.preview_card_state[i] = components::preview_card_state::animating;
+				selection.preview_state[i] = components::preview_card_state::animating;
 				break;
 			}
 			case components::preview_card_state::changing_forward:
@@ -469,7 +469,7 @@ void deck_selection_controller::handle_animation(ecs::state& state, components::
 				position_card(player_comp.deck_selection, card_entity, *player, selection, glm::vec3(0.f, 0.f, -0.5f));
 				selection.current_position_keyframes[i] = selection.position_keyframes_under;						
 				selection.card_entity_next[i] = card_entity.id();
-				selection.preview_card_state[i] = components::preview_card_state::animating;
+				selection.preview_state[i] = components::preview_card_state::animating;
 				break;
 			}
 			case components::preview_card_state::animating:
@@ -580,7 +580,7 @@ void deck_selection_controller::animate(ecs::state& state, size_t player_index, 
 	// clean up when animation is over
 	if (animation_t >= 0.95f)
 	{
-		selection.preview_card_state[player_index] = components::preview_card_state::displaying;
+		selection.preview_state[player_index] = components::preview_card_state::displaying;
 		selection.card_animation_time[player_index] = 0.f;
 		selection.card_entity_current[player_index] = next;
 		selection.card_entity_next[player_index] = 0;

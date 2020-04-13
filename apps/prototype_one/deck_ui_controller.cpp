@@ -32,7 +32,7 @@ void deck_ui_controller::update(ecs::state &state)
         for (size_t i = 0; i < deck.child_count; ++i)
         {
             auto& e = state.find_entity(deck.children[i]);
-            auto& t = e.get_component<transforms::transform>();
+            auto& t = e.template get_component<transforms::transform>();
             t.is_matrix_dirty = true;
         }
     });
