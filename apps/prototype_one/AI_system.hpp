@@ -8,12 +8,13 @@
 #include "components/board.hpp"
 #include "components/pause.hpp"
 #include "components/player.hpp" 
+#include "player_controller.hpp"
 
 
 class AI_system : public ecs::system_base
 {
 public:
-	AI_system(){}
+	AI_system(player_controller& player_controller): _player_controller(player_controller){}
 
 	void update(ecs::state& state)
 	{
@@ -45,7 +46,7 @@ public:
 								player.AI_movement_direction = 1;
 							}
 							if (player.selected_row != board.columns - 1) {
-								place_card(0, player, state, board);
+								_player_controller.public_place_card(0, player, state, board);
 							}
 						}
 					}
@@ -55,6 +56,7 @@ public:
 	}
 
 private:
+	player_controller& _player_controller;
 	//TODO: this should be a refrence to the version in player_controler, but i dont want to deal with statics and externs right now.
 	void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
 		if (loc != -1) {
