@@ -24,8 +24,7 @@
 				{
 					"type": "transform",
 					"position": [ 0, 0, -0.1 ],
-					"rotation": [ 0, 180, 0 ],
-					"scale": [ 2, 3, 1 ]
+					"rotation": [ 0, 180, 0 ]
 				},
 				{
 					"type": "renderable_mesh_static",
