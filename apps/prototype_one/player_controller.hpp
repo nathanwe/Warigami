@@ -18,6 +18,7 @@
 #include "components/game_piece.hpp"
 #include "components/to_spawn.hpp"
 #include "components/pause.hpp"
+#include "components/spawn_effect.hpp"
 
 #include "game_util/player_specifics.hpp"
 
@@ -358,27 +359,67 @@ private:
 		}
 	}
 
+	void try_start_place_animation(anim_params& anim_data)
+	{
+		if (!anim_data.m_is_placing_unit)
+		{
+			anim_data.m_is_placing_unit = true;
+			anim_data.m_time_started_placing_unit = m_timer.total_s();
+		}
+	}
+
+	void try_end_place_animation(anim_params& anim_data)
+	{
+		if (anim_data.m_is_placing_unit)
+		{
+			bool is_finished_placing = m_timer.total_s() - anim_data.m_time_started_placing_unit > m_time_between_place_sprites * 2.f;
+			if (is_finished_placing)
+			{
+				anim_data.m_is_placing_unit = false;
+			}
+		}
+	}
+
 	void start_end_place_animation(bool placed, components::player& player)
 	{
 		auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 		if (placed)
 		{
-			if (!anim_data.m_is_placing_unit)
-			{
-				anim_data.m_is_placing_unit = true;
-				anim_data.m_time_started_placing_unit = m_timer.total_s();
-			}
+			try_start_place_animation(anim_data);
 		}
 		else
 		{
-			if (anim_data.m_is_placing_unit)
-			{
-				bool is_finished_placing = m_timer.total_s() - anim_data.m_time_started_placing_unit > m_time_between_place_sprites * 2.f;
-				if (is_finished_placing)
-				{
-					anim_data.m_is_placing_unit = false;
-				}
-			}
+			try_end_place_animation(anim_data);
+		}
+	}
+
+	void start_spawn_effect(ecs::state& r_state, components::player& player)
+	{
+		auto& spawn_effect_entity = player.deck_selection == components::player::spider_deck ?
+			hydrater.add_from_prototype("assets/prototypes/spider_spawn.json") :
+			hydrater.add_from_prototype("assets/prototypes/fantasy_spawn.json");
+		auto& spawn_effect_transform = spawn_effect_entity.get_component<transforms::transform>();
+		auto& spawn_effect = spawn_effect_entity.get_component<components::spawn_effect>();
+
+		spawn_effect.time_started = m_timer.total_s();
+
+		// copied from spawner and board update system
+		auto p_board_entity = r_state.first<components::board>();
+		if (p_board_entity != nullptr)
+		{
+			auto& board = p_board_entity->get_component<components::board>();
+			auto& board_transform = p_board_entity->get_component<transforms::transform>();
+			glm::vec2 location_on_board = { player.selected_row, player.spawn_column };
+			spawn_effect_transform.position = board.grid_to_board(location_on_board, board_transform);
+
+			// place in front of units
+			spawn_effect_transform.position.x -= 0.1f;
+
+			spawn_effect_transform.is_matrix_dirty = true;
+			spawn_effect_transform.has_parent      = true;
+			spawn_effect_transform.parent          = p_board_entity->id();
+			spawn_effect_transform.rotation.y      = glm::half_pi<float>();
+			spawn_effect_transform.scale           = glm::vec3(0.45f);
 		}
 	}
 
@@ -408,6 +449,8 @@ private:
 				player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
 				player.hand[player.selected_card_location] = player.safe_draw();
 				placed = true;
+
+				start_spawn_effect(r_state, player);
 			}
 		}
 		start_end_place_animation(placed, player);

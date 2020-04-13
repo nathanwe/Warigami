@@ -57,6 +57,7 @@ public:
 
 private:
 	player_controller& _player_controller;
+
 	//TODO: this should be a refrence to the version in player_controler, but i dont want to deal with statics and externs right now.
 	void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
 		if (loc != -1) {

@@ -31,7 +31,8 @@ namespace components
 		energy_ball = 53,
 		logo = 54,
 		pause_arrow = 55,
-		deck_cursor = 56
+		deck_cursor = 56,
+		spawn_effect = 57
 
 		// careful: need to take action after 
 		// count reaches 63.

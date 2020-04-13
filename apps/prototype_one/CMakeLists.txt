@@ -31,6 +31,7 @@ add_executable (warigami
 	components/ready_display.cpp
 	components/selection_arrow_loader.cpp	
 	components/selection_arrow.cpp
+	components/spawn_effect.cpp
 	components/terrain.cpp
 	components/tug_of_war_meter.cpp
 	deck_selection_controller.cpp

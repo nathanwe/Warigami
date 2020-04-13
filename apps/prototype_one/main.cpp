@@ -46,6 +46,7 @@
 #include "components/pause_arrow.hpp"
 #include "components/deck_cursor.hpp"
 #include "components/deck_cursor_loader.hpp"
+#include "components/spawn_effect.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -77,6 +78,7 @@
 #include "energy_ball_system.hpp"
 #include "territory_claim_system.hpp"
 #include "logo_system.hpp"
+#include "spawn_effect_system.hpp"
 
 
 int main(int argc, char** argv) {	
@@ -138,6 +140,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::sphere_collider>("sphere_collider");
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
+	ecs::register_component<components::spawn_effect>("spawn_effect");
 
 	asset::scene_hydrater hydrater(state);
 
@@ -182,6 +185,7 @@ int main(int argc, char** argv) {
 	energy_ball_system energy_balls(input, hydrater, timer);
 	territory_claim_system territory_claim_system;
 	logo_system logo(timer, events, input);
+	spawn_effect_system spawn_effector(timer);
 
 	ecs::systems systems({
 		&energy_system,
@@ -215,6 +219,7 @@ int main(int argc, char** argv) {
 		&escreen,
 
 		//
+		&spawn_effector,
 		&animator,
 		&transformer,
 		&renderer,
