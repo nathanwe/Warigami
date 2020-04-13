@@ -8,6 +8,7 @@
 #include <asset/scene_hydrater.hpp>
 #include <event/event_manager.hpp>
 #include <transforms/transform.hpp>
+#include <rendering/renderable_mesh_static.hpp>
 #include <util/math.hpp>
 #include <util/sign.hpp>
 
@@ -190,6 +191,7 @@ private:
 					{
 						auto& render = selector.energy_orbs[i].get_component<rendering::renderable_mesh_static>();
 						render.is_enabled = player.energy > i;
+						render.material.param_diffuse = player.team == 1.0f ? glm::vec3(1, .5, .5) : glm::vec3(.5, .5, 1);
 					}
 				}
 			});
@@ -230,10 +232,12 @@ private:
 						auto& ball = hydrater.add_from_prototype("assets/prototypes/energy_ball_detached.json");
 						auto& ball_t = ball.get_component<transforms::transform>();
 						auto& ball_c = ball.get_component<components::energy_ball>();
+						auto& ball_r = ball.get_component<rendering::renderable_mesh_static>();
 						ball_t.position = square_t.local_to_world[3];
 						ball_t.local_to_world = square_t.local_to_world;
 						ball_t.position[1] = ball_t.local_to_world[3][1] += 4.f;
 						ball_c.team = player.team;
+						ball_r.material.param_diffuse = player.team == 1.0f ? glm::vec3(1, .5, .5) : glm::vec3(.5, .5, 1);
 					}
 					
 				}
