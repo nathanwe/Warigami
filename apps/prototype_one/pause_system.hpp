@@ -152,18 +152,22 @@ public:
 				else if (_current_selection == REPLAY) {
 					// Replay
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == MAIN_MENU) {
 					// Main Menu
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == QUIT) {
 					// Quit
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == HOW_TO) {
 					// How To
 					_seeing_message = true;
+					_current_warning_selection = 0;
 				}
 				else if (_current_selection == CREDITS) {
 					// credits
@@ -176,6 +180,7 @@ public:
 				else if (_current_selection == OPTIONS) {
 					// Options
 					_seeing_message = true;
+					_current_options_selection = 0;
 					arrow_transform.position = glm::vec3(-27, 8, -5);
 					arrow_transform.is_matrix_dirty = true;
 					handle_options_case(state, arrow_transform, renderable, true);
