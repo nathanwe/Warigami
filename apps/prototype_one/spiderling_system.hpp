@@ -43,7 +43,7 @@ private:
 	{
 		for (auto& effect : piece.effects)
 		{
-			if (effect == combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_FOR_HEALTH)
+			if (effect == combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_FOR_HEALTH && (piece.state == components::UNIT_STATE::ATTACK || piece.state == components::UNIT_STATE::MOVE))
 			{
 				bool open_space[3] = { true, true, true };
 				r_state.each<components::game_piece>([&](components::game_piece& game_piece)
