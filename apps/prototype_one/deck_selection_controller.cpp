@@ -3,7 +3,10 @@
 #include "deck_selection_controller.hpp"
 #include "game_util/player_specifics.hpp"
 #include <transforms/transform.hpp>
+#include <rendering/renderable_mesh_static.hpp>
 #include <rendering/renderable_model_static.hpp>
+#include <rendering/renderable_text.hpp>
+#include <rendering/texture.hpp>
 #include <util/sign.hpp>
 #include "components/countdown.hpp"
 #include "components/deck_cursor.hpp"
@@ -14,15 +17,19 @@
 #include <rendering/renderable_text.hpp>
 #include "components/terrain.hpp"
 
+#include <string>
+
 deck_selection_controller::deck_selection_controller(
 	asset::scene_hydrater& hydrater,
 	card_spawner& spawner,
 	core::game_input_manager& input,
-	core::frame_timer& timer)
+	core::frame_timer& timer,
+	rendering::asset_cache& render_assets)
 	: _hydrater(hydrater)
 	, _card_spawner(spawner)
 	, _input(input)
-	, _timer(timer)	
+	, _timer(timer)
+	, _render_assets(render_assets)
 {
 }
 
@@ -303,6 +310,72 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 	if (all_ready) on_start(state);
 }
 
+void deck_selection_controller::select_player_sprite(ecs::state& state)
+{
+	using namespace std::string_literals;
+	
+	static const auto spider_queen = _render_assets.get<rendering::texture>("assets/textures/spider/queen.png"s).id;
+	static const auto fantasy_king = _render_assets.get<rendering::texture>("assets/textures/fantasy/archmage.png"s).id;
+
+	state.each<components::player>(
+		[&](components::player& player)
+		{
+			state.each<components::selection_arrow, rendering::renderable_mesh_static>(
+				[&](components::selection_arrow& selector, rendering::renderable_mesh_static& sprite)
+				{
+					if (player.team == selector.team)
+					{
+						if (player.deck_selection == components::player::spider_deck)
+						{
+							sprite.material.texture_diffuse = spider_queen;
+						}
+						else if (player.deck_selection == components::player::fantasy_deck)
+						{
+							sprite.material.texture_diffuse = fantasy_king;
+						}
+						else
+						{
+							std::cout << "Can't set player controller sprite, unexpected deck index." << std::endl;
+							assert(false);
+						}
+						position_energy_orbs(player, selector);
+					}
+				});
+		});
+}
+
+void deck_selection_controller::position_energy_orbs(components::player& player, components::selection_arrow& selector)
+{
+	static constexpr int num_orbs = 10;
+	static constexpr std::array<glm::vec3, num_orbs> right_spider_orb_positions
+	{{
+		{0.f, 0.f, 0.f}, {0.f, 0.2f, 0.f}, {-0.2f, 0.2f, 0.f}, {0.2f, 0.f, 0.f}, {-0.2f, 0.f, 0.f},
+		{0.f, -0.2f, 0.f}, {0.2f, -0.2f, 0.f}, {-0.2f, -0.2f, 0.f}, {0.2f, 0.2f, 0.f}, {-0.4f, 0.f, 0.f}
+	}};
+	static constexpr std::array<glm::vec3, num_orbs> right_fantasy_orb_positions
+	{{
+		{-0.2f, 0.02f, 0.f}, {-0.15f, -0.15f, 0.f}, {-0.05f, -0.32f, 0.f}, {0.12f, -0.4f, 0.f}, {0.33f, -0.39f, 0.f},
+		{0.52f, -0.35f, 0.f}, {0.69f, -0.25f, 0.f}, {0.8f, -0.07f, 0.f}, {0.85f, 0.13f, 0.f}, {0.8f, 0.3f, 0.f}
+	}};
+
+	for (int i = 0; i < num_orbs; ++i)
+	{
+		auto& orb_transform = selector.energy_orbs[i].get_component<transforms::transform>();
+		switch (player.deck_selection)
+		{
+		case components::player::spider_deck:
+			orb_transform.position = right_spider_orb_positions[i];
+			orb_transform.position.x *= -player.team;
+			break;
+		case components::player::fantasy_deck:
+			orb_transform.position = right_fantasy_orb_positions[i];
+			orb_transform.position.x *= -player.team;
+			break;
+		}
+		orb_transform.is_matrix_dirty = true;
+	}
+}
+
 void deck_selection_controller::on_start(ecs::state& state)
 {
 	auto& board_component = _board->get_component<components::board>();
@@ -337,6 +410,8 @@ void deck_selection_controller::on_start(ecs::state& state)
 	state.each<components::pause>([&](auto& pause) {
 		pause.is_game_started = true;
 	});
+
+	select_player_sprite(state);
 }
 
 void deck_selection_controller::build_deck_set(components::deck_index index, const std::vector<components::card_enum>& deck)

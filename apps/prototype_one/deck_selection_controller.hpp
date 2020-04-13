@@ -10,9 +10,11 @@
 #include "components/deck_option.hpp"
 #include "components/board.hpp"
 #include "game_util/player_specifics.hpp"
+#include <rendering/asset_cache.hpp>
 
 #include "components/card_enum.hpp"
 #include "components/player.hpp"
+#include "components/selection_arrow.hpp"
 
 #include "game_util/card_spawner.hpp"
 
@@ -26,7 +28,8 @@ public:
 		asset::scene_hydrater& hydrater,
 		card_spawner& card_spawner,
 		core::game_input_manager& input,
-		core::frame_timer& timer);
+		core::frame_timer& timer,
+		rendering::asset_cache& render_assets);
 
 	void initialize(ecs::state& state);
 	void update(ecs::state& state);
@@ -36,6 +39,7 @@ private:
 	card_spawner& _card_spawner;
 	core::game_input_manager& _input;
 	core::frame_timer& _timer;	
+	rendering::asset_cache& _render_assets;
 	
 	ecs::entity* _board{ nullptr };
 	ecs::entity* _players[2]{ nullptr, nullptr };
@@ -119,6 +123,12 @@ private:
 		components::deck_selection& selection, 
 		unsigned short player_index);
 
+	void select_player_sprite(
+		ecs::state& state);
+
+	void position_energy_orbs(
+		components::player& player,
+		components::selection_arrow& selector);
 	void position_cursors(
 		ecs::state& state,
 		components::deck_selection& deck_selection
