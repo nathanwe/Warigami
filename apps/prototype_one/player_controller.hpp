@@ -71,10 +71,9 @@ public:
 					auto& controls = player_specifics.controls;
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
-				
-					handle_player_selection(player, forward, left, board);
-					handle_controls(player, r_state, player_specifics, board, board_id);
 					update_succ(player, controls);
+					handle_player_selection(player, forward, left, board);
+					handle_controls(player, r_state, player_specifics, board, board_id);					
 					toggle_AI(player, controls);
 					gain_flower_energy(r_state, player, controls);
 					show_cursor(player, r_state, player_specifics);
@@ -313,7 +312,7 @@ private:
 		{
 			player.select_delay -= m_timer.smoothed_delta_secs();
 		}
-		else
+		else if (!player.succ)
 		{
 			auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
 			if (!anim_data.m_is_placing_unit)
@@ -353,8 +352,10 @@ private:
 		entity_id board_id)
 	{
 		auto& controls = player_specifics.controls;
-		int loc = find_selected_card_index(controls);		
-		place_card(loc, player, r_state, board);
+		int loc = find_selected_card_index(controls);
+		if (!player.succ) {
+			place_card(loc, player, r_state, board);
+		}
 	}
 
 	void start_end_place_animation(bool placed, components::player& player)
