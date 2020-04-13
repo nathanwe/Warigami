@@ -45,8 +45,9 @@ void ready_display_system::update(ecs::state& state)
 		back_t.is_matrix_dirty = true;		
 				
 		//todo: magic numbers
-		auto offset = ready_dispaly.team == 1.f ? 64 : _glfw.width() - 110.f;
-		auto button_x = ready_dispaly.team == 1.f ? -17.f : 14.5;
+		auto ratio = _glfw.width() / 1366.f;
+		auto offset = ready_dispaly.team == 1.f ? 70  : _glfw.width() - 110.f;
+		auto button_x = ready_dispaly.team == 1.f ? -16.f - (ratio*1.1f)  : 13.f + (ratio*1.35f);
 		auto button_y = -9.5f;
 		auto button_z = -24.5f;
 		auto text_y = 16;		
