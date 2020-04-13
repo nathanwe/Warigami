@@ -1,21 +1,37 @@
 {
-    "root": {
-        "components": [
-            {
-                "type": "transform",
-                "position": [ 0, 0, 0 ],
-                "rotation": [ 0, 0, 0 ],
-                "scale": [ 2, 3, 1 ]
-            },
-            {
-                "type": "renderable_mesh_static",
-                "mesh": "assets/meshes/quad/quad.obj",
-                "texture_diffuse": "assets/textures/fantasy/knight.png"
-            },
-            {
-                "type": "card",
-                "card_type": 25
-            }
-        ]
+  "root": {
+    "components": [
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "rotation": [ 0, 0, 0 ],
+        "scale": [ 2, 3, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/quad/quad.obj",
+        "texture_diffuse": "assets/textures/fantasy/knight.png"
+      },
+      {
+        "type": "card",
+        "card_type": 25
+      }
+    ]
+  },
+  "children": [
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, -0.1 ],
+          "rotation": [ 0, 180, 0 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/cards/wizard_back.png"
+        }
+      ]
     }
+  ]
 }
