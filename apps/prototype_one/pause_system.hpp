@@ -23,7 +23,6 @@ enum pause_options {
 	HOW_TO,
 	OPTIONS,
 	CREDITS,
-	CODEX,
 	NUM_PAUSE_OPTIONS
 };
 
@@ -91,9 +90,6 @@ public:
 			}
 			else if (_current_selection == CREDITS) {
 				handle_credits_case(state);
-			}
-			else if (_current_selection == CODEX) {
-				handle_codex_case(state);
 			}
 			else if (_current_selection == OPTIONS) {
 				handle_options_case(state, arrow_transform, renderable, false);
@@ -171,10 +167,6 @@ public:
 				}
 				else if (_current_selection == CREDITS) {
 					// credits
-					_seeing_message = true;
-				}
-				else if (_current_selection == CODEX) {
-					// codex
 					_seeing_message = true;
 				}
 				else if (_current_selection == OPTIONS) {
