@@ -7,6 +7,8 @@
 #include <random>
 #include <cstdint>
 
+#include <asset/scene_hydrater.hpp>
+#include <transforms/transform.hpp>
 
 #include <ecs/component.hpp>
 #include <ecs/ecs_types.hpp>
@@ -333,7 +335,12 @@ namespace components
 		}
 
 
-		void place_card(int loc, float total_s, ecs::state& r_state, std::vector<to_spawn>& spawner)
+		void place_card(
+			int loc, 
+			float total_s,
+			ecs::state& r_state, 
+			components::board& board,
+			asset::scene_hydrater& hydrater)
 		{
 			bool placed = false;
 			if (loc != -1) {
@@ -350,7 +357,7 @@ namespace components
 
 				if (!taken && energy >= components::card_costanamos[(int)hand[selected_card_location]])
 				{
-					spawner.emplace_back(
+					board.spawner.emplace_back(
 						selected_row,
 						spawn_column,
 						team,
@@ -359,36 +366,75 @@ namespace components
 					energy -= components::card_costanamos[(int)hand[selected_card_location]];
 					hand[selected_card_location] = safe_draw();
 					placed = true;
+
+					start_spawn_effect(r_state, hydrater, total_s);
 				}
 			}
-
 			start_end_place_animation(placed, total_s);
 		}
 
-		void start_end_place_animation(bool placed, float total_s)
+		void start_spawn_effect(ecs::state& r_state, asset::scene_hydrater& hydrater, float total_s)
 		{
-			auto& anim_data = animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
-			if (placed)
+			auto& spawn_effect_entity = deck_selection == components::player::spider_deck ?
+				hydrater.add_from_prototype("assets/prototypes/spider_spawn.json") :
+				hydrater.add_from_prototype("assets/prototypes/fantasy_spawn.json");
+			auto& spawn_effect_transform = spawn_effect_entity.get_component<transforms::transform>();
+			auto& spawn_effect = spawn_effect_entity.get_component<components::spawn_effect>();
+
+			spawn_effect.time_started = total_s;
+
+			// copied from spawner and board update system
+			auto p_board_entity = r_state.first<components::board>();
+			if (p_board_entity != nullptr)
 			{
-				if (!anim_data.m_is_placing_unit)
-				{
-					anim_data.m_is_placing_unit = true;
-					anim_data.m_time_started_placing_unit = total_s;
-				}
-			}
-			else
-			{
-				if (anim_data.m_is_placing_unit)
-				{
-					bool is_finished_placing = total_s - anim_data.m_time_started_placing_unit > m_time_between_place_sprites * 2.f;
-					if (is_finished_placing)
-					{
-						anim_data.m_is_placing_unit = false;
-					}
-				}
+				auto& board = p_board_entity->get_component<components::board>();
+				auto& board_transform = p_board_entity->get_component<transforms::transform>();
+				glm::vec2 location_on_board = { selected_row, spawn_column };
+				spawn_effect_transform.position = board.grid_to_board(location_on_board, board_transform);
+
+				// place in front of units
+				spawn_effect_transform.position.x -= 0.1f;
+
+				spawn_effect_transform.is_matrix_dirty = true;
+				spawn_effect_transform.has_parent = true;
+				spawn_effect_transform.parent = p_board_entity->id();
+				spawn_effect_transform.rotation.y = glm::half_pi<float>();
+				spawn_effect_transform.scale = glm::vec3(0.45f);
 			}
 		}
 
+		void start_end_place_animation(bool placed, float total_s)
+		{			
+			if (placed)
+			{
+				try_start_place_animation(animation_parameters, total_s);
+			}
+			else
+			{
+				try_end_place_animation(animation_parameters, total_s);
+			}
+		}
+
+		void try_start_place_animation(anim_params& anim_data, float total_s)
+		{
+			if (!anim_data.m_is_placing_unit)
+			{
+				anim_data.m_is_placing_unit = true;
+				anim_data.m_time_started_placing_unit = total_s;
+			}
+		}
+
+		void try_end_place_animation(anim_params& anim_data, float total_s)
+		{
+			if (anim_data.m_is_placing_unit)
+			{
+				bool is_finished_placing = total_s - anim_data.m_time_started_placing_unit > m_time_between_place_sprites * 2.f;
+				if (is_finished_placing)
+				{
+					anim_data.m_is_placing_unit = false;
+				}
+			}
+		}
 	};
 }
 
