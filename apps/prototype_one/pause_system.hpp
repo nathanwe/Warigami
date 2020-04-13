@@ -327,6 +327,14 @@ public:
 				arrow_transform.is_matrix_dirty = true;
 			}
 		}
+		else if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
+		{
+			_seeing_message = false;
+			r.is_enabled = false;
+			pause_renderable.is_enabled = true;
+			arrow_transform.position = glm::vec3(-27 - _current_selection * 0.7, 8 - _current_selection * 0.9, -5);
+			arrow_transform.is_matrix_dirty = true;
+		}
 	}
 
 	void confirm_destructive_action(ecs::state& state, transforms::transform& arrow_transform, rendering::renderable_mesh_static& arrow_renderable, rendering::renderable_mesh_static& pause_renderable, components::pause pause) {
