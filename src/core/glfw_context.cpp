@@ -34,15 +34,14 @@ core::glfw_context::glfw_context(startup_config& conf) : _conf(conf)
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #endif
 
-	_is_fullscreen = conf.fullscreen();
-    if (_is_fullscreen)
+    if (conf.fullscreen())
     {
         _window = glfwCreateWindow(_mode->width, _mode->height, conf.window_title().c_str(), _monitor, NULL);
 		_width = _mode->width;
 		_height = _mode->height;
     } else
-	{
-		_window = glfwCreateWindow(conf.width(), conf.height(), conf.window_title().c_str(), nullptr, nullptr);
+    {
+        _window = glfwCreateWindow(conf.width(), conf.height(), conf.window_title().c_str(), nullptr, nullptr);
 		_width = conf.width();
 		_height = conf.height();
     }
@@ -108,8 +107,7 @@ bool core::glfw_context::is_minimized()
 
 void core::glfw_context::set_fullscreen(bool val)
 {
-	_is_fullscreen = val;
-	if (_is_fullscreen)
+	if (val)
 	{
 		glfwSetWindowMonitor(_window, _monitor, 0, 0, _mode->width, _mode->height, _mode->refreshRate);
 		_width = _mode->width;
@@ -127,9 +125,8 @@ void core::glfw_context::set_fullscreen(bool val)
 	}
 }
 
-bool core::glfw_context::is_fullscreen()
-{
-	return _is_fullscreen;
+bool core::glfw_context::is_fullscreen() {
+	return glfwGetWindowMonitor(_window) != NULL;
 }
 
 void core::glfw_context::set_window_changed_callback(std::function<void()> callback)
