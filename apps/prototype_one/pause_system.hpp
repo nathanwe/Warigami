@@ -23,6 +23,7 @@ enum pause_options {
 	HOW_TO,
 	OPTIONS,
 	CREDITS,
+	CODEX,
 	NUM_PAUSE_OPTIONS
 };
 
@@ -44,7 +45,9 @@ public:
 		m_r_events(events), 
 		_current_selection(0),
 		_seeing_message(false), 
-		how_to_page(0), 
+		how_to_page(0),
+		credits_page(0),
+		codex_page(0),
 		_current_options_selection(0),
 		m_r_audio(audioo)
 	{}
@@ -54,6 +57,8 @@ public:
 
 		_seeing_message = false;
 		how_to_page = 0;
+		credits_page = 0;
+		codex_page = 0;
 		_current_options_selection = 0;
 		_current_warning_selection = 0;
 	}
@@ -83,6 +88,12 @@ public:
 		if (_seeing_message) {
 			if (_current_selection == HOW_TO) {
 				handle_howto_case(state);
+			}
+			else if (_current_selection == CREDITS) {
+				handle_credits_case(state);
+			}
+			else if (_current_selection == CODEX) {
+				handle_codex_case(state);
 			}
 			else if (_current_selection == OPTIONS) {
 				handle_options_case(state, arrow_transform, renderable, false);
@@ -154,15 +165,20 @@ public:
 					// How To
 					_seeing_message = true;
 				}
+				else if (_current_selection == CREDITS) {
+					// credits
+					_seeing_message = true;
+				}
+				else if (_current_selection == CODEX) {
+					// codex
+					_seeing_message = true;
+				}
 				else if (_current_selection == OPTIONS) {
 					// Options
 					_seeing_message = true;
 					arrow_transform.position = glm::vec3(-27, 8, -5);
 					arrow_transform.is_matrix_dirty = true;
 					handle_options_case(state, arrow_transform, renderable, true);
-				}
-				else if (_current_selection == CREDITS) {
-					// Credits
 				}
 			}
 		}
@@ -190,6 +206,58 @@ public:
 				auto& r = e.get_component<rendering::renderable_mesh_static>();
 				r.is_enabled = false;
 				how_to_page = 0;
+				_seeing_message = false;
+			}
+		}
+	}
+	void handle_credits_case(ecs::state& state)
+	{
+		for (size_t i = 0; i < 4; ++i)
+		{
+			auto& e = state.find_entity(credits_images[i]);
+			auto& r = e.get_component<rendering::renderable_mesh_static>();
+			if (i == credits_page) {
+				r.is_enabled = true;
+			}
+			else {
+				r.is_enabled = false;
+			}
+		}
+
+		if (m_r_input.any_button_pressed())
+		{
+			credits_page++;
+			if (credits_page > 3) {
+				auto& e = state.find_entity(credits_images[3]);
+				auto& r = e.get_component<rendering::renderable_mesh_static>();
+				r.is_enabled = false;
+				credits_page = 0;
+				_seeing_message = false;
+			}
+		}
+	}
+	void handle_codex_case(ecs::state& state)
+	{
+		for (size_t i = 0; i < 4; ++i)
+		{
+			auto& e = state.find_entity(codex_images[i]);
+			auto& r = e.get_component<rendering::renderable_mesh_static>();
+			if (i == codex_page) {
+				r.is_enabled = true;
+			}
+			else {
+				r.is_enabled = false;
+			}
+		}
+
+		if (m_r_input.any_button_pressed())
+		{
+			codex_page++;
+			if (codex_page > 3) {
+				auto& e = state.find_entity(codex_images[3]);
+				auto& r = e.get_component<rendering::renderable_mesh_static>();
+				r.is_enabled = false;
+				codex_page = 0;
 				_seeing_message = false;
 			}
 		}
@@ -323,7 +391,11 @@ private:
 
 	bool _seeing_message;
 	int how_to_page;
+	int credits_page;
+	int codex_page;
 	entity_id how_to_play_images[4]{ 104, 105, 106, 107 };
+	entity_id credits_images[4]{ 110, 111, 112, 113 };
+	entity_id codex_images[4]{ 114, 115, 116, 117 };
 	int _current_options_selection;
 	int _current_warning_selection;
 };
