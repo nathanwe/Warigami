@@ -37,13 +37,14 @@ public:
 		asset::scene_hydrater& hydrater,
 		event::EventManager& events,
 		audio::audio_system& audioo)
-		: m_r_input(input), 
+		: m_r_input(input),
 		m_r_timer(timer),
 		m_r_glfw(glfw),
 		m_r_hydrater(hydrater),
-		m_r_events(events), 
+		m_r_events(events),
 		_current_selection(0),
-		_seeing_message(false), 
+		_seeing_message(false),
+		current_page(0),
 		how_to_page(0),
 		credits_page(0),
 		codex_page(0),
@@ -55,6 +56,7 @@ public:
 		_current_selection = 0;
 
 		_seeing_message = false;
+		current_page = 0;
 		how_to_page = 0;
 		credits_page = 0;
 		codex_page = 0;
@@ -183,78 +185,37 @@ public:
 
 	void handle_howto_case(ecs::state& state)
 	{
-		for (size_t i = 0; i < 4; ++i)
-		{
-			auto& e = state.find_entity(how_to_play_images[i]);
-			auto& r = e.get_component<rendering::renderable_mesh_static>();
-			if (i == how_to_page) {
-				r.is_enabled = true;
-			}
-			else {
-				r.is_enabled = false;
-			}
-		}
-
-		if (m_r_input.any_button_pressed())
-		{
-			how_to_page++;
-			if (how_to_page > 3) {
-				auto& e = state.find_entity(how_to_play_images[3]);
-				auto& r = e.get_component<rendering::renderable_mesh_static>();
-				r.is_enabled = false;
-				how_to_page = 0;
-				_seeing_message = false;
-			}
-		}
+		handle_pages(state, how_to_play_images, 3);
 	}
 	void handle_credits_case(ecs::state& state)
 	{
-		for (size_t i = 0; i < 4; ++i)
-		{
-			auto& e = state.find_entity(credits_images[i]);
-			auto& r = e.get_component<rendering::renderable_mesh_static>();
-			if (i == credits_page) {
-				r.is_enabled = true;
-			}
-			else {
-				r.is_enabled = false;
-			}
-		}
-
-		if (m_r_input.any_button_pressed())
-		{
-			credits_page++;
-			if (credits_page > 3) {
-				auto& e = state.find_entity(credits_images[3]);
-				auto& r = e.get_component<rendering::renderable_mesh_static>();
-				r.is_enabled = false;
-				credits_page = 0;
-				_seeing_message = false;
-			}
-		}
+		handle_pages(state, credits_images, 3);		
 	}
+	
 	void handle_codex_case(ecs::state& state)
 	{
+		handle_pages(state, codex_images, 3);
+	}
+	void handle_pages(ecs::state& r_state, const entity_id pages[], int last_page) {
 		for (size_t i = 0; i < 4; ++i)
 		{
-			auto& e = state.find_entity(codex_images[i]);
+			auto& e = r_state.find_entity(pages[i]);
 			auto& r = e.get_component<rendering::renderable_mesh_static>();
-			if (i == codex_page) {
+			if (i == current_page) {
 				r.is_enabled = true;
 			}
 			else {
 				r.is_enabled = false;
 			}
 		}
-
 		if (m_r_input.any_button_pressed())
 		{
-			codex_page++;
-			if (codex_page > 3) {
-				auto& e = state.find_entity(codex_images[3]);
+			current_page++;
+			if (current_page > 3) {
+				auto& e = r_state.find_entity(pages[last_page]);
 				auto& r = e.get_component<rendering::renderable_mesh_static>();
 				r.is_enabled = false;
-				codex_page = 0;
+				current_page = 0;
 				_seeing_message = false;
 			}
 		}
@@ -395,12 +356,13 @@ private:
 	int _current_selection;
 
 	bool _seeing_message;
+	int current_page;
 	int how_to_page;
 	int credits_page;
 	int codex_page;
-	entity_id how_to_play_images[4]{ 104, 105, 106, 107 };
-	entity_id credits_images[4]{ 110, 111, 112, 113 };
-	entity_id codex_images[4]{ 114, 115, 116, 117 };
+	const entity_id how_to_play_images[4]{ 104, 105, 106, 107 };
+	const entity_id credits_images[4]{ 110, 111, 112, 113 };
+	const entity_id codex_images[4]{ 114, 115, 116, 117 };
 	int _current_options_selection;
 	int _current_warning_selection;
 };
