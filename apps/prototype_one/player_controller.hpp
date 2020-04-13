@@ -352,7 +352,12 @@ private:
 
 	void try_start_place_animation(anim_params& anim_data)
 	{
+<<<<<<< HEAD
 		if (!anim_data.m_is_placing_unit)
+=======
+		auto& anim_data = player.animation_parameters; //player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+		if (placed)
+>>>>>>> place_card
 		{
 			anim_data.m_is_placing_unit = true;
 			anim_data.m_time_started_placing_unit = m_timer.total_s();
@@ -380,11 +385,28 @@ private:
 		}
 		else
 		{
+<<<<<<< HEAD
 			try_end_place_animation(anim_data);
 		}
 	}
 
 	void start_spawn_effect(ecs::state& r_state, components::player& player)
+=======
+			if (anim_data.m_is_placing_unit)
+			{
+				bool is_finished_placing = 
+					m_timer.total_s() - anim_data.m_time_started_placing_unit > components::player::m_time_between_place_sprites * 2.f;
+
+				if (is_finished_placing)
+				{
+					anim_data.m_is_placing_unit = false;
+				}
+			}
+		}
+	}
+
+	/*void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) 
+>>>>>>> place_card
 	{
 		auto& spawn_effect_entity = player.deck_selection == components::player::spider_deck ?
 			hydrater.add_from_prototype("assets/prototypes/spider_spawn.json") :
