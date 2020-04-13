@@ -11,7 +11,6 @@
 #include "components/player.hpp"
 #include "components/pause.hpp"
 #include "components/card.hpp"
-#include "components/selection_arrow.hpp"
 
 #include "components/terrain.hpp"
 
@@ -302,12 +301,9 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 void deck_selection_controller::select_player_sprite(ecs::state& state)
 {
 	using namespace std::string_literals;
-
-	static constexpr components::deck_index spider_deck = 0;
-	static constexpr components::deck_index fantasy_deck = 1;
 	
 	static const auto spider_queen = _render_assets.get<rendering::texture>("assets/textures/spider/queen.png"s).id;
-	static const auto fantasy_king = _render_assets.get<rendering::texture>("assets/textures/fantasy/wizard.png"s).id;
+	static const auto fantasy_king = _render_assets.get<rendering::texture>("assets/textures/fantasy/archmage.png"s).id;
 
 	state.each<components::player>(
 		[&](components::player& player)
@@ -317,11 +313,11 @@ void deck_selection_controller::select_player_sprite(ecs::state& state)
 				{
 					if (player.team == selector.team)
 					{
-						if (player.deck_selection == spider_deck)
+						if (player.deck_selection == components::player::spider_deck)
 						{
 							sprite.material.texture_diffuse = spider_queen;
 						}
-						else if (player.deck_selection == fantasy_deck)
+						else if (player.deck_selection == components::player::fantasy_deck)
 						{
 							sprite.material.texture_diffuse = fantasy_king;
 						}
@@ -330,9 +326,42 @@ void deck_selection_controller::select_player_sprite(ecs::state& state)
 							std::cout << "Can't set player controller sprite, unexpected deck index." << std::endl;
 							assert(false);
 						}
+						position_energy_orbs(player, selector);
 					}
 				});
 		});
+}
+
+void deck_selection_controller::position_energy_orbs(components::player& player, components::selection_arrow& selector)
+{
+	static constexpr int num_orbs = 10;
+	static constexpr std::array<glm::vec3, num_orbs> right_spider_orb_positions
+	{{
+		{0.f, 0.f, 0.f}, {0.f, 0.2f, 0.f}, {-0.2f, 0.2f, 0.f}, {0.2f, 0.f, 0.f}, {-0.2f, 0.f, 0.f},
+		{0.f, -0.2f, 0.f}, {0.2f, -0.2f, 0.f}, {-0.2f, -0.2f, 0.f}, {0.2f, 0.2f, 0.f}, {-0.4f, 0.f, 0.f}
+	}};
+	static constexpr std::array<glm::vec3, num_orbs> right_fantasy_orb_positions
+	{{
+		{-0.2f, 0.02f, 0.f}, {-0.15f, -0.15f, 0.f}, {-0.05f, -0.32f, 0.f}, {0.12f, -0.4f, 0.f}, {0.33f, -0.39f, 0.f},
+		{0.52f, -0.35f, 0.f}, {0.69f, -0.25f, 0.f}, {0.8f, -0.07f, 0.f}, {0.85f, 0.13f, 0.f}, {0.8f, 0.3f, 0.f}
+	}};
+
+	for (int i = 0; i < num_orbs; ++i)
+	{
+		auto& orb_transform = selector.energy_orbs[i].get_component<transforms::transform>();
+		switch (player.deck_selection)
+		{
+		case components::player::spider_deck:
+			orb_transform.position = right_spider_orb_positions[i];
+			orb_transform.position.x *= -player.team;
+			break;
+		case components::player::fantasy_deck:
+			orb_transform.position = right_fantasy_orb_positions[i];
+			orb_transform.position.x *= -player.team;
+			break;
+		}
+		orb_transform.is_matrix_dirty = true;
+	}
 }
 
 void deck_selection_controller::on_start(ecs::state& state)

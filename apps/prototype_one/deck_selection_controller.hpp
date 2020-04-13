@@ -14,6 +14,7 @@
 
 #include "components/card_enum.hpp"
 #include "components/player.hpp"
+#include "components/selection_arrow.hpp"
 
 #include "game_util/card_spawner.hpp"
 
@@ -122,6 +123,10 @@ private:
 
 	void select_player_sprite(
 		ecs::state& state);
+
+	void position_energy_orbs(
+		components::player& player,
+		components::selection_arrow& selector);
 };
 
 
