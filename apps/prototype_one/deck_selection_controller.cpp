@@ -1,15 +1,17 @@
+#include <algorithm>
+
 #include "deck_selection_controller.hpp"
 #include "game_util/player_specifics.hpp"
 #include <transforms/transform.hpp>
 #include <rendering/renderable_model_static.hpp>
 #include <util/sign.hpp>
 #include "components/countdown.hpp"
+#include "components/deck_cursor.hpp"
 #include "components/game_piece.hpp"
 #include "components/player.hpp"
 #include "components/pause.hpp"
 #include "components/card.hpp"
 #include <rendering/renderable_text.hpp>
-
 #include "components/terrain.hpp"
 
 deck_selection_controller::deck_selection_controller(
@@ -34,6 +36,14 @@ void deck_selection_controller::initialize(ecs::state& state)
 	});
 
 	_players[1] = state.first<components::player>([&](components::player& p) {
+		return p.team == -1.f;
+	});
+
+	_deck_cursors[0] = state.first<components::deck_cursor>([&](components::deck_cursor& p) {
+		return p.team == 1.f;
+	});
+
+	_deck_cursors[1] = state.first<components::deck_cursor>([&](components::deck_cursor& p) {
 		return p.team == -1.f;
 	});
 	
@@ -76,6 +86,7 @@ void deck_selection_controller::update(ecs::state& state)
 		}
 
 		handle_animation(state, selection_component);
+		position_cursors(state, selection_component);
 	}
 }
  
@@ -414,7 +425,9 @@ bool deck_selection_controller::can_run() const
 	return _players[0] != nullptr &&
 		_players[1] != nullptr &&
 		_deck_selection != nullptr &&
-		_board != nullptr;
+		_board != nullptr &&
+		_deck_cursors[0] != nullptr &&
+		_deck_cursors[1] != nullptr;
 }
 
 void deck_selection_controller::interrupt_animation(
@@ -439,6 +452,27 @@ void deck_selection_controller::interrupt_animation(
 	selection.card_entity_next[player_index] = 0;
 	selection.card_animation_time[player_index] = 0;
 	selection.preview_state[player_index] = components::preview_card_state::changing_forward;
+}
+
+void deck_selection_controller::position_cursors(
+	ecs::state& state,
+	components::deck_selection& deck_selection)
+{
+	if (!can_run()) return;
+
+	auto& t_one = _deck_cursors[0]->get_component<transforms::transform>();
+	auto& t_two = _deck_cursors[1]->get_component<transforms::transform>();
+
+	auto& p1 = _players[0]->get_component<components::player>();
+	auto& p2 = _players[1]->get_component<components::player>();
+
+	auto x_increment = deck_selection.option_width + deck_selection.padding;
+	
+	t_one.position.z = t_two.position.z = -deck_selection.card_depth + 0.1f;
+	t_one.position.y = t_two.position.y = deck_selection.card_y;
+
+	t_one.position.x = deck_selection.player_1_options_x + p1.deck_selection * x_increment;
+	t_two.position.x = deck_selection.player_2_options_x + p2.deck_selection * x_increment;	
 }
 
 void deck_selection_controller::handle_animation(ecs::state& state, components::deck_selection& selection)
@@ -512,8 +546,8 @@ void deck_selection_controller::animate_position(
 		side_x_offset = -(x_increment);
 	if (player_index == 1 && deck_index == 0)
 		side_x_offset = (x_increment);
-	
-	offset.x += animation_t *side_x_offset;
+
+	offset.x += animation_t * side_x_offset;
 
 	position_card(deck_index, entity, *_players[player_index], selection, offset);
 }
@@ -525,23 +559,6 @@ void deck_selection_controller::animate_rotation(
 	size_t deck_index,
 	ecs::entity& entity)
 {
-	//auto rotation_keyframes = selection.rotation_keyframes;
-	//auto& transform = entity.get_component<transforms::transform>();
-	//
-	//size_t index_rot = 0;
-	//while (rotation_keyframes[index_rot].first < animation_t)
-	//	index_rot++;
-
-	//auto source_rot = rotation_keyframes[index_rot - 1].second;
-	//auto destination_rot = rotation_keyframes[index_rot].second;
-	//float t_first_rot = rotation_keyframes[index_rot - 1].first;
-	//float t_second_rot = rotation_keyframes[index_rot].first;
-	//float t_range_rot = t_second_rot - t_first_rot;
-	//float t_rot = (animation_t - t_first_rot) / t_range_rot;
-
-	//auto interpolated_rot = glm::slerp(source_rot, destination_rot, t_rot);
-	//transform.rotation = glm::vec3(glm::pi<float>()) - glm::eulerAngles(interpolated_rot);
-
 	auto& transform = entity.get_component<transforms::transform>();
 	float yaw = glm::pi<float>() * (1 - animation_t);
 	transform.rotation.y = yaw;
@@ -550,8 +567,7 @@ void deck_selection_controller::animate_rotation(
 
 void deck_selection_controller::animate(ecs::state& state, size_t player_index, components::deck_selection& selection)
 {
-	auto deck_index = _players[player_index]->get_component<components::player>().deck_selection;
-		
+	auto deck_index = _players[player_index]->get_component<components::player>().deck_selection;		
 	auto next = selection.card_entity_next[player_index];	
 	auto& next_entity = state.find_entity(next);	
 	auto& next_t = next_entity.get_component<transforms::transform>();
@@ -559,6 +575,7 @@ void deck_selection_controller::animate(ecs::state& state, size_t player_index, 
 	selection.card_animation_time[player_index] += _timer.smoothed_delta_secs();
 
 	auto animation_t = selection.card_animation_time[player_index] / selection.card_animation_time_total;
+	animation_t = std::clamp(animation_t, 0.f, 1.f);
 	auto animation_t_reverse = 1.f - animation_t;
 
 	animate_position(animation_t, selection, player_index, deck_index, next_entity, selection.position_keyframes);	
@@ -578,7 +595,7 @@ void deck_selection_controller::animate(ecs::state& state, size_t player_index, 
 	}
 
 	// clean up when animation is over
-	if (animation_t >= 0.95f)
+	if (animation_t >= 1.f)
 	{
 		selection.preview_state[player_index] = components::preview_card_state::displaying;
 		selection.card_animation_time[player_index] = 0.f;

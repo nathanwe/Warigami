@@ -39,18 +39,18 @@ namespace components
         std::pair<float, glm::vec3> position_keyframes[6]{
             {std::numeric_limits<float>::min(), glm::vec3(0.f)},
             {0.0f, glm::vec3(0.f)},
-            {0.5f,glm::vec3(0.f, 5.f, 5.f)},
-            {0.6f,glm::vec3(0.f, 5.f, 5.f)},
-            {1.f, glm::vec3(0.f, 10.f, 0.f) },
+            {0.5f,glm::vec3(0.f, 6.f, 5.f)},
+            {0.6f,glm::vec3(0.f, 6.f, 5.f)},
+            {1.f, glm::vec3(0.f, 12.f, 0.f) },
             {std::numeric_limits<float>::max(), glm::vec3(0.f, 10.f, 0.f) }
         };
 
         std::pair<float, glm::vec3> position_keyframes_under[6]{
             {std::numeric_limits<float>::min(), glm::vec3(0.f)},
             {0.0f, glm::vec3(0.f)},
-            {0.5f,glm::vec3(0.f, 5.f, -5.f)},
-            {0.6f,glm::vec3(0.f, 5.f, -5.f)},
-            {1.f, glm::vec3(0.f, 10.f, 0.f) } ,
+            {0.5f,glm::vec3(0.f, 6.f, -5.f)},
+            {0.6f,glm::vec3(0.f, 6.f, -5.f)},
+            {1.f, glm::vec3(0.f, 12.f, 0.f) } ,
             {std::numeric_limits<float>::max(), glm::vec3(0.f, 10.f, 0.f)}
         };
 

@@ -44,6 +44,8 @@
 #include "components/energy_ball.hpp"
 #include "components/logo.hpp"
 #include "components/pause_arrow.hpp"
+#include "components/deck_cursor.hpp"
+#include "components/deck_cursor_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -117,12 +119,13 @@ int main(int argc, char** argv) {
 	ecs::register_component<transforms::transform>("transform");
     ecs::register_component<components::deck_ui>("deck_ui");
 	ecs::register_component<components::terrain>("terrain");
+	ecs::register_component<components::deck_cursor>("deck_cursor");
 	ecs::register_component<components::deck_option>("deck_option");
 	ecs::register_component<components::deck_selection>("deck_selection");
 	ecs::register_component<components::ready_display>("ready_display");
 	ecs::register_component<components::main_menu>("main_menu");
 	ecs::register_component<components::energy_ball>("energy_ball");
-	ecs::register_component<components::logo>("logo");
+	ecs::register_component<components::logo>("logo");	
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
@@ -248,6 +251,7 @@ int main(int argc, char** argv) {
 	collisions::sphere_collider_loader sphere_collider_loader;
 	collisions::rigid_body_loader rigid_body_loader;
 	components::ready_display_loader ready_display_loader;
+	components::deck_cursor_loader deck_cursor_loader;
 
 	hydrater.register_loaders(
 		&aabb_collider_loader,
@@ -275,7 +279,8 @@ int main(int argc, char** argv) {
 		&deck_selection_loader,
 		&deck_option_loader,
 		&deck_ui_loader,
-		&ready_display_loader);	
+		&ready_display_loader,
+		&deck_cursor_loader);
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);

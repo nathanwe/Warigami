@@ -34,6 +34,26 @@
     },
 
     {
+      "prototype": "assets/prototypes/deck_cursor.json",
+      "components": [
+        {
+          "type": "deck_cursor",
+          "team": 1
+        }
+      ]
+    },
+
+    {
+      "prototype": "assets/prototypes/deck_cursor.json",
+      "components": [
+        {
+          "type": "deck_cursor",
+          "team": -1
+        }
+      ]
+    },
+
+    {
       "components": [
         {
           "type": "deck_option",

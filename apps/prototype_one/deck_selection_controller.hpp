@@ -41,6 +41,8 @@ private:
 	ecs::entity* _players[2]{ nullptr, nullptr };
 	ecs::entity* _deck_selection{ nullptr };
 
+	ecs::entity* _deck_cursors[2] { nullptr, nullptr };
+
 	std::vector<std::set<components::card_enum>> _decks;
 	std::vector<std::vector<glm::ivec2>> _preview_positions;
 
@@ -116,6 +118,11 @@ private:
 		ecs::state& state, 
 		components::deck_selection& selection, 
 		unsigned short player_index);
+
+	void position_cursors(
+		ecs::state& state,
+		components::deck_selection& deck_selection
+	);
 };
 
 

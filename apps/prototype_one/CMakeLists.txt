@@ -10,6 +10,7 @@ add_executable (warigami
 	components/card_loader.cpp
 	components/card.cpp	
 	components/countdown.cpp
+	components/deck_cursor.cpp
 	components/deck_option.cpp
 	components/deck_selection.cpp
 	components/deck_ui.cpp	
