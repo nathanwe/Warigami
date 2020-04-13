@@ -1,26 +1,33 @@
 #include "deck_selection_controller.hpp"
 #include "game_util/player_specifics.hpp"
 #include <transforms/transform.hpp>
+#include <rendering/renderable_mesh_static.hpp>
 #include <rendering/renderable_model_static.hpp>
+#include <rendering/renderable_text.hpp>
+#include <rendering/texture.hpp>
 #include <util/sign.hpp>
 #include "components/countdown.hpp"
 #include "components/game_piece.hpp"
 #include "components/player.hpp"
 #include "components/pause.hpp"
 #include "components/card.hpp"
-#include <rendering/renderable_text.hpp>
+#include "components/selection_arrow.hpp"
 
 #include "components/terrain.hpp"
+
+#include <string>
 
 deck_selection_controller::deck_selection_controller(
 	asset::scene_hydrater& hydrater,
 	card_spawner& spawner,
 	core::game_input_manager& input,
-	core::frame_timer& timer)
+	core::frame_timer& timer,
+	rendering::asset_cache& render_assets)
 	: _hydrater(hydrater)
 	, _card_spawner(spawner)
 	, _input(input)
-	, _timer(timer)	
+	, _timer(timer)
+	, _render_assets(render_assets)
 {
 }
 
@@ -292,6 +299,42 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 	if (all_ready) on_start(state);
 }
 
+void deck_selection_controller::select_player_sprite(ecs::state& state)
+{
+	using namespace std::string_literals;
+
+	static constexpr components::deck_index spider_deck = 0;
+	static constexpr components::deck_index fantasy_deck = 1;
+	
+	static const auto spider_queen = _render_assets.get<rendering::texture>("assets/textures/spider/queen.png"s).id;
+	static const auto fantasy_king = _render_assets.get<rendering::texture>("assets/textures/fantasy/wizard.png"s).id;
+
+	state.each<components::player>(
+		[&](components::player& player)
+		{
+			state.each<components::selection_arrow, rendering::renderable_mesh_static>(
+				[&](components::selection_arrow& selector, rendering::renderable_mesh_static& sprite)
+				{
+					if (player.team == selector.team)
+					{
+						if (player.deck_selection == spider_deck)
+						{
+							sprite.material.texture_diffuse = spider_queen;
+						}
+						else if (player.deck_selection == fantasy_deck)
+						{
+							sprite.material.texture_diffuse = fantasy_king;
+						}
+						else
+						{
+							std::cout << "Can't set player controller sprite, unexpected deck index." << std::endl;
+							assert(false);
+						}
+					}
+				});
+		});
+}
+
 void deck_selection_controller::on_start(ecs::state& state)
 {
 	auto& board_component = _board->get_component<components::board>();
@@ -326,6 +369,8 @@ void deck_selection_controller::on_start(ecs::state& state)
 	state.each<components::pause>([&](auto& pause) {
 		pause.is_game_started = true;
 	});
+
+	select_player_sprite(state);
 }
 
 void deck_selection_controller::build_deck_set(components::deck_index index, const std::vector<components::card_enum>& deck)
