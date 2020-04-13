@@ -1,0 +1,43 @@
+{
+  "root": {
+    "components": [
+      {
+        "type": "transform"
+      },
+      {
+        "type": "deck_cursor"
+      }
+    ]
+  },
+  "children": [
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, -3, 0 ],
+          "scale": [ 2.03, 0.25, 2 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/arrow.png"
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 3, 0 ],
+          "rotation": [ 0, 0, 180 ],
+          "scale": [ 2.03, 0.25, 2 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/arrow.png"
+        }
+      ]
+    }
+  ]
+}
