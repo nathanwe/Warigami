@@ -20,6 +20,20 @@
         }
       ]
     },
+    {
+      "entity_id": 4,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 50, 0 ],
+          "rotation": [ -90, 0, 0 ]
+        },
+        {
+          "type": "light_directional",
+          "intensity": 1
+        }
+      ]
+    },
 
 
     {
