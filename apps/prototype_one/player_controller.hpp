@@ -269,12 +269,25 @@ private:
 
 	void board_reset(ecs::state& r_state)
 	{
-		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>([&](
-			components::board_square& square,
-			transforms::transform& transform,
-			rendering::renderable_mesh_static& render_mesh_s)
+		r_state.each<components::board_square, components::terrain, transforms::transform, rendering::renderable_mesh_static>(
+			[&](auto& square, auto& terrain, auto& transform, auto& render_mesh_s)
 			{
-				render_mesh_s.material.tint_color = glm::vec3(0.4, 0.4, 0.4);
+				/*
+				if (square.team > 0.f)
+				{
+					render_mesh_s.material.tint_color = glm::vec3(0.5f, 0.f, 0.f);
+				}
+				else if (square.team < 0.f)
+				{
+					render_mesh_s.material.tint_color = glm::vec3(0.f, 0.f, 0.5f);
+				}
+				else
+				{
+					render_mesh_s.material.tint_color = glm::vec3(0.5f, 0.5f, 0.5f);
+				}
+				*/
+				/*
+				render_mesh_s.material.tint_color = glm::vec3(0.4, 0.4, 0.4)
 				if (square.x % 2 == 0) {
 					render_mesh_s.material.tint_color -= glm::vec3(0.02f, 0.02f, 0.02f);
 				}
@@ -288,6 +301,7 @@ private:
 				if (square.team == 0.0f) { //TODO: refactor so team color is not hardcoded
 					render_mesh_s.material.tint_color += glm::vec3(-0.1f, 0.2f, -0.1f);
 				}
+				}*/
 			});
 	}
 

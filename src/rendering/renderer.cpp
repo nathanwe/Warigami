@@ -112,7 +112,7 @@ namespace rendering
 		pass_default_desc.state.culled_face     = GL_BACK;
 		pass_blended_desc.state.blend_src       = GL_SRC_ALPHA;
 		pass_blended_desc.state.blend_dest      = GL_ONE_MINUS_SRC_ALPHA;
-		pass_blended_desc.state.depth_func      = GL_LESS;
+		pass_blended_desc.state.depth_func      = GL_LEQUAL;
 		pass_blended_desc.state.depth_mask      = GL_FALSE;
 		_pass_blended = std::make_unique<render_pass>(pass_blended_desc);
 		assert(_pass_blended);

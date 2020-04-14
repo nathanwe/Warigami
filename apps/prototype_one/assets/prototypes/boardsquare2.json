@@ -3,17 +3,16 @@
     "components": [
       {
         "type": "transform",
-        "position": [ 0, 0, 0 ],
+        "position": [ 0, 0.01, 0 ],
         "scale": [ 1, 1, 1 ],
         "rotation": [ 0, -90, 0 ]
       },
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/cube/cube.obj",
-        "texture_diffuse": "assets/textures/board_paper/wrinkled-paper-albedo.png",
-        "texture_normal": "assets/textures/board_paper/wrinkled-paper-normal-ogl.png",
-        "texture_ambient_occlusion": "assets/textures/board_paper/wrinkled-paper-ao.png",
-        "tint_color": [ 0.5, 0.5, 0.5 ]
+        "is_alpha_blended": true,
+        "texture_diffuse": "assets/textures/terrain/grass.png",
+        "tint_color": [ 0.7, 0.7, 0.7 ]
       },
       {
         "type": "board_square"
@@ -28,9 +27,25 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, -0.01, 0 ],
+          "position": [ 0, 0, 0 ],
           "rotation": [ 0, 0, 0 ],
-          "scale": [ 1.01, 1, 1.01 ]
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/terrain/grass.png",
+          "tint_color": [ 0.5, 0.5, 0.5 ]
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, -0.001, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1.0008, 1, 1.0008 ]
         },
         {
           "type": "renderable_mesh_static",
