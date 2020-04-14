@@ -5,7 +5,7 @@
         "type": "transform",
         "position": [ 0, 0, 0 ],
         "scale": [ 1, 1, 1 ],
-        "rotation":  [0, -90, 0]
+        "rotation": [ 0, -90, 0 ]
       },
       {
         "type": "renderable_mesh_static",
@@ -15,12 +15,30 @@
         "texture_ambient_occlusion": "assets/textures/board_paper/wrinkled-paper-ao.png",
         "tint_color": [ 0.5, 0.5, 0.5 ]
       },
+      {
+        "type": "board_square"
+      },
+      {
+        "type": "terrain"
+      }
+    ]
+  },
+  "children": [
+    {
+      "components": [
         {
-            "type": "board_square"
+          "type": "transform",
+          "position": [ 0, -0.01, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1.01, 1, 1.01 ]
         },
         {
-            "type": "terrain"
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/cube/cube.obj",
+          "texture_diffuse": "assets/textures/terrain/sideDirt.png",
+          "tint_color": [ 0.5, 0.5, 0.5 ]
         }
-    ]
-  }
+      ]
+    }
+  ]
 }
