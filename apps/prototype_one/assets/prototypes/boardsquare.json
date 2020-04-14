@@ -36,7 +36,8 @@
           "mesh": "assets/meshes/cube/cube.obj",
           "is_enabled": false,
           "is_alpha_blended": true,
-          "tint_color": [ 0.7, 0.7, 0.7 ]
+          "tint_color": [ 0.7, 0.7, 0.7 ],
+          "tint_alpha": 0.3
         },
         {
           "type": "capture"
