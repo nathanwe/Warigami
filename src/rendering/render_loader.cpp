@@ -77,6 +77,10 @@ void rendering::render_loader::load(asset::asset_loader_node& asset_loader_node)
 	{
 		renderable.is_alpha_blended = it->get<bool>();
 	}
+	if (auto it = json.find("tint_alpha"); it != json.end())
+	{
+		renderable.material.tint_alpha = it->get<float>();
+	}
 }
 
 component_bitset rendering::render_loader::components_to_load()
