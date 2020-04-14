@@ -107,31 +107,31 @@ private:
 				{
 				case combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_ON_DEATH:
 				{
-					to_spawn newSpawn(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSORLING);
+					to_spawn newSpawn(game_piece.board_destination.x, game_piece.board_destination.y, game_piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(newSpawn);
 					break;
 				}
 				case combats::COMBAT_EFFECTS::SPAWN_SCISSOR_TROOPER_ON_DEATH:
 				{
-					to_spawn newSpawn2(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::SCISSOR_TROOPER);
+					to_spawn newSpawn2(game_piece.board_destination.x, game_piece.board_destination.y, game_piece.team, components::card_enum::SCISSOR_TROOPER);
 					board.spawner.push_back(newSpawn2);
 					break;
 				}
 				case combats::COMBAT_EFFECTS::SPAWN_ENEMY_SPIDERLING_ON_DEATH:
 				{
-					to_spawn newSpawn3(game_piece.board_source.x, game_piece.board_source.y, game_piece.team * -1, components::card_enum::SCISSORLING);
+					to_spawn newSpawn3(game_piece.board_destination.x, game_piece.board_destination.y, game_piece.team * -1, components::card_enum::SCISSORLING);
 					board.spawner.push_back(newSpawn3);
 					break;
 				}
 				case combats::COMBAT_EFFECTS::SPAWN_TWO_DWARVES_ON_DEATH:
 				{
-					to_spawn newSpawn4(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::TWO_DWARVES);
+					to_spawn newSpawn4(game_piece.board_destination.x, game_piece.board_destination.y, game_piece.team, components::card_enum::TWO_DWARVES);
 					board.spawner.push_back(newSpawn4);
 					break;
 				}
 				case combats::COMBAT_EFFECTS::SPAWN_ONE_DWARF_ON_DEATH:
 				{
-					to_spawn newSpawn5(game_piece.board_source.x, game_piece.board_source.y, game_piece.team, components::card_enum::ONE_DWARF);
+					to_spawn newSpawn5(game_piece.board_destination.x, game_piece.board_destination.y, game_piece.team, components::card_enum::ONE_DWARF);
 					board.spawner.push_back(newSpawn5);
 					break;
 				}
@@ -149,6 +149,20 @@ private:
 								terrain.team = game_piece.team;
 							}
 						});
+					break;
+				}
+				case combats::COMBAT_EFFECTS::YEET_SPIDERLING_ON_DEATH:
+				{
+					int landing_zone = game_piece.board_destination.y;
+					while (landing_zone + game_piece.team > 0 && landing_zone + game_piece.team < board.rows
+						&& board.board_state[game_piece.board_destination.x][landing_zone + game_piece.team] == 0) {
+						landing_zone += game_piece.team;
+						
+					}
+
+
+					to_spawn newSpawn(game_piece.board_destination.x, landing_zone, game_piece.team, components::card_enum::SCISSORLING);
+					board.spawner.push_back(newSpawn);
 					break;
 				}
 				}

@@ -36,7 +36,6 @@ namespace components
 	};
 	typedef std::uint8_t deck_index;
 	const static std::vector<card_enum> spider_deck = {
-
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSOR_TROOPER,
 			card_enum::SCISSORLING_EGG,

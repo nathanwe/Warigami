@@ -245,6 +245,7 @@ private:
 						ball_t.local_to_world = square_t.local_to_world;
 						ball_t.position[1] = ball_t.local_to_world[3][1] += 4.f;
 						ball_c.team = player.team;
+						ball_c.lane = player.selected_row;
 						//ball_r.material.param_diffuse = player.team == 1.0f ? glm::vec3(1, .5, .5) : glm::vec3(.5, .5, 1);
 					}
 
