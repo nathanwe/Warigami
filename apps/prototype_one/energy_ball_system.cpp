@@ -96,5 +96,7 @@ glm::vec3 energy_ball_system::find_target_position(components::selection_arrow& 
 		
 		auto& orb_t = arrow.energy_orbs[i].get_component<transforms::transform>();
 		return orb_t.local_to_world[3];
-	}	
+	}
+
+	return glm::vec3(9999.f);
 }
