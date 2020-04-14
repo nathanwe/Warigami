@@ -481,6 +481,7 @@ namespace rendering
 		_pass_blended->set_float(17, material.param_roughness);
 
 		_pass_blended->set_float3(35, material.tint_color);
+        _pass_blended->set_float(39, material.tint_alpha);
 	}
 
 	void renderer::blended_unbind_renderable()
