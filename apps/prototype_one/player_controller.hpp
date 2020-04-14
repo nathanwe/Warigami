@@ -9,6 +9,7 @@
 #include <event/event_manager.hpp>
 #include <transforms/transform.hpp>
 #include <rendering/renderable_mesh_static.hpp>
+#include <rendering/texture.hpp>
 #include <util/math.hpp>
 #include <util/sign.hpp>
 
@@ -23,6 +24,7 @@
 #include "game_util/player_specifics.hpp"
 #include "param_models/anim_params.hpp"
 #include <algorithm>
+#include <string>
 
 
 class player_controller : public ecs::system_base
@@ -32,8 +34,10 @@ class player_controller : public ecs::system_base
 public:
 
 	player_controller(core::game_input_manager& input, core::frame_timer& timer,
-		event::EventManager& _event_manager, asset::scene_hydrater& _hydrater) :
-		m_input(input), m_timer(timer), event_manager(_event_manager), hydrater(_hydrater)
+		event::EventManager& _event_manager, asset::scene_hydrater& _hydrater,
+		rendering::asset_cache& render_assets) :
+		m_input(input), m_timer(timer), event_manager(_event_manager), hydrater(_hydrater),
+		m_render_assets(render_assets)
 	{
 
 	}
@@ -41,6 +45,10 @@ public:
 	void initialize(ecs::state& state) override
 	{
 		select_spawn_column(state);
+
+		using namespace std::string_literals;
+		capture_spider_tex_id = m_render_assets.get<rendering::texture>("assets/textures/terrain/spiderweb.png"s).id;
+		capture_fantasy_tex_id = m_render_assets.get<rendering::texture>("assets/textures/terrain/starryTerrain.png"s).id;
 	}
 
 	void update(ecs::state& r_state) override
@@ -79,6 +87,10 @@ private:
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
 	asset::scene_hydrater& hydrater;
+	rendering::asset_cache& m_render_assets;
+
+	int capture_spider_tex_id = 0;
+	int capture_fantasy_tex_id = 0;
 
 	static constexpr std::array<glm::vec2, 1> m_queen_energy_offsets{ glm::vec2(0.f, 0.f) };
 	static constexpr std::array<glm::vec2, 2> m_queen_place_offsets{ glm::vec2(0.f, 0.3333f), glm::vec2(0.25f, 0.3333f) };
@@ -269,39 +281,40 @@ private:
 
 	void board_reset(ecs::state& r_state)
 	{
-		r_state.each<components::board_square, components::terrain, transforms::transform, rendering::renderable_mesh_static>(
-			[&](auto& square, auto& terrain, auto& transform, auto& render_mesh_s)
+		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>(
+			[&](auto& square, auto& transform, auto& render_mesh_s)
 			{
-				/*
-				if (square.team > 0.f)
-				{
-					render_mesh_s.material.tint_color = glm::vec3(0.5f, 0.f, 0.f);
-				}
-				else if (square.team < 0.f)
-				{
-					render_mesh_s.material.tint_color = glm::vec3(0.f, 0.f, 0.5f);
-				}
-				else
-				{
-					render_mesh_s.material.tint_color = glm::vec3(0.5f, 0.5f, 0.5f);
-				}
-				*/
-				/*
-				render_mesh_s.material.tint_color = glm::vec3(0.4, 0.4, 0.4)
-				if (square.x % 2 == 0) {
-					render_mesh_s.material.tint_color -= glm::vec3(0.02f, 0.02f, 0.02f);
-				}
-				row_select(transform, 1);
-				if (square.team == 1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.tint_color += glm::vec3(0.2f, -0.1f, -0.1f);
-				}
-				if (square.team == -1.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.tint_color += glm::vec3(-0.1f, -0.1f, 0.2f);
-				}
-				if (square.team == 0.0f) { //TODO: refactor so team color is not hardcoded
-					render_mesh_s.material.tint_color += glm::vec3(-0.1f, 0.2f, -0.1f);
-				}
-				}*/
+				r_state.each<components::player>(
+					[&](auto& player)
+					{
+						if (square.team == player.team)
+						{
+							auto& capture_render = square.captured->get_component<rendering::renderable_mesh_static>();
+							capture_render.is_enabled = square.team != 0.f;
+							if (square.team == 1.f)
+							{
+								capture_render.material.tint_color = glm::vec3(1.f, 0.f, 0.f);
+							}
+							else if (square.team == -1.f)
+							{
+								capture_render.material.tint_color = glm::vec3(0.f, 0.f, 1.f);
+							}
+
+							switch (player.deck_selection)
+							{
+							case components::player::spider_deck:
+								capture_render.material.texture_diffuse = capture_spider_tex_id;
+								break;
+							case components::player::fantasy_deck:
+								capture_render.material.texture_diffuse = capture_fantasy_tex_id;
+								break;
+							default:
+								std::cout << "Unexpected deck selection." << std::endl;
+								assert(false);
+								break;
+							}
+						}
+					});
 			});
 	}
 

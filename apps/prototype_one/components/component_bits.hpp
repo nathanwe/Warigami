@@ -32,7 +32,8 @@ namespace components
 		logo = 54,
 		pause_arrow = 55,
 		deck_cursor = 56,
-		spawn_effect = 57
+		spawn_effect = 57,
+		capture = 58
 
 		// careful: need to take action after 
 		// count reaches 63.
