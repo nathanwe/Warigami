@@ -28,17 +28,8 @@ void logo_system::initialize(ecs::state& state)
 
 }
 
-#include <iostream>
-
 void logo_system::update(ecs::state& state)
 {
-	state.each<transforms::transform, components::logo, rendering::renderable_mesh_static>(
-		[&](transforms::transform& transform, components::logo& logo, rendering::renderable_mesh_static& mesh) {
-
-			std::cout << (int) logo.state << std::endl;
-
-		});
-
 	state.each<transforms::transform, components::logo, rendering::renderable_mesh_static>(
 		[&](transforms::transform& transform, components::logo& logo, rendering::renderable_mesh_static& mesh) {
 			mesh.is_enabled = logo.state == components::logo_screen_state::showing;
