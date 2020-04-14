@@ -28,6 +28,7 @@ namespace combats
 		ANTI_REGEN = 13,
 		PROTECTION_FROM_ARROWS = 14,
 		SPEED_ENRAGE = 15,
+		YEET_SPIDERLING_ON_DEATH = 16,
 		NUM
 	};
 

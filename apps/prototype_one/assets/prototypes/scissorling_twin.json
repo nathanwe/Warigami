@@ -22,7 +22,7 @@
         "move_board": [ 0.0, 1.0 ],
         "move_world": [ 0.0, 0.0, 1.0 ],
         "attacks": [ [ 0.0, 1.0 ] ],
-        "effects": [ 0, 1 ],
+        "effects": [ 0, 16 ],
         "piece_type": "spider_twin"
       }
     ]
