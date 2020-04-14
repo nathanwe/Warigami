@@ -152,18 +152,20 @@ private:
 
 	void endgame_winlose()
 	{
+		ecs::entity* p_entity = nullptr;
 		if (_winner > 0)
 		{
-			_hydrater.add_from_prototype("assets/prototypes/endgame_win_lose_screen.json");
+			p_entity = &_hydrater.add_from_prototype("assets/prototypes/endgame_win_lose_screen.json");
 		}
 		else
 		{
-			_hydrater.add_from_prototype("assets/prototypes/endgame_lose_win_screen.json");
+			p_entity = &_hydrater.add_from_prototype("assets/prototypes/endgame_lose_win_screen.json");
 		}
 		_state.each<components::pause>([&](auto& pause)
-			{
-				pause.is_game_over = true;
-			});
+		{
+			pause.is_game_over = true;
+			pause.p_end_screen = p_entity;
+		});
 	}
 
 private:

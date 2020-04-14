@@ -3,6 +3,7 @@
 
 #include "ecs/component.hpp"
 #include "ecs/ecs_types.hpp"
+#include "ecs/entity.hpp"
 #include "component_bits.hpp"
 
 namespace components
@@ -13,6 +14,7 @@ namespace components
 		bool is_game_started = false;
 		bool is_game_countdown_over = false;
 		bool is_game_over = false;
+		ecs::entity* p_end_screen = nullptr;
 	};
 }
 
