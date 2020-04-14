@@ -21,21 +21,13 @@
 #include "components/spawn_effect.hpp"
 
 #include "game_util/player_specifics.hpp"
-
+#include "param_models/anim_params.hpp"
 #include <algorithm>
 
 
 class player_controller : public ecs::system_base
 {
-	struct anim_params
-	{
-		bool m_walked_recently            = false;
-		float m_time_last_walked          = 0.f;
-		int m_current_move_sprite         = 0;
-		bool m_is_placing_unit            = false;
-		float m_time_started_placing_unit = 0.f;
-		bool m_is_vacuuming_energy        = false;
-	};
+
 
 public:
 
@@ -46,11 +38,9 @@ public:
 
 	}
 
-	void initialize(ecs::state& state) override 
+	void initialize(ecs::state& state) override
 	{
 		select_spawn_column(state);
-		m_player_0_anim_data = anim_params();
-		m_player_1_anim_data = anim_params();
 	}
 
 	void update(ecs::state& r_state) override
@@ -74,7 +64,7 @@ public:
 					auto left = player_specifics.values.left;
 					update_succ(player, controls);
 					handle_player_selection(player, forward, left, board);
-					handle_controls(player, r_state, player_specifics, board, board_id);					
+					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, controls);
 					gain_flower_energy(r_state, player, controls);
 					show_cursor(player, r_state, player_specifics);
@@ -83,20 +73,13 @@ public:
 		select_sprite_for_player(r_state);
 	}
 
-	void public_place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) {
-		place_card(loc, player, r_state, board);
-	}
+	
 private:
 	core::game_input_manager& m_input;
 	core::frame_timer& m_timer;
 	event::EventManager& event_manager;
 	asset::scene_hydrater& hydrater;
-	anim_params m_player_0_anim_data;
-	anim_params m_player_1_anim_data;
 
-	static constexpr float m_walk_recency_duration = 1.0f;
-	static constexpr float m_time_between_place_sprites = 0.25f;
-	static constexpr float m_time_between_walk_sprites = 0.25f;
 	static constexpr std::array<glm::vec2, 1> m_queen_energy_offsets{ glm::vec2(0.f, 0.f) };
 	static constexpr std::array<glm::vec2, 2> m_queen_place_offsets{ glm::vec2(0.f, 0.3333f), glm::vec2(0.25f, 0.3333f) };
 	static constexpr std::array<glm::vec2, 4> m_queen_move_offsets{ glm::vec2(0.f, 0.6666f), glm::vec2(0.25f, 0.6666f), glm::vec2(0.5f, 0.6666f), glm::vec2(0.75f, 0.6666f) };
@@ -105,21 +88,21 @@ private:
 	void select_spawn_column(ecs::state& state)
 	{
 		state.each<components::player>([&](auto& player)
-		{
-			state.first<components::board>([&](auto& board)
 			{
-				player.selected_column = player.team > 0.f ? 0 : board.rows - 1;
-				return true;
+				state.first<components::board>([&](auto& board)
+					{
+						player.selected_column = player.team > 0.f ? 0 : board.rows - 1;
+						return true;
+					});
 			});
-		});
 	}
 
 	bool should_skip_update(ecs::state& r_state)
 	{
 		auto e = r_state.first<components::pause>([](auto& pause)
-		{
-			return true;
-		});
+			{
+				return true;
+			});
 		if (e)
 		{
 			auto& pause = e->get_component<components::pause>();
@@ -133,14 +116,14 @@ private:
 
 	void select_sprite(components::player& player, components::selection_arrow& selector, rendering::renderable_mesh_static& render)
 	{
-		auto& anim_data = selector.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+		auto& anim_data = player.animation_parameters;
 		auto& offset = render.material.texture_offset;
 		float time = m_timer.total_s();
 
 		if (anim_data.m_is_placing_unit)
 		{
 			float time_diff = time - anim_data.m_time_started_placing_unit;
-			if (time_diff < m_time_between_place_sprites)
+			if (time_diff < components::player::m_time_between_place_sprites)
 			{
 				offset = m_queen_place_offsets[0];
 			}
@@ -156,7 +139,7 @@ private:
 		else if (anim_data.m_walked_recently)
 		{
 			float time_diff = time - anim_data.m_time_last_walked;
-			float steps = time_diff / m_time_between_walk_sprites;
+			float steps = time_diff / components::player::m_time_between_walk_sprites;
 			int floored_steps = static_cast<int>(steps);
 			anim_data.m_current_move_sprite = floored_steps;
 			anim_data.m_current_move_sprite %= m_queen_move_offsets.size();
@@ -207,20 +190,20 @@ private:
 	void toggle_owned_energy_orbs(ecs::state& r_state)
 	{
 		r_state.each<components::player>([&](auto& player)
-		{
-			r_state.each<components::selection_arrow>([&](auto& selector)
 			{
-				if (player.team == selector.team)
-				{
-					for (unsigned int i = 0; i < selector.energy_orbs.size(); ++i)
+				r_state.each<components::selection_arrow>([&](auto& selector)
 					{
-						auto& render = selector.energy_orbs[i].template get_component<rendering::renderable_mesh_static>();
-						render.is_enabled = player.energy > i;
-						//render.material.param_diffuse = player.team == 1.0f ? glm::vec3(1, .5, .5) : glm::vec3(.5, .5, 1);
-					}
-				}
+						if (player.team == selector.team)
+						{
+							for (unsigned int i = 0; i < selector.energy_orbs.size(); ++i)
+							{
+								auto& render = selector.energy_orbs[i].template get_component<rendering::renderable_mesh_static>();
+								render.is_enabled = player.energy > i;
+								//render.material.param_diffuse = player.team == 1.0f ? glm::vec3(1, .5, .5) : glm::vec3(.5, .5, 1);
+							}
+						}
+					});
 			});
-		});
 	}
 
 	int find_selected_card_index(player_controls& controls)
@@ -237,9 +220,9 @@ private:
 		return -1;
 	}
 
-	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls&controls ) 
+	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls& controls)
 	{
-		auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+		auto& anim_data = player.animation_parameters;
 		anim_data.m_is_vacuuming_energy = !anim_data.m_is_placing_unit && player.succ;
 		if (anim_data.m_is_vacuuming_energy)
 		{
@@ -264,13 +247,13 @@ private:
 						ball_c.team = player.team;
 						//ball_r.material.param_diffuse = player.team == 1.0f ? glm::vec3(1, .5, .5) : glm::vec3(.5, .5, 1);
 					}
-					
+
 				}
 			);
 		}
 		r_state.each<components::terrain, components::board_square, transforms::transform>(
 			[&](auto& terrain, auto& square, auto& square_t)
-			{				
+			{
 				bool is_flower_selected = player.selected_row == terrain.location.x;
 				bool is_flower_captured = square.team == player.team;
 				bool is_flower_bent = terrain.growth_stage == 2;
@@ -315,7 +298,7 @@ private:
 		}
 		else if (!player.succ)
 		{
-			auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+			auto& anim_data = player.animation_parameters;
 			if (!anim_data.m_is_placing_unit)
 			{
 				auto vertical_input_active = std::abs(forward) > .4f;
@@ -331,13 +314,13 @@ private:
 					changed_selection = true;
 				}
 
-				auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+				auto& anim_data = player.animation_parameters;
 				if (changed_selection)
 				{
 					anim_data.m_walked_recently = true;
 					anim_data.m_time_last_walked = m_timer.total_s();
 				}
-				else if (anim_data.m_walked_recently && m_timer.total_s() - anim_data.m_time_last_walked > m_walk_recency_duration)
+				else if (anim_data.m_walked_recently && m_timer.total_s() - anim_data.m_time_last_walked > components::player::m_walk_recency_duration)
 				{
 					anim_data.m_walked_recently = false;
 				}
@@ -355,106 +338,11 @@ private:
 		auto& controls = player_specifics.controls;
 		int loc = find_selected_card_index(controls);
 		if (!player.succ) {
-			place_card(loc, player, r_state, board);
+			player.place_card(loc, m_timer.total_s(), r_state, board.spawner, hydrater);
 		}
 	}
 
-	void try_start_place_animation(anim_params& anim_data)
-	{
-		if (!anim_data.m_is_placing_unit)
-		{
-			anim_data.m_is_placing_unit = true;
-			anim_data.m_time_started_placing_unit = m_timer.total_s();
-		}
-	}
-
-	void try_end_place_animation(anim_params& anim_data)
-	{
-		if (anim_data.m_is_placing_unit)
-		{
-			bool is_finished_placing = m_timer.total_s() - anim_data.m_time_started_placing_unit > m_time_between_place_sprites * 2.f;
-			if (is_finished_placing)
-			{
-				anim_data.m_is_placing_unit = false;
-			}
-		}
-	}
-
-	void start_end_place_animation(bool placed, components::player& player)
-	{
-		auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
-		if (placed)
-		{
-			try_start_place_animation(anim_data);
-		}
-		else
-		{
-			try_end_place_animation(anim_data);
-		}
-	}
-
-	void start_spawn_effect(ecs::state& r_state, components::player& player)
-	{
-		auto& spawn_effect_entity = player.deck_selection == components::player::spider_deck ?
-			hydrater.add_from_prototype("assets/prototypes/spider_spawn.json") :
-			hydrater.add_from_prototype("assets/prototypes/fantasy_spawn.json");
-		auto& spawn_effect_transform = spawn_effect_entity.get_component<transforms::transform>();
-		auto& spawn_effect = spawn_effect_entity.get_component<components::spawn_effect>();
-
-		spawn_effect.time_started = m_timer.total_s();
-
-		// copied from spawner and board update system
-		auto p_board_entity = r_state.first<components::board>();
-		if (p_board_entity != nullptr)
-		{
-			auto& board = p_board_entity->get_component<components::board>();
-			auto& board_transform = p_board_entity->get_component<transforms::transform>();
-			glm::vec2 location_on_board = { player.selected_row, player.spawn_column };
-			spawn_effect_transform.position = board.grid_to_board(location_on_board, board_transform);
-
-			// place in front of units
-			spawn_effect_transform.position.x -= 0.1f;
-
-			spawn_effect_transform.is_matrix_dirty = true;
-			spawn_effect_transform.has_parent      = true;
-			spawn_effect_transform.parent          = p_board_entity->id();
-			spawn_effect_transform.rotation.y      = glm::half_pi<float>();
-			spawn_effect_transform.scale           = glm::vec3(0.45f);
-		}
-	}
-
-	void place_card(int loc, components::player& player, ecs::state& r_state, components::board& board) 
-	{
-		bool placed = false;
-		if (loc != -1) {
-			player.selected_card = player.hand[loc];
-			player.selected_card_location = loc;
-			bool taken = false;
-			r_state.each<components::game_piece>([&](components::game_piece& piece)
-				{
-					if (piece.board_source == glm::ivec2(player.selected_row, player.score_column))
-					{
-						taken = true;
-					}
-				});
-
-			if (!taken && player.energy >= components::card_costanamos[(int)player.hand[player.selected_card_location]])
-			{
-				board.spawner.emplace_back(
-					player.selected_row,
-					player.spawn_column,
-					player.team,
-					player.hand[player.selected_card_location]);
-
-				player.energy -= components::card_costanamos[(int)player.hand[player.selected_card_location]];
-				player.hand[player.selected_card_location] = player.safe_draw();
-				placed = true;
-
-				start_spawn_effect(r_state, player);
-			}
-		}
-		start_end_place_animation(placed, player);
-	}
+	
 	void update_succ(components::player& player, player_controls& controls) {
 		if (!player.controlled_by_AI) {
 			player.succ = m_input.is_input_active(controls.dice_button2);
@@ -483,12 +371,12 @@ private:
 
 					r_state.each<components::selection_arrow, transforms::transform, rendering::renderable_mesh_static>(
 						[&](auto& arrow, auto& transform_arrow, auto& render_mesh_s_arrow)
-						{					
-							if (arrow.team == player.team) 
+						{
+							if (arrow.team == player.team)
 							{
 								if (transform_arrow.position != arrow_pos)
 								{
-									auto& anim_data = player.team < 0.f ? m_player_1_anim_data : m_player_0_anim_data;
+									auto& anim_data = player.animation_parameters;
 									float t = (m_timer.total_s() - anim_data.m_time_last_walked) / 0.125f;
 									t = std::clamp(t, 0.f, 1.f);
 									transform_arrow.position = util::lerp(transform_arrow.position, arrow_pos, t);

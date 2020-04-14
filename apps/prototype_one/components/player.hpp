@@ -1,16 +1,28 @@
 #ifndef GAME_COMPONENTS_PLAYER_HPP
 #define GAME_COMPONENTS_PLAYER_HPP
 
-#include "ecs/component.hpp"
-#include "ecs/ecs_types.hpp"
-#include "component_bits.hpp"
-#include "card_enum.hpp"
-
+#include <glm/gtc/constants.hpp>
 #include <glm/glm.hpp>
 #include <vector>
 #include <algorithm>
 #include <random>
 #include <cstdint>
+
+// fishy dependencies 
+#include <asset/scene_hydrater.hpp>
+#include <transforms/transform.hpp>
+#include "spawn_effect.hpp"	
+#include "board.hpp"
+//
+
+#include <ecs/component.hpp>
+#include <ecs/ecs_types.hpp>
+#include <ecs/state.hpp>
+#include "component_bits.hpp"
+#include "card_enum.hpp"
+#include "../param_models/anim_params.hpp"
+#include "to_spawn.hpp"
+
 
 namespace components
 {
@@ -33,7 +45,7 @@ namespace components
 			card_enum::SCISSOR_QUEEN,
 	};
 
-	const std::vector<card_enum> soldier_deck = { 
+	const std::vector<card_enum> soldier_deck = {
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_RANGE_SOLDIER,
@@ -61,7 +73,7 @@ namespace components
 		fantasy_deck
 	};
 
-	const static std::vector<int> card_costanamos = 
+	const static std::vector<int> card_costanamos =
 	{ 0, 0, 3, 3, 5, 4, 5, 4, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 4, 5, 4, 5, 4, 5 };
 	const static int dice_costanamos = 1;
 
@@ -91,20 +103,25 @@ namespace components
 
 	struct player : ecs::component<player>
 	{
-	    static constexpr std::uint8_t MaxCards = 4;
-        using row_t = std::int16_t;
+		using row_t = std::int16_t;
 		using column_t = std::int16_t;
 
-        player()
-        {
-            regrow_deck();
-            shuffle();
+		static constexpr float m_walk_recency_duration = 1.0f;
+		static constexpr float m_time_between_place_sprites = 0.25f;
+		static constexpr float m_time_between_walk_sprites = 0.25f;
+		static constexpr std::uint8_t MaxCards = 4;
+
+
+		player()
+		{
+			regrow_deck();
+			shuffle();
 			redraw();
-        }
+		}
 
 		float max_energy{ 10.0f };
 		float energy = 5.0f;
-		float health {100.f};
+		float health{ 100.f };
 		int points = 0;
 		int bonus_dice = 0;
 		float team = 0.0f;
@@ -113,15 +130,15 @@ namespace components
 		float select_delay = 0.0f;
 		components::PLAYER_STATE state = components::PLAYER_STATE::BASE;
 		std::vector<card_enum> deck;
-        row_t selected_row = 2;
+		row_t selected_row = 2;
 		column_t selected_column = 4;
 		int spawn_column = 0;
 		int score_column = 1; //If units get here, this player gets hurt
 		rotate_states rotate_state = components::rotate_states::ZERO;
 		bool flip_state = false;
 		components::dice_nets current_dice_shape = dice_nets::SEVEN;
-        card_enum hand[MaxCards];
-        std::uint8_t card_count = 0;
+		card_enum hand[MaxCards];
+		std::uint8_t card_count = 0;
 		bool controlled_by_AI = false;
 		int AI_movement_direction = 1;
 		bool succ = false;
@@ -136,6 +153,8 @@ namespace components
 		deck_index deck_selection{ 0 };
 
 		bool is_ready{ false };
+
+		anim_params animation_parameters{};
 
 		card_enum draw() {
 			card_count++;
@@ -159,8 +178,8 @@ namespace components
 		}
 
 		void shuffle() {
-		    static std::random_device rd;
-			auto rng = std::default_random_engine{rd()};
+			static std::random_device rd;
+			auto rng = std::default_random_engine{ rd() };
 			std::shuffle(std::begin(deck), std::end(deck), rng);
 		}
 
@@ -318,6 +337,108 @@ namespace components
 			}
 
 			return ret;
+		}
+
+
+		void place_card(
+			int loc,
+			float total_s,
+			ecs::state& r_state,
+			std::vector<to_spawn>& spawner,
+			asset::scene_hydrater& hydrater)
+		{
+			bool placed = false;
+			if (loc != -1) {
+				selected_card = hand[loc];
+				selected_card_location = loc;
+				bool taken = false;
+				r_state.each<components::game_piece>([&](components::game_piece& piece)
+					{
+						if (piece.board_source == glm::ivec2(selected_row, score_column))
+						{
+							taken = true;
+						}
+					});
+
+				if (!taken && energy >= components::card_costanamos[(int)hand[selected_card_location]])
+				{
+					spawner.emplace_back(
+						selected_row,
+						spawn_column,
+						team,
+						hand[selected_card_location]);
+
+					energy -= components::card_costanamos[(int)hand[selected_card_location]];
+					hand[selected_card_location] = safe_draw();
+					placed = true;
+
+					start_spawn_effect(r_state, hydrater, total_s);
+				}
+			}
+			start_end_place_animation(placed, total_s);
+		}
+
+		void start_spawn_effect(ecs::state& r_state, asset::scene_hydrater& hydrater, float total_s)
+		{
+			auto& spawn_effect_entity = deck_selection == components::player::spider_deck ?
+				hydrater.add_from_prototype("assets/prototypes/spider_spawn.json") :
+				hydrater.add_from_prototype("assets/prototypes/fantasy_spawn.json");
+			auto& spawn_effect_transform = spawn_effect_entity.get_component<transforms::transform>();
+			auto& spawn_effect = spawn_effect_entity.get_component<components::spawn_effect>();
+
+			spawn_effect.time_started = total_s;
+
+			// copied from spawner and board update system
+			auto p_board_entity = r_state.first<components::board>();
+			if (p_board_entity != nullptr)
+			{
+				auto& board = p_board_entity->get_component<components::board>();
+				auto& board_transform = p_board_entity->get_component<transforms::transform>();
+				glm::vec2 location_on_board = { selected_row, spawn_column };
+				spawn_effect_transform.position = board.grid_to_board(location_on_board, board_transform);
+
+				// place in front of units
+				spawn_effect_transform.position.x -= 0.1f;
+
+				spawn_effect_transform.is_matrix_dirty = true;
+				spawn_effect_transform.has_parent = true;
+				spawn_effect_transform.parent = p_board_entity->id();
+				spawn_effect_transform.rotation.y = glm::half_pi<float>();
+				spawn_effect_transform.scale = glm::vec3(0.45f);
+			}
+		}
+
+		void start_end_place_animation(bool placed, float total_s)
+		{
+			if (placed)
+			{
+				try_start_place_animation(animation_parameters, total_s);
+			}
+			else
+			{
+				try_end_place_animation(animation_parameters, total_s);
+			}
+		}
+
+		void try_start_place_animation(anim_params& anim_data, float total_s)
+		{
+			if (!anim_data.m_is_placing_unit)
+			{
+				anim_data.m_is_placing_unit = true;
+				anim_data.m_time_started_placing_unit = total_s;
+			}
+		}
+
+		void try_end_place_animation(anim_params& anim_data, float total_s)
+		{
+			if (anim_data.m_is_placing_unit)
+			{
+				bool is_finished_placing = total_s - anim_data.m_time_started_placing_unit > m_time_between_place_sprites * 2.f;
+				if (is_finished_placing)
+				{
+					anim_data.m_is_placing_unit = false;
+				}
+			}
 		}
 	};
 }
