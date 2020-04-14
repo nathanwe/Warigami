@@ -111,7 +111,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/HowToPlay1.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -129,7 +130,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/HowToPlay2.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -147,7 +149,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/HowToPlay3.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -165,7 +168,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/HowToPlay4.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -183,7 +187,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/pause/options.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -201,7 +206,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/pause/warning.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -219,7 +225,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/Credits1.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -237,7 +244,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/Credits2.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -255,7 +263,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/Credits3.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },
@@ -273,7 +282,8 @@
                     "type": "renderable_mesh_static",
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/Credits4.png",
-                    "is_enabled": false
+                    "is_enabled": false,
+                    "tint_color": [ 0.75, 0.75, 0.75 ]
                 }
             ]
         },

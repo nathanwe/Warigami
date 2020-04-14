@@ -20,6 +20,20 @@
         }
       ]
     },
+    {
+      "entity_id": 4,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 50, 0 ],
+          "rotation": [ -90, 0, 0 ]
+        },
+        {
+          "type": "light_directional",
+          "intensity": 1
+        }
+      ]
+    },
 
 
     {
@@ -110,7 +124,8 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay1.png"
+          "texture_diffuse": "assets/textures/HowToPlay1.png",
+          "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]
     },
@@ -127,7 +142,8 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay2.png"
+          "texture_diffuse": "assets/textures/HowToPlay2.png",
+          "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]
     },
@@ -144,7 +160,8 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay3.png"
+          "texture_diffuse": "assets/textures/HowToPlay3.png",
+          "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]
     },
@@ -161,7 +178,8 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay4.png"
+          "texture_diffuse": "assets/textures/HowToPlay4.png",
+          "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]
     },
