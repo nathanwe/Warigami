@@ -14,8 +14,9 @@
 class AI_system : public ecs::system_base
 {
 public:
-	AI_system(core::frame_timer& timer)
+	AI_system(core::frame_timer& timer, asset::scene_hydrater& hydrater)
 		: _timer(timer)
+		, _hydrater(hydrater)
 	{}
 
 	void update(ecs::state& state)
@@ -48,7 +49,7 @@ public:
 									player.AI_movement_direction = 1;
 								}
 								if (player.selected_row != board.columns - 1) {
-									player.place_card(0, _timer.total_s(), state, board.spawner);
+									player.place_card(0, _timer.total_s(), state, board.spawner, _hydrater);
 							}
 						}
 					}
@@ -59,6 +60,7 @@ public:
 
 private:	
 	core::frame_timer& _timer;
+	asset::scene_hydrater& _hydrater;
 };
 
 #endif

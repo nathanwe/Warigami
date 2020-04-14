@@ -345,7 +345,7 @@ private:
 		auto& controls = player_specifics.controls;
 		int loc = find_selected_card_index(controls);
 		if (!player.succ) {
-			player.place_card(loc, m_timer.total_s(), r_state, board, hydrater);
+			player.place_card(loc, m_timer.total_s(), r_state, board.spawner, hydrater);
 		}
 	}
 

@@ -1,14 +1,19 @@
 #ifndef GAME_COMPONENTS_PLAYER_HPP
 #define GAME_COMPONENTS_PLAYER_HPP
 
+#include <glm/gtc/constants.hpp>
 #include <glm/glm.hpp>
 #include <vector>
 #include <algorithm>
 #include <random>
 #include <cstdint>
 
+// fishy dependencies 
 #include <asset/scene_hydrater.hpp>
 #include <transforms/transform.hpp>
+#include "spawn_effect.hpp"	
+#include "board.hpp"
+//
 
 #include <ecs/component.hpp>
 #include <ecs/ecs_types.hpp>
@@ -40,7 +45,7 @@ namespace components
 			card_enum::SCISSOR_QUEEN,
 	};
 
-	const std::vector<card_enum> soldier_deck = { 
+	const std::vector<card_enum> soldier_deck = {
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_TANK_SOLDIER,
 		card_enum::LIGHT_RANGE_SOLDIER,
@@ -68,7 +73,7 @@ namespace components
 		fantasy_deck
 	};
 
-	const static std::vector<int> card_costanamos = 
+	const static std::vector<int> card_costanamos =
 	{ 0, 0, 3, 3, 5, 4, 5, 4, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 4, 5, 4, 5, 4, 5 };
 	const static int dice_costanamos = 1;
 
@@ -104,19 +109,19 @@ namespace components
 		static constexpr float m_walk_recency_duration = 1.0f;
 		static constexpr float m_time_between_place_sprites = 0.25f;
 		static constexpr float m_time_between_walk_sprites = 0.25f;
-	    static constexpr std::uint8_t MaxCards = 4;
+		static constexpr std::uint8_t MaxCards = 4;
 
-        
-        player()
-        {
-            regrow_deck();
-            shuffle();
+
+		player()
+		{
+			regrow_deck();
+			shuffle();
 			redraw();
-        }
+		}
 
 		float max_energy{ 10.0f };
 		float energy = 5.0f;
-		float health {100.f};
+		float health{ 100.f };
 		int points = 0;
 		int bonus_dice = 0;
 		float team = 0.0f;
@@ -125,15 +130,15 @@ namespace components
 		float select_delay = 0.0f;
 		components::PLAYER_STATE state = components::PLAYER_STATE::BASE;
 		std::vector<card_enum> deck;
-        row_t selected_row = 2;
+		row_t selected_row = 2;
 		column_t selected_column = 4;
 		int spawn_column = 0;
 		int score_column = 1; //If units get here, this player gets hurt
 		rotate_states rotate_state = components::rotate_states::ZERO;
 		bool flip_state = false;
 		components::dice_nets current_dice_shape = dice_nets::SEVEN;
-        card_enum hand[MaxCards];
-        std::uint8_t card_count = 0;
+		card_enum hand[MaxCards];
+		std::uint8_t card_count = 0;
 		bool controlled_by_AI = false;
 		int AI_movement_direction = 1;
 		bool succ = false;
@@ -173,8 +178,8 @@ namespace components
 		}
 
 		void shuffle() {
-		    static std::random_device rd;
-			auto rng = std::default_random_engine{rd()};
+			static std::random_device rd;
+			auto rng = std::default_random_engine{ rd() };
 			std::shuffle(std::begin(deck), std::end(deck), rng);
 		}
 
@@ -336,10 +341,10 @@ namespace components
 
 
 		void place_card(
-			int loc, 
+			int loc,
 			float total_s,
-			ecs::state& r_state, 
-			components::board& board,
+			ecs::state& r_state,
+			std::vector<to_spawn>& spawner,
 			asset::scene_hydrater& hydrater)
 		{
 			bool placed = false;
@@ -357,7 +362,7 @@ namespace components
 
 				if (!taken && energy >= components::card_costanamos[(int)hand[selected_card_location]])
 				{
-					board.spawner.emplace_back(
+					spawner.emplace_back(
 						selected_row,
 						spawn_column,
 						team,
@@ -404,7 +409,7 @@ namespace components
 		}
 
 		void start_end_place_animation(bool placed, float total_s)
-		{			
+		{
 			if (placed)
 			{
 				try_start_place_animation(animation_parameters, total_s);
