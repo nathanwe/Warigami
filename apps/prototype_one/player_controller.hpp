@@ -284,6 +284,7 @@ private:
 		r_state.each<components::board_square, transforms::transform, rendering::renderable_mesh_static>(
 			[&](auto& square, auto& transform, auto& render_mesh_s)
 			{
+				transform.is_matrix_dirty = true;
 				r_state.each<components::player>(
 					[&](auto& player)
 					{
