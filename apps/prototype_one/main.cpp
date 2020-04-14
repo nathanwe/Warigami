@@ -219,12 +219,13 @@ int main(int argc, char** argv) {
 		&escreen,
 
 		//
+		&main_menu_controller,
 		&spawn_effector,
 		&animator,
 		&transformer,
 		&renderer,
 		&text_renderer,
-		&main_menu_controller,
+		
 		&energy_balls,
 		&logo
 	});
