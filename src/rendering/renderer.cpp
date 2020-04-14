@@ -409,7 +409,9 @@ namespace rendering
 			{
                 if (renderable.is_enabled && renderable.is_alpha_blended)
 				{
-					float distSqr = glm::length2(camera_transform.position - transform.position);
+                    glm::vec3 camera_world_pos = camera_transform.local_to_world[3];
+                    glm::vec3 sprite_world_pos = transform.local_to_world[3];
+					float distSqr = glm::length2(camera_world_pos - sprite_world_pos);
                     sorted_meshes[distSqr].emplace_back(transform, renderable);
                 }
 			}
