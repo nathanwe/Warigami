@@ -15,6 +15,7 @@ public:
 		event::EventManager& events,
 		core::game_input_manager& input);
 	
+	void initialize(ecs::state& state) override;
 	void update(ecs::state& state) override;
 
 private:
