@@ -12,16 +12,15 @@ namespace core
 {
 class startup_config
 {
-private:
     static const os::file_path FileName;
-    json config_json;
 
 public:
+    const static constexpr float DefaultVolume = 0.5f;
+
     startup_config()
     {
         load();
     }
-
 
     bool fullscreen() const;
     std::uint32_t height() const;
@@ -36,10 +35,19 @@ public:
     float music_volume() const;
     float sfx_volume() const;
 
+    template <typename T>
+    void set(const std::string& option, T value)
+    {
+        config_json[option] = value;
+        save();
+    }
+
 private:
+    json config_json;
+
     json make_default() const;
     void load();
-
+    void save();
 };
 } // namespace core
 
