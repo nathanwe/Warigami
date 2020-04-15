@@ -207,7 +207,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -35.5, 13, -5 ],
+          "position": [ -35.5, 12, -5 ],
           "rotation": [ 0, -90, -48 ],
           "scale": [ 1, 0.2, 1 ]
         },

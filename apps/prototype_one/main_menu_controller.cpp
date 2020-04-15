@@ -4,7 +4,6 @@
 #include "components/main_menu.hpp"
 #include "components/pause_arrow.hpp"
 
-#include <transforms/transform.hpp>
 #include <rendering/renderable_mesh_static.hpp>
 #include <asset/scene_change_event.hpp>
 
@@ -31,15 +30,21 @@ void main_menu_controller::initialize(ecs::state& state)
 void main_menu_controller::update(ecs::state& state)
 {
 	state.each<components::main_menu>([&](components::main_menu& menu) {
+		auto arrow = state.first<components::pause_arrow>();
+		if (arrow == nullptr)
+		{
+			return;
+		}
+		auto& arrow_transform = arrow->get_component<transforms::transform>();
 
 		if (!_seeing_new_menu && menu.how_to_page == components::main_menu::NoPage)
-			handle_main_menu_case(state, menu);
+			handle_main_menu_case(state, menu, arrow_transform);
 		else if (_seeing_new_menu) {
 			if (_selection == OPTIONS) {
-				handle_options_case(state, menu);
+				handle_options_case(state, menu, arrow_transform);
 			}
 			else if (_selection == QUIT) {
-				handle_quit_case(state, menu);
+				handle_quit_case(state, menu, arrow_transform);
 			}
 		}
 		else
@@ -79,17 +84,17 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 	}
 }
 
-void main_menu_controller::handle_options_case(ecs::state& state, components::main_menu& menu) {
+void main_menu_controller::handle_options_case(ecs::state& state, components::main_menu& menu, transforms::transform& arrow_transform) {
 	//
 }
 
-void main_menu_controller::handle_quit_case(ecs::state& state, components::main_menu& menu) {
+void main_menu_controller::handle_quit_case(ecs::state& state, components::main_menu& menu, transforms::transform& arrow_transform) {
 	auto& e = state.find_entity(111); // Warning image
 	auto& r = e.get_component<rendering::renderable_mesh_static>();
 	r.is_enabled = true;
-	/*pause_renderable.is_enabled = false;
-	arrow_transform.position = glm::vec3(-27 - (_current_warning_selection + 2) * 0.7, 8 - (_current_warning_selection + 2) * 0.9, -3);
-	arrow_transform.is_matrix_dirty = true;*/
+	arrow_transform.position = glm::vec3(-36.7 - _warning_selection * 0.3, 14 - _warning_selection * 0.3, -1.4);
+	arrow_transform.scale = glm::vec3(0.8, 0.15,1);
+	arrow_transform.is_matrix_dirty = true;
 
 	// Change selected
 	if (_input.is_input_started(core::controls::UP_CONTROL) || _input.is_input_started(core::controls::UP_CONTROL_PLAYER2))
@@ -110,9 +115,9 @@ void main_menu_controller::handle_quit_case(ecs::state& state, components::main_
 			// Return to pause menu
 			_seeing_new_menu = false;
 			r.is_enabled = false;
-			/*pause_renderable.is_enabled = true;
-			arrow_transform.position = glm::vec3(-27 - _current_selection * 0.7, 8 - _current_selection * 0.9, -5);
-			arrow_transform.is_matrix_dirty = true;*/
+			arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
+			arrow_transform.scale = glm::vec3(1, 0.2, 1);
+			arrow_transform.is_matrix_dirty = true;
 		}
 		else if (_warning_selection == 1) {
 			// Confirm quit
@@ -121,19 +126,11 @@ void main_menu_controller::handle_quit_case(ecs::state& state, components::main_
 	}
 }
 
-void main_menu_controller::handle_main_menu_case(ecs::state& state, components::main_menu& menu)
+void main_menu_controller::handle_main_menu_case(ecs::state& state, components::main_menu& menu, transforms::transform& arrow_transform)
 {
 	texts menu_items(state);
 	auto half_height = _glfw.height() / 2.f;
 	auto half_width = _glfw.width() / 2.f;
-
-	auto arrow = state.first<components::pause_arrow>();
-	if (arrow == nullptr)
-	{
-		return;
-	}
-	auto& arrow_renderable = arrow->get_component<rendering::renderable_mesh_static>();
-	auto& arrow_transform = arrow->get_component<transforms::transform>();
 
 	// Move arrow
 	if (_input.is_input_started(core::controls::UP_CONTROL) || _input.is_input_started(core::controls::UP_CONTROL_PLAYER2)) {

@@ -9,6 +9,7 @@
 #include <core/frame_timer.hpp>
 
 #include "components/main_menu.hpp"
+#include <transforms/transform.hpp>
 
 
 class main_menu_controller : public ecs::system_base
@@ -48,15 +49,18 @@ public:
 
 	void handle_main_menu_case(
 		ecs::state& state,
-		components::main_menu& menu);
+		components::main_menu& menu,
+		transforms::transform& arrow_transform);
 
 	void handle_options_case(
 		ecs::state& state,
-		components::main_menu& menu);
+		components::main_menu& menu,
+		transforms::transform& arrow_transform);
 
 	void handle_quit_case(
 		ecs::state& state,
-		components::main_menu& menu);
+		components::main_menu& menu,
+		transforms::transform& arrow_transform);
 
 private:
 	event::EventManager& _events;
@@ -64,10 +68,10 @@ private:
 	core::game_input_manager& _input;
 	core::frame_timer& _timer;
 
-	short _selection;
+	int _selection;
 	bool _seeing_new_menu;
-	short _option_selection;
-	short _warning_selection;
+	int _option_selection;
+	int _warning_selection;
 };
 
 
