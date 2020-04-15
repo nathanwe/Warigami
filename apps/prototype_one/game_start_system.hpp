@@ -49,7 +49,7 @@ public:
 						textures[k][i][j][l] = 0;
 
 					}
-					textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-greyscale.png"s).id;					
+					textures[(int)components::TERRAIN_ENUM::NONE][i][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass.png"s).id;					
 				}			
 			}
 			textures[(int)components::TERRAIN_ENUM::FIRE][0][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/fire2.png"s).id;
@@ -61,14 +61,14 @@ public:
 			textures[(int)components::TERRAIN_ENUM::WEB][2][0][l] = _asset_cache.get<rendering::texture>("assets/textures/terrain/web1.png"s).id;
 		}
 		for (int i = 0; i < 3; i++) {
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][0] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower7.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][1] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower7.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][2] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower6.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][3] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower5.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][4] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower4.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][5] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower3.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][6] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower2.png"s).id;
-			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][7] = _asset_cache.get<rendering::texture>("assets/textures/terrain/grass-flower1.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][0] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower7.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][1] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower7.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][2] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower6.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][3] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower5.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][4] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower4.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][5] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower3.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][6] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower2.png"s).id;
+			textures[(int)components::TERRAIN_ENUM::ENERGY_FLOWER][i][0][7] = _asset_cache.get<rendering::texture>("assets/textures/terrain/flower1.png"s).id;
 		}
 
 

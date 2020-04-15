@@ -112,7 +112,7 @@ namespace rendering
 		pass_default_desc.state.culled_face     = GL_BACK;
 		pass_blended_desc.state.blend_src       = GL_SRC_ALPHA;
 		pass_blended_desc.state.blend_dest      = GL_ONE_MINUS_SRC_ALPHA;
-		pass_blended_desc.state.depth_func      = GL_LESS;
+		pass_blended_desc.state.depth_func      = GL_LEQUAL;
 		pass_blended_desc.state.depth_mask      = GL_FALSE;
 		_pass_blended = std::make_unique<render_pass>(pass_blended_desc);
 		assert(_pass_blended);
@@ -409,7 +409,9 @@ namespace rendering
 			{
                 if (renderable.is_enabled && renderable.is_alpha_blended)
 				{
-					float distSqr = glm::length2(camera_transform.position - transform.position);
+                    glm::vec3 camera_world_pos = camera_transform.local_to_world[3];
+                    glm::vec3 sprite_world_pos = transform.local_to_world[3];
+					float distSqr = glm::length2(camera_world_pos - sprite_world_pos);
                     sorted_meshes[distSqr].emplace_back(transform, renderable);
                 }
 			}
@@ -479,6 +481,7 @@ namespace rendering
 		_pass_blended->set_float(17, material.param_roughness);
 
 		_pass_blended->set_float3(35, material.tint_color);
+        _pass_blended->set_float(39, material.tint_alpha);
 	}
 
 	void renderer::blended_unbind_renderable()

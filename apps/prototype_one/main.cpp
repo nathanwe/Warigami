@@ -47,6 +47,7 @@
 #include "components/deck_cursor.hpp"
 #include "components/deck_cursor_loader.hpp"
 #include "components/spawn_effect.hpp"
+#include "components/capture.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -141,6 +142,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 	ecs::register_component<components::spawn_effect>("spawn_effect");
+	ecs::register_component<components::capture>("capture");
 
 	asset::scene_hydrater hydrater(state);
 
@@ -148,13 +150,13 @@ int main(int argc, char** argv) {
 
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events, hydrater, resolver);
-	player_controller player_control(input, timer, events, hydrater);
+	rendering::asset_cache render_asset_cache(assets);
+	player_controller player_control(input, timer, events, hydrater, render_asset_cache);
 	
 	deck_ui_controller deck_ui_controller(card_spawn_helper);
 	audio::audio_system audio_system(strings, assets, config);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
-	rendering::asset_cache render_asset_cache(assets);
 	game_start_system game_start_system(hydrater, render_asset_cache);
 	health_regenration_system health_regen;
 	

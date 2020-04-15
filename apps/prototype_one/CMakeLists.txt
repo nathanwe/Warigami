@@ -6,6 +6,7 @@ add_executable (warigami
 	components/board_square_loader.cpp	
 	components/board_square.cpp 	
 	components/board.cpp	
+	components/capture.cpp
 	components/card_enum.hpp
 	components/card_loader.cpp
 	components/card.cpp	

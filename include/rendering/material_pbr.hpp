@@ -24,6 +24,7 @@ namespace rendering
 		float param_roughness     = 0.5f;
 
 		glm::vec3 tint_color = glm::vec3(1.f);
+		float tint_alpha = 1.f;
 	};
 }
 
