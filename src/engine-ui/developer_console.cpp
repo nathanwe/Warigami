@@ -7,6 +7,18 @@
 #include <imgui_impl_opengl3.h>
 
 
+int input_callback(ImGuiInputTextCallbackData* data)
+{
+	bool is_filter_callback = data->Flags & ImGuiInputTextFlags_CallbackCharFilter;
+	if (is_filter_callback)
+	{
+		if (data->EventChar == '`')
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
 
 engineui::developer_console::developer_console(core::viewport& viewport, event::EventManager& events, GLFWwindow* window)
 	: view(viewport)
@@ -28,9 +40,11 @@ void engineui::developer_console::draw()
 		ImGui::SetWindowPos({ 0, (float)_viewport.height - Height }, ImGuiCond_Always);
 
 	static int output_type = 0;
+#ifndef NDEBUG
 	ImGui::RadioButton("command", &output_type, 0); ImGui::SameLine();
 	ImGui::RadioButton("stdout", &output_type, 1); ImGui::SameLine();
 	ImGui::RadioButton("stderr", &output_type, 2);
+#endif
 
 	ImGui::PushItemWidth(-1);
 
@@ -46,10 +60,12 @@ void engineui::developer_console::draw()
 			_should_grab_focus = false;
 		}
 
-		auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input) - 1, ImGuiInputTextFlags_EnterReturnsTrue);
+		auto pressed = ImGui::InputText("##in", _input, IM_ARRAYSIZE(_input) - 1, 
+			ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCharFilter, &input_callback);
 		if (pressed) handle_command();
 		break;
 	}
+#ifndef NDEBUG
 	case 1:
 		write_buffer(_output, _outbuf);
 		ImGui::InputTextMultiline("##out", _output, IM_ARRAYSIZE(_output), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
@@ -58,6 +74,7 @@ void engineui::developer_console::draw()
 		write_buffer(_error, _errbuf);
 		ImGui::InputTextMultiline("##err", _error, IM_ARRAYSIZE(_error), { 0, Height - 60 }, ImGuiInputTextFlags_ReadOnly);
 		break;
+#endif
 	}
 
 	ImGui::PopItemWidth();

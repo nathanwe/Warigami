@@ -295,7 +295,14 @@ int main(int argc, char** argv) {
 	engineui::entities_view entities_view(window_view, events, state);
 	engineui::imgui_overlay overlay(glfw.window(), input, cursor);
 	rendering::debug_view render_debug_view(window_view, renderer);
-	overlay.register_views(&console, &fps, &entities_view, &render_debug_view);
+	overlay.register_views(
+		&console
+		, &fps
+#ifndef NDEBUG
+		, &entities_view
+		, &render_debug_view
+#endif
+	);
 
 	while (scene_tracker.has_next() && !glfwWindowShouldClose(glfw.window()))
 	{		
@@ -312,7 +319,9 @@ int main(int argc, char** argv) {
 			input.update();
 			world.update();
 
+#ifndef NDEBUG
 			entities_view.update(state);
+#endif
 			overlay.update();
 
 			glfw.swap_buffers();
