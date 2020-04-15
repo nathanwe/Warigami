@@ -6,19 +6,22 @@
 
 #include <asset/scene.hpp>
 #include <asset/resource_id.hpp>
+#include <core/logger.hpp>
 
 asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(assets)
 {
 	// read a JSON file
 	auto j = assets.get_json(file_path);
 
+    core::logger::log("loading scene: " + file_path);
+
     auto str = j.dump();
 
 	std::vector<json> descendant_children;
 	std::vector<scene_entity*> inserted_children;
 
-    inserted_children.reserve(j["entities"].size());
-    descendant_children.reserve(j["entities"].size());
+    inserted_children.reserve(j["entities"].size()*50);
+    descendant_children.reserve(j["entities"].size()*50);
     
     _entities.reserve(j["entities"].size());
 
@@ -41,6 +44,8 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
 
         for (auto* potential_parent : inserted_children)
         {
+            core::logger::log(potential_parent->j().dump());
+
             if (!potential_parent->has_id()) continue;
 
             auto parent_id = potential_parent->id();
