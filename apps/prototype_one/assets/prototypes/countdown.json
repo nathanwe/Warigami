@@ -2,16 +2,23 @@
   "root": {
     "components": [
       {
-        "type": "transform"
+        "type": "transform",
+        "position": [ -20, 2, 0 ],
+        "rotation": [ 0, -90, -48 ],
+        "scale": [ 4, 4, 1 ]
       },
       {
         "type": "countdown",
         "duration": 80 
       },
       {
-        "type": "renderable_text",
-        "position": [ 0, 0 ],
-        "color": [ 0, 0, 0 ]
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/quad/quad.obj",
+        "texture_diffuse": "assets/textures/countdown.png",
+        "is_enabled": false,
+        "is_alpha_blended": true,
+        "tint_color": [ 0.75, 0.75, 0.75 ],
+        "texture_scale": [ 0.25, 1 ]
       }
     ]
   }
