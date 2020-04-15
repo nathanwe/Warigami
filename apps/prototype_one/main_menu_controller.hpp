@@ -15,6 +15,8 @@ class main_menu_controller : public ecs::system_base
 {
 	const glm::vec3 HidePosition{ 9999.f, 0.f, 0.f };
 
+	enum choices { START, HOW_TO, OPTIONS, QUIT, NUM_CHOICES };
+
 	struct texts
 	{
 		texts(ecs::state& state)
@@ -48,11 +50,24 @@ public:
 		ecs::state& state,
 		components::main_menu& menu);
 
+	void handle_options_case(
+		ecs::state& state,
+		components::main_menu& menu);
+
+	void handle_quit_case(
+		ecs::state& state,
+		components::main_menu& menu);
+
 private:
 	event::EventManager& _events;
 	core::glfw_context& _glfw;
 	core::game_input_manager& _input;
 	core::frame_timer& _timer;
+
+	short _selection;
+	bool _seeing_new_menu;
+	short _option_selection;
+	short _warning_selection;
 };
 
 

@@ -173,12 +173,71 @@
           "type": "transform",
           "position": [ 0, 0, 0 ],
           "rotation": [ 0, 0, 0 ],
-          "scale": [ 1, 1, 1 ]
+          "scale": [ 2, 2, 2 ]
         },
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
           "texture_diffuse": "assets/textures/HowToPlay4.png",
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 100,
+      "entity_id": 109,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -0.7, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0.5, 1.25, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/mainMenuImg.png",
+          "tint_color": [ 0.75, 0.75, 0.75 ],
+          "is_alpha_blended": true
+        }
+      ]
+    },
+    {
+      "entity_id": 110,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ -35.5, 13, -5 ],
+          "rotation": [ 0, -90, -48 ],
+          "scale": [ 1, 0.2, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/pause/pencil.png",
+          "tint_color": [ 0.75, 0.75, 0.75 ],
+          "is_alpha_blended": true
+        },
+        {
+          "type": "pause_arrow"
+        }
+      ]
+    },
+    {
+      "parent_id": 109,
+      "entity_id": 111,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 1.5, 0, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 0.4, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/pause/warning.png",
+          "is_enabled": false,
           "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]

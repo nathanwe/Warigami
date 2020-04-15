@@ -2,8 +2,10 @@
 
 #include "main_menu_controller.hpp"
 #include "components/main_menu.hpp"
+#include "components/pause_arrow.hpp"
 
 #include <transforms/transform.hpp>
+#include <rendering/renderable_mesh_static.hpp>
 #include <asset/scene_change_event.hpp>
 
 main_menu_controller::main_menu_controller(
@@ -20,14 +22,26 @@ main_menu_controller::main_menu_controller(
 
 void main_menu_controller::initialize(ecs::state& state)
 {
+	_selection = 0;
+	_option_selection = 0;
+	_warning_selection = 0;
+	_seeing_new_menu = false;
 }
 
 void main_menu_controller::update(ecs::state& state)
 {
 	state.each<components::main_menu>([&](components::main_menu& menu) {
 
-		if (menu.how_to_page == components::main_menu::NoPage)
+		if (!_seeing_new_menu && menu.how_to_page == components::main_menu::NoPage)
 			handle_main_menu_case(state, menu);
+		else if (_seeing_new_menu) {
+			if (_selection == OPTIONS) {
+				handle_options_case(state, menu);
+			}
+			else if (_selection == QUIT) {
+				handle_quit_case(state, menu);
+			}
+		}
 		else
 			handle_howto_case(state, menu);
 
@@ -65,21 +79,94 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 	}
 }
 
+void main_menu_controller::handle_options_case(ecs::state& state, components::main_menu& menu) {
+	//
+}
+
+void main_menu_controller::handle_quit_case(ecs::state& state, components::main_menu& menu) {
+	auto& e = state.find_entity(111); // Warning image
+	auto& r = e.get_component<rendering::renderable_mesh_static>();
+	r.is_enabled = true;
+	/*pause_renderable.is_enabled = false;
+	arrow_transform.position = glm::vec3(-27 - (_current_warning_selection + 2) * 0.7, 8 - (_current_warning_selection + 2) * 0.9, -3);
+	arrow_transform.is_matrix_dirty = true;*/
+
+	// Change selected
+	if (_input.is_input_started(core::controls::UP_CONTROL) || _input.is_input_started(core::controls::UP_CONTROL_PLAYER2))
+	{
+		if (_warning_selection == 0) {
+			_warning_selection = 2;
+		}
+		_warning_selection--;
+	}
+	else if (_input.is_input_started(core::controls::DOWN_CONTROL) || _input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2))
+	{
+		_warning_selection = (++_warning_selection) % 2;
+	}
+	// Choose selected
+	else if (_input.is_input_started(core::controls::CARD1_CONTROL) || _input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
+
+		if (_warning_selection == 0) {
+			// Return to pause menu
+			_seeing_new_menu = false;
+			r.is_enabled = false;
+			/*pause_renderable.is_enabled = true;
+			arrow_transform.position = glm::vec3(-27 - _current_selection * 0.7, 8 - _current_selection * 0.9, -5);
+			arrow_transform.is_matrix_dirty = true;*/
+		}
+		else if (_warning_selection == 1) {
+			// Confirm quit
+			_glfw.set_should_close(true);
+		}
+	}
+}
+
 void main_menu_controller::handle_main_menu_case(ecs::state& state, components::main_menu& menu)
 {
 	texts menu_items(state);
 	auto half_height = _glfw.height() / 2.f;
 	auto half_width = _glfw.width() / 2.f;
 
-	if (_input.is_input_ended(core::controls::START))
+	auto arrow = state.first<components::pause_arrow>();
+	if (arrow == nullptr)
 	{
-		asset::scene_change_event game_start("assets/scenes/scene.json");
-		_events.BroadcastEvent(game_start);
+		return;
+	}
+	auto& arrow_renderable = arrow->get_component<rendering::renderable_mesh_static>();
+	auto& arrow_transform = arrow->get_component<transforms::transform>();
+
+	// Move arrow
+	if (_input.is_input_started(core::controls::UP_CONTROL) || _input.is_input_started(core::controls::UP_CONTROL_PLAYER2)) {
+		if (_selection == 0) {
+			_selection = NUM_CHOICES;
+		}
+		_selection--;
+		arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
+		arrow_transform.is_matrix_dirty = true;
+	}
+	else if (_input.is_input_started(core::controls::DOWN_CONTROL) || _input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2)) {
+		_selection = (++_selection) % NUM_CHOICES;
+		arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
+		arrow_transform.is_matrix_dirty = true;
 	}
 
-	if (_input.is_input_started(core::controls::CARD1_CONTROL))
-	{
-		menu.how_to_page++;	
+	// Choose selected
+	else if (_input.is_input_started(core::controls::CARD1_CONTROL) || _input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
+		if (_selection == START) {
+			asset::scene_change_event game_start("assets/scenes/scene.json");
+			_events.BroadcastEvent(game_start);
+		}
+		else if (_selection == HOW_TO) {
+			menu.how_to_page++;
+		}
+		else if (_selection == OPTIONS) {
+			_seeing_new_menu = true;
+			_option_selection = 0;
+		}
+		else if (_selection == QUIT) {
+			_seeing_new_menu = true;
+			_warning_selection = 0;
+		}
 	}
 
 	menu_items.start_text.position.x = half_width - 150;
