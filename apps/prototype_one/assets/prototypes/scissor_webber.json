@@ -29,7 +29,7 @@
 					[ -1.0, 2.0 ],
 					[ -1.0, 3.0 ]
 				],
-				"effects": [ 0, 4 ],
+				"effects": [ 0 ],
 				"piece_type": "spider_webber"
 			}
 		]

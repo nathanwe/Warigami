@@ -41,7 +41,18 @@ namespace components
 			card_enum::SCISSORLING_EGG,
 			card_enum::SCISSOR_WEBBER,
 			card_enum::SCISSOR_GOLIATH,
-			card_enum::SCISSOR_QUEEN,
+			card_enum::SCISSOR_QUEEN
+	};
+	const static std::vector<card_enum> spider_deck_test = {
+			card_enum::SCISSORLING_TWIN,
+			card_enum::SCISSOR_TROOPER,
+			card_enum::SCISSORLING_EGG,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_QUEEN
 	};
 
 	const std::vector<card_enum> soldier_deck = {
@@ -66,6 +77,17 @@ namespace components
 		card_enum::UNICORN,
 		card_enum::KNIGHT
 	};
+	const std::vector<card_enum> fantasy_deck_test = {
+		card_enum::ERASER,
+		card_enum::ERASER,
+		card_enum::TROLL,
+		card_enum::TROLL,
+		card_enum::WIZARD,
+		card_enum::ARCHER,
+		card_enum::UNICORN,
+		card_enum::KNIGHT,
+		card_enum::KNIGHT
+	};
 
 	const std::vector<card_enum> decks[]{
 		spider_deck,
@@ -73,7 +95,7 @@ namespace components
 	};
 
 	const static std::vector<int> card_costanamos =
-	{ 0, 0, 2, 3, 6, 3, 4, 5, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 3, 5, 3, 5, 3, 5 };
+	{ 0, 0, 3, 3, 5, 4, 5, 4, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 3, 5, 3, 5, 3, 5 };
 	const static int dice_costanamos = 1;
 
 	enum class dice_nets {

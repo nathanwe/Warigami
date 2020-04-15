@@ -15,16 +15,14 @@
       {
         "type": "game_piece",
         "speed": 1.0,
-        "damage": 4.0,
-        "health": 8.0,
+        "damage": 6.0,
+        "health": 6.0,
         "team": 1.0,
         "board_location": [ 0.0, 0.0 ],
         "move_board": [ 0.0, 1.0 ],
         "move_world": [ 0.0, 0.0, 1.0 ],
         "attacks": [
-          [ 0.0, 1.0 ],
-          [ 1.0, 1.0 ],
-          [-1.0, 1.0 ]
+          [ 0.0, 1.0 ]
         ],
         "effects": [ 0 ],
         "piece_type": "spider_goliath"
