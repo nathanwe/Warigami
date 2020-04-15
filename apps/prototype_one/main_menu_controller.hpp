@@ -17,21 +17,7 @@ class main_menu_controller : public ecs::system_base
 	const glm::vec3 HidePosition{ 9999.f, 0.f, 0.f };
 
 	enum choices { START, HOW_TO, OPTIONS, QUIT, NUM_CHOICES };
-
-	struct texts
-	{
-		texts(ecs::state& state)
-			: start_text(state.find_entity(101).get_component<rendering::renderable_text>())
-			, howto_text(state.find_entity(102).get_component<rendering::renderable_text>())
-			, options_text(state.find_entity(103).get_component<rendering::renderable_text>())
-			, exit_text(state.find_entity(108).get_component<rendering::renderable_text>())
-		{}
-
-		rendering::renderable_text& start_text;
-		rendering::renderable_text& howto_text;
-		rendering::renderable_text& options_text;
-		rendering::renderable_text& exit_text;
-	};
+	enum options { FULLSCREEN, MUTE_ALL, MUTE_MUSIC, BACK, NUM_OPTIONS };
 
 public:
 	main_menu_controller(

@@ -59,13 +59,6 @@ void main_menu_controller::update(ecs::state& state)
 
 void main_menu_controller::handle_howto_case(ecs::state& state, components::main_menu& menu)
 {
-	texts menu_items(state);
-
-	menu_items.start_text.position = HidePosition;	
-	menu_items.exit_text.position = HidePosition;	
-	menu_items.options_text.position = HidePosition;
-	menu_items.howto_text.position = HidePosition;	
-
 	for (size_t i = 0; i < 4; ++i)
 	{
 		auto& e = state.find_entity(menu.how_to_play_images[i]);
@@ -85,7 +78,46 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 }
 
 void main_menu_controller::handle_options_case(ecs::state& state, components::main_menu& menu, transforms::transform& arrow_transform) {
-	//
+	auto& e = state.find_entity(112); // Options image
+	auto& r = e.get_component<rendering::renderable_mesh_static>();
+	r.is_enabled = true;
+	arrow_transform.position = glm::vec3(-36.2 - _option_selection * 0.25, 15 - _option_selection * 0.25, -1.7);
+	arrow_transform.scale = glm::vec3(0.8, 0.15, 1);
+	arrow_transform.is_matrix_dirty = true;
+
+	// Change selected
+	if (_input.is_input_started(core::controls::UP_CONTROL) || _input.is_input_started(core::controls::UP_CONTROL_PLAYER2))
+	{
+		if (_option_selection == 0) {
+			_option_selection = NUM_OPTIONS;
+		}
+		_option_selection--;
+	}
+	else if (_input.is_input_started(core::controls::DOWN_CONTROL) || _input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2))
+	{
+		_option_selection = (++_option_selection) % NUM_OPTIONS;
+	}
+	// Choose selected
+	else if (_input.is_input_started(core::controls::CARD1_CONTROL) || _input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
+
+		if (_option_selection == FULLSCREEN) {
+			// Fullscreen
+			_glfw.set_fullscreen(!_glfw.is_fullscreen());
+		}
+		else if (_option_selection == MUTE_ALL) {
+			// Mute all
+		}
+		else if (_option_selection == MUTE_MUSIC) {
+			// Mute music
+		}
+		else if (_option_selection == BACK) {
+			_seeing_new_menu = false;
+			r.is_enabled = false;
+			arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
+			arrow_transform.scale = glm::vec3(1, 0.2, 1);
+			arrow_transform.is_matrix_dirty = true;
+		}
+	}
 }
 
 void main_menu_controller::handle_quit_case(ecs::state& state, components::main_menu& menu, transforms::transform& arrow_transform) {
@@ -128,7 +160,6 @@ void main_menu_controller::handle_quit_case(ecs::state& state, components::main_
 
 void main_menu_controller::handle_main_menu_case(ecs::state& state, components::main_menu& menu, transforms::transform& arrow_transform)
 {
-	texts menu_items(state);
 	auto half_height = _glfw.height() / 2.f;
 	auto half_width = _glfw.width() / 2.f;
 
@@ -165,15 +196,6 @@ void main_menu_controller::handle_main_menu_case(ecs::state& state, components::
 			_warning_selection = 0;
 		}
 	}
-
-	menu_items.start_text.position.x = half_width - 150;
-	menu_items.start_text.position.y = half_height + 64;
-	menu_items.exit_text.position.x = 8;
-	menu_items.exit_text.position.y = 8;
-	menu_items.options_text.position.x = 8;
-	menu_items.options_text.position.y = 64;
-	menu_items.howto_text.position.x = 8;
-	menu_items.howto_text.position.y = 128;
 
 	for (size_t i = 0; i < 4; ++i)
 	{
