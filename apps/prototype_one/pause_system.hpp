@@ -271,13 +271,13 @@ public:
 			}
 			else if (_current_options_selection == MUTE_ALL) {				
 				auto any_sound = m_r_config.music_volume() != 0 || m_r_config.sfx_volume() != 0;				
-				auto val = any_sound ? core::startup_config::DefaultVolume : 0.f;
+				auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
 				m_r_config.set("music_volume", val);
 				m_r_config.set("sfx_volume", val);
 			}
 			else if (_current_options_selection == MUTE_MUSIC) {
 				auto any_sound = m_r_config.music_volume() != 0;
-				auto val = any_sound ? core::startup_config::DefaultVolume : 0.f;
+				auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
 				m_r_config.set("music_volume", any_sound);				
 			}
 			else if (_current_options_selection == BACK) {
