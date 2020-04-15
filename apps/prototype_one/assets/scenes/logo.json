@@ -22,6 +22,7 @@
     },
 
     {
+      "entity_id": 200,
       "components": [
         {
           "type": "transform",
@@ -37,6 +38,30 @@
         },
         {
           "type": "logo"
+        }
+      ]
+    },
+
+
+    {
+      "entity_id": 201,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, -10 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 4, 3, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "is_alpha_blended": true,
+          "is_enabled": false,
+          "texture_diffuse": "assets/textures/controller.png"
+        },
+        {
+          "type": "logo",
+          "does_fade":  false
         }
       ]
     }

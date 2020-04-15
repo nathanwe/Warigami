@@ -4,10 +4,14 @@
 #include <ecs/system_base.hpp>
 #include <event/event_manager.hpp>
 #include <core/frame_timer.hpp>
+#include <rendering/renderable_mesh_static.hpp>
 #include <util/string_table.hpp>
+
 
 #include "components/countdown.hpp"
 #include "components/pause.hpp"
+
+#include <algorithm>
 
 #define START_COUNT_SECONDS 4 // Including a "GO!" second
 
@@ -41,61 +45,63 @@ public:
 
 	void initialize(ecs::state& r_state) override
 	{
-		r_state.each<components::countdown, rendering::renderable_text>([&](components::countdown& countdown, rendering::renderable_text& text)
+		r_state.each<components::countdown>([&](components::countdown& countdown)
 		{
 			// Prepare for start countdown
 			countdown.current_value = START_COUNT_SECONDS;
-			text.position = glm::ivec2(_glfw_context.width() / 2 - 100, _glfw_context.height() / 2);
-			text.scale = 5.0;
-			std::ostringstream oss;
-			oss << (int)countdown.current_value << "!";
 		});
-
 		_board = r_state.first<components::board>();
-		_go_string = _strings.hash_and_store("GO!");
 	}
 
 	// Note: Magic numbers in here are what looks good, chosen by looking at results
 	void update(ecs::state& r_state) override
 	{		
 		if (_board == nullptr) return;
-
 		auto& board_component = _board->get_component<components::board>();
 
 		// Count before starting (3, 2, 1, GO!)
-		if (board_component.state == components::game_state::countdown) {
-			r_state.each_id<components::countdown, rendering::renderable_text>([&](auto id, auto& countdown, rendering::renderable_text& text)
-			{
-				if (countdown.current_value <= 0) {
-					// Prepare for the real countdown
-					countdown.current_value = countdown.count_duration;
-					text.position = glm::ivec2(_glfw_context.width() / 2 - 60, _glfw_context.height() - 60);
-					text.scale = 1.5;
-					is_start_count = false;
-					game_start_event gs;
-					event_manager.BroadcastEvent(gs);
-					std::cerr << "Game Start!" << std::endl;
-				}
-				else if (countdown.current_value < 1) {
-					// Show "GO!"
-					text.position = glm::ivec2(_glfw_context.width() / 2 - 30*text.scale, _glfw_context.height() / 2);
-					text.scale += 0.02;
-					text.string_hash = _go_string;
-					board_component.state = components::game_state::gameplay;
-					r_state.each<components::pause>([&](auto& pause)
-						{
-							pause.is_game_countdown_over = true;
-						});
-					r_state.remove_entity(r_state.find_entity(id));
-				}
-				else {
-					text.scale += 0.01;
-					std::ostringstream oss;
-					oss << (int)countdown.current_value << "!";
-					text.string_hash = _strings.hash_and_store(oss.str());
-				}
-				countdown.current_value -= m_timer.delta_secs();
-			});
+		if (board_component.state == components::game_state::countdown) 
+		{
+			r_state.each<components::countdown, rendering::renderable_mesh_static>(
+				[&](auto& countdown, auto& render)
+				{
+					render.is_enabled = true;
+
+					// {4, 3, 2, 1, 0}
+					auto floored_countdown = static_cast<int>(countdown.current_value);
+
+					// {3, 2, 1, 0}
+					floored_countdown = std::clamp(floored_countdown, 0, START_COUNT_SECONDS - 1);
+
+					// {1.f, 0.75f, 0.5f, 0.25f}
+					auto stepped_t = static_cast<float>(floored_countdown + 1) / START_COUNT_SECONDS;
+
+					// {0.f, 0.25f, 0.5f, 0.75f}
+					auto flipped_stepped_t = 1.f - stepped_t;
+					render.material.texture_offset.x = flipped_stepped_t;
+
+					if (countdown.current_value < 1.f)
+					{
+						board_component.state = components::game_state::gameplay;
+						r_state.each<components::pause>([&](auto& pause)
+							{
+								pause.is_game_countdown_over = true;
+							});
+					}
+					countdown.current_value -= m_timer.delta_secs();
+				});
+		}
+		else if (board_component.state == components::game_state::gameplay)
+		{
+			r_state.each_id<components::countdown>(
+				[&](auto id, auto& countdown)
+				{
+					if (countdown.current_value <= 0)
+					{
+						r_state.remove_entity(r_state.find_entity(id));
+					}
+					countdown.current_value -= m_timer.delta_secs();
+				});
 		}
 	}
 
@@ -108,7 +114,6 @@ private:
 	core::glfw_context& _glfw_context;
 
 	ecs::entity* _board {nullptr};
-	size_t _go_string;
 };
 
 #endif

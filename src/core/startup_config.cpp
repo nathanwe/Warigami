@@ -7,6 +7,7 @@
 #include <iostream>
 #include <platform/user_data_paths.hpp>
 
+
 using json = nlohmann::json;
 
 const os::file_path core::startup_config::FileName = os::make_file_path("/startup_config.json");
@@ -26,6 +27,14 @@ void core::startup_config::load()
         stream.open(user_data_path, std::fstream::out);
         stream << config_json;
     }
+    stream.close();
+}
+
+void core::startup_config::save()
+{
+    os::file_path user_data_path = os::user_data_paths::get_user_data_path() + FileName;
+    std::ofstream stream(user_data_path, std::ofstream::trunc);
+    stream << config_json << std::endl;
     stream.close();
 }
 
@@ -49,7 +58,7 @@ json core::startup_config::make_default() const
         {"width", 1366 },
         {"fov", 45},
         {"backfaceCulling", true},
-        {"free_mouse", true},
+        {"free_mouse", false},
         {"window_title", "Warigami"},
         {"god_mode", false},
         {"auto_play", false},

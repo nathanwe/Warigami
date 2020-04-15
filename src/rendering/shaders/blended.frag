@@ -46,6 +46,8 @@ layout(location = 36) uniform vec3 u_ambient_light_color;
 layout(location = 37) uniform float u_ambient_light_intensity;
 layout(location = 38) uniform bool u_has_dir_light;
 
+layout(location = 39) uniform float u_tint_alpha;
+
 // Output ---------------------------------------------------------------------------------------
 layout(location = 0) out vec4 fs_out;
 
@@ -141,7 +143,7 @@ void main()
 
 	vec3 rgb = pixel_color * u_tint_color;
 
-	float a = texture(u_tex_diffuse, uv).a;
+	float a = texture(u_tex_diffuse, uv).a * u_tint_alpha;
 
 	fs_out = vec4(rgb, a);
 }

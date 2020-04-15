@@ -73,7 +73,7 @@ namespace components
 	};
 
 	const static std::vector<int> card_costanamos =
-	{ 0, 0, 2, 3, 6, 2, 4, 5, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 3, 5, 3, 5, 3, 5 };
+	{ 0, 0, 2, 3, 6, 3, 4, 5, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 3, 5, 3, 5, 3, 5 };
 	const static int dice_costanamos = 1;
 
 	enum class dice_nets {

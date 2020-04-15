@@ -84,11 +84,10 @@ public:
 						});
 
 					}					
+
 					//terrain textures
-					//type, team(-1,0,1), diffus normal or ambient,
+					mesh.is_enabled = terrain.type != components::TERRAIN_ENUM::NONE;
 					mesh.material.texture_diffuse = terrain.textures[(int)terrain.type][(int)terrain.team + 1][0][(int)terrain.growth_stage];
-					mesh.material.texture_normal = terrain.textures[(int)terrain.type][(int)terrain.team + 1][1][(int)terrain.growth_stage];
-					mesh.material.texture_ambient_occlusion = terrain.textures[(int)terrain.type][(int)terrain.team + 1][2][(int)terrain.growth_stage];
 
 					});
 

@@ -16,36 +16,82 @@ logo_system::logo_system(
 {
 }
 
+void logo_system::initialize(ecs::state& state)
+{
+	if (!state.has_entity(200)) return;
+
+	auto& logo = state.find_entity(200);
+	logo.get_component<components::logo>().state = components::logo_screen_state::showing;
+
+	auto& controller = state.find_entity(201);
+	controller.get_component<components::logo>().does_fade = false;
+
+}
+
 void logo_system::update(ecs::state& state)
 {
 	state.each<transforms::transform, components::logo, rendering::renderable_mesh_static>(
 		[&](transforms::transform& transform, components::logo& logo, rendering::renderable_mesh_static& mesh) {
-			logo.display_time += _timer.smoothed_delta_secs();
+			mesh.is_enabled = logo.state == components::logo_screen_state::showing;
+
+			if (logo.state == components::logo_screen_state::showing)			
+				logo.display_time += _timer.smoothed_delta_secs();			
+			else			
+				return;
+			
 			
 			if (_input.any_button_pressed())
 			{
-				asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
-				_events.BroadcastEvent(menu_scene);
-				return;
+				logo.state = components::logo_screen_state::done;
+
+				auto next = state.first<components::logo>([&](components::logo& logo) {
+					return logo.state == components::logo_screen_state::waiting;
+				});
+
+				if (next)
+					next->get_component<components::logo>().state = components::logo_screen_state::showing;
+				else
+				{
+					asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
+					_events.BroadcastEvent(menu_scene);
+					return;
+				}
 			}
 
-			if (logo.display_time > logo.duration)
+			if (logo.display_time > logo.duration && logo.state == components::logo_screen_state::showing)
 			{
 				logo.fade_time += _timer.smoothed_delta_secs();
 				auto fade_t = logo.fade_time / logo.fade_time_total;
-				mesh.material.tint_color = glm::mix(glm::vec3(1.f), glm::vec3(0.f), fade_t);
+				mesh.material.tint_color = logo.does_fade 
+					? glm::mix(glm::vec3(1.f), glm::vec3(0.f), fade_t)
+					: glm::vec3(1.f);
 
 				if (fade_t > 0.95f)
 				{
 					mesh.material.tint_color = glm::vec3(0.f);
-					transform.position = glm::vec3(99999.f);
-					transform.is_matrix_dirty = true;
+					mesh.is_enabled = false;
 				}
 
 				if (logo.fade_time > logo.fade_time_total)
 				{					
-					asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
-					_events.BroadcastEvent(menu_scene);
+					logo.state = components::logo_screen_state::done;
+					mesh.is_enabled = false;
+
+					auto next = state.first<components::logo>([&](components::logo& logo) {
+						return logo.state == components::logo_screen_state::waiting;
+					});
+
+					if (next)
+					{
+						auto& next_logo = next->get_component<components::logo>();
+						next_logo.state = components::logo_screen_state::showing;
+					}
+					else
+					{
+						asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
+						_events.BroadcastEvent(menu_scene);
+						return;
+					}
 				}
 			}
 		});

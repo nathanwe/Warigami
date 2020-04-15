@@ -48,6 +48,7 @@
 #include "components/deck_cursor_loader.hpp"
 #include "components/spawn_effect.hpp"
 #include "remove_dying_and_dancing_system.hpp"
+#include "components/capture.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -145,6 +146,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 	ecs::register_component<components::spawn_effect>("spawn_effect");
+	ecs::register_component<components::capture>("capture");
 
 	asset::scene_hydrater hydrater(state);
 
@@ -152,17 +154,17 @@ int main(int argc, char** argv) {
 
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events, hydrater, resolver);
+	rendering::asset_cache render_asset_cache(assets);
 	interpolation_system interpolation_system(input, timer, events, hydrater, resolver);
 	set_game_piece_states set_game_peice_states_system(input, timer, events, hydrater, resolver);
 	add_combats_to_resolver add_combats_to_resolver(input, timer, events, hydrater, resolver);
 	remove_dying_and_dancing remove_dying_and_dancing(input, timer, events, hydrater, resolver);
-	player_controller player_control(input, timer, events, hydrater);
+	player_controller player_control(input, timer, events, hydrater, render_asset_cache);
 	
 	deck_ui_controller deck_ui_controller(card_spawn_helper);
 	audio::audio_system audio_system(strings, assets, config);
 	collisions::collision_manager collision_manager;
 	physics::physics_update physics_update(collision_manager, timer);
-	rendering::asset_cache render_asset_cache(assets);
 	game_start_system game_start_system(hydrater, render_asset_cache);
 	health_regenration_system health_regen;
 	
@@ -181,7 +183,7 @@ int main(int argc, char** argv) {
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
 	deck_selection_controller deck_selection(hydrater, card_spawn_helper, input, timer, render_asset_cache);
-	pause_system pauser(input, timer, glfw, hydrater, events, audio_system);
+	pause_system pauser(input, timer, glfw, hydrater, events, audio_system, config);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
 	AI_system AI_system(timer, hydrater);
@@ -194,7 +196,6 @@ int main(int argc, char** argv) {
 	territory_claim_system territory_claim_system;
 	logo_system logo(timer, events, input);
 	spawn_effect_system spawn_effector(timer);
-
 
 	ecs::systems systems({
 		&energy_system,
@@ -211,6 +212,7 @@ int main(int argc, char** argv) {
 		&ticker,
 		&remove_dying_and_dancing,
 		&energy_flower_creation_system,
+		&terrain_update_system,
 		&territory_claim_system,
 		&health_regen,
 		&set_game_peice_states_system,
@@ -219,10 +221,11 @@ int main(int argc, char** argv) {
 		&terrain_update_system,
 		&spiderlings,
 		&flash_step_system,
-		&AI_system,
+		&AI_system,		
 		&player_control,
+
 		&spawner,
-		
+		&board_updater,
 
 		&deck_selection,
 		&interpolation_system,
@@ -233,13 +236,13 @@ int main(int argc, char** argv) {
 		&escreen,
 
 		//
-
+		&main_menu_controller,
 		&spawn_effector,
 		&animator,
 		&transformer,
 		&renderer,
 		&text_renderer,
-		&main_menu_controller,
+		
 		&energy_balls,
 		&logo
 	});
