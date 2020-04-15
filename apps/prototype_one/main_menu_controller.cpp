@@ -113,8 +113,8 @@ void main_menu_controller::handle_options_case(ecs::state& state, components::ma
 		else if (_option_selection == BACK) {
 			_seeing_new_menu = false;
 			r.is_enabled = false;
-			arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
-			arrow_transform.scale = glm::vec3(1, 0.2, 1);
+			arrow_transform.position = glm::vec3(-37.5 - _selection * 0.2, 15 - _selection * 0.2, -2.8);
+			arrow_transform.scale = glm::vec3(0.7, 0.15, 1);
 			arrow_transform.is_matrix_dirty = true;
 		}
 	}
@@ -147,8 +147,8 @@ void main_menu_controller::handle_quit_case(ecs::state& state, components::main_
 			// Return to pause menu
 			_seeing_new_menu = false;
 			r.is_enabled = false;
-			arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
-			arrow_transform.scale = glm::vec3(1, 0.2, 1);
+			arrow_transform.position = glm::vec3(-37.5 - _selection * 0.2, 15 - _selection * 0.2, -2.8);
+			arrow_transform.scale = glm::vec3(0.7, 0.15, 1);
 			arrow_transform.is_matrix_dirty = true;
 		}
 		else if (_warning_selection == 1) {
@@ -169,12 +169,12 @@ void main_menu_controller::handle_main_menu_case(ecs::state& state, components::
 			_selection = NUM_CHOICES;
 		}
 		_selection--;
-		arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
+		arrow_transform.position = glm::vec3(-37.5 - _selection * 0.2, 15 - _selection * 0.2, -2.8);
 		arrow_transform.is_matrix_dirty = true;
 	}
 	else if (_input.is_input_started(core::controls::DOWN_CONTROL) || _input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2)) {
 		_selection = (++_selection) % NUM_CHOICES;
-		arrow_transform.position = glm::vec3(-35.5 - _selection * 0.4, 12 - _selection * 0.4, -5);
+		arrow_transform.position = glm::vec3(-37.5 - _selection * 0.2, 15 - _selection * 0.2, -2.8);
 		arrow_transform.is_matrix_dirty = true;
 	}
 
