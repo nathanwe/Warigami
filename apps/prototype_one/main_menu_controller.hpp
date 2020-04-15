@@ -24,7 +24,8 @@ public:
 		event::EventManager& events, 
 		core::glfw_context& glfw,
 		core::game_input_manager& input,
-		core::frame_timer& timer);
+		core::frame_timer& timer,
+		core::startup_config& config);
 
 	void initialize(ecs::state& state) override;
 	void update(ecs::state& state) override;
@@ -53,6 +54,7 @@ private:
 	core::glfw_context& _glfw;
 	core::game_input_manager& _input;
 	core::frame_timer& _timer;
+	core::startup_config& _config;
 
 	int _selection;
 	bool _seeing_new_menu;

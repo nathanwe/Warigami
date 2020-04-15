@@ -11,11 +11,13 @@ main_menu_controller::main_menu_controller(
 	event::EventManager& events, 
 	core::glfw_context& glfw,
 	core::game_input_manager& input,
-	core::frame_timer& timer)
+	core::frame_timer& timer,
+	core::startup_config& config)
 	: _events(events)
 	, _glfw(glfw)
 	, _input(input)
 	, _timer(timer)
+	, _config(config)
 {
 }
 
@@ -103,13 +105,19 @@ void main_menu_controller::handle_options_case(ecs::state& state, components::ma
 		if (_option_selection == FULLSCREEN) {
 			// Fullscreen
 			_glfw.set_fullscreen(!_glfw.is_fullscreen());
+			_config.set("fullscreen", !_config.fullscreen());
 		}
 		else if (_option_selection == MUTE_ALL) {
-			// Mute all
+			auto any_sound = _config.music_volume() != 0 || _config.sfx_volume() != 0;
+			auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
+			_config.set("music_volume", val);
+			_config.set("sfx_volume", val);
 		}
 		else if (_option_selection == MUTE_MUSIC) {
-			// Mute music
-		}
+			auto any_sound = _config.music_volume() != 0;
+			auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
+			_config.set("music_volume", any_sound);
+		}	
 		else if (_option_selection == BACK) {
 			_seeing_new_menu = false;
 			r.is_enabled = false;

@@ -191,7 +191,7 @@ int main(int argc, char** argv) {
 	ready_display_system ready_display(glfw);
 	endgame_screen escreen(input, timer, glfw, events);
 	energy_flower_creation_system energy_flower_creation_system;
-	main_menu_controller main_menu_controller(events, glfw, input, timer);
+	main_menu_controller main_menu_controller(events, glfw, input, timer, config);
 	energy_ball_system energy_balls(input, hydrater, timer);
 	territory_claim_system territory_claim_system;
 	logo_system logo(timer, events, input);
