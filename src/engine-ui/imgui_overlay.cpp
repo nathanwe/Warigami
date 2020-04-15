@@ -26,11 +26,12 @@ engineui::imgui_overlay::imgui_overlay(GLFWwindow* window, core::game_input_mana
 
 void engineui::imgui_overlay::update()
 {
+	bool visible_next = _visible;
 	if (_input.is_input_started(core::controls::DEVELOPER_CONSOLE))
 	{
-		_visible = !_visible;		
+		visible_next = !_visible;
 
-		if (_visible)
+		if (visible_next)
 		{
 			_cursor.push_enable();
 			for (auto* v : _views) v->on_show();
@@ -38,8 +39,10 @@ void engineui::imgui_overlay::update()
 		else _cursor.pop();
 	}
 
-	if (_visible)
+	if (_visible && _visible == visible_next)
 		render_views();
+
+	_visible = visible_next;
 }
 
 void engineui::imgui_overlay::render_views()

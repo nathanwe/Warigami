@@ -46,7 +46,7 @@ namespace rendering
 
 	public:
 		bool _is_default_pass_enabled = true;
-		bool _is_debug_colliders = true;
+		bool _is_debug_colliders = false;
 		bool _is_debug_velocity = false;
 
 	private:
