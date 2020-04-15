@@ -154,7 +154,7 @@ private:
 				case combats::COMBAT_EFFECTS::YEET_SPIDERLING_ON_DEATH:
 				{
 					int landing_zone = game_piece.board_destination.y;
-					while (landing_zone + game_piece.team > 0 && landing_zone + game_piece.team < board.rows
+					while (landing_zone + game_piece.team >= 0 && landing_zone + game_piece.team < board.rows
 						&& board.board_state[game_piece.board_destination.x][landing_zone + game_piece.team] == 0) {
 						landing_zone += game_piece.team;
 						

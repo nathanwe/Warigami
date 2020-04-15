@@ -115,7 +115,7 @@ void core::glfw_context::set_fullscreen(bool val)
 	}
 	else
 	{
-		glfwSetWindowMonitor(_window, NULL, 0, 0, _conf.width(), _conf.height(), GLFW_DONT_CARE);
+		glfwSetWindowMonitor(_window, NULL, 64, 64, _conf.width(), _conf.height(), 0);
 		_width = _conf.width();
 		_height = _conf.height();
 	}

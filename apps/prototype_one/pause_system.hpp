@@ -36,7 +36,8 @@ public:
 		core::glfw_context& glfw,
 		asset::scene_hydrater& hydrater,
 		event::EventManager& events,
-		audio::audio_system& audioo)
+		audio::audio_system& audioo,
+		core::startup_config& config)
 		: m_r_input(input),
 		m_r_timer(timer),
 		m_r_glfw(glfw),
@@ -49,7 +50,8 @@ public:
 		credits_page(0),
 		codex_page(0),
 		_current_options_selection(0),
-		m_r_audio(audioo)
+		m_r_audio(audioo),
+		m_r_config(config)
 	{}
 
 	void initialize(ecs::state& state) {
@@ -265,12 +267,18 @@ public:
 			if (_current_options_selection == FULLSCREEN) {
 				// Fullscreen
 				m_r_glfw.set_fullscreen(!m_r_glfw.is_fullscreen());
+				m_r_config.set("fullscreen", !m_r_config.fullscreen());
 			}
-			else if (_current_options_selection == MUTE_ALL) {
-				// Mute all
+			else if (_current_options_selection == MUTE_ALL) {				
+				auto any_sound = m_r_config.music_volume() != 0 || m_r_config.sfx_volume() != 0;				
+				auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
+				m_r_config.set("music_volume", val);
+				m_r_config.set("sfx_volume", val);
 			}
 			else if (_current_options_selection == MUTE_MUSIC) {
-				// Mute music
+				auto any_sound = m_r_config.music_volume() != 0;
+				auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
+				m_r_config.set("music_volume", any_sound);				
 			}
 			else if (_current_options_selection == BACK) {
 				_seeing_message = false;
@@ -353,6 +361,7 @@ private:
 	asset::scene_hydrater& m_r_hydrater;
 	event::EventManager& m_r_events;
 	audio::audio_system& m_r_audio;
+	core::startup_config& m_r_config;
 	int _current_selection;
 
 	bool _seeing_message;

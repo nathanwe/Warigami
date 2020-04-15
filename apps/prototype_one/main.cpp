@@ -47,6 +47,7 @@
 #include "components/deck_cursor.hpp"
 #include "components/deck_cursor_loader.hpp"
 #include "components/spawn_effect.hpp"
+#include "remove_dying_and_dancing_system.hpp"
 #include "components/capture.hpp"
 
 // Game systems
@@ -80,6 +81,9 @@
 #include "territory_claim_system.hpp"
 #include "logo_system.hpp"
 #include "spawn_effect_system.hpp"
+#include "interpolation_system.hpp"
+#include "set_game_piece_states_system.hpp"
+#include "add_combats_to_resolver.hpp"
 
 
 int main(int argc, char** argv) {	
@@ -151,6 +155,10 @@ int main(int argc, char** argv) {
 	fly_cam flycam(input, timer, events);
 	board_update board_updater(input, timer, events, hydrater, resolver);
 	rendering::asset_cache render_asset_cache(assets);
+	interpolation_system interpolation_system(input, timer, events, hydrater, resolver);
+	set_game_piece_states set_game_peice_states_system(input, timer, events, hydrater, resolver);
+	add_combats_to_resolver add_combats_to_resolver(input, timer, events, hydrater, resolver);
+	remove_dying_and_dancing remove_dying_and_dancing(input, timer, events, hydrater, resolver);
 	player_controller player_control(input, timer, events, hydrater, render_asset_cache);
 	
 	deck_ui_controller deck_ui_controller(card_spawn_helper);
@@ -175,7 +183,7 @@ int main(int argc, char** argv) {
 	spiderling_system spiderlings(hydrater);
 	spawner_system spawner(hydrater);
 	deck_selection_controller deck_selection(hydrater, card_spawn_helper, input, timer, render_asset_cache);
-	pause_system pauser(input, timer, glfw, hydrater, events, audio_system);
+	pause_system pauser(input, timer, glfw, hydrater, events, audio_system, config);
 	animator_system animator(timer);
 	terrain_update_system terrain_update_system(timer, render_asset_cache);
 	AI_system AI_system(timer, hydrater);
@@ -200,20 +208,27 @@ int main(int argc, char** argv) {
 		&physics_update,
 		
 		// order of these matters
-		&game_start_system,		
-		&ticker,			
+		&game_start_system,
+		&ticker,
+		&remove_dying_and_dancing,
 		&energy_flower_creation_system,
 		&terrain_update_system,
 		&territory_claim_system,
 		&health_regen,
-		&spiderlings,			
+		&set_game_peice_states_system,
+		&add_combats_to_resolver,
+		&board_updater,
+		&terrain_update_system,
+		&spiderlings,
 		&flash_step_system,
 		&AI_system,		
-		&player_control,	
-		&deck_selection,
+		&player_control,
+
 		&spawner,
 		&board_updater,
 
+		&deck_selection,
+		&interpolation_system,
 		&deck_ui_controller,
 		&ready_display,
 		&pauser,
