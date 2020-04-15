@@ -49,7 +49,7 @@ json core::startup_config::make_default() const
         {"width", 1366 },
         {"fov", 45},
         {"backfaceCulling", true},
-        {"free_mouse", true},
+        {"free_mouse", false},
         {"window_title", "Warigami"},
         {"god_mode", false},
         {"auto_play", false},
