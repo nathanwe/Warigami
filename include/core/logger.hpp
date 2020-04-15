@@ -3,6 +3,9 @@
 
 #include <string>
 #include <fstream>
+#include <iostream>
+#include <cstdlib>
+
 
 
 namespace core
@@ -20,7 +23,6 @@ namespace core
 			fout << str << std::endl;
 			fout.close();
 		}
-
 	};
 }
 

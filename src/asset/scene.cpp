@@ -8,32 +8,45 @@
 #include <asset/resource_id.hpp>
 #include <core/logger.hpp>
 
+
 asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(assets)
 {
-	// read a JSON file
-	auto j = assets.get_json(file_path);
-
     core::logger::log("loading scene: " + file_path);
 
-    auto str = j.dump();
+	// read a JSON file
+	auto j = assets.get_json(file_path);    
 
 	std::vector<json> descendant_children;
 	std::vector<scene_entity*> inserted_children;
 
-    inserted_children.reserve(j["entities"].size()*50);
-    descendant_children.reserve(j["entities"].size()*50);
+    inserted_children.reserve(j["entities"].size()*512);
+    descendant_children.reserve(j["entities"].size()*512);
     
+    std::ostringstream osstop;
+    osstop << "reserving: " << j["entities"].size() * 50;
+    core::logger::log(osstop.str());
+
     _entities.reserve(j["entities"].size());
+
+    int parents_count = 0;
+    int descendant_count = 0;
 
 	for (auto entity : j["entities"])
 	{
 		if (entity.find("parent_id") == entity.end())
 		{
+            std::ostringstream oss;
+            oss << "descendants: " << parents_count++;
+            core::logger::log(oss.str());
+
 			_entities.emplace_back(entity, assets);
 			inserted_children.push_back(&_entities.back());
 		}
 		else
 		{
+            std::ostringstream oss;
+            oss << "descendants: " << descendant_count++;
+            core::logger::log(oss.str());
 			descendant_children.push_back(entity);
 		}
 	}
@@ -57,6 +70,11 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
                 {
                     auto& inserted = potential_parent->add_child(descendant, assets);
                     inserted_children.push_back(&inserted);
+
+                    std::ostringstream oss2;
+                    oss2 << "inserted count: " << inserted_children.size();
+                    core::logger::log(oss2.str());
+
                     no_change = false;
                 }
             }

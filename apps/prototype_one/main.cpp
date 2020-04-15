@@ -95,7 +95,7 @@ int main(int argc, char** argv) {
 
 	util::string_table strings;
 	event::EventManager events;
-	asset::scene_tracker scene_tracker("assets/scenes/logo.json", events);
+	asset::scene_tracker scene_tracker("assets/scenes/main_menu.json", events);
 	asset::asset_manager assets;
 	core::startup_config config;
 	core::glfw_context glfw(config);
