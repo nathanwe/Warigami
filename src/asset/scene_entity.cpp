@@ -33,6 +33,8 @@ asset::scene_entity::scene_entity(json& entity_json, asset_manager& assets)
         prototype["children"][i]["_index_in_prototype"] = i;
 
     build_child_tree(prototype["children"], assets);
+
+    _children.reserve(512);
 }
 
 void asset::scene_entity::build_child_tree(json& children, asset_manager& assets)

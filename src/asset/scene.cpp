@@ -6,13 +6,10 @@
 
 #include <asset/scene.hpp>
 #include <asset/resource_id.hpp>
-#include <core/logger.hpp>
 
 
 asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(assets)
 {
-    core::logger::log("loading scene: " + file_path);
-
 	// read a JSON file
 	auto j = assets.get_json(file_path);    
 
@@ -21,10 +18,6 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
 
     inserted_children.reserve(j["entities"].size()*512);
     descendant_children.reserve(j["entities"].size()*512);
-    
-    std::ostringstream osstop;
-    osstop << "reserving: " << j["entities"].size() * 50;
-    core::logger::log(osstop.str());
 
     _entities.reserve(j["entities"].size());
 
@@ -35,18 +28,11 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
 	{
 		if (entity.find("parent_id") == entity.end())
 		{
-            std::ostringstream oss;
-            oss << "descendants: " << parents_count++;
-            core::logger::log(oss.str());
-
 			_entities.emplace_back(entity, assets);
 			inserted_children.push_back(&_entities.back());
 		}
 		else
 		{
-            std::ostringstream oss;
-            oss << "descendants: " << descendant_count++;
-            core::logger::log(oss.str());
 			descendant_children.push_back(entity);
 		}
 	}
@@ -55,9 +41,9 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
     {
         auto no_change = true;
 
-        for (auto* potential_parent : inserted_children)
+        for (size_t i = 0; i < inserted_children.size(); ++i)   //auto* potential_parent : inserted_children)
         {
-            core::logger::log(potential_parent->j().dump());
+            auto potential_parent = inserted_children[i];
 
             if (!potential_parent->has_id()) continue;
 
@@ -70,11 +56,6 @@ asset::scene::scene(std::string file_path, asset_manager& assets) : _assets(asse
                 {
                     auto& inserted = potential_parent->add_child(descendant, assets);
                     inserted_children.push_back(&inserted);
-
-                    std::ostringstream oss2;
-                    oss2 << "inserted count: " << inserted_children.size();
-                    core::logger::log(oss2.str());
-
                     no_change = false;
                 }
             }
