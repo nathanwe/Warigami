@@ -48,9 +48,9 @@ namespace components
 			card_enum::SCISSOR_TROOPER,
 			card_enum::SCISSORLING_EGG,
 			card_enum::SCISSOR_WEBBER,
-			card_enum::SCISSOR_GOLIATH,
-			card_enum::SCISSOR_GOLIATH,
-			card_enum::SCISSOR_GOLIATH,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
+			card_enum::SCISSOR_WEBBER,
 			card_enum::SCISSOR_GOLIATH,
 			card_enum::SCISSOR_QUEEN
 	};
@@ -394,6 +394,28 @@ namespace components
 					placed = true;
 
 					start_spawn_effect(r_state, hydrater, total_s);
+					r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+						entity_id id1,
+						transforms::transform& transform,
+						components::selection_arrow& select,
+						audio::audio_emitter& emitter)
+						{
+							if (select.team == team) {
+								emitter.set_sound_state(1, audio::sound_state::playback_requested);
+							}
+						});
+				}
+				else {
+					r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+						entity_id id1,
+						transforms::transform& transform,
+						components::selection_arrow& select,
+						audio::audio_emitter& emitter)
+						{
+							if (select.team == team) {
+								emitter.set_sound_state(0, audio::sound_state::playback_requested);
+							}
+						});
 				}
 			}
 			start_end_place_animation(placed, total_s);

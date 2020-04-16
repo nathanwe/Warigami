@@ -71,7 +71,7 @@ public:
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
 					update_succ(player, controls);
-					handle_player_selection(player, forward, left, board);
+					handle_player_selection(r_state, player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, controls);
 					gain_flower_energy(r_state, player, controls);
@@ -319,7 +319,7 @@ private:
 			});
 	}
 
-	void handle_player_selection(components::player& player, float forward, float left, components::board& board)
+	void handle_player_selection(ecs::state& r_state, components::player& player, float forward, float left, components::board& board)
 	{
 		if (player.select_delay > 0.f)
 		{
@@ -341,6 +341,19 @@ private:
 					player.select_delay = 0.1f;
 					player.selected_row -= dir_v;
 					changed_selection = true;
+					r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+						entity_id id1,
+						transforms::transform& transform,
+						components::selection_arrow& select,
+						audio::audio_emitter& emitter)
+						{
+							if (select.team == player.team) {
+								//if (emitter.emitter_sounds[0].state != audio::sound_state::playing)
+								//{
+									emitter.set_sound_state(0, audio::sound_state::playback_requested);
+								//}
+							}
+						});
 				}
 
 				auto& anim_data = player.animation_parameters;
