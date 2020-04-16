@@ -91,6 +91,7 @@ Source: ".\INSTALLERFILES\panel_image_*.bmp"; Flags: dontcopy
 
 ; The game directoy is exactly what you want your install directory in program files to look like
 Source: .\GAMEDIRECTORY\bin\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: .\GAMEDIRECTORY\LICENSE; DestDir: {app}; Flags: ignoreversion
 
 ; Include the redistributable programs and install them to the temp directory
 ; TODO: Update this list with the correct redistributables for your game.
