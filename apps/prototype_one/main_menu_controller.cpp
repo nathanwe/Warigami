@@ -66,7 +66,7 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 		auto& e = state.find_entity(menu.how_to_play_images[i]);
 		auto& t = e.get_component<transforms::transform>();
 		t.position = i == menu.how_to_page
-			? glm::vec3(0.f, 0.f, 0.f)
+			? glm::vec3(0.f, 0.f, 0.5f)
 			: HidePosition;
 		t.is_matrix_dirty = true;
 	}
