@@ -63,9 +63,7 @@ void audio::audio_system::sync_transform_to_listener(ecs::state &state)
     state.each_id<transforms::transform, audio_listener>(
         [this, &state] (entity_id id, transforms::transform& t, audio_listener& l)
         {
-            //auto rb_opt = listener.get_component_opt<ecs::rigid_body_component>();
-            auto& entity = state.find_entity(id);
-            auto cam_opt = entity.get_component_opt<rendering::camera>();
+            auto& entity = state.find_entity(id);            
             auto rb_opt = entity.get_component_opt<collisions::rigid_body>();
 
             glm::mat3 ltw = glm::mat3(t.local_to_world);
