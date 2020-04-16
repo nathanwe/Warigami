@@ -87,6 +87,21 @@ public:
 								}
 							});
 					}
+					else {
+						r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+							entity_id id1,
+							transforms::transform& transform,
+							components::selection_arrow& select,
+							audio::audio_emitter& emitter)
+							{
+								if (select.team == player.team) {
+									if (emitter.emitter_sounds[3].state == audio::sound_state::playing)
+									{
+										emitter.set_sound_state(3, audio::sound_state::stop_requested);
+									}
+								}
+							});
+					}
 					handle_player_selection(r_state, player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, controls);
