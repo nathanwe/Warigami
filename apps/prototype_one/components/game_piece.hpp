@@ -23,6 +23,7 @@ namespace components
 		DEAD,
 		PREVIEW,
 		DANCING,
+		STUN,
 		NUM
 	};
 
@@ -35,6 +36,7 @@ namespace components
 		int team; // Which team the unit is a part of
 		int remaining_speed;
 		int give_points = 0; //How many points a unit is currently worth for dice earning
+		int stun_duration = -1;
 		glm::ivec2 board_source; // A unit's board coordinates
 		glm::vec2 continuous_board_location; // Interpolated position on board
 		glm::vec3 continuous_board_rotation; //rotation

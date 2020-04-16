@@ -95,6 +95,14 @@ void combats::combat_resolution::Resolve_Combats()
 				unit_one_only_one_damage = true;
 				break;
 			}
+			case::combats::COMBAT_EFFECTS::STUN:
+			{
+				if (instance.unit_two.stun_duration == -1) {
+					instance.unit_two.stun_duration = 1;
+					instance.unit_two.state = components::UNIT_STATE::STUN;
+				}
+					break;
+			}
 			}
 		}
 
@@ -149,6 +157,14 @@ void combats::combat_resolution::Resolve_Combats()
 				{
 					instance.unit_one.effects.erase(std::remove(instance.unit_one.effects.begin(),
 						instance.unit_one.effects.end(), COMBAT_EFFECTS::REGENERATE), instance.unit_one.effects.end());
+					break;
+				}
+				case::combats::COMBAT_EFFECTS::STUN:
+				{
+					if (instance.unit_one.stun_duration == -1) {
+						instance.unit_one.stun_duration = 1;
+						instance.unit_one.state = components::UNIT_STATE::STUN;
+					}
 					break;
 				}
 				}

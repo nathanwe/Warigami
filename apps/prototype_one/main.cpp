@@ -84,6 +84,7 @@
 #include "interpolation_system.hpp"
 #include "set_game_piece_states_system.hpp"
 #include "add_combats_to_resolver.hpp"
+#include "stun_system.hpp"
 
 
 int main(int argc, char** argv) {	
@@ -167,6 +168,7 @@ int main(int argc, char** argv) {
 	physics::physics_update physics_update(collision_manager, timer);
 	game_start_system game_start_system(hydrater, render_asset_cache);
 	health_regenration_system health_regen;
+	stun_system stun_system;
 	
 	rendering::camera_updater camera_updater;
 	rendering::render_state render_state;
@@ -215,6 +217,7 @@ int main(int argc, char** argv) {
 		&terrain_update_system,
 		&territory_claim_system,
 		&health_regen,
+		&stun_system,
 		&set_game_peice_states_system,
 		&add_combats_to_resolver,
 		&board_updater,

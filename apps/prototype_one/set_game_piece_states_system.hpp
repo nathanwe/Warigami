@@ -62,7 +62,8 @@ private:
     {
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
             game_piece.board_source = game_piece.board_destination;
-            if (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK)
+            if (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK
+                || (game_piece.state == components::UNIT_STATE::STUN && game_piece.stun_duration == 0))
             {
                 game_piece.state = check_attacks(game_piece.board_destination, game_piece.attacks, game_piece.team, r_state)
                     ? components::UNIT_STATE::ATTACK
@@ -75,7 +76,7 @@ private:
 
     void death_check(ecs::state& r_state) {
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
-            if (game_piece.health <= 0 && (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK))
+            if (game_piece.health <= 0 && (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK || game_piece.state == components::UNIT_STATE::STUN))
             {
                 game_piece.state = components::UNIT_STATE::DYING;
             }
@@ -94,7 +95,8 @@ private:
             for (auto &target : targets)
             {
 
-                if (game_piece.board_destination == target && game_piece.team != teammates && (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK))
+                if (game_piece.board_destination == target && game_piece.team != teammates && 
+                    (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK || game_piece.state == components::UNIT_STATE::STUN))
                 {
                     return true;
                 }

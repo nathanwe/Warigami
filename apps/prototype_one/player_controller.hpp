@@ -12,6 +12,7 @@
 #include <rendering/texture.hpp>
 #include <util/math.hpp>
 #include <util/sign.hpp>
+#include <audio/audio_emitter.hpp>
 
 #include "components/player.hpp" 
 #include "components/board_square.hpp"
@@ -71,7 +72,22 @@ public:
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
 					update_succ(player, controls);
-					handle_player_selection(player, forward, left, board);
+					if (player.succ) {
+						r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+							entity_id id1,
+							transforms::transform& transform,
+							components::selection_arrow& select,
+							audio::audio_emitter& emitter)
+							{
+								if (select.team == player.team) {
+									if (emitter.emitter_sounds[3].state != audio::sound_state::playing)
+									{
+										emitter.set_sound_state(3, audio::sound_state::playback_requested);
+									}
+								}
+							});
+					}
+					handle_player_selection(r_state, player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
 					toggle_AI(player, controls);
 					gain_flower_energy(r_state, player, controls);
@@ -319,7 +335,7 @@ private:
 			});
 	}
 
-	void handle_player_selection(components::player& player, float forward, float left, components::board& board)
+	void handle_player_selection(ecs::state& r_state, components::player& player, float forward, float left, components::board& board)
 	{
 		if (player.select_delay > 0.f)
 		{
@@ -341,6 +357,19 @@ private:
 					player.select_delay = 0.1f;
 					player.selected_row -= dir_v;
 					changed_selection = true;
+					r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+						entity_id id1,
+						transforms::transform& transform,
+						components::selection_arrow& select,
+						audio::audio_emitter& emitter)
+						{
+							if (select.team == player.team) {
+								//if (emitter.emitter_sounds[0].state != audio::sound_state::playing)
+								//{
+									emitter.set_sound_state(2, audio::sound_state::playback_requested);
+								//}
+							}
+						});
 				}
 
 				auto& anim_data = player.animation_parameters;
@@ -366,8 +395,39 @@ private:
 	{
 		auto& controls = player_specifics.controls;
 		int loc = find_selected_card_index(controls);
+		bool placed = false;
 		if (!player.succ) {
-			player.place_card(loc, m_timer.total_s(), r_state, board.spawner, hydrater);
+			placed = player.place_card(loc, m_timer.total_s(), r_state, board.spawner, hydrater);
+		}
+		if(placed && loc != -1){
+			r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+				entity_id id1,
+				transforms::transform& transform,
+				components::selection_arrow& select,
+				audio::audio_emitter& emitter)
+				{
+					if (select.team == player.team) {
+						//if (emitter.emitter_sounds[0].state != audio::sound_state::playing)
+						//{
+						emitter.set_sound_state(1, audio::sound_state::playback_requested);
+						//}
+					}
+				});
+		}
+		else if (loc != -1) {
+			r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+				entity_id id1,
+				transforms::transform& transform,
+				components::selection_arrow& select,
+				audio::audio_emitter& emitter)
+				{
+					if (select.team == player.team) {
+						//if (emitter.emitter_sounds[0].state != audio::sound_state::playing)
+						//{
+						emitter.set_sound_state(0, audio::sound_state::playback_requested);
+						//}
+					}
+				});
 		}
 	}
 
@@ -376,6 +436,7 @@ private:
 		if (!player.controlled_by_AI) {
 			player.succ = m_input.is_input_active(controls.dice_button2);
 		}
+			
 	}
 	void toggle_AI(components::player& player, player_controls& controls) {
 		if (m_input.is_input_started(controls.dice_button)) {
