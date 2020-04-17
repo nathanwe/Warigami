@@ -136,7 +136,7 @@ void audio::audio_system::play_sound_3d(audio::emitter_sound& sound)
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
 
     auto fmod_sound = get_sound(sound.path_hash, mode);
-    play_sound(fmod_sound, sound, _startup_config.music_volume());
+    play_sound(fmod_sound, sound, _startup_config.sfx_volume());
 }
 
 void audio::audio_system::play_sound_non3d(audio::emitter_sound& sound)
@@ -145,7 +145,7 @@ void audio::audio_system::play_sound_non3d(audio::emitter_sound& sound)
     if (sound.loop) mode |= FMOD_LOOP_NORMAL;
 
     auto fmod_sound = get_sound(sound.path_hash, mode);
-    play_sound(fmod_sound, sound, _startup_config.sfx_volume());
+    play_sound(fmod_sound, sound, _startup_config.music_volume());
 }
 
 void audio::audio_system::play_sound(
@@ -217,7 +217,7 @@ void audio::audio_system::handle_emitter_sound(
             FMOD_VECTOR pos = { t_pos.x, t_pos.y, t_pos.z };
             FMOD_VECTOR vel = { velocity.x, velocity.y, velocity.z };
             emitter_sound.fmod_channel->set3DAttributes(&pos, &vel);
-            emitter_sound.fmod_channel->setVolume(emitter_sound.volume);
+            emitter_sound.fmod_channel->setVolume(emitter_sound.volume * _startup_config.sfx_volume());
         }
     }
 }
@@ -238,9 +238,14 @@ void audio::audio_system::handle_music_sound(audio::emitter_sound &emitter_sound
             play_sound_non3d(emitter_sound);
         default:
         {
-            if (emitter_sound.is_null()) break;
+            if (emitter_sound.is_null()) break;            
             check_sound_stopped(emitter_sound);
         }
+    }
+
+    if (emitter_sound.state == sound_state::playing)
+    {
+        emitter_sound.fmod_channel->setVolume(emitter_sound.volume * _startup_config.music_volume());
     }
 }
 

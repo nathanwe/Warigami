@@ -2,6 +2,7 @@
 
 #include "deck_selection_controller.hpp"
 #include "game_util/player_specifics.hpp"
+#include <audio/audio_emitter.hpp>
 #include <transforms/transform.hpp>
 #include <rendering/renderable_mesh_static.hpp>
 #include <rendering/renderable_model_static.hpp>
@@ -256,6 +257,11 @@ void deck_selection_controller::handle_player_selection(
 
 		if (vertical_input_active && can_cycle)
 		{
+			// hacky to get sound from pause menu, but we know it's there
+			auto e = state.first<components::pause>();
+			auto& sound_emitter = e->get_component<audio::audio_emitter>();
+			sound_emitter.set_sound_state(0, audio::sound_state::playback_requested);
+
 			auto& deck = _decks[player.deck_selection];
 
 			if (dir_v < 0 && deck_selection.card_iterators[player_index] == deck.begin())
