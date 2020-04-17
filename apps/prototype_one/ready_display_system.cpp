@@ -45,7 +45,7 @@ void ready_display_system::update(ecs::state& state)
 				
 		//todo: magic numbers		
 		
-		auto button_x = ready_dispaly.team == 1.f ? -15.5f  : 15.5f;
+		auto button_x = ready_dispaly.team == 1.f ? -15.5f  : 15.3f;
 		auto button_y = -9.5f;
 		auto button_z = -24.5f;
 		auto text_y = 16;		
