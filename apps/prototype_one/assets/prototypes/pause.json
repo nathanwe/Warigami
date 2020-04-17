@@ -1,22 +1,32 @@
 {
   "root": {
     "components": [
-      {
-        "type": "transform",
-        "position": [ -25, 2, 0 ],
-        "rotation": [ 0, -90, -48 ],
-        "scale": [ 10, 6, 1 ]
-      },
-      {
-        "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/quad/quad.obj",
-        "texture_diffuse": "assets/textures/pause/pause.png",
-        "is_enabled": false,
-        "tint_color": [ 0.75, 0.75, 0.75 ]
-      },
-      {
-        "type": "pause"
-      }
+        {
+            "type": "transform",
+            "position": [ -25, 2, 0 ],
+            "rotation": [ 0, -90, -48 ],
+            "scale": [ 10, 6, 1 ]
+        },
+        {
+            "type": "renderable_mesh_static",
+            "mesh": "assets/meshes/quad/quad.obj",
+            "texture_diffuse": "assets/textures/pause/pause.png",
+            "is_enabled": false,
+            "tint_color": [ 0.75, 0.75, 0.75 ]
+        },
+        {
+            "type": "pause"
+        },
+        {
+            "type": "audio_emitter",
+            "sounds": [
+                {
+                    "file": "assets/sound/flip.wav",
+                    "loop": false,
+                    "volume": 1
+                }
+            ]
+        }
     ]
   }
 }

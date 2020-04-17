@@ -77,6 +77,7 @@ public:
 		}
 
 		auto& pause = e->get_component<components::pause>();
+		auto& menu_audio = e->get_component<audio::audio_emitter>();
 
 		if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
 		{
@@ -117,6 +118,7 @@ public:
 			pause.is_game_paused = !pause.is_game_paused;
 			renderable.is_enabled = !renderable.is_enabled;
 			arrow_renderable.is_enabled = !arrow_renderable.is_enabled;
+			menu_audio.set_sound_state(0, audio::sound_state::playback_requested);
 		}
 
 		if (pause.is_game_paused)
@@ -130,17 +132,20 @@ public:
 				_current_selection--;
 				arrow_transform.position = glm::vec3(-27 - _current_selection * 0.7, 8 - _current_selection * 0.9, -5);
 				arrow_transform.is_matrix_dirty = true;
+				menu_audio.set_sound_state(0, audio::sound_state::playback_requested);
 			}
 			else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2))
 			{
 				_current_selection = (++_current_selection) % NUM_PAUSE_OPTIONS;
 				arrow_transform.position = glm::vec3(-27 - _current_selection * 0.7, 8 - _current_selection * 0.9, -5);
 				arrow_transform.is_matrix_dirty = true;
+				menu_audio.set_sound_state(0, audio::sound_state::playback_requested);
 			}
 
 				// Choose the selected option
 				else if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) 
 			{
+				menu_audio.set_sound_state(0, audio::sound_state::playback_requested);
 				// Note: I tried this with a switch statement but it ended up being messier because of bypassing initialization of variables
 				if (_current_selection == RESUME) {
 					// Resume
@@ -212,6 +217,13 @@ public:
 		}
 		if (m_r_input.any_button_pressed())
 		{
+			r_state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 			current_page++;
 			if (current_page > 3) {
 				auto& e = r_state.find_entity(pages[last_page]);
@@ -254,16 +266,36 @@ public:
 			_current_options_selection--;
 			arrow_transform.position = glm::vec3(-27 - _current_options_selection * 0.7, 8 - _current_options_selection * 0.9, -5);
 			arrow_transform.is_matrix_dirty = true;
+			state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 		}
 		else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2))
 		{
 			_current_options_selection = (++_current_options_selection) % NUM_OPTIONS;
 			arrow_transform.position = glm::vec3(-27 - _current_options_selection * 0.7, 8 - _current_options_selection * 0.9, -5);
 			arrow_transform.is_matrix_dirty = true;
+			state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 		}
 		// Choose selected
 		else if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
-			
+			state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 			if (_current_options_selection == FULLSCREEN) {
 				// Fullscreen
 				m_r_glfw.set_fullscreen(!m_r_glfw.is_fullscreen());
@@ -290,6 +322,13 @@ public:
 		}
 		else if (m_r_input.is_input_started(core::controls::BACK_CONTROL))
 		{
+			state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 			_seeing_message = false;
 			r.is_enabled = false;
 			pause_renderable.is_enabled = true;
@@ -313,14 +352,34 @@ public:
 				_current_warning_selection = 2;
 			}
 			_current_warning_selection--;
+			state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 		}
 		else if (m_r_input.is_input_started(core::controls::DOWN_CONTROL) || m_r_input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2))
 		{
 			_current_warning_selection = (++_current_warning_selection) % 2;
+			state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 		}
 		// Choose selected
 		else if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
-
+			state.each_id<components::pause, audio::audio_emitter>([&](
+				entity_id id1,
+				components::pause& pause,
+				audio::audio_emitter& emitter)
+				{
+					emitter.set_sound_state(0, audio::sound_state::playback_requested);
+				});
 			if (_current_warning_selection == 0) {
 				// Return to pause menu
 				_seeing_message = false;
