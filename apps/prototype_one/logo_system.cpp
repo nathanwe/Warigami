@@ -23,7 +23,7 @@ void logo_system::initialize(ecs::state& state)
 	auto& logo = state.find_entity(200);
 	logo.get_component<components::logo>().state = components::logo_screen_state::showing;
 
-	auto& controller = state.find_entity(201);
+	auto& controller = state.find_entity(202);
 	controller.get_component<components::logo>().does_fade = false;
 
 }

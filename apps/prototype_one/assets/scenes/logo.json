@@ -39,9 +39,30 @@
       ]
     },
 
-
     {
       "entity_id": 201,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0.0, -10 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 2, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "is_alpha_blended": true,
+          "is_enabled": false,
+          "texture_diffuse": "assets/textures/FMOD Logo White - Black Background.png"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    },
+
+    {
+      "entity_id": 202,
       "components": [
         {
           "type": "transform",
