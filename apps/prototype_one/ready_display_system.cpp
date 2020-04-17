@@ -28,6 +28,8 @@ void ready_display_system::initialize(ecs::state& state)
 
 void ready_display_system::update(ecs::state& state)
 {
+	if (_board == nullptr) return;
+
 	state.each<components::ready_display>([&](components::ready_display& ready_dispaly) {
 		auto& board = _board->get_component<components::board>();
 		auto& p1 = _players[0]->get_component<components::player>();

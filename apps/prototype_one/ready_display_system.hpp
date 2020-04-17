@@ -21,7 +21,7 @@ private:
 	core::glfw_context& _glfw;
 	glm::ivec2 _half_screen;
 
-	ecs::entity* _board;
+	ecs::entity* _board{ nullptr };
 	ecs::entity* _players[2]{ nullptr, nullptr };
 };
 
