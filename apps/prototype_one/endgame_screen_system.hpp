@@ -43,6 +43,10 @@ public:
 				if (m_r_input.is_input_started(core::controls::CARD1_CONTROL) || 
 					m_r_input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2))
 				{
+					auto camera_entity = state.first<rendering::camera>();
+					auto& music = camera_entity->get_component<audio::music_player>();
+					music.set_sound_state(0, audio::sound_state::stop_requested);
+
 					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
 					m_r_events.BroadcastEvent(restart_event);
 					return;
@@ -51,6 +55,9 @@ public:
 				else if (m_r_input.is_input_started(core::controls::CARD2_CONTROL) || 
 					m_r_input.is_input_started(core::controls::CARD2_CONTROL_PLAYER2))
 				{
+					auto camera_entity = state.first<rendering::camera>();
+					auto& music = camera_entity->get_component<audio::music_player>();
+					music.set_sound_state(0, audio::sound_state::stop_requested);
 
 					asset::scene_change_event restart_event("assets/scenes/scene.json");
 					m_r_events.BroadcastEvent(restart_event);
