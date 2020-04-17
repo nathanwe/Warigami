@@ -28,7 +28,6 @@ void logo_system::initialize(ecs::state& state)
 
 }
 
-#include <iostream>
 void logo_system::update(ecs::state& state)
 {
 	bool skipped = false;
@@ -41,14 +40,9 @@ void logo_system::update(ecs::state& state)
 				logo.display_time += _timer.smoothed_delta_secs();
 			else
 				return;
-
-
-			std::cout << (int)logo.state << std::endl;
-
+			
 			if (_input.any_button_pressed())
 			{
-				std::cout << "Skip" << std::endl;
-
 				logo.state = components::logo_screen_state::done;
 				mesh.is_enabled = false;
 
