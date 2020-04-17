@@ -11,9 +11,13 @@
 #include "components/selection_arrow.hpp"
 #include "game_util/player_specifics.hpp"
 
+#include <util/debounce.hpp>
+
 
 class energy_ball_system : public ecs::system_base
 {
+	static constexpr float RumbleStrength = 0.6f;
+
 public:
 	energy_ball_system(
 		core::game_input_manager& input,
@@ -30,6 +34,13 @@ private:
 
 	ecs::entity* _players[2]{ nullptr, nullptr };
 	ecs::entity* _selectors[2]{ nullptr, nullptr };
+
+	debounce<> cancel_rumble{
+		float_second(0.1f),
+		[]() {
+			os::rumble(0, 0.f, 0.f);
+			os::rumble(1, 0.f, 0.f);
+	}};
 
 
 	glm::vec3 find_target_position(components::selection_arrow& arrow);

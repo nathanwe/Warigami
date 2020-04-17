@@ -1,6 +1,7 @@
 #include <glm/gtx/norm.hpp>
 #include <transforms/transform.hpp>
 #include <collisions/rigid_body.hpp>
+#include <platform/rumble.hpp>
 #include "energy_ball_system.hpp"
 #include "components/energy_ball.hpp"
 #include "components/player.hpp"
@@ -37,17 +38,16 @@ void energy_ball_system::initialize(ecs::state& state)
 
 void energy_ball_system::update(ecs::state& state)
 {
+	cancel_rumble();
+
 	state.each_id<transforms::transform, components::energy_ball, collisions::rigid_body>(
 		[&](entity_id ball_id, transforms::transform& transform, components::energy_ball& ball, collisions::rigid_body& rb) {
-			auto selector = ball.team == 1.f
-				? _selectors[0]
-				: _selectors[1];
 
-			auto p = ball.team == 1.f
-				? _players[0]
-				: _players[1];
+			auto player_index = ball.team == 1.f ? 0 : 1;
+			auto selector = _selectors[player_index];
+			auto player_entity = _players[player_index];
 
-			auto& player_c = p->get_component<components::player>();
+			auto& player_c = player_entity->get_component<components::player>();
 			auto& sa = selector->get_component<components::selection_arrow>();
 
 			player_specific_data specifis(player_c, _input);
@@ -78,7 +78,9 @@ void energy_ball_system::update(ecs::state& state)
 			{
 				player_c.energy = glm::min(player_c.energy + 2, player_c.max_energy);
 				_hydrater.remove_entity(ball_id);
-			}			
+				os::rumble(player_index, RumbleStrength, RumbleStrength);
+				cancel_rumble.reset();
+			}
 		});
 }
 

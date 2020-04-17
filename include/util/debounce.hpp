@@ -35,6 +35,11 @@ public:
         }
     }
 
+    void reset()
+    {
+        _last = debounce_clock::now();
+    }
+
 private:
     float_second _interval;
     debounce_clock::time_point _last;

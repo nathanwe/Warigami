@@ -10,6 +10,8 @@ namespace components
 		float gravity_constant{ 3500.f };
 		float team{ 1.f };
 		int lane;
+
+		float rumble_time_remaining{ 0.2f };
 	};
 }
 
