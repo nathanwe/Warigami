@@ -15,7 +15,7 @@ void components::ready_display_loader::load(asset::asset_loader_node& asset_load
 	model.ready_entity = ready_text.entity_resource.entity->id();
 	model.back_entity = back_text.entity_resource.entity->id();
 	model.team = json.value("team", 1.f);
-
+	model.button_x = json.value("button_x", 15.5f);
 
 	for (auto& child : asset_loader_node.children)
 	{

@@ -2,7 +2,7 @@
 #include <rendering/freetype_system.hpp>
 #include <rendering/loader_renderable_text.hpp>
 #include <rendering/renderable_text.hpp>
-#include "core/frame_limiter.hpp"
+#include <core/frame_limiter.hpp>
 
 // Components
 #include "components/game_piece.hpp"

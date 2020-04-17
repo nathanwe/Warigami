@@ -41,15 +41,9 @@ void ready_display_system::update(ecs::state& state)
 		
 
 		ready_t.is_matrix_dirty = true;
-		back_t.is_matrix_dirty = true;		
-				
-		//todo: magic numbers		
+		back_t.is_matrix_dirty = true;
 		
-		auto button_x = ready_dispaly.team == 1.f ? -15.5f  : 15.3f;
-		auto button_y = -9.5f;
-		auto button_z = -24.5f;
-		auto text_y = 16;		
-		auto hide_x = 9999;
+		auto hide_x = 9999;		
 
 		if (board.state != components::game_state::deck_selection)
 		{
@@ -58,12 +52,12 @@ void ready_display_system::update(ecs::state& state)
 		}
 		else if (ready_dispaly.is_ready)
 		{
-			back_t.position = glm::vec3(button_x, button_y, button_z);
+			back_t.position = glm::vec3(ready_dispaly.button_x, ready_dispaly.button_y, ready_dispaly.button_z);
 			ready_t.position = HidePosition;			
 		}
 		else
 		{
-			ready_t.position = glm::vec3(button_x, button_y, button_z);
+			ready_t.position = glm::vec3(ready_dispaly.button_x, ready_dispaly.button_y, ready_dispaly.button_z);
 			back_t.position = HidePosition;
 		}
 				

@@ -23,6 +23,11 @@ namespace components
 		
 		std::uint32_t p2_units_count = 0;
 		entity_id p2_units[32];
+
+		float button_x;
+		float button_y{ -9.5f };
+		float button_z{ -24.5f };
+		
 	};
 }
 

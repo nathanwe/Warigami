@@ -18,7 +18,8 @@
       "components": [
         {
           "type": "ready_display",
-          "team": 1
+          "team": 1,
+          "button_x": -15.5
         }
       ]
     },
@@ -28,7 +29,8 @@
       "components": [
         {
           "type": "ready_display",
-          "team": -1
+          "team": -1,
+          "button_x": 15.3
         }
       ]
     },
