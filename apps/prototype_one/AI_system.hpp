@@ -37,10 +37,10 @@ public:
 					{
 						if (player.controlled_by_AI)
 						{
-							player.succ = true;
+							player.pull = true;
 							if (board.did_tick_elapse)
 							{
-								player.succ = false;
+								player.pull = false;
 								
 								if (player.selected_row >= board.columns - 1) {
 									player.AI_movement_direction = -1;

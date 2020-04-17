@@ -72,7 +72,7 @@ public:
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
 					update_succ(player, controls);
-					if (player.succ) {
+					if (player.pull) {
 						r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
 							entity_id id1,
 							transforms::transform& transform,
@@ -266,7 +266,7 @@ private:
 	void gain_flower_energy(ecs::state& r_state, components::player& player, player_controls& controls)
 	{
 		auto& anim_data = player.animation_parameters;
-		anim_data.m_is_vacuuming_energy = !anim_data.m_is_placing_unit && player.succ;
+		anim_data.m_is_vacuuming_energy = !anim_data.m_is_placing_unit && player.pull;
 		if (anim_data.m_is_vacuuming_energy)
 		{
 			r_state.each<components::terrain, components::board_square, transforms::transform>(
@@ -302,7 +302,7 @@ private:
 				bool is_flower_captured = square.team == player.team;
 				bool is_flower_bent = terrain.growth_stage == 2;
 				if (is_flower_bent && is_flower_captured &&
-					(!is_flower_selected || !player.succ))
+					(!is_flower_selected || !player.pull))
 				{
 					terrain.growth_stage--;
 					square_t.rotation = glm::vec3(0, -AI_MATH_HALF_PI, 0);
@@ -356,7 +356,7 @@ private:
 		{
 			player.select_delay -= m_timer.smoothed_delta_secs();
 		}
-		else if (!player.succ)
+		else if (!player.pull)
 		{
 			auto& anim_data = player.animation_parameters;
 			if (!anim_data.m_is_placing_unit)
@@ -411,7 +411,7 @@ private:
 		auto& controls = player_specifics.controls;
 		int loc = find_selected_card_index(controls);
 		bool placed = false;
-		if (!player.succ) {
+		if (!player.pull) {
 			placed = player.place_card(loc, m_timer.total_s(), r_state, board.spawner, hydrater);
 		}
 		if(placed && loc != -1){
@@ -449,7 +449,7 @@ private:
 	
 	void update_succ(components::player& player, player_controls& controls) {
 		if (!player.controlled_by_AI) {
-			player.succ = m_input.is_input_active(controls.dice_button2);
+			player.pull = m_input.is_input_active(controls.dice_button2);
 		}
 			
 	}
