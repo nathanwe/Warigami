@@ -41,13 +41,14 @@ public:
 							if (board.did_tick_elapse)
 							{
 								player.succ = false;
-								player.selected_row += player.AI_movement_direction;
+								
 								if (player.selected_row >= board.columns - 1) {
 									player.AI_movement_direction = -1;
 								}
 								if (player.selected_row <= 0) {
 									player.AI_movement_direction = 1;
 								}
+								player.selected_row += player.AI_movement_direction;
 								if (player.selected_row != board.columns - 1) {
 									player.place_card(0, _timer.total_s(), state, board.spawner, _hydrater);
 							}

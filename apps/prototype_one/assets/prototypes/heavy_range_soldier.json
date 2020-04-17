@@ -6,11 +6,11 @@
                 "position": [ 0, 0, 0 ],
                 "scale": [ 0.5, 0.5, 0.5 ]
             },
-          {
-            "type": "renderable_mesh_static",
-            "mesh": "assets/meshes/unit/unit.obj",
-            "texture_diffuse": "assets/textures/cards/HeavyRangeSoldier.png"
-          },
+            {
+                "type": "renderable_mesh_static",
+                "mesh": "assets/meshes/unit/unit.obj",
+                "texture_diffuse": "assets/textures/cards/HeavyRangeSoldier.png"
+            },
             {
                 "type": "game_piece",
                 "speed": 1.0,
@@ -24,9 +24,19 @@
                     [ 0.0, 2.0 ],
                     [ 0.0, 3.0 ],
                     [ 0.0, 4.0 ],
-                    [ 0.0, 5.0 ] 
+                    [ 0.0, 5.0 ]
                 ],
                 "effects": [ 0 ]
+            },
+            {
+                "type": "audio_emitter",
+                "sounds": [
+                    {
+                        "file": "assets/sound/slap.wav",
+                        "loop": false,
+                        "volume": 1
+                    }
+                ]
             }
         ]
     }

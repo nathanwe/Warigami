@@ -32,6 +32,16 @@
                     [ -1.0, -1.0 ]
                 ],
                 "effects": [ 0, 7 ]
+            },
+            {
+                "type": "audio_emitter",
+                "sounds": [
+                    {
+                        "file": "assets/sound/slap.wav",
+                        "loop": false,
+                        "volume": 1
+                    }
+                ]
             }
         ]
     }

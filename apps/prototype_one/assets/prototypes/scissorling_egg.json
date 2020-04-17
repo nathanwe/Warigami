@@ -6,25 +6,35 @@
             "position": [ 0, 0, 0 ],
             "scale": [ 0.2, 0.2, 0.2 ]
         },
-      {
-        "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/unit/unit.obj",
-        "is_alpha_blended": true,
-        "texture_diffuse": "assets/textures/spider/egg.png"
-      },
-      {
-        "type": "game_piece",
-        "speed": 0.0,
-        "damage": 0.0,
-        "health": 4.0,
-        "team": 1.0,
-        "board_location": [ 0.0, 0.0 ],
-        "move_board": [ 0.0, 0.0 ],
-        "move_world": [ 0.0, 0.0, 0.0 ],
-        "attacks": [ [ 0.0, 1.0 ] ],
-        "effects": [ 3 ],
-        "piece_type": "spider_egg"
-      }
+        {
+            "type": "renderable_mesh_static",
+            "mesh": "assets/meshes/unit/unit.obj",
+            "is_alpha_blended": true,
+            "texture_diffuse": "assets/textures/spider/egg.png"
+        },
+        {
+            "type": "game_piece",
+            "speed": 0.0,
+            "damage": 0.0,
+            "health": 4.0,
+            "team": 1.0,
+            "board_location": [ 0.0, 0.0 ],
+            "move_board": [ 0.0, 0.0 ],
+            "move_world": [ 0.0, 0.0, 0.0 ],
+            "attacks": [ [ 0.0, 1.0 ] ],
+            "effects": [ 3 ],
+            "piece_type": "spider_egg"
+        },
+        {
+            "type": "audio_emitter",
+            "sounds": [
+                {
+                    "file": "assets/sound/slap.wav",
+                    "loop": false,
+                    "volume": 1
+                }
+            ]
+        }
     ]
   }
 }

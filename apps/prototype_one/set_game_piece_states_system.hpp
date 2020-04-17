@@ -60,14 +60,19 @@ private:
 
     void do_game_piece_actions(ecs::state& r_state)
     {
-        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
+        r_state.each_id<components::game_piece, audio::audio_emitter>([&](entity_id id, components::game_piece& game_piece, audio::audio_emitter& emitter) {
             game_piece.board_source = game_piece.board_destination;
             if (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK
                 || (game_piece.state == components::UNIT_STATE::STUN && game_piece.stun_duration == 0))
             {
-                game_piece.state = check_attacks(game_piece.board_destination, game_piece.attacks, game_piece.team, r_state)
-                    ? components::UNIT_STATE::ATTACK
-                    : components::UNIT_STATE::MOVE;
+                bool attacking = check_attacks(game_piece.board_destination, game_piece.attacks, game_piece.team, r_state);
+                if (attacking) {
+                    game_piece.state = components::UNIT_STATE::ATTACK;
+                    emitter.set_sound_state(0, audio::sound_state::playback_requested);
+                }
+                else {
+                    game_piece.state = components::UNIT_STATE::MOVE;
+                }
             }
 
             });
