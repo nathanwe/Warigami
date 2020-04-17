@@ -28,34 +28,47 @@ void logo_system::initialize(ecs::state& state)
 
 }
 
+#include <iostream>
 void logo_system::update(ecs::state& state)
 {
+	bool skipped = false;
+
 	state.each<transforms::transform, components::logo, rendering::renderable_mesh_static>(
 		[&](transforms::transform& transform, components::logo& logo, rendering::renderable_mesh_static& mesh) {
 			mesh.is_enabled = logo.state == components::logo_screen_state::showing;
 
-			if (logo.state == components::logo_screen_state::showing)			
-				logo.display_time += _timer.smoothed_delta_secs();			
-			else			
+			if (logo.state == components::logo_screen_state::showing && !skipped)
+				logo.display_time += _timer.smoothed_delta_secs();
+			else
 				return;
-			
-			
+
+
+			std::cout << (int)logo.state << std::endl;
+
 			if (_input.any_button_pressed())
 			{
+				std::cout << "Skip" << std::endl;
+
 				logo.state = components::logo_screen_state::done;
+				mesh.is_enabled = false;
 
 				auto next = state.first<components::logo>([&](components::logo& logo) {
 					return logo.state == components::logo_screen_state::waiting;
-				});
+					});
 
 				if (next)
-					next->get_component<components::logo>().state = components::logo_screen_state::showing;
+				{
+					auto& next_logo = next->get_component<components::logo>();
+					next_logo.state = components::logo_screen_state::showing;
+				}
 				else
 				{
 					asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
 					_events.BroadcastEvent(menu_scene);
 					return;
 				}
+				skipped = true;
+				return;
 			}
 
 			if (logo.display_time > logo.duration && logo.state == components::logo_screen_state::showing)
