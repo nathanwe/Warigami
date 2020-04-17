@@ -11,13 +11,26 @@
 #include "player_controller.hpp"
 
 
-class AI_system : public ecs::system_base
+class AI_system : public ecs::system_base, public event::Listener
 {
 public:
-	AI_system(core::frame_timer& timer, asset::scene_hydrater& hydrater)
+	AI_system(core::frame_timer& timer, asset::scene_hydrater& hydrater, event::EventManager& _event_manager)
 		: _timer(timer)
 		, _hydrater(hydrater)
-	{}
+		, event_manager(_event_manager)
+	{
+		event_manager.Subscribe(this, event::EVENT_TYPE::TOGGLE_P1_AI);
+		event_manager.Subscribe(this, event::EVENT_TYPE::TOGGLE_P2_AI);
+		event_manager.Subscribe(this, event::EVENT_TYPE::ATTRACT_MODE);
+	}
+
+	void HandleEvent(event::Event& event)
+	{
+		if (event.mType == event::EVENT_TYPE::TOGGLE_P1_AI)
+		{
+			std::cerr << "Event recieved" << std::endl;			
+		}
+	}
 
 	void update(ecs::state& state)
 	{
@@ -59,9 +72,10 @@ public:
 
 	}
 
-private:	
+private:
 	core::frame_timer& _timer;
 	asset::scene_hydrater& _hydrater;
+	event::EventManager& event_manager;
 };
 
 #endif

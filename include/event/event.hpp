@@ -18,6 +18,9 @@ namespace event {
 		GAME_START,
 		SCENE_CHANGE,
 		EXIT,
+		TOGGLE_P1_AI,
+		TOGGLE_P2_AI,
+		ATTRACT_MODE,
 		NUM
 	};
 
