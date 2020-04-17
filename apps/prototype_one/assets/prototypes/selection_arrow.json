@@ -15,28 +15,33 @@
         },
         {
             "type": "audio_emitter",
-            "sounds": [
-                {
-                    "file": "assets/sound/invalid.mp3",
-                    "loop": false,
-                    "volume": 1
-                },
-                {
-                    "file": "assets/sound/spawn.wav",
-                    "loop": false,
-                    "volume": 1
-                },
-                {
-                    "file": "assets/sound/woosh.wav",
-                    "loop": false,
-                    "volume": 0.45
-                },
-                {
-                    "file": "assets/sound/pull.wav",
-                    "loop": false,
-                    "volume": 0.6
-                }
-            ]
+          "sounds": [
+            {
+              "file": "assets/sound/invalid.mp3",
+              "loop": false,
+              "volume": 1
+            },
+            {
+              "file": "assets/sound/spawn.wav",
+              "loop": false,
+              "volume": 1
+            },
+            {
+              "file": "assets/sound/woosh.wav",
+              "loop": false,
+              "volume": 0.45
+            },
+            {
+              "file": "assets/sound/pull.wav",
+              "loop": false,
+              "volume": 0.6
+            },
+            {
+              "file": "assets/sound/win.wav",
+              "loop": false,
+              "volume": 0.6
+            }
+          ]
         }
     ]
   },

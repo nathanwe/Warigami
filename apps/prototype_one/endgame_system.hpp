@@ -80,10 +80,22 @@ private:
 		if (player_1_square_total >= squares_needed_to_win) {
 			_did_game_end = true;
 			_winner = 1.0f;
+
+			auto any_selection_arrow_e = r_state.first<components::selection_arrow>([&](auto& a) {
+				return a.team == 1.f;
+			});
+			auto& emitter = any_selection_arrow_e->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(4, audio::sound_state::playback_requested);
 		}
 		if (player_minus_1_square_total >= squares_needed_to_win) {
 			_did_game_end = true;
 			_winner = -1.0f;
+
+			auto any_selection_arrow_e = r_state.first<components::selection_arrow>([&](auto& a) {
+				return a.team == -1.f;
+			});
+			auto& emitter = any_selection_arrow_e->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(4, audio::sound_state::playback_requested);
 		}
 	}
 
