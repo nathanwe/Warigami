@@ -26,6 +26,7 @@ namespace audio
             asset::asset_manager& assets,
             core::startup_config& config);
 
+        void initialize(ecs::state& state) override;
         void update(ecs::state &state) override;
 
     private:

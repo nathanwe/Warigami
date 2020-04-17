@@ -57,6 +57,15 @@ void audio::audio_system::update(ecs::state &state)
     _system->update();
 }
 
+void audio::audio_system::initialize(ecs::state& state)
+{
+    unsigned int listener_id = 0;
+    state.each<audio_listener>([&](audio_listener& listener) {
+        listener.listener_id = listener_id++;
+    });
+
+    _system->set3DNumListeners(listener_id);
+}
 
 void audio::audio_system::sync_transform_to_listener(ecs::state &state)
 {

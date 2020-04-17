@@ -14,9 +14,8 @@
 namespace audio
 {
     struct audio_listener : public ecs::component<audio_listener>
-    {
-        static std::atomic<int> NextId;
-        int listener_id {NextId++};
+    {        
+        int listener_id {0};
 
         glm::vec3 listener_position;
         glm::vec3 listener_velocity;
