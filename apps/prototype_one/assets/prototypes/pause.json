@@ -23,7 +23,7 @@
                 {
                     "file": "assets/sound/flip.wav",
                     "loop": false,
-                    "volume": 1
+                    "volume": 0.75
                 }
             ]
         }
