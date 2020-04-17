@@ -86,6 +86,7 @@
 #include "add_combats_to_resolver.hpp"
 #include "stun_system.hpp"
 
+#include "cheat_handler.hpp"
 
 int main(int argc, char** argv) {	
 #ifndef NDEBUG
@@ -325,6 +326,8 @@ int main(int argc, char** argv) {
 		, &render_debug_view
 #endif
 	);
+
+	cheat_handler cheats(state);
 
 	while (scene_tracker.has_next() && !glfwWindowShouldClose(glfw.window()))
 	{		
