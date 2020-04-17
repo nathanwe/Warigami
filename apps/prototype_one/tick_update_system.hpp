@@ -41,11 +41,22 @@ public:
 			{
 				board.tick_time_remaining = board.tick_time;
 				board.did_tick_elapse = true;
+				board.has_half_tick_elapsed = false;
 			}
 			else
 			{
 				board.did_tick_elapse = false;
+				if (board.tick_time_remaining <= 0.5f) {
+					if (board.has_half_tick_elapsed) {
+						board.did_half_tick_elapse = false;
+					}
+					else {
+						board.did_half_tick_elapse = true;
+					}
+					board.has_half_tick_elapsed = true;
+				}
 			}
+
 
 			board.timer_t = (board.tick_time - board.tick_time_remaining) / board.tick_time;
 			board.ticker_dt = _timer.smoothed_delta_secs() / board.tick_time;

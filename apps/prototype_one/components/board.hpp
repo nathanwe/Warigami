@@ -36,6 +36,8 @@ namespace components
         float timer_t{ 0.f };
         float ticker_dt{ 0.f };
         bool did_tick_elapse{ false };
+        bool did_half_tick_elapse{ false };
+        bool has_half_tick_elapsed{ false };
 
         game_state state{ game_state::deck_selection };
 

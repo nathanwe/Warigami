@@ -11,19 +11,29 @@
                 "mesh": "assets/meshes/unit/unit.obj",
                 "texture_diffuse": "assets/textures/cards/LightTankSoldier.png"
             },
-          {
-            "type": "game_piece",
-            "speed": 1.0,
-            "damage": 1.0,
-            "health": 1.0,
-            "team": 1.0,
-            "board_location": [ 0.0, 0.0 ],
-            "move_board": [ 0.0, 1.0 ],
-            "move_world": [ 0.0, 0.0, 1.0 ],
-            "attacks": [ [ 0.0, 1.0 ] ],
-            "effects": [ 0, 11 ],
-            "piece_type": "two_dwarves"
-          }
+            {
+                "type": "game_piece",
+                "speed": 1.0,
+                "damage": 1.0,
+                "health": 1.0,
+                "team": 1.0,
+                "board_location": [ 0.0, 0.0 ],
+                "move_board": [ 0.0, 1.0 ],
+                "move_world": [ 0.0, 0.0, 1.0 ],
+                "attacks": [ [ 0.0, 1.0 ] ],
+                "effects": [ 0, 11 ],
+                "piece_type": "two_dwarves"
+            },
+            {
+                "type": "audio_emitter",
+                "sounds": [
+                    {
+                        "file": "assets/sound/slap.wav",
+                        "loop": false,
+                        "volume": 1
+                    }
+                ]
+            }
         ]
     }
 }

@@ -31,6 +31,16 @@
 				],
 				"effects": [ 0, 17 ],
 				"piece_type": "spider_webber"
+			},
+			{
+				"type": "audio_emitter",
+				"sounds": [
+					{
+						"file": "assets/sound/slap.wav",
+						"loop": false,
+						"volume": 1
+					}
+				]
 			}
 		]
 	}
