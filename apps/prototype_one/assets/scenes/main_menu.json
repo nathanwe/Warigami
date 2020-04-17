@@ -14,9 +14,6 @@
           "field_of_view": 0.785,
           "clear_setting": "flat_color",
           "clear_color": [ 0, 0, 0 ]
-        },
-        {
-          "type": "audio_listener"
         }
       ]
     },

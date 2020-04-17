@@ -38,16 +38,14 @@ void ready_display_system::update(ecs::state& state)
 		auto& back_entity = state.find_entity(ready_dispaly.back_entity);
 		auto& ready_t = ready_entity.get_component<transforms::transform>();
 		auto& back_t = back_entity.get_component<transforms::transform>();
-		auto& ready_text = ready_entity.get_component<rendering::renderable_text>();
-		auto& back_text = back_entity.get_component<rendering::renderable_text>();
+		
 
 		ready_t.is_matrix_dirty = true;
 		back_t.is_matrix_dirty = true;		
 				
-		//todo: magic numbers
-		auto ratio = _glfw.width() / 1366.f;
-		auto offset = ready_dispaly.team == 1.f ? 70  : _glfw.width() - 110.f;
-		auto button_x = ready_dispaly.team == 1.f ? -16.f - (1.2f)  : 13.f + (1.35f);
+		//todo: magic numbers		
+		
+		auto button_x = ready_dispaly.team == 1.f ? -15.5f  : 15.5f;
 		auto button_y = -9.5f;
 		auto button_z = -24.5f;
 		auto text_y = 16;		
@@ -55,22 +53,16 @@ void ready_display_system::update(ecs::state& state)
 
 		if (board.state != components::game_state::deck_selection)
 		{
-			ready_text.position.x = hide_x;
 			ready_t.position = HidePosition;
-			back_text.position.x = hide_x;
 			back_t.position = HidePosition;			
 		}
 		else if (ready_dispaly.is_ready)
 		{
-			back_text.position = {offset, text_y};
-			ready_text.position.x = hide_x;
 			back_t.position = glm::vec3(button_x, button_y, button_z);
 			ready_t.position = HidePosition;			
 		}
 		else
 		{
-			ready_text.position = { offset, text_y };
-			back_text.position.x = hide_x;
 			ready_t.position = glm::vec3(button_x, button_y, button_z);
 			back_t.position = HidePosition;
 		}

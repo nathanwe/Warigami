@@ -17,55 +17,28 @@
     {
       "components": [
         {
-          "type": "renderable_text",
-          "position": [ 0, 0 ],
-          "color": [ 0, 0, 0 ],
-          "scale": 0.75,
-          "text": "READY"
+          "type": "transform",
+          "scale": [ 3, 0.75, 1 ]
         },
         {
-          "type": "transform",
-          "position": [ 0, 0, 0 ],
-          "rotation": [ 0, 0, 0 ],
-          "scale": [ 1, 1, 1 ]
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "is_alpha_blended": true,
+          "texture_diffuse": "assets/textures/ready.png"
         }
       ]
     },
     {
-      "parent_index": 0,
-      "prototype": "assets/prototypes/tooltip_a.json",
       "components": [
         {
           "type": "transform",
-          "position": [ 0, 0, 0 ]
-        }
-      ]
-    },
-
-    {
-      "components": [
-        {
-          "type": "renderable_text",
-          "position": [ 0, 0 ],
-          "scale": 0.75,
-          "color": [ 0, 0, 0 ],
-          "text": "BACK"
+          "scale": [ 3, 0.75, 1 ]
         },
         {
-          "type": "transform",
-          "position": [ 0, 0, 0 ],
-          "rotation": [ 0, 0, 0 ],
-          "scale": [ 1, 1, 1 ]
-        }
-      ]
-    },
-    {
-      "parent_index": 2,
-      "prototype": "assets/prototypes/tooltip_b.json",
-      "components": [
-        {
-          "type": "transform",
-          "position": [ 0, 0, 0 ]
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "is_alpha_blended": true,
+          "texture_diffuse": "assets/textures/back.png"
         }
       ]
     }
