@@ -18,11 +18,11 @@ namespace audio
         {
             auto entity = node.entity_resource.entity;
             auto entity_data = node.entity_resource.entity_data;
-            auto& json = node.entity_resource.entity_data->component_data(audio_emitter::component_bitshift);
+            auto& json = node.entity_resource.entity_data->component_data(music_player::component_bitshift);
             auto& emitter = entity->get_component<music_player>();
 
             emitter.track_count = 0;
-            for (auto& s : json["sounds"])
+            for (auto& s : json["tracks"])
             {
                 auto path = s["file"].get<std::string>();
                 auto loop = s.find("loop") == s.end() ? false : s["loop"].get<bool>();
@@ -34,7 +34,7 @@ namespace audio
 
         component_bitset components_to_load()
         {
-            return audio_emitter::archetype_bit;
+            return music_player::archetype_bit;
         }
 
     private:

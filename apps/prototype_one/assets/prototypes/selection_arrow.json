@@ -1,48 +1,48 @@
 {
   "root": {
     "components": [
-        {
-            "type": "transform",
-            "position": [ 0, 0, 0 ],
-            "scale": [ 1, 1, 1 ]
-        },
-        {
-            "type": "renderable_mesh_static",
-            "mesh": "assets/meshes/quad/quad.obj",
-            "is_alpha_blended": true,
-            "texture_diffuse": "assets/textures/spider/queen.png",
-            "texture_scale": [ 0.25, 0.3333 ]
-        },
-        {
-            "type": "audio_emitter",
-          "sounds": [
-            {
-              "file": "assets/sound/invalid.mp3",
-              "loop": false,
-              "volume": 1
-            },
-            {
-              "file": "assets/sound/spawn.wav",
-              "loop": false,
-              "volume": 1
-            },
-            {
-              "file": "assets/sound/woosh.wav",
-              "loop": false,
-              "volume": 0.45
-            },
-            {
-              "file": "assets/sound/pull.wav",
-              "loop": false,
-              "volume": 0.6
-            },
-            {
-              "file": "assets/sound/win.wav",
-              "loop": false,
-              "volume": 0.6
-            }
-          ]
-        }
+      {
+        "type": "transform",
+        "position": [ 0, 0, 0 ],
+        "scale": [ 1, 1, 1 ]
+      },
+      {
+        "type": "renderable_mesh_static",
+        "mesh": "assets/meshes/quad/quad.obj",
+        "is_alpha_blended": true,
+        "texture_diffuse": "assets/textures/spider/queen.png",
+        "texture_scale": [ 0.25, 0.3333 ]
+      },
+      {
+        "type": "audio_emitter",
+        "sounds": [
+          {
+            "file": "assets/sound/invalid.mp3",
+            "loop": false,
+            "volume": 1
+          },
+          {
+            "file": "assets/sound/spawn.wav",
+            "loop": false,
+            "volume": 1
+          },
+          {
+            "file": "assets/sound/woosh.wav",
+            "loop": false,
+            "volume": 0.45
+          },
+          {
+            "file": "assets/sound/pull.wav",
+            "loop": false,
+            "volume": 0.6
+          },
+          {
+            "file": "assets/sound/win.wav",
+            "loop": false,
+            "volume": 0.6
+          }
+        ]
+      }
     ]
   },
   "children": [

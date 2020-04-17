@@ -143,6 +143,7 @@ int main(int argc, char** argv) {
     ecs::register_component<rendering::renderable_text>("renderable_text");
 	ecs::register_component<audio::audio_emitter>("audio_emitter");
 	ecs::register_component<audio::audio_listener>("audio_listener");
+	ecs::register_component<audio::music_player>("music_player");
 	ecs::register_component<collisions::sphere_collider>("sphere_collider");
 	ecs::register_component<collisions::AABB_collider>("aabb_collider");
 	ecs::register_component<collisions::rigid_body>("rigid_body");
@@ -206,7 +207,6 @@ int main(int argc, char** argv) {
 		&count_system,
 		&camera_updater,
 		&flycam,
-		&audio_system,
 		&physics_update,
 		
 		// order of these matters
@@ -245,6 +245,8 @@ int main(int argc, char** argv) {
 		&transformer,
 		&renderer,
 		&text_renderer,
+
+		&audio_system,
 		
 		&energy_balls,
 		&logo
@@ -252,6 +254,7 @@ int main(int argc, char** argv) {
 
 	ecs::world world(systems, state);
 	audio::loader_emitter eloader(strings);
+	audio::loader_music_player music_player_loader(strings);
 	transforms::transform_loader transform_loader;
 	rendering::loader_camera camera_loader(render_asset_cache);
 	rendering::loader_light_directional dir_light_loader;
@@ -306,7 +309,8 @@ int main(int argc, char** argv) {
 		&deck_option_loader,
 		&deck_ui_loader,
 		&ready_display_loader,
-		&deck_cursor_loader);
+		&deck_cursor_loader,
+		&music_player_loader);
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);

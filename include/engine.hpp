@@ -6,7 +6,9 @@
 #include <asset/scene.hpp>
 #include <asset/scene_tracker.hpp>
 #include <audio/audio_system.hpp>
+#include <audio/music_player.hpp>
 #include <audio/loader_emitter.hpp>
+#include <audio/loader_music_player.hpp>
 #include <collisions/aabb_collider_loader.hpp>
 #include <collisions/collider.hpp>
 #include <collisions/collision_manager.hpp>

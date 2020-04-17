@@ -9,11 +9,13 @@
 #include <ecs/system_base.hpp>
 #include <ecs/state.hpp>
 #include <rendering/renderable_mesh_static.hpp>
+#include <rendering/camera.hpp>
 #include <transforms/transform.hpp>
 #include <asset/scene_change_event.hpp>
 #include <event/event_manager.hpp>
 
 #include "components/pause.hpp"
+
 
 enum pause_options {
 	RESUME,
@@ -397,6 +399,11 @@ public:
 					pause.is_game_paused = false;
 					pause_renderable.is_enabled = false;
 					arrow_renderable.is_enabled = false;
+
+					auto camera_entity = state.first<rendering::camera>();
+					auto& music = camera_entity->get_component<audio::music_player>();
+					music.set_sound_state(0, audio::sound_state::stop_requested);
+
 					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
 					m_r_events.BroadcastEvent(restart_event);
 					return;
@@ -405,6 +412,11 @@ public:
 					pause.is_game_paused = false;
 					pause_renderable.is_enabled = false;
 					arrow_renderable.is_enabled = false;
+
+					auto camera_entity = state.first<rendering::camera>();
+					auto& music = camera_entity->get_component<audio::music_player>();
+					music.set_sound_state(0, audio::sound_state::stop_requested);
+
 					asset::scene_change_event restart_event("assets/scenes/scene.json");
 					m_r_events.BroadcastEvent(restart_event);
 					return;

@@ -57,7 +57,7 @@ public:
 	void update(ecs::state& r_state) override
 	{		
 		if (_board == nullptr) return;
-		auto& board_component = _board->get_component<components::board>();
+		auto& board_component = _board->get_component<components::board>();		
 
 		// Count before starting (3, 2, 1, GO!)
 		if (board_component.state == components::game_state::countdown) 
@@ -82,6 +82,10 @@ public:
 
 					if (countdown.current_value < 1.f)
 					{
+						auto camera_entity = r_state.first<rendering::camera>();
+						auto& music = camera_entity->get_component<audio::music_player>();
+						music.set_sound_state(0, audio::sound_state::playback_requested);
+
 						board_component.state = components::game_state::gameplay;
 						r_state.each<components::pause>([&](auto& pause)
 							{
