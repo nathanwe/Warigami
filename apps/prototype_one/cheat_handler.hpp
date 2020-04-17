@@ -45,12 +45,61 @@ public:
 					player.controlled_by_AI = true;
 					});
 				_state.each<components::board_square>([&](components::board_square& square) {
-					if (square.y > 4) {
+					if (square.y < 4) {
 						square.next_team = 1.0;
 					}
 					else {
 						square.next_team = -1.0;
 					}
+					});
+			}
+			if (event.mData == "refill_energy"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					player.energy = 9999;
+					});
+			}
+			if (event.mData == "P1_wins"s)
+			{
+				_state.each<components::board_square>([&](components::board_square& square) {
+					square.next_team = 1.0;
+					});
+			}
+			if (event.mData == "P2_wins"s)
+			{
+				_state.each<components::board_square>([&](components::board_square& square) {
+					square.next_team = -1.0;
+					});
+			}
+			if (event.mData == "P1_almost_wins"s)
+			{
+				_state.each<components::board_square>([&](components::board_square& square) {
+					if (square.x == 2 && square.y == 4) {
+						square.next_team = -1.0;
+					}
+					else {
+						square.next_team = 1.0;
+					}
+					});
+			}
+			if (event.mData == "P2_almost_wins"s)
+			{
+				_state.each<components::board_square>([&](components::board_square& square) {
+					if (square.x == 2 && square.y == 4) {
+						square.next_team = 1.0;
+					}
+					else {
+						square.next_team = -1.0;
+					}
+					});
+			}
+			if (event.mData == "redraw_hands"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					player.hand[0] = player.safe_draw();
+					player.hand[1] = player.safe_draw();
+					player.hand[2] = player.safe_draw();
+					player.hand[3] = player.safe_draw();
 					});
 			}
 		}

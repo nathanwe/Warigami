@@ -106,6 +106,36 @@ void engineui::developer_console::handle_command()
 		cheat triggeredEvent("attract_mode");
 		_events.BroadcastEvent(triggeredEvent);
 	}
+	if (strcmp(_input, "refill_energy") == 0)
+	{
+		cheat triggeredEvent("refill_energy");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "P1_wins") == 0)
+	{
+		cheat triggeredEvent("P1_wins");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "P2_wins") == 0)
+	{
+		cheat triggeredEvent("P2_wins");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "P1_almost_wins") == 0)
+	{
+		cheat triggeredEvent("P1_almost_wins");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "P2_almost_wins") == 0)
+	{
+		cheat triggeredEvent("P2_almost_wins");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "redraw_hands") == 0)
+	{
+		cheat triggeredEvent("redraw_hands");
+		_events.BroadcastEvent(triggeredEvent);
+	}
 
 	write_buffer(_command, "> ");
 	write_buffer(_command, _input);
