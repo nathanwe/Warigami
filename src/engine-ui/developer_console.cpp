@@ -91,6 +91,21 @@ void engineui::developer_console::handle_command()
 		noclip triggeredEvent;
 		_events.BroadcastEvent(triggeredEvent);
 	}
+	if (strcmp(_input, "toggle_P1_AI") == 0)
+	{
+		cheat triggeredEvent("toggle_P1_AI");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "toggle_P2_AI") == 0)
+	{
+		cheat triggeredEvent("toggle_P2_AI");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "attract_mode") == 0)
+	{
+		cheat triggeredEvent("attract_mode");
+		_events.BroadcastEvent(triggeredEvent);
+	}
 
 	write_buffer(_command, "> ");
 	write_buffer(_command, _input);

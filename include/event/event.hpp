@@ -1,5 +1,6 @@
 #ifndef EVENT_EVENT_HPP
 #define EVENT_EVENT_HPP
+#include <string>
 
 namespace event {
 
@@ -18,7 +19,7 @@ namespace event {
 		GAME_START,
 		SCENE_CHANGE,
 		EXIT,
-		TOGGLE_P1_AI,
+		CHEAT,
 		NUM
 	};
 
@@ -30,8 +31,10 @@ namespace event {
 	class Event {
 	public:
 		Event(EVENT_TYPE type) : mType(type) {}
+		Event(EVENT_TYPE type, std::string data) : mType(type), mData(data) {}
 		~Event() {}
 		EVENT_TYPE mType;
+		std::string mData;
 	};
 
 	/*******
