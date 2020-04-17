@@ -16,7 +16,7 @@
 
 class energy_ball_system : public ecs::system_base
 {
-	static constexpr float RumbleStrength = 0.6f;
+	static constexpr float RumbleStrength = 0.55f;
 
 public:
 	energy_ball_system(

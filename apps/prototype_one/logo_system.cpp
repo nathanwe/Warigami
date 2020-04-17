@@ -43,24 +43,7 @@ void logo_system::update(ecs::state& state)
 			
 			if (_input.any_button_pressed())
 			{
-				logo.state = components::logo_screen_state::done;
-				mesh.is_enabled = false;
-
-				auto next = state.first<components::logo>([&](components::logo& logo) {
-					return logo.state == components::logo_screen_state::waiting;
-					});
-
-				if (next)
-				{
-					auto& next_logo = next->get_component<components::logo>();
-					next_logo.state = components::logo_screen_state::showing;
-				}
-				else
-				{
-					asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
-					_events.BroadcastEvent(menu_scene);
-					return;
-				}
+				play_next(state, logo, mesh);
 				skipped = true;
 				return;
 			}
@@ -81,25 +64,29 @@ void logo_system::update(ecs::state& state)
 
 				if (logo.fade_time > logo.fade_time_total)
 				{					
-					logo.state = components::logo_screen_state::done;
-					mesh.is_enabled = false;
-
-					auto next = state.first<components::logo>([&](components::logo& logo) {
-						return logo.state == components::logo_screen_state::waiting;
-					});
-
-					if (next)
-					{
-						auto& next_logo = next->get_component<components::logo>();
-						next_logo.state = components::logo_screen_state::showing;
-					}
-					else
-					{
-						asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
-						_events.BroadcastEvent(menu_scene);
-						return;
-					}
+					play_next(state, logo, mesh);
 				}
 			}
 		});
+}
+
+void logo_system::play_next(ecs::state& state, components::logo& logo, rendering::renderable_mesh_static& mesh)
+{
+	logo.state = components::logo_screen_state::done;
+	mesh.is_enabled = false;
+
+	auto next = state.first<components::logo>([&](components::logo& logo) {
+		return logo.state == components::logo_screen_state::waiting;
+	});
+
+	if (next)
+	{
+		auto& next_logo = next->get_component<components::logo>();
+		next_logo.state = components::logo_screen_state::showing;
+	}
+	else
+	{
+		asset::scene_change_event menu_scene("assets/scenes/main_menu.json");
+		_events.BroadcastEvent(menu_scene);
+	}
 }

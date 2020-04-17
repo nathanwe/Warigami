@@ -114,9 +114,7 @@ private:
 		components::deck_selection& selection,
 		size_t player_index,
 		size_t deck_index,
-		ecs::entity& entity);
-
-	bool can_run() const;
+		ecs::entity& entity);	
 
 	void interrupt_animation(
 		ecs::state& state, 
@@ -129,10 +127,12 @@ private:
 	void position_energy_orbs(
 		components::player& player,
 		components::selection_arrow& selector);
+
 	void position_cursors(
 		ecs::state& state,
-		components::deck_selection& deck_selection
-	);
+		components::deck_selection& deck_selection);
+
+	bool can_run() const;
 };
 
 

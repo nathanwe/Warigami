@@ -6,6 +6,8 @@
 #include <core/frame_timer.hpp>
 #include <core/game_input_manager.hpp>
 #include <event/event_manager.hpp>
+#include <rendering/renderable_mesh_static.hpp>
+#include "components/logo.hpp"
 
 class logo_system : public ecs::system_base
 {
@@ -22,6 +24,8 @@ private:
 	core::frame_timer& _timer;
 	event::EventManager& _events;
 	core::game_input_manager& _input;
+
+	void play_next(ecs::state& state, components::logo& logo, rendering::renderable_mesh_static& mesh);
 };
 
 
