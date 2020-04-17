@@ -15,6 +15,11 @@ class noclip : public event::Event
 public:
 	noclip() : Event(event::EVENT_TYPE::TOGGLE_NOCLIP) {}
 };
+class cheat : public event::Event
+{
+public:
+	cheat(std::string data) : Event(event::EVENT_TYPE::CHEAT, data) {}
+};
 
 namespace engineui
 {

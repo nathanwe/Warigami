@@ -327,7 +327,7 @@ int main(int argc, char** argv) {
 #endif
 	);
 
-	cheat_handler cheats(state);
+	cheat_handler cheats(state, events);
 
 	while (scene_tracker.has_next() && !glfwWindowShouldClose(glfw.window()))
 	{		
