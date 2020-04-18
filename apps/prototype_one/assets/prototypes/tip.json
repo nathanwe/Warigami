@@ -4,13 +4,13 @@
             {
                 "type": "transform",
                 "position": [ 0, 0, 0 ],
-                "scale": [ 0.2, 0.2, 0.2 ]
+                "scale": [ 1, 1, 1 ]
             },
             {
                 "type": "renderable_mesh_static",
-                "mesh": "assets/meshes/unit/unit.obj",
-                "is_alpha_blended": true,
-                "texture_diffuse": "assets/textures/spider/trooper.png"
+                "mesh": "assets/meshes/cube/cube.obj",
+                "is_alpha_blended": false,
+                "texture_diffuse": "assets/textures/terrain/fire.png"
             },
             {
                 "type": "tip",

@@ -38,10 +38,8 @@ public:
 
                 r_state.each_id<transforms::transform, components::tip>(
                     [&](entity_id tip_id, transforms::transform& tip_t, components::tip& tip) {
-                        int brakpint = 69;
                         r_state.each_id<transforms::transform, components::board_square, components::terrain>(
                             [&](entity_id board_square_id, transforms::transform& square_t, components::board_square& square, components::terrain& terrain) {
-                                int breakpoint = 69;
                                 if ((terrain.growth_stage == 3 || terrain.growth_stage == 2) 
                                     && (tip.team == square.team)) 
                                 {

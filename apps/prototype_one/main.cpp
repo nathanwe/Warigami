@@ -49,6 +49,8 @@
 #include "components/spawn_effect.hpp"
 #include "remove_dying_and_dancing_system.hpp"
 #include "components/capture.hpp"
+#include "components/tip.hpp"
+#include "components/tip_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -151,6 +153,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 	ecs::register_component<components::spawn_effect>("spawn_effect");
 	ecs::register_component<components::capture>("capture");
+	ecs::register_component<components::tip>("tip");
 
 	asset::scene_hydrater hydrater(state);
 
@@ -286,6 +289,7 @@ int main(int argc, char** argv) {
 	collisions::rigid_body_loader rigid_body_loader;
 	components::ready_display_loader ready_display_loader;
 	components::deck_cursor_loader deck_cursor_loader;
+	components::tip_loader tip_loader;
 
 	hydrater.register_loaders(
 		&aabb_collider_loader,
@@ -315,7 +319,8 @@ int main(int argc, char** argv) {
 		&deck_ui_loader,
 		&ready_display_loader,
 		&deck_cursor_loader,
-		&music_player_loader);
+		&music_player_loader,
+		&tip_loader);
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);

@@ -90,26 +90,6 @@
             ]
         },
         {
-            "entity_id": 60,
-            "prototype": "assets/prototypes/tip.json",
-            "components": [
-                {
-                    "type": "tip",
-                    "team": 1.0
-                }
-            ]
-        },
-        {
-            "entity_id": 61,
-            "prototype": "assets/prototypes/tip.json",
-            "components": [
-                {
-                    "type": "tip",
-                    "team": -1.0
-                }
-            ]
-        },
-        {
             "entity_id": 69,
             "prototype": "assets/prototypes/gameboard.json",
             "components": [
@@ -393,6 +373,28 @@
                     "mesh": "assets/meshes/quad/quad.obj",
                     "texture_diffuse": "assets/textures/codex/Codex4.png",
                     "is_enabled": false
+                }
+            ]
+        },
+        {
+            "parent_id": 69,
+            "entity_id": 80,
+            "prototype": "assets/prototypes/tip.json",
+            "components": [
+                {
+                    "type": "tip",
+                    "team": 1.0
+                }
+            ]
+        },
+        {
+            "parent_id": 69,
+            "entity_id": 81,
+            "prototype": "assets/prototypes/tip.json",
+            "components": [
+                {
+                    "type": "tip",
+                    "team": -1.0
                 }
             ]
         }
