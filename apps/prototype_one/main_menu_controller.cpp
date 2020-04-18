@@ -130,7 +130,7 @@ void main_menu_controller::handle_options_case(ecs::state& state, components::ma
 		else if (_option_selection == MUTE_MUSIC) {
 			auto any_sound = _config.music_volume() != 0;
 			auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
-			_config.set("music_volume", any_sound);
+			_config.set("music_volume", val);
 			play_page_flip(state);
 		}	
 		else if (_option_selection == BACK) {
