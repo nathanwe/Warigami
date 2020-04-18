@@ -1,5 +1,6 @@
 #include <algorithm>
 
+#include <audio/music_player.hpp>
 #include "deck_selection_controller.hpp"
 #include "game_util/player_specifics.hpp"
 #include <audio/audio_emitter.hpp>
@@ -8,6 +9,7 @@
 #include <rendering/renderable_model_static.hpp>
 #include <rendering/renderable_text.hpp>
 #include <rendering/texture.hpp>
+#include <rendering/camera.hpp>
 #include <util/sign.hpp>
 #include <audio/audio_emitter.hpp>
 #include "components/countdown.hpp"
@@ -78,10 +80,28 @@ void deck_selection_controller::update(ecs::state& state)
 		if (!can_run())					
 			return;
 
-		if (board.state == components::game_state::deck_selection) 
+		auto cam_entity = state.first<rendering::camera>();
+		auto& music = cam_entity->get_component<audio::music_player>();
+
+
+		if (board.state == components::game_state::deck_selection)
+		{
+			if (music.tracks[1].state != audio::sound_state::playing)
+			{
+				music.set_sound_state(1, audio::sound_state::playback_requested);
+			}
+
 			do_update(state, board);
+		}
 		else
+		{
+			if (music.tracks[1].state == audio::sound_state::playing)
+			{
+				music.set_sound_state(1, audio::sound_state::stop_requested);
+			}
+
 			hide_elements(state, board);
+		}
 	});
 
 	if (can_run())
