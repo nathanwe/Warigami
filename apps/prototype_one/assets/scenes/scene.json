@@ -5,7 +5,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -40, 18, 0 ],
+          "position": [ -39.6, 18, 0 ],
           "scale": [ 1, 1, 1 ],
           "rotation": [ 0, -90, -48 ]
         },
