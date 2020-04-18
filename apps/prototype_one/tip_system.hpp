@@ -17,6 +17,7 @@
 #include "components/to_spawn.hpp"
 #include <algorithm>
 #include <math.h>
+#include "components/player.hpp"
 
 class tip_system : public ecs::system_base
 {
@@ -36,17 +37,24 @@ public:
             [&](entity_id board_id, transforms::transform& board_t, components::board& board) {
                 if (board.state != components::game_state::gameplay) return;
 
-                r_state.each_id<transforms::transform, components::tip>(
-                    [&](entity_id tip_id, transforms::transform& tip_t, components::tip& tip) {
+                r_state.each_id<transforms::transform, components::tip, rendering::renderable_mesh_static>(
+                    [&](entity_id tip_id, transforms::transform& tip_t, components::tip& tip, rendering::renderable_mesh_static& tip_r) {
                         r_state.each_id<transforms::transform, components::board_square, components::terrain>(
                             [&](entity_id board_square_id, transforms::transform& square_t, components::board_square& square, components::terrain& terrain) {
-                                if ((terrain.growth_stage == 3 || terrain.growth_stage == 2) 
-                                    && (tip.team == square.team)) 
-                                {
-                                    tip_t.position = board.grid_to_board(glm::vec2(square.x, square.y), board_t);
-                                    tip_t.is_matrix_dirty = true;
-                                }
-
+                                r_state.each_id<components::player>(
+                                    [&](entity_id player_id,  components::player& player) {
+                                        if (player.has_ever_gained_energy && player.team == tip.team) {
+                                            tip_r.is_enabled = false;
+                                        }
+                                        if ((terrain.growth_stage == 3 || terrain.growth_stage == 2)
+                                            && (tip.team == square.team) && (player.selected_row == square.x)
+                                            && (player.team == tip.team))
+                                        {
+                                            tip_t.position = board.grid_to_board(glm::vec2(square.x, square.y), board_t);
+                                            tip_t.is_matrix_dirty = true;
+                                        }
+                                        
+                                    });
                             });
 
                     });
