@@ -104,7 +104,7 @@ public:
 					}
 					handle_player_selection(r_state, player, forward, left, board);
 					handle_controls(player, r_state, player_specifics, board, board_id);
-					toggle_AI(player, controls);
+					//toggle_AI(player, controls);
 					gain_flower_energy(r_state, player, controls);
 					show_cursor(player, r_state, player_specifics);
 				});
