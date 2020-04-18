@@ -79,7 +79,7 @@ private:
 				}
 				else if (open_space[1] && piece.spider_egg_spawn_counter == 1)
 				{
-					to_spawn new_spawn(piece.board_source.x + 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
+					to_spawn new_spawn(piece.board_source.x - 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
 					piece.health -= 1;
 					// Turn health spheres red
@@ -89,14 +89,16 @@ private:
 				}
 				else if (open_space[2] && piece.spider_egg_spawn_counter == 2)
 				{
-					to_spawn new_spawn(piece.board_source.x - 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
+					to_spawn new_spawn(piece.board_source.x + 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
 					piece.health -= 1;
 					// Turn health spheres red
-					//piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+					if (piece.health_points.size() >= piece.health) {
+						piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
+					}
 				}
 
-				piece.spider_egg_spawn_counter = (piece.spider_egg_spawn_counter + 1) % 3;
+				piece.spider_egg_spawn_counter = (piece.spider_egg_spawn_counter + 1) % 2;
 			}
 		}
 	}
