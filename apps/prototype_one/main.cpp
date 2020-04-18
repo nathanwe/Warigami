@@ -85,6 +85,7 @@
 #include "set_game_piece_states_system.hpp"
 #include "add_combats_to_resolver.hpp"
 #include "stun_system.hpp"
+#include "tip_system.hpp"
 
 #include "cheat_handler.hpp"
 
@@ -163,6 +164,7 @@ int main(int argc, char** argv) {
 	add_combats_to_resolver add_combats_to_resolver(input, timer, events, hydrater, resolver);
 	remove_dying_and_dancing remove_dying_and_dancing(input, timer, events, hydrater, resolver);
 	player_controller player_control(input, timer, events, hydrater, render_asset_cache);
+
 	
 	deck_ui_controller deck_ui_controller(card_spawn_helper);
 	audio::audio_system audio_system(strings, assets, config);
@@ -171,6 +173,7 @@ int main(int argc, char** argv) {
 	game_start_system game_start_system(hydrater, render_asset_cache);
 	health_regenration_system health_regen;
 	stun_system stun_system;
+	tip_system tip_system(timer);
 	
 	rendering::camera_updater camera_updater;
 	rendering::render_state render_state;
@@ -240,6 +243,7 @@ int main(int argc, char** argv) {
 		&escreen,
 
 		//
+		&tip_system,
 		&main_menu_controller,
 		&spawn_effector,
 		&animator,

@@ -8,9 +8,9 @@
 
 namespace components
 {
-	struct pause : ecs::component<pause>
+	struct tip : ecs::component<tip>
 	{
-		
+		float team;
 	};
 }
 
