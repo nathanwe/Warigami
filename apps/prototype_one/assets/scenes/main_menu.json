@@ -27,6 +27,16 @@
               "volume": 0.85
             }
           ]
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/sound/flip.wav",
+              "loop": false,
+              "volume": 0.75
+            }
+          ]
         }
       ]
     },

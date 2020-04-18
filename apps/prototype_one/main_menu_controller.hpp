@@ -60,6 +60,8 @@ private:
 	bool _seeing_new_menu;
 	int _option_selection;
 	int _warning_selection;
+
+	void play_page_flip(ecs::state& state);
 };
 
 
