@@ -70,30 +70,30 @@ void core::game_input_manager::update() {
 	_forward_player2 = _input.get_gamepads()[1]->engaged_Lstick_position().second;
 	_strafe_player2 = _input.get_gamepads()[1]->engaged_Lstick_position().first;
 
-	if (_input.is_key_down(GLFW_KEY_W)) {
+	if (_input.is_key_down(GLFW_KEY_W) || _input.get_gamepads()[0]->is_button_held(Xbuttons.pad_up)) {
 		_forward = -1.0f;
 	}
-	else if (_input.is_key_down(GLFW_KEY_S)) {
+	else if (_input.is_key_down(GLFW_KEY_S) || _input.get_gamepads()[0]->is_button_held(Xbuttons.pad_down)) {
 		_forward = 1.0f;
 	}
 
-	if (_input.is_key_down(GLFW_KEY_UP)) {
+	if (_input.is_key_down(GLFW_KEY_UP) || _input.get_gamepads()[1]->is_button_held(Xbuttons.pad_up)) {
 		_forward_player2 = -1.0f;
 	}
-	else if (_input.is_key_down(GLFW_KEY_DOWN)) {
+	else if (_input.is_key_down(GLFW_KEY_DOWN) || _input.get_gamepads()[1]->is_button_held(Xbuttons.pad_down)) {
 		_forward_player2 = 1.0f;
 	}
 
-	if (_input.is_key_down(GLFW_KEY_A)) {
+	if (_input.is_key_down(GLFW_KEY_A) || _input.get_gamepads()[0]->is_button_held(Xbuttons.pad_left)) {
 		_strafe = -1.0f;
-	} else if (_input.is_key_down(GLFW_KEY_D)) {
+	} else if (_input.is_key_down(GLFW_KEY_D) || _input.get_gamepads()[0]->is_button_held(Xbuttons.pad_right)) {
 		_strafe = 1.0f;
 	}
 
-	if ( _input.is_key_down(GLFW_KEY_LEFT)) {
+	if ( _input.is_key_down(GLFW_KEY_LEFT) || _input.get_gamepads()[1]->is_button_held(Xbuttons.pad_left)) {
 		_strafe_player2 = -1.0f;
 	}
-	else if (_input.is_key_down(GLFW_KEY_RIGHT)) {
+	else if (_input.is_key_down(GLFW_KEY_RIGHT) || _input.get_gamepads()[1]->is_button_held(Xbuttons.pad_right)) {
 		_strafe_player2 = 1.0f;
 	}
 
