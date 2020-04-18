@@ -4,8 +4,12 @@
 #include "components/main_menu.hpp"
 #include "components/pause_arrow.hpp"
 
+#include <audio/audio_emitter.hpp>
 #include <rendering/renderable_mesh_static.hpp>
 #include <asset/scene_change_event.hpp>
+
+#include <audio/music_player.hpp>
+#include <rendering/camera.hpp>
 
 main_menu_controller::main_menu_controller(
 	event::EventManager& events, 
@@ -27,6 +31,13 @@ void main_menu_controller::initialize(ecs::state& state)
 	_option_selection = 0;
 	_warning_selection = 0;
 	_seeing_new_menu = false;
+
+	if (state.first<components::main_menu>() != nullptr)
+	{
+		auto cam_entity = state.first<rendering::camera>();
+		auto& music = cam_entity->get_component<audio::music_player>();
+		music.set_sound_state(0, audio::sound_state::playback_requested);
+	}
 }
 
 void main_menu_controller::update(ecs::state& state)
@@ -73,6 +84,7 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 
 	if (_input.any_button_pressed())
 	{
+		play_page_flip(state);
 		menu.how_to_page++;
 		if (menu.how_to_page > 3)
 			menu.how_to_page = components::main_menu::NoPage;
@@ -93,11 +105,11 @@ void main_menu_controller::handle_options_case(ecs::state& state, components::ma
 		if (_option_selection == 0) {
 			_option_selection = NUM_OPTIONS;
 		}
-		_option_selection--;
+		_option_selection--;		
 	}
 	else if (_input.is_input_started(core::controls::DOWN_CONTROL) || _input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2))
 	{
-		_option_selection = (++_option_selection) % NUM_OPTIONS;
+		_option_selection = (++_option_selection) % NUM_OPTIONS;		
 	}
 	// Choose selected
 	else if (_input.is_input_started(core::controls::CARD1_CONTROL) || _input.is_input_started(core::controls::CARD1_CONTROL_PLAYER2)) {
@@ -106,17 +118,20 @@ void main_menu_controller::handle_options_case(ecs::state& state, components::ma
 			// Fullscreen
 			_glfw.set_fullscreen(!_glfw.is_fullscreen());
 			_config.set("fullscreen", !_config.fullscreen());
+			play_page_flip(state);
 		}
 		else if (_option_selection == MUTE_ALL) {
 			auto any_sound = _config.music_volume() != 0 || _config.sfx_volume() != 0;
 			auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
 			_config.set("music_volume", val);
 			_config.set("sfx_volume", val);
+			play_page_flip(state);
 		}
 		else if (_option_selection == MUTE_MUSIC) {
 			auto any_sound = _config.music_volume() != 0;
 			auto val = any_sound ? 0.f : core::startup_config::DefaultVolume;
-			_config.set("music_volume", any_sound);
+			_config.set("music_volume", val);
+			play_page_flip(state);
 		}	
 		else if (_option_selection == BACK) {
 			_seeing_new_menu = false;
@@ -124,6 +139,7 @@ void main_menu_controller::handle_options_case(ecs::state& state, components::ma
 			arrow_transform.position = glm::vec3(-37.5 - _selection * 0.2, 15 - _selection * 0.2, -2.8);
 			arrow_transform.scale = glm::vec3(0.7, 0.15, 1);
 			arrow_transform.is_matrix_dirty = true;
+			play_page_flip(state);
 		}
 	}
 }
@@ -166,6 +182,13 @@ void main_menu_controller::handle_quit_case(ecs::state& state, components::main_
 	}
 }
 
+void main_menu_controller::play_page_flip(ecs::state& state)
+{
+	auto entity = state.find_entity(1);
+	auto& emitter = entity.get_component<audio::audio_emitter>();
+	emitter.set_sound_state(0, audio::sound_state::playback_requested);
+}
+
 void main_menu_controller::handle_main_menu_case(ecs::state& state, components::main_menu& menu, transforms::transform& arrow_transform)
 {
 	auto half_height = _glfw.height() / 2.f;
@@ -178,12 +201,12 @@ void main_menu_controller::handle_main_menu_case(ecs::state& state, components::
 		}
 		_selection--;
 		arrow_transform.position = glm::vec3(-37.5 - _selection * 0.2, 15 - _selection * 0.2, -2.8);
-		arrow_transform.is_matrix_dirty = true;
+		arrow_transform.is_matrix_dirty = true;		
 	}
 	else if (_input.is_input_started(core::controls::DOWN_CONTROL) || _input.is_input_started(core::controls::DOWN_CONTROL_PLAYER2)) {
 		_selection = (++_selection) % NUM_CHOICES;
 		arrow_transform.position = glm::vec3(-37.5 - _selection * 0.2, 15 - _selection * 0.2, -2.8);
-		arrow_transform.is_matrix_dirty = true;
+		arrow_transform.is_matrix_dirty = true;		
 	}
 
 	// Choose selected
@@ -194,14 +217,17 @@ void main_menu_controller::handle_main_menu_case(ecs::state& state, components::
 		}
 		else if (_selection == HOW_TO) {
 			menu.how_to_page++;
+			play_page_flip(state);
 		}
 		else if (_selection == OPTIONS) {
 			_seeing_new_menu = true;
 			_option_selection = 0;
+			play_page_flip(state);
 		}
 		else if (_selection == QUIT) {
 			_seeing_new_menu = true;
 			_warning_selection = 0;
+			play_page_flip(state);
 		}
 	}
 

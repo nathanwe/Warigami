@@ -17,6 +17,26 @@
         },
         {
           "type": "audio_listener"
+        },
+        {
+          "type": "music_player",
+          "tracks": [
+            {
+              "file": "assets/sound/music_zapsplat_and_action_breakbeat.mp3",
+              "loop": true,
+              "volume": 0.85
+            }
+          ]
+        },
+        {
+          "type": "audio_emitter",
+          "sounds": [
+            {
+              "file": "assets/sound/flip.wav",
+              "loop": false,
+              "volume": 0.75
+            }
+          ]
         }
       ]
     },
@@ -208,7 +228,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 0, -20, 0 ],
+          "position": [ -3, -20, 13 ],
           "scale": [ 5, 5, 5 ]
         }
       ]

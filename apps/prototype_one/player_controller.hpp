@@ -71,7 +71,7 @@ public:
 					auto& controls = player_specifics.controls;
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
-					update_pull(player, controls);
+					update_pull(player, player_specifics.values);
 					if (player.pull) {
 						r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
 							entity_id id1,
@@ -447,9 +447,9 @@ private:
 	}
 
 	
-	void update_pull(components::player& player, player_controls& controls) {
+	void update_pull(components::player& player, player_values& values) {
 		if (!player.controlled_by_AI) {
-			player.pull = m_input.is_input_active(controls.dice_button2);
+			player.pull = std::abs(values.pull) > 0.4f;
 		}
 			
 	}

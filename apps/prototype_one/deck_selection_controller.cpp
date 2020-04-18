@@ -1,5 +1,6 @@
 #include <algorithm>
 
+#include <audio/music_player.hpp>
 #include "deck_selection_controller.hpp"
 #include "game_util/player_specifics.hpp"
 #include <audio/audio_emitter.hpp>
@@ -8,7 +9,9 @@
 #include <rendering/renderable_model_static.hpp>
 #include <rendering/renderable_text.hpp>
 #include <rendering/texture.hpp>
+#include <rendering/camera.hpp>
 #include <util/sign.hpp>
+#include <audio/audio_emitter.hpp>
 #include "components/countdown.hpp"
 #include "components/deck_cursor.hpp"
 #include "components/game_piece.hpp"
@@ -68,6 +71,9 @@ void deck_selection_controller::initialize(ecs::state& state)
 		deck_selection_c.card_iterators[1] = deck.begin();
 		deck_selection_c.current_position_keyframes[0] = deck_selection_c.position_keyframes;
 		deck_selection_c.current_position_keyframes[1] = deck_selection_c.position_keyframes;
+
+		auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+		emitter.set_sound_state(0, audio::sound_state::playback_requested);
 	}
 }
 
@@ -77,10 +83,28 @@ void deck_selection_controller::update(ecs::state& state)
 		if (!can_run())					
 			return;
 
-		if (board.state == components::game_state::deck_selection) 
+		auto cam_entity = state.first<rendering::camera>();
+		auto& music = cam_entity->get_component<audio::music_player>();
+
+
+		if (board.state == components::game_state::deck_selection)
+		{
+			if (music.tracks[1].state != audio::sound_state::playing)
+			{
+				music.set_sound_state(1, audio::sound_state::playback_requested);
+			}
+
 			do_update(state, board);
+		}
 		else
+		{
+			if (music.tracks[1].state == audio::sound_state::playing)
+			{
+				music.set_sound_state(1, audio::sound_state::stop_requested);
+			}
+
 			hide_elements(state, board);
+		}
 	});
 
 	if (can_run())
@@ -244,6 +268,9 @@ void deck_selection_controller::handle_player_selection(
 			player.select_delay = 0.1f;
 			player.deck_selection += dir_h;
 
+			auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(player.deck_selection, audio::sound_state::playback_requested);
+
 			auto& deck = _decks[player.deck_selection];
 			deck_selection.card_iterators[player_index] = deck.begin();
 			deck_selection.preview_state[player_index] = components::preview_card_state::changing_forward;
@@ -305,10 +332,18 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 		auto pressed_cancel = _input.is_input_started(player_specifics.controls.card2);
 
 		if (pressed_ready)
+		{
 			player.is_ready = true;
+			auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(2, audio::sound_state::playback_requested);
+		}
 
 		if (pressed_cancel)
-			player.is_ready = false;		
+		{
+			player.is_ready = false;
+			auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(3, audio::sound_state::playback_requested);
+		}
 
 		all_ready = all_ready && player.is_ready;
 	});

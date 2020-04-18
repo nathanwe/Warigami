@@ -2,6 +2,8 @@
 // Created by sava on 2020-03-07.
 //
 
+#include <rendering/renderable_mesh_static.hpp>
+
 #include "deck_ui_controller.hpp"
 #include "components/deck_ui.hpp"
 #include "components/player.hpp"
@@ -109,6 +111,17 @@ void deck_ui_controller::handle_card_entities(
                 _card_spawner.remove(card_entity_id.value());
                 card_entity_id = {};
             }
+        }
+
+
+        for (size_t i = 0; i < components::player::MaxCards; ++i)
+        {
+            size_t card_val = (size_t) p.hand[i];
+            auto& card_entity_id = p.team == 1 ? deck_ui.p1_hand[i] : deck_ui.p2_hand[i];
+            auto& card_entity = state.find_entity(card_entity_id.value());
+            auto cost = components::card_costanamos.at(card_val);
+            auto& renderable = card_entity.get_component<rendering::renderable_mesh_static>();
+            renderable.material.grayscale = cost > p.energy;
         }
     });
 }

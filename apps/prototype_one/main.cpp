@@ -356,6 +356,7 @@ int main(int argc, char** argv) {
 			timer.end();
 		}
 
+		world.cleanup();
 		hydrater.clear();
 		state.free_all();
 	}

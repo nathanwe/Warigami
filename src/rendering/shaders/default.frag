@@ -41,6 +41,7 @@ layout(location = 22) uniform vec3 u_light_point_position_world[NUM_LIGHT_POINTS
 layout(location = 26) uniform float u_light_point_intensity[NUM_LIGHT_POINTS];
 layout(location = 30) uniform vec3 u_light_point_color[NUM_LIGHT_POINTS];
 layout(location = 34) uniform int u_light_point_count;
+
 /*
 struct Light_Point
 {
@@ -54,6 +55,8 @@ struct Light_Point
 layout(location = 36) uniform vec3 u_ambient_light_color;
 layout(location = 37) uniform float u_ambient_light_intensity;
 layout(location = 38) uniform bool u_has_dir_light;
+
+layout(location = 39) uniform bool u_grayscale;
 
 // Output ---------------------------------------------------------------------------------------
 layout(location = 0) out vec3 fs_out;
@@ -149,7 +152,15 @@ void main()
 		*/
 	}
 
-	fs_out = pixel_color * u_tint_color;
+	vec3 final_color = pixel_color * u_tint_color;
+
+	if (u_grayscale)
+	{
+		float avg = (final_color.r + final_color.g + final_color.b) / 3.f;
+		final_color = vec3(avg);
+	}
+
+	fs_out = final_color;
 }
 
 #undef NUM_LIGHT_POINTS

@@ -25,6 +25,8 @@ namespace rendering
 
 		glm::vec3 tint_color = glm::vec3(1.f);
 		float tint_alpha = 1.f;
+
+		bool grayscale = false;
 	};
 }
 

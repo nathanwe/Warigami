@@ -27,7 +27,7 @@
             "volume": 1
           },
           {
-            "file": "assets/sound/woosh.wav",
+            "file": "assets/sound/woosh.mp3",
             "loop": false,
             "volume": 0.45
           },

@@ -28,6 +28,7 @@ namespace audio
 
         void initialize(ecs::state& state) override;
         void update(ecs::state &state) override;
+        void cleanup(ecs::state& state) override;
 
     private:
         util::string_table& _app_strings;
