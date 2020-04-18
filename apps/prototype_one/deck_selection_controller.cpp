@@ -71,6 +71,9 @@ void deck_selection_controller::initialize(ecs::state& state)
 		deck_selection_c.card_iterators[1] = deck.begin();
 		deck_selection_c.current_position_keyframes[0] = deck_selection_c.position_keyframes;
 		deck_selection_c.current_position_keyframes[1] = deck_selection_c.position_keyframes;
+
+		auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+		emitter.set_sound_state(0, audio::sound_state::playback_requested);
 	}
 }
 
