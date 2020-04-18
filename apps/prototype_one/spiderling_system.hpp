@@ -43,12 +43,15 @@ private:
 	{
 		for (auto& effect : piece.effects)
 		{
-			if (effect == combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_FOR_HEALTH && (piece.state == components::UNIT_STATE::ATTACK || piece.state == components::UNIT_STATE::MOVE))
+			if (
+				effect == combats::COMBAT_EFFECTS::SPAWN_SCISSORLING_FOR_HEALTH && 
+				(piece.state == components::UNIT_STATE::ATTACK || piece.state == components::UNIT_STATE::MOVE)
+			)
 			{
 				bool open_space[3] = { true, true, true };
 				r_state.each<components::game_piece>([&](components::game_piece& game_piece)
 					{
-						if (game_piece.board_source == piece.board_source + glm::ivec2(0, 1 * piece.team))
+						if (game_piece.board_source == piece.board_source + glm::ivec2(0, 1 * piece.team)) 
 						{
 							open_space[0] = false;
 						}
@@ -64,7 +67,7 @@ private:
 						}
 					});
 
-				if (open_space[0])
+				if (open_space[0] && piece.spider_egg_spawn_counter == 0)
 				{
 					to_spawn new_spawn(piece.board_source.x, piece.board_source.y + (1 * piece.team), piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
@@ -74,7 +77,7 @@ private:
 						piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
 					}
 				}
-				else if (open_space[1])
+				else if (open_space[1] && piece.spider_egg_spawn_counter == 1)
 				{
 					to_spawn new_spawn(piece.board_source.x + 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
@@ -84,7 +87,7 @@ private:
 						piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
 					}
 				}
-				else if (open_space[2])
+				else if (open_space[2] && piece.spider_egg_spawn_counter == 2)
 				{
 					to_spawn new_spawn(piece.board_source.x - 1, piece.board_source.y, piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(new_spawn);
@@ -92,6 +95,8 @@ private:
 					// Turn health spheres red
 					//piece.health_points[piece.health].get_component<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(1, 0, 0);
 				}
+
+				piece.spider_egg_spawn_counter = (piece.spider_egg_spawn_counter + 1) % 3;
 			}
 		}
 	}

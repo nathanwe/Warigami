@@ -10,7 +10,7 @@
     ]
   },
   "children": [
-    {      
+    {
       "prototype": "assets/prototypes/tooltip_a.json",
       "components": [
         {
@@ -19,7 +19,7 @@
         }
       ]
     },
-    {     
+    {
       "prototype": "assets/prototypes/tooltip_b.json",
       "components": [
         {
@@ -28,7 +28,7 @@
         }
       ]
     },
-    {     
+    {
       "prototype": "assets/prototypes/tooltip_x.json",
       "components": [
         {
@@ -37,7 +37,7 @@
         }
       ]
     },
-    {     
+    {
       "prototype": "assets/prototypes/tooltip_y.json",
       "components": [
         {
@@ -46,7 +46,7 @@
         }
       ]
     },
-    {      
+    {
       "prototype": "assets/prototypes/tooltip_a.json",
       "components": [
         {
@@ -55,7 +55,7 @@
         }
       ]
     },
-    {     
+    {
       "prototype": "assets/prototypes/tooltip_b.json",
       "components": [
         {
@@ -64,7 +64,7 @@
         }
       ]
     },
-    {     
+    {
       "prototype": "assets/prototypes/tooltip_x.json",
       "components": [
         {
@@ -73,7 +73,7 @@
         }
       ]
     },
-    {     
+    {
       "prototype": "assets/prototypes/tooltip_y.json",
       "components": [
         {
