@@ -84,6 +84,7 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 
 	if (_input.any_button_pressed())
 	{
+		play_page_flip(state);
 		menu.how_to_page++;
 		if (menu.how_to_page > 3)
 			menu.how_to_page = components::main_menu::NoPage;
