@@ -11,7 +11,7 @@
                 "type": "renderable_mesh_static",
                 "mesh": "assets/meshes/unit/unit.obj",
                 "is_alpha_blended": true,
-                "texture_diffuse": "assets/textures/a.png"
+                "texture_diffuse": "assets/textures/360_RT.png"
             },
             {
                 "type": "tip",
