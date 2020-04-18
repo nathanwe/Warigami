@@ -49,6 +49,8 @@
 #include "components/spawn_effect.hpp"
 #include "remove_dying_and_dancing_system.hpp"
 #include "components/capture.hpp"
+#include "components/tip.hpp"
+#include "components/tip_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -85,6 +87,7 @@
 #include "set_game_piece_states_system.hpp"
 #include "add_combats_to_resolver.hpp"
 #include "stun_system.hpp"
+#include "tip_system.hpp"
 
 #include "cheat_handler.hpp"
 
@@ -150,6 +153,7 @@ int main(int argc, char** argv) {
 	ecs::register_component<collisions::rigid_body>("rigid_body");
 	ecs::register_component<components::spawn_effect>("spawn_effect");
 	ecs::register_component<components::capture>("capture");
+	ecs::register_component<components::tip>("tip");
 
 	asset::scene_hydrater hydrater(state);
 
@@ -163,6 +167,7 @@ int main(int argc, char** argv) {
 	add_combats_to_resolver add_combats_to_resolver(input, timer, events, hydrater, resolver);
 	remove_dying_and_dancing remove_dying_and_dancing(input, timer, events, hydrater, resolver);
 	player_controller player_control(input, timer, events, hydrater, render_asset_cache);
+
 	
 	deck_ui_controller deck_ui_controller(card_spawn_helper);
 	audio::audio_system audio_system(strings, assets, config);
@@ -171,6 +176,7 @@ int main(int argc, char** argv) {
 	game_start_system game_start_system(hydrater, render_asset_cache);
 	health_regenration_system health_regen;
 	stun_system stun_system;
+	tip_system tip_system(timer);
 	
 	rendering::camera_updater camera_updater;
 	rendering::render_state render_state;
@@ -240,6 +246,7 @@ int main(int argc, char** argv) {
 		&escreen,
 
 		//
+		&tip_system,
 		&main_menu_controller,
 		&spawn_effector,
 		&animator,
@@ -282,6 +289,7 @@ int main(int argc, char** argv) {
 	collisions::rigid_body_loader rigid_body_loader;
 	components::ready_display_loader ready_display_loader;
 	components::deck_cursor_loader deck_cursor_loader;
+	components::tip_loader tip_loader;
 
 	hydrater.register_loaders(
 		&aabb_collider_loader,
@@ -311,7 +319,8 @@ int main(int argc, char** argv) {
 		&deck_ui_loader,
 		&ready_display_loader,
 		&deck_cursor_loader,
-		&music_player_loader);
+		&music_player_loader,
+		&tip_loader);
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);

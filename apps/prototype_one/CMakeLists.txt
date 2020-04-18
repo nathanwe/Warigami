@@ -35,6 +35,8 @@ add_executable (warigami
 	components/spawn_effect.cpp
 	components/terrain.cpp
 	components/tug_of_war_meter.cpp
+	components/tip.cpp
+	components/tip_loader.cpp
 	deck_selection_controller.cpp
 	deck_ui_controller.cpp
 	energy_ball_system.cpp
