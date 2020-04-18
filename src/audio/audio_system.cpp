@@ -57,6 +57,17 @@ void audio::audio_system::update(ecs::state &state)
     _system->update();
 }
 
+void audio::audio_system::cleanup(ecs::state& state)
+{
+    state.each<music_player>([&](music_player& mp) {
+        for (size_t i = 0; i < mp.track_count; ++i)
+        {
+            stop_sound(mp.tracks[i]);
+            mp.tracks[i].set_null();
+        }
+    });
+}
+
 void audio::audio_system::initialize(ecs::state& state)
 {
     unsigned int listener_id = 0;

@@ -22,6 +22,11 @@ namespace ecs
             _systems.initialize(_state);
         }
 
+		void cleanup()
+		{
+			_systems.cleanup(_state);
+		}
+
 	private:
 		systems& _systems;
 		state& _state;

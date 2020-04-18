@@ -18,3 +18,9 @@ void ecs::systems::initialize(ecs::state &state)
         sys->initialize(state);
 }
 
+void ecs::systems::cleanup(ecs::state& state)
+{
+	for (auto* sys : _systems)
+		sys->cleanup(state);
+}
+

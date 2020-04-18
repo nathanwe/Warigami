@@ -10,6 +10,7 @@ namespace ecs
 	{
 	public:
         virtual void initialize(ecs::state& state) {};
+		virtual void cleanup(ecs::state& state) {};
 		virtual void update(ecs::state& state) = 0;
 	};
 

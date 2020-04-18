@@ -22,7 +22,18 @@
             "file": "assets/sound/chime.mp3",
             "loop": false,
             "volume": 0.5
+          },
+          {
+            "file": "assets/sound/ready.wav",
+            "loop": false,
+            "volume": 0.5
+          },
+          {
+            "file": "assets/sound/invalid.wav",
+            "loop": false,
+            "volume": 0.5
           }
+
         ]
       }
     ]

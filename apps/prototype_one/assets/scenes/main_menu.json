@@ -17,6 +17,16 @@
         },
         {
           "type": "audio_listener"
+        },
+        {
+          "type": "music_player",
+          "tracks": [
+            {
+              "file": "assets/sound/music_zapsplat_and_action_breakbeat.mp3",
+              "loop": true,
+              "volume": 0.5
+            }
+          ]
         }
       ]
     },

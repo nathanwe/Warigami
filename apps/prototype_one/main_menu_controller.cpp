@@ -7,6 +7,9 @@
 #include <rendering/renderable_mesh_static.hpp>
 #include <asset/scene_change_event.hpp>
 
+#include <audio/music_player.hpp>
+#include <rendering/camera.hpp>
+
 main_menu_controller::main_menu_controller(
 	event::EventManager& events, 
 	core::glfw_context& glfw,
@@ -27,6 +30,13 @@ void main_menu_controller::initialize(ecs::state& state)
 	_option_selection = 0;
 	_warning_selection = 0;
 	_seeing_new_menu = false;
+
+	if (state.first<components::main_menu>() != nullptr)
+	{
+		auto cam_entity = state.first<rendering::camera>();
+		auto& music = cam_entity->get_component<audio::music_player>();
+		music.set_sound_state(0, audio::sound_state::playback_requested);
+	}
 }
 
 void main_menu_controller::update(ecs::state& state)

@@ -16,6 +16,7 @@ namespace ecs
 
         void initialize(state& state);
 		void update(state& state);
+		void cleanup(state& state);
 
 	private:
 		std::vector<system_base*> _systems;

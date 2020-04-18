@@ -329,10 +329,18 @@ void deck_selection_controller::check_players_ready(ecs::state& state)
 		auto pressed_cancel = _input.is_input_started(player_specifics.controls.card2);
 
 		if (pressed_ready)
+		{
 			player.is_ready = true;
+			auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(2, audio::sound_state::playback_requested);
+		}
 
 		if (pressed_cancel)
-			player.is_ready = false;		
+		{
+			player.is_ready = false;
+			auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(3, audio::sound_state::playback_requested);
+		}
 
 		all_ready = all_ready && player.is_ready;
 	});
