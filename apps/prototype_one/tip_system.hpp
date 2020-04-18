@@ -44,6 +44,7 @@ public:
                                     && (tip.team == square.team)) 
                                 {
                                     tip_t.position = board.grid_to_board(glm::vec2(square.x, square.y), board_t);
+                                    tip_t.is_matrix_dirty = true;
                                 }
 
                             });
