@@ -9,6 +9,21 @@
         "position": [ 0, 0, 0 ],
         "rotation": [ 0, 0, 0 ],
         "scale": [ 1, 1, 1 ]
+      },
+      {
+        "type": "audio_emitter",
+        "sounds": [
+          {
+            "file": "assets/sound/slither.mp3",
+            "loop": false,
+            "volume": 0.2
+          },
+          {
+            "file": "assets/sound/chime.mp3",
+            "loop": false,
+            "volume": 0.5
+          }
+        ]
       }
     ]
   },

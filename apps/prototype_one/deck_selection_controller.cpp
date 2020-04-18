@@ -9,6 +9,7 @@
 #include <rendering/renderable_text.hpp>
 #include <rendering/texture.hpp>
 #include <util/sign.hpp>
+#include <audio/audio_emitter.hpp>
 #include "components/countdown.hpp"
 #include "components/deck_cursor.hpp"
 #include "components/game_piece.hpp"
@@ -243,6 +244,9 @@ void deck_selection_controller::handle_player_selection(
 		{
 			player.select_delay = 0.1f;
 			player.deck_selection += dir_h;
+
+			auto& emitter = _deck_selection->get_component<audio::audio_emitter>();
+			emitter.set_sound_state(player.deck_selection, audio::sound_state::playback_requested);
 
 			auto& deck = _decks[player.deck_selection];
 			deck_selection.card_iterators[player_index] = deck.begin();
