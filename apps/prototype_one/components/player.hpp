@@ -91,7 +91,7 @@ namespace components
 	};
 
 	const std::vector<card_enum> decks[]{
-		spider_deck_test,
+		spider_deck,
 		fantasy_deck
 	};
 

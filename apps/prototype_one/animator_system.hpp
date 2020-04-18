@@ -112,6 +112,12 @@ private:
 		case components::UNIT_STATE::MOVE:
 			piece.last_sprite %= m_spider_move_offsets.size();
 			break;
+		case components::UNIT_STATE::DANCING:
+			piece.last_sprite %= m_spider_dancing_offsets.size();
+			break;
+		case components::UNIT_STATE::STUN:
+			piece.last_sprite %= m_spider_stun_offsets.size();
+			break;
 		}
 	}
 
@@ -148,6 +154,12 @@ private:
 		case components::UNIT_STATE::MOVE:
 			offset = m_spider_move_offsets[piece.last_sprite];
 			break;
+		case components::UNIT_STATE::DANCING:
+			offset = m_spider_dancing_offsets[piece.last_sprite];
+			break;
+		case components::UNIT_STATE::STUN:
+			offset = m_spider_stun_offsets[piece.last_sprite];
+			break;
 		}
 		if (piece.team > 0.f)
 		{
@@ -183,8 +195,10 @@ private:
 
 	static constexpr std::array<glm::vec2, 2> m_spider_attack_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f) };
 	static constexpr std::array<glm::vec2, 1> m_spider_dead_offsets   { glm::vec2(0.f, 0.5f) };
-	static constexpr std::array<glm::vec2, 1> m_spider_dying_offsets  { glm::vec2(0.f, 0.5f) };
+	static constexpr std::array<glm::vec2, 1> m_spider_dying_offsets  { glm::vec2(03333.f, 0.5f) };
 	static constexpr std::array<glm::vec2, 3> m_spider_move_offsets   { glm::vec2(0.f, 0.5f), glm::vec2(0.3333f, 0.5f), glm::vec2(0.6666f, 0.5f) };
+	static constexpr std::array<glm::vec2, 1> m_spider_dancing_offsets{ glm::vec2(03333.f, 0.5f) };
+	static constexpr std::array<glm::vec2, 1> m_spider_stun_offsets{ glm::vec2(0.3333f, 0.5f) };
 
 	static constexpr std::array<glm::vec2, 3> m_egg_offsets { glm::vec2(0.f, 0.f), glm::vec2(0.3333f, 0.f), glm::vec2(0.6666f, 0.f) };
 };
