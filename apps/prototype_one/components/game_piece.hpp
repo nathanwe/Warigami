@@ -53,6 +53,8 @@ namespace components
 		float time_last_sprite = 0.f;
 		std::vector<ecs::entity> health_points;
 		bool flash_step_flag = false;
+
+		std::uint8_t spider_egg_spawn_counter{ 0 };
 	};
 }
 
