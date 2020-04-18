@@ -12,12 +12,14 @@ struct player_controls
 	core::controls card4;
 	core::controls dice_button;
 	core::controls dice_button2;
+	core::controls pull;
 };
 
 struct player_values
 {
 	float forward = 0;
 	float left = 0;
+	float pull = 0;
 	glm::vec3 team_color;
 };
 
@@ -32,8 +34,9 @@ struct player_specific_data
 		//set p1&p2 diffrences		
 		auto forward = player.team == 1.0f ? input.forward() : input.forward_player2();
 		auto left = player.team == 1.0f ? input.strafe() : input.strafe_player2();
+		auto pull = player.team == 1.0f ? input.right_trigger() : input.right_trigger2();
 		auto team_color = player.team == 1.0f ? glm::vec3(1, 0, 0) : glm::vec3(0, 0, 1);
-		values = { forward, left, team_color };
+		values = { forward, left, pull, team_color };
 	}
 
 private:
@@ -43,7 +46,8 @@ private:
 		core::CARD3_CONTROL,
 		core::CARD4_CONTROL,
 		core::DIE1_CONTROL,
-		core::DIE2_CONTROL
+		core::DIE2_CONTROL,
+		core::PULL_AXIS,
 	};
 
 	player_controls p2_controls{
@@ -52,6 +56,7 @@ private:
 		core::CARD3_CONTROL_PLAYER2,
 		core::CARD4_CONTROL_PLAYER2,
 		core::DIE1_CONTROL_PLAYER2,
-		core::DIE2_CONTROL_PLAYER2
+		core::DIE2_CONTROL_PLAYER2,
+		core::PULL_AXIS_PLAYER2,
 	};
 };

@@ -30,7 +30,7 @@
             {
               "file": "assets/sound/PM_INFECTED_05.mp3",
               "loop": true,
-              "volume": 0.5
+              "volume": 0.35
             }
           ]
         }

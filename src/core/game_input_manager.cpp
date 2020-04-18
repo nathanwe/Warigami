@@ -97,6 +97,13 @@ void core::game_input_manager::update() {
 		_strafe_player2 = 1.0f;
 	}
 
+	_right_trigger = _input.get_gamepads()[0]->Rtrigger();
+	_right_trigger_player2 = _input.get_gamepads()[1]->Rtrigger();
+	if (_input.is_key_down(DIE2_KEY))
+		_right_trigger = -1.f;
+	if (_input.is_key_down(DIE2_KEY_PLAYER2))
+		_right_trigger_player2 = 1.f;
+
 	// Check axis inputs against epsilon for state
 	// UP
 	//// W, up key, or left stick up
@@ -163,6 +170,7 @@ void core::game_input_manager::update() {
 	// DIE 2
 	_current_game_state[DIE2_CONTROL] = _input.is_key_down(DIE2_KEY)
 		|| _input.get_gamepads()[0]->is_button_held(DIE2_BUTTON);
+
 	_current_game_state[DIE2_CONTROL_PLAYER2] = _input.is_key_down(DIE2_KEY_PLAYER2)
 		|| _input.get_gamepads()[1]->is_button_held(DIE2_BUTTON);
 

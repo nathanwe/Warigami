@@ -61,7 +61,7 @@ void energy_ball_system::update(ecs::state& state)
 			auto magnitude = std::max(200.f, ball.gravity_constant / lengthsq);
 			auto past_selector = glm::dot(fwd, -to_target_norm) < 0;
 			auto is_same_lane = ball.lane == player_c.selected_row;
-			auto pull_pressed = _input.is_input_active(specifis.controls.dice_button2) || player_c.controlled_by_AI;
+			auto pull_pressed = specifis.values.pull > 0.4f || player_c.controlled_by_AI;
 			auto can_pull = is_same_lane && pull_pressed;
 
 			if (can_pull)
