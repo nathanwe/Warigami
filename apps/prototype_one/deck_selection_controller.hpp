@@ -116,6 +116,13 @@ private:
 		size_t deck_index,
 		ecs::entity& entity);	
 
+	void animate_scale(
+		float animation_t,
+		components::deck_selection& selection,
+		size_t player_index,
+		size_t deck_index,
+		ecs::entity& entity);
+
 	void interrupt_animation(
 		ecs::state& state, 
 		components::deck_selection& selection, 
