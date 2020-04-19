@@ -12,6 +12,9 @@
         "mesh": "assets/meshes/quad/quad.obj",
         "is_alpha_blended": true,
         "texture_diffuse": "assets/textures/x.png"
+      },
+      {
+        "type": "button_tooltip"
       }
     ]
   }

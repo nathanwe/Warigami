@@ -15,6 +15,7 @@ namespace components
 			auto& json = entity_data->component_data(button_tooltip::component_bitshift);
 			auto& tt = entity->get_component<button_tooltip>();
 			tt.team = json.value("team", 1.f);
+			tt.hand_index = json.value("hand_index", 0.f);
 		}
 
 		component_bitset components_to_load() override

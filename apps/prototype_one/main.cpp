@@ -52,6 +52,7 @@
 #include "components/tip.hpp"
 #include "components/tip_loader.hpp"
 #include "components/button_tooltip.hpp"
+#include "components/button_tooltip_loader.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -86,6 +87,7 @@
 #include "add_combats_to_resolver.hpp"
 #include "stun_system.hpp"
 #include "tip_system.hpp"
+#include "button_tooltip_system.hpp"
 
 #include "cheat_handler.hpp"
 
@@ -202,6 +204,7 @@ int main(int argc, char** argv) {
 	territory_claim_system territory_claim_system;
 	logo_system logo(timer, events, input);
 	spawn_effect_system spawn_effector(timer);
+	button_tooltip_system button_tooltips;
 
 	ecs::systems systems({
 		&count_system,
@@ -236,6 +239,7 @@ int main(int argc, char** argv) {
 		&pauser,
 		&endgame,
 		&escreen,
+		&button_tooltips,
 
 		//
 		&tip_system,
@@ -282,6 +286,7 @@ int main(int argc, char** argv) {
 	components::ready_display_loader ready_display_loader;
 	components::deck_cursor_loader deck_cursor_loader;
 	components::tip_loader tip_loader;
+	components::button_tooltip_loader button_tooltip_loader;
 
 	hydrater.register_loaders(
 		&aabb_collider_loader,
@@ -312,7 +317,8 @@ int main(int argc, char** argv) {
 		&ready_display_loader,
 		&deck_cursor_loader,
 		&music_player_loader,
-		&tip_loader);
+		&tip_loader,
+		&button_tooltip_loader);
 
 	engineui::developer_console console(window_view, events, glfw.window());
 	engineui::fps_display fps(window_view, timer);
