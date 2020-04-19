@@ -194,7 +194,7 @@ public:
 
 	void handle_howto_case(ecs::state& state)
 	{
-		handle_pages(state, how_to_play_images, 3, 5);
+		handle_pages(state, how_to_play_images, 4, 5);
 	}
 	void handle_credits_case(ecs::state& state)
 	{
@@ -226,6 +226,7 @@ public:
 				{
 					emitter.set_sound_state(0, audio::sound_state::playback_requested);
 				});
+
 			current_page++;
 			if (current_page >= num_pages) {
 				auto& e = r_state.find_entity(pages[last_page]);
