@@ -58,7 +58,9 @@ public:
                                         game_piece.board_source,
                                         game_piece.attacks,
                                         game_piece.team,
-                                        r_state);
+                                        r_state,
+                                        board,
+                                        board_t);
                                 }
                             });
                     }
@@ -80,7 +82,9 @@ private:
             glm::ivec2 location,
             std::vector<glm::ivec2> targets,
             int teammates,
-            ecs::state &r_state)
+            ecs::state &r_state,
+        components::board& board,
+        transforms::transform& board_t)
     {
         r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece &game_piece) {
             for (auto &target : targets)
@@ -99,10 +103,25 @@ private:
                     if (!duplicate)
                     {
                         resolver.Add_Combat(attacker, attacker_id, game_piece, id);
+                        if (attacker.projectile_type != components::PROJECTILE::NONE) {
+                            spawn_projectile(attacker, attacker.board_source, game_piece.board_source, board, board_t);
+                        }
                     }
+
                 }
             }
         });
+    }
+
+    void spawn_projectile(components::game_piece& attacker, glm::vec2 position, glm::vec2 destination, components::board& board, transforms::transform& board_t) {
+        ecs::entity& projectile = hydrater.add_from_prototype("assets/prototypes/health_unit.json");
+        transforms::transform& projectileT = projectile.get_component<transforms::transform>();
+        projectileT.has_parent = true;
+        projectileT.parent = 69; // Game board
+        projectileT.position = board.grid_to_board(position, board_t);
+        projectileT.position.y += 0.5;
+        projectileT.is_matrix_dirty = true;
+        attacker.projectiles.push_back(std::make_pair(projectile, board.grid_to_board(destination, board_t) + glm::vec3(0,0.5,0)));
     }
 };
 

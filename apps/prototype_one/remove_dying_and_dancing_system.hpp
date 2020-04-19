@@ -85,6 +85,10 @@ private:
                 for (ecs::entity e : unit.health_points) {
                     new_event.children.push_back(e.id());
                 }
+                // And projectiles
+                for (std::pair<ecs::entity, glm::vec3> e : unit.projectiles) {
+                    new_event.children.push_back(e.first.id());
+                }
                 event_manager.BroadcastEvent(new_event);
             }
 

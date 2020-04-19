@@ -30,7 +30,8 @@
 					[ -1.0, 3.0 ]
 				],
 				"effects": [ 0, 17 ],
-				"piece_type": "spider_webber"
+				"piece_type": "spider_webber",
+				"projectile": "web"
 			},
 			{
 				"type": "audio_emitter",

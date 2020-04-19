@@ -157,6 +157,7 @@ private:
         float t = (ticker_t - t_first) / t_range;
         game_piece.continuous_board_location.y = game_piece.board_source.y +
                                                  (source + t * (destination - source)) * game_piece.team;
+
     }
 
     static void handle_unit_transform(
@@ -181,7 +182,53 @@ private:
             health_t.is_matrix_dirty = true;
             i++;
         }
-    } 
+
+        // Move projectiles towards their end destination
+        // Projectiles are stores as entity-destination pairs
+        for (std::pair<ecs::entity, glm::vec3> p : game_piece.projectiles) {
+            transforms::transform& projectile_t = p.first.get_component<transforms::transform>();
+            if (distance_squared(projectile_t.position, p.second) > 0.3) {
+                projectile_t.position = moveTowards(projectile_t.position, p.second, 0.2);
+                projectile_t.is_matrix_dirty = true;
+            }
+            else {
+                // Hide until deletion (deleted with unit)
+                projectile_t.position.z = 500;
+                projectile_t.is_matrix_dirty = true;
+            }
+        }
+    }
+
+    static float distance_squared(glm::vec3 v1, glm::vec3 v2) {
+        return powf(v1.x-v2.x, 2) + powf(v1.y - v2.y, 2) + powf(v1.z - v2.z, 2);
+    }
+
+    static glm::vec3 moveTowards(glm::vec3 from, glm::vec3 to, float speed) {
+        
+        glm::vec3 new_pos = from;
+        if (from.x > to.x) {
+            new_pos.x -= speed;
+        }
+        else if (from.x < to.x) {
+            new_pos.x += speed;
+        }
+
+        if (from.y > to.y) {
+            new_pos.y -= speed;
+        }
+        else if (from.y < to.y) {
+            new_pos.y += speed;
+        }
+
+        if (from.z > to.z) {
+            new_pos.z -= speed;
+        }
+        else if (from.z < to.z) {
+            new_pos.z += speed;
+        }
+
+        return new_pos;
+    }
 };
 
 #endif

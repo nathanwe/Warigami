@@ -32,7 +32,8 @@
                 [ 0.0, 9.0 ]
             ],
             "effects": [ 0 ],
-            "piece_type": "archer"
+          "piece_type": "archer",
+          "projectile":  "pencil"
         },
         {
             "type": "audio_emitter",
