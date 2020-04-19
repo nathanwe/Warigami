@@ -9,6 +9,8 @@
 #include "components/game_piece.hpp"
 #include "components/board.hpp"
 
+int find_landing_zone(components::game_piece& game_piece, components::board& board);
+
 
 class spiderling_system : public ecs::system_base
 {
@@ -37,7 +39,6 @@ public:
 
 private:
 	asset::scene_hydrater& _hydrater;
-	;
 
 	void spiderling_egg_spawns(ecs::state& r_state, components::game_piece& piece, components::board& board)
 	{
@@ -103,7 +104,9 @@ private:
 		}
 	}
 
-	void do_spawn_on_death_effect(ecs::state r_state, components::game_piece& game_piece,
+	void do_spawn_on_death_effect(
+		ecs::state r_state, 
+		components::game_piece& game_piece,
 		components::board& board)
 	{
 		if (game_piece.health <= 0 && (game_piece.state == components::UNIT_STATE::ATTACK || game_piece.state == components::UNIT_STATE::MOVE))
@@ -160,14 +163,7 @@ private:
 				}
 				case combats::COMBAT_EFFECTS::YEET_SPIDERLING_ON_DEATH:
 				{
-					int landing_zone = game_piece.board_destination.y;
-					while (landing_zone + game_piece.team >= 0 && landing_zone + game_piece.team < board.rows
-						&& board.board_state[game_piece.board_destination.x][landing_zone + game_piece.team] == 0) {
-						landing_zone += game_piece.team;
-						
-					}
-
-
+					auto landing_zone = find_landing_zone(game_piece, board);
 					to_spawn newSpawn(game_piece.board_destination.x, landing_zone, game_piece.team, components::card_enum::SCISSORLING);
 					board.spawner.push_back(newSpawn);
 					break;
@@ -178,5 +174,56 @@ private:
 	}
 };
 
+
+int find_landing_zone(components::game_piece& game_piece, components::board& board)
+{
+	auto landing_zone = game_piece.board_destination.y;
+	auto two_away = game_piece.board_destination.y + game_piece.team * 2;
+	auto killed_by_ranged = board.board_state[game_piece.board_destination.x][landing_zone + game_piece.team] == 0;
+
+	auto is_inbound = [&](int zone) {
+		return zone >= 0 && zone < board.rows;
+	};
+
+	auto is_next_inbound = [&](int zone) {
+		return zone + game_piece.team >= 0 &&
+			zone + game_piece.team < board.rows;
+	};
+
+	auto landing_zone_free = [&]() {
+		return board.board_state[game_piece.board_destination.x][landing_zone] == 0;
+	};
+
+	auto next_landing_zone_free = [&]() {
+		return board.board_state[game_piece.board_destination.x][landing_zone + game_piece.team] == 0;
+	};
+
+	if (!is_inbound(two_away))
+	{
+		landing_zone = game_piece.board_destination.y;
+	}
+	else
+	{
+		landing_zone = two_away;
+
+		while (is_next_inbound(landing_zone) && next_landing_zone_free())
+			landing_zone += game_piece.team;
+	}
+
+	if (!is_next_inbound(landing_zone))
+	{
+		landing_zone = two_away;
+
+		while (is_next_inbound(landing_zone) && !next_landing_zone_free())
+			landing_zone += game_piece.team;
+	}
+
+	if (!is_inbound(landing_zone) && !landing_zone_free())
+	{
+		landing_zone = game_piece.board_destination.y;
+	}
+
+	return landing_zone;
+}
 
 #endif
