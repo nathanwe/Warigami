@@ -1,402 +1,426 @@
 {
-    "entities": [
+  "entities": [
+    {
+      "entity_id": 1,
+      "components": [
         {
-            "entity_id": 1,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ -39.6, 18, 0 ],
-                    "scale": [ 1, 1, 1 ],
-                    "rotation": [ 0, -90, -48 ]
-                },
-                {
-                    "type": "camera",
-                    "field_of_view": 0.785,
-                    "clear_setting": "flat_color",
-                    "clear_color": [ 0, 0, 0 ]
-                },
-                {
-                    "type": "audio_listener"
-                },
+          "type": "transform",
+          "position": [ -39.6, 18, 0 ],
+          "scale": [ 1, 1, 1 ],
+          "rotation": [ 0, -90, -48 ]
+        },
+        {
+          "type": "camera",
+          "field_of_view": 0.785,
+          "clear_setting": "flat_color",
+          "clear_color": [ 0, 0, 0 ]
+        },
+        {
+          "type": "audio_listener"
+        },
 
-                {
-                    "type": "music_player",
-                    "tracks": [
-                        {
-                            "file": "assets/sound/music_zapsplat_arches_129.mp3",
-                            "loop": true,
-                            "volume": 0.5
-                        },
-                        {
-                            "file": "assets/sound/PM_INFECTED_05.mp3",
-                            "loop": true,
-                            "volume": 0.35
-                        }
-                    ]
-                }
-
-            ]
-        },
         {
-            "parent_id": 1,
-            "prototype": "assets/prototypes/deck_ui.json"
-        },
-        {
-            "parent_id": 1,
-            "prototype": "assets/prototypes/deck_selection.json"
-        },
-        {
-            "entity_id": 2,
-            "components": [
-                {
-                    "type": "transform"
-                },
-                {
-                    "type": "player",
-                    "team": 1.0,
-                    "health": 100,
-                    "spawn": 0,
-                    "score": 0
-                }
-            ]
-        },
-        {
-            "entity_id": 3,
-            "components": [
-                {
-                    "type": "transform"
-                },
-                {
-                    "type": "player",
-                    "team": -1.0,
-                    "health": 100,
-                    "spawn": 8,
-                    "score": 8
-                }
-            ]
-        },
-        {
-            "entity_id": 4,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 50, 0 ],
-                    "rotation": [ -90, 0, 0 ]
-                },
-                {
-                    "type": "light_directional",
-                    "intensity": 1
-                }
-            ]
-        },
-        {
-            "entity_id": 69,
-            "prototype": "assets/prototypes/gameboard.json",
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, -20, 0 ],
-                    "scale": [ 5, 5, 5 ]
-                }
-            ]
-        },
-        {
-            "entity_id": 70,
-            "prototype": "assets/prototypes/pause.json"
-        },
-        {
-            "prototype": "assets/prototypes/pause_arrow.json"
-        },
-        {
-            "prototype": "assets/prototypes/countdown.json"
-        },
-        {
-            "entity_id": 72,
-            "prototype": "assets/prototypes/backdrop.json"
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 104,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/HowToPlay1.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 105,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/HowToPlay2.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 106,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/HowToPlay3.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 107,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/HowToPlay4.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 108,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 0.7, 0.7, 0.7 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/pause/options.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 109,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0.1, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 0.4, 0.4, 0.4 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/pause/warning.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 110,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/Credits1.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 111,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/Credits2.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 112,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/Credits3.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 113,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/Credits4.png",
-                    "is_enabled": false,
-                    "tint_color": [ 0.75, 0.75, 0.75 ]
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 114,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/codex/Codex1.png",
-                    "is_enabled": false
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 115,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/codex/Codex2.png",
-                    "is_enabled": false
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 116,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/codex/Codex3.png",
-                    "is_enabled": false
-                }
-            ]
-        },
-        {
-            "parent_id": 70,
-            "entity_id": 117,
-            "components": [
-                {
-                    "type": "transform",
-                    "position": [ 0, 0, 5 ],
-                    "rotation": [ 0, 0, 0 ],
-                    "scale": [ 1, 1, 1 ]
-                },
-                {
-                    "type": "renderable_mesh_static",
-                    "mesh": "assets/meshes/quad/quad.obj",
-                    "texture_diffuse": "assets/textures/codex/Codex4.png",
-                    "is_enabled": false
-                }
-            ]
-        },
-        {
-            "parent_id": 69,
-            "entity_id": 80,
-            "prototype": "assets/prototypes/tip.json",
-            "components": [
-                {
-                    "type": "tip",
-                    "team": 1.0
-                }
-            ]
-        },
-        {
-            "parent_id": 69,
-            "entity_id": 81,
-            "prototype": "assets/prototypes/tip.json",
-            "components": [
-                {
-                    "type": "tip",
-                    "team": -1.0
-                }
-            ]
+          "type": "music_player",
+          "tracks": [
+            {
+              "file": "assets/sound/music_zapsplat_arches_129.mp3",
+              "loop": true,
+              "volume": 0.5
+            },
+            {
+              "file": "assets/sound/PM_INFECTED_05.mp3",
+              "loop": true,
+              "volume": 0.35
+            }
+          ]
         }
-    ]
+
+      ]
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/deck_ui.json"
+    },
+    {
+      "parent_id": 1,
+      "prototype": "assets/prototypes/deck_selection.json"
+    },
+    {
+      "entity_id": 2,
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "player",
+          "team": 1.0,
+          "health": 100,
+          "spawn": 0,
+          "score": 0
+        }
+      ]
+    },
+    {
+      "entity_id": 3,
+      "components": [
+        {
+          "type": "transform"
+        },
+        {
+          "type": "player",
+          "team": -1.0,
+          "health": 100,
+          "spawn": 8,
+          "score": 8
+        }
+      ]
+    },
+    {
+      "entity_id": 4,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 50, 0 ],
+          "rotation": [ -90, 0, 0 ]
+        },
+        {
+          "type": "light_directional",
+          "intensity": 1
+        }
+      ]
+    },
+    {
+      "entity_id": 69,
+      "prototype": "assets/prototypes/gameboard.json",
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, -20, 0 ],
+          "scale": [ 5, 5, 5 ]
+        }
+      ]
+    },
+    {
+      "entity_id": 70,
+      "prototype": "assets/prototypes/pause.json"
+    },
+    {
+      "prototype": "assets/prototypes/pause_arrow.json"
+    },
+    {
+      "prototype": "assets/prototypes/countdown.json"
+    },
+    {
+      "entity_id": 72,
+      "prototype": "assets/prototypes/backdrop.json"
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 104,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/howto1.png",
+          "is_enabled": false,
+          "is_alpha_blended": true,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 105,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/howto2.png",
+          "is_enabled": false,
+          "is_alpha_blended": true,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 106,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/howto3.png",
+          "is_enabled": false,
+          "is_alpha_blended": true,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 107,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/howto4.png",
+          "is_enabled": false,
+          "is_alpha_blended": true,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 199,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/howto5.png",
+          "is_alpha_blended": true,
+          "is_enabled": false,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 108,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0.7, 0.7, 0.7 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/pause/options.png",
+          "is_enabled": false,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 109,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0.1, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0.4, 0.4, 0.4 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/pause/warning.png",
+          "is_enabled": false,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 110,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/Credits1.png",
+          "is_enabled": false,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 111,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/Credits2.png",
+          "is_enabled": false,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 112,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/Credits3.png",
+          "is_enabled": false,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 113,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/Credits4.png",
+          "is_enabled": false,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 114,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/codex/Codex1.png",
+          "is_enabled": false
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 115,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/codex/Codex2.png",
+          "is_enabled": false
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 116,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/codex/Codex3.png",
+          "is_enabled": false
+        }
+      ]
+    },
+    {
+      "parent_id": 70,
+      "entity_id": 117,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/codex/Codex4.png",
+          "is_enabled": false
+        }
+      ]
+    },
+    {
+      "parent_id": 69,
+      "entity_id": 80,
+      "prototype": "assets/prototypes/tip.json",
+      "components": [
+        {
+          "type": "tip",
+          "team": 1.0
+        }
+      ]
+    },
+    {
+      "parent_id": 69,
+      "entity_id": 81,
+      "prototype": "assets/prototypes/tip.json",
+      "components": [
+        {
+          "type": "tip",
+          "team": -1.0
+        }
+      ]
+    }
+  ]
 }

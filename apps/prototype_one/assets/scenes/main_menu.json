@@ -85,7 +85,8 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay1.png",
+          "texture_diffuse": "assets/textures/howto1.png",
+          "is_alpha_blended": true,
           "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]
@@ -103,7 +104,8 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay2.png",
+          "texture_diffuse": "assets/textures/howto2.png",
+          "is_alpha_blended": true,
           "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]
@@ -121,7 +123,8 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay3.png",
+          "texture_diffuse": "assets/textures/howto3.png",
+          "is_alpha_blended": true,
           "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]
@@ -139,7 +142,27 @@
         {
           "type": "renderable_mesh_static",
           "mesh": "assets/meshes/quad/quad.obj",
-          "texture_diffuse": "assets/textures/HowToPlay4.png",
+          "texture_diffuse": "assets/textures/howto4.png",
+          "is_alpha_blended": true,
+          "tint_color": [ 0.75, 0.75, 0.75 ]
+        }
+      ]
+    },
+    {
+      "parent_id": 100,
+      "entity_id": 108,
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, 0, 0.5 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 1, 1, 1 ]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/quad/quad.obj",
+          "texture_diffuse": "assets/textures/howto5.png",
+          "is_alpha_blended": true,
           "tint_color": [ 0.75, 0.75, 0.75 ]
         }
       ]

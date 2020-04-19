@@ -72,7 +72,7 @@ void main_menu_controller::update(ecs::state& state)
 
 void main_menu_controller::handle_howto_case(ecs::state& state, components::main_menu& menu)
 {
-	for (size_t i = 0; i < 4; ++i)
+	for (size_t i = 0; i < menu.num_howto_pages; ++i)
 	{
 		auto& e = state.find_entity(menu.how_to_play_images[i]);
 		auto& t = e.get_component<transforms::transform>();
@@ -86,7 +86,7 @@ void main_menu_controller::handle_howto_case(ecs::state& state, components::main
 	{
 		play_page_flip(state);
 		menu.how_to_page++;
-		if (menu.how_to_page > 3)
+		if (menu.how_to_page > menu.num_howto_pages - 1)
 			menu.how_to_page = components::main_menu::NoPage;
 	}
 }
@@ -231,7 +231,7 @@ void main_menu_controller::handle_main_menu_case(ecs::state& state, components::
 		}
 	}
 
-	for (size_t i = 0; i < 4; ++i)
+	for (size_t i = 0; i < menu.num_howto_pages; ++i)
 	{
 		auto& e = state.find_entity(menu.how_to_play_images[i]);
 		auto& t = e.get_component<transforms::transform>();

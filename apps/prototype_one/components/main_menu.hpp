@@ -12,6 +12,7 @@ namespace components
 		size_t selection{ 0 };
 		int how_to_page{ NoPage };
 
-		entity_id how_to_play_images[4]{ 104, 105, 106, 107 };
+		size_t num_howto_pages{ 5 };
+		entity_id how_to_play_images[5]{ 104, 105, 106, 107, 108 };
 	};
 }
