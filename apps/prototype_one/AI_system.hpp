@@ -35,8 +35,8 @@ public:
 		}
 		std::random_device rd;
 		auto rng = std::default_random_engine{ rd() };
-		std::uniform_int_distribution<int> dice(0, 2000);
-		auto d2000 = std::bind(dice, rng);
+		std::uniform_int_distribution<int> dice(0, 8000);
+		auto d8000 = std::bind(dice, rng);
 		std::uniform_int_distribution<int> coin(0, 2);
 		auto d2 = std::bind(coin, rng);
 		state.each_id<transforms::transform, components::board>(
@@ -78,7 +78,7 @@ public:
 
 							state.each_id<components::board_square, components::terrain>([&]
 							(entity_id board_square_id, components::board_square& square, components::terrain& terrain) {
-								if (d2000() < (player.team == 1 ? p2_sq : p1_sq) && terrain.type == components::TERRAIN_ENUM::NONE && square.team == player.team) {
+								if (d8000() < (player.team == 1 ? p2_sq* p2_sq : p1_sq* p1_sq) && terrain.type == components::TERRAIN_ENUM::NONE && square.team == player.team) {
 									terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
 									terrain.team = 0.0f;
 									terrain.damage = -1;

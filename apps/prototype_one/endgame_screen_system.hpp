@@ -47,6 +47,8 @@ public:
 					auto& music = camera_entity->get_component<audio::music_player>();
 					music.set_sound_state(0, audio::sound_state::stop_requested);
 
+					stop_all_sound(state);
+
 					asset::scene_change_event restart_event("assets/scenes/main_menu.json");
 					m_r_events.BroadcastEvent(restart_event);
 					return;
@@ -58,6 +60,8 @@ public:
 					auto camera_entity = state.first<rendering::camera>();
 					auto& music = camera_entity->get_component<audio::music_player>();
 					music.set_sound_state(0, audio::sound_state::stop_requested);
+
+					stop_all_sound(state);
 
 					asset::scene_change_event restart_event("assets/scenes/scene.json");
 					m_r_events.BroadcastEvent(restart_event);
@@ -133,6 +137,14 @@ private:
 
 	bool m_is_in_submenu = false;
 	int _current_warning_selection;
+
+	void stop_all_sound(ecs::state& state)
+	{
+		state.each<audio::audio_emitter>([&](audio::audio_emitter& emitter) {
+			for (size_t i = 0; i < emitter.sound_count; ++i)
+				emitter.set_sound_state(i, audio::sound_state::stop_requested);
+		});
+	}
 };
 
 #endif

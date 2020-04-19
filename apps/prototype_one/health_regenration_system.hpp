@@ -34,7 +34,7 @@ public:
 			[&](entity_id board_id, transforms::transform& board_t, components::board& board) {
 				
 
-					if (board.did_tick_elapse)
+					if (board.did_half_tick_elapse)
 					{
 						state.each<components::game_piece>([&]
 						(components::game_piece& piece) {
@@ -44,9 +44,6 @@ public:
 									health_to_add = std::min(health_to_add, piece.max_health - piece.health);
 									if (health_to_add > 0) {
 										for (int i = 0; i < health_to_add; i++) {
-
-											piece.health_points[piece.health].get_component
-												<rendering::renderable_mesh_static>().material.param_diffuse = glm::vec3(0, 1, 0);
 											piece.health++;
 										}
 									}
