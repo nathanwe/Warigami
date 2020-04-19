@@ -130,7 +130,12 @@ private:
         projectileT.parent = 69; // Game board
         projectileT.position = board.grid_to_board(position, board_t);
         projectileT.position.y += 0.5;
-        projectileT.rotation = glm::vec3(0, 90, -48);
+        if (attacker.team == 1) {
+            projectileT.rotation = glm::vec3(0, 90, -48);
+        }
+        else {
+            projectileT.rotation = glm::vec3(60, 90, 90);
+        }
         projectileT.is_matrix_dirty = true;
         attacker.projectiles.push_back(std::make_pair(projectile, board.grid_to_board(destination, board_t) + glm::vec3(0,0.5,0)));
     }
