@@ -45,6 +45,7 @@ add_executable (warigami
 	ready_display_system.cpp
 	main_menu_controller.cpp
 	logo_system.cpp
+	button_tooltip_system.cpp
 	)
 
 target_link_libraries(warigami PRIVATE
