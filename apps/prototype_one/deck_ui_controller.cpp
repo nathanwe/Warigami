@@ -26,7 +26,7 @@ void deck_ui_controller::update(ecs::state &state)
     auto& board_component = _board->get_component<components::board>();
 
     state.each_id<transforms::transform, components::deck_ui>([&](entity_id deck_id, auto& deck_t, auto& deck) {
-        if (board_component.state == components::game_state::gameplay)
+        if (board_component.state == components::game_state::gameplay || board_component.state == components::game_state::countdown)
             handle_deck_ui(state, deck, deck_t, deck_id);
         else
             hide_deck_ui(state, deck, deck_t);

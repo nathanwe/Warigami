@@ -61,7 +61,7 @@ public:
 		toggle_owned_energy_orbs(r_state);
 
 		r_state.each_id<transforms::transform, components::board>([&](entity_id board_id, auto& board_t, components::board& board) {
-			if (board.state != components::game_state::gameplay) return;
+			if (!(board.state == components::game_state::gameplay || board.state == components::game_state::countdown)) return;
 
 			board_reset(r_state);
 
@@ -71,7 +71,7 @@ public:
 					auto& controls = player_specifics.controls;
 					auto forward = player_specifics.values.forward;
 					auto left = player_specifics.values.left;
-					update_pull(player, player_specifics.values);
+					update_pull(player, player_specifics.values, board.state == components::game_state::gameplay);
 					if (player.pull) {
 						r_state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
 							entity_id id1,
@@ -411,7 +411,7 @@ private:
 		auto& controls = player_specifics.controls;
 		int loc = find_selected_card_index(controls);
 		bool placed = false;
-		if (!player.pull) {
+		if (!player.pull && board.state == components::game_state::gameplay) {
 			placed = player.place_card(loc, m_timer.total_s(), r_state, board.spawner, hydrater);
 		}
 		if(placed && loc != -1){
@@ -447,8 +447,8 @@ private:
 	}
 
 	
-	void update_pull(components::player& player, player_values& values) {
-		if (!player.controlled_by_AI) {
+	void update_pull(components::player& player, player_values& values, bool playing) {
+		if (!player.controlled_by_AI && playing) {
 			player.pull = std::abs(values.pull) > 0.4f;
 		}
 			

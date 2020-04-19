@@ -42,7 +42,7 @@ public:
         r_state.each_id<transforms::transform, components::board>(
                 [&](entity_id board_id, transforms::transform& board_t, components::board&board) 
                 {                    
-                    if (board.state != components::game_state::gameplay) return;
+                    if (!(board.state == components::game_state::gameplay || board.state == components::game_state::countdown)) return;
 
                     if (board.did_tick_elapse) 
                     {
