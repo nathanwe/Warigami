@@ -521,61 +521,6 @@ private:
 		transform.scale.y += num;
 		transform.is_matrix_dirty = true;
 	}
-
-
-	void create_terrain(ecs::state& r_state, glm::vec3 relitive_pos, entity_id parent,
-		glm::ivec2 location, components::TERRAIN_ENUM type, float team, int damage = 1, int charges = -1, int duration = -1)
-	{
-		int existing_terrain_here = 0;
-		r_state.each<components::terrain>([&](components::terrain& that_terrain)
-			{
-				if (that_terrain.location == location) {
-					++existing_terrain_here;
-				}
-			});
-
-		static const std::string TerrainPrototypes[5] = {
-			"assets/prototypes/terrain.json",
-			"assets/prototypes/terrain_fire_p1.json",
-			"assets/prototypes/terrain_fire_p2.json",
-			"assets/prototypes/terrain_web_p1.json",
-			"assets/prototypes/terrain_web_p2.json"
-		};
-
-		size_t type_index = 0;
-		if (team == 1.0f && type == components::TERRAIN_ENUM::FIRE) {
-			type_index = 1;
-		}
-		else if (team == -1.0f && type == components::TERRAIN_ENUM::FIRE) {
-			type_index = 2;
-		}
-		else if (team == 1.0f && type == components::TERRAIN_ENUM::WEB) {
-			type_index = 3;
-		}
-		else if (team == -1.0f && type == components::TERRAIN_ENUM::WEB) {
-			type_index = 4;
-		}
-		else {
-			type_index = 0; // this should never happen
-		}
-
-		ecs::entity& nerd = hydrater.add_from_prototype(TerrainPrototypes[type_index]);
-
-		auto& nerdT = nerd.get_component<transforms::transform>();
-		nerdT.position = relitive_pos;
-		nerdT.position.y += .6 + existing_terrain_here * 0.3f;
-		nerdT.has_parent = true;
-		nerdT.parent = parent;
-		nerdT.is_matrix_dirty = true;
-
-		auto& nerdTerrain = nerd.get_component<components::terrain>();
-		nerdTerrain.charges = charges;
-		nerdTerrain.damage = damage;
-		nerdTerrain.duration = duration;
-		nerdTerrain.location = location;
-		nerdTerrain.team = team;
-		nerdTerrain.type = type;
-	}
 };
 
 #endif

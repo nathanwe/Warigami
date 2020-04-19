@@ -20,18 +20,6 @@ public:
 	game_start_system(asset::scene_hydrater& _hydrater, rendering::asset_cache& asset_cache)
 		: hydrater(_hydrater), _asset_cache(asset_cache) {}
 
-	
-	void create_fire_graphics(glm::vec3 relitive_pos, entity_id parent)
-	{
-		ecs::entity nerd = hydrater.add_from_prototype("assets/prototypes/fire_graphic.json");
-		transforms::transform& nerdT = nerd.get_component<transforms::transform>();
-		nerdT.position = relitive_pos;
-		nerdT.position.y += .6;
-		nerdT.has_parent = true;
-		nerdT.parent = parent;
-		nerdT.is_matrix_dirty = true;
-	}
-
 	void update(ecs::state& r_state) override {}
 
 	void initialize(ecs::state& r_state) override
