@@ -86,7 +86,6 @@ void energy_ball_system::update(ecs::state& state)
 					{
 						if (select.team == player_c.team) {
 							emitter.set_sound_state(5, audio::sound_state::playback_requested);
-							emitter.set_sound_state(4, audio::sound_state::stop_requested);
 						}
 					});
 				_hydrater.remove_entity(ball_id);
