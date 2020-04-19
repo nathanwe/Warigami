@@ -11,15 +11,30 @@
         "type": "countdown",
         "duration": 80 
       },
-      {
-        "type": "renderable_mesh_static",
-        "mesh": "assets/meshes/quad/quad.obj",
-        "texture_diffuse": "assets/textures/countdown.png",
-        "is_enabled": false,
-        "is_alpha_blended": true,
-        "tint_color": [ 0.75, 0.75, 0.75 ],
-        "texture_scale": [ 0.25, 1 ]
-      }
+        {
+            "type": "renderable_mesh_static",
+            "mesh": "assets/meshes/quad/quad.obj",
+            "texture_diffuse": "assets/textures/countdown.png",
+            "is_enabled": false,
+            "is_alpha_blended": true,
+            "tint_color": [ 0.75, 0.75, 0.75 ],
+            "texture_scale": [ 0.25, 1 ]
+        },
+        {
+            "type": "audio_emitter",
+            "sounds": [
+                {
+                    "file": "assets/sound/zapsplat_multimedia_alert_chime_ping_high_pitched_001_48007.mp3",
+                    "loop": false,
+                    "volume": 1
+                },
+                {
+                    "file": "assets/sound/zapsplat_multimedia_alert_prompt_feedback_tone_simple_single_note_sine_chime_45766.mp3",
+                    "loop": false,
+                    "volume": 1
+                }
+            ]
+        }
     ]
   }
 }

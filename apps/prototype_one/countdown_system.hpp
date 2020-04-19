@@ -10,6 +10,7 @@
 
 #include "components/countdown.hpp"
 #include "components/pause.hpp"
+#include <audio/audio_emitter.hpp>
 
 #include <algorithm>
 
@@ -51,6 +52,8 @@ public:
 			countdown.current_value = START_COUNT_SECONDS;
 		});
 		_board = r_state.first<components::board>();
+		current_num = 3;
+		did_num_change = false;
 	}
 
 	// Note: Magic numbers in here are what looks good, chosen by looking at results
@@ -62,14 +65,18 @@ public:
 		// Count before starting (3, 2, 1, GO!)
 		if (board_component.state == components::game_state::countdown) 
 		{
-			r_state.each<components::countdown, rendering::renderable_mesh_static>(
-				[&](auto& countdown, auto& render)
+			r_state.each<components::countdown, rendering::renderable_mesh_static, audio::audio_emitter>(
+				[&](auto& countdown, auto& render, auto& emitter)
 				{
 					render.is_enabled = true;
 
 					// {4, 3, 2, 1, 0}
 					auto floored_countdown = static_cast<int>(countdown.current_value);
-
+					did_num_change = current_num != floored_countdown;
+					current_num = floored_countdown;
+					if (did_num_change) {
+						emitter.set_sound_state(0, audio::sound_state::playback_requested);
+					}
 					// {3, 2, 1, 0}
 					floored_countdown = std::clamp(floored_countdown, 0, START_COUNT_SECONDS - 1);
 
@@ -92,6 +99,7 @@ public:
 								pause.is_game_countdown_over = true;
 							});
 					}
+					
 					countdown.current_value -= m_timer.delta_secs();
 				});
 		}
@@ -118,6 +126,8 @@ private:
 	core::glfw_context& _glfw_context;
 
 	ecs::entity* _board {nullptr};
+	int current_num;
+	bool did_num_change;
 };
 
 #endif
