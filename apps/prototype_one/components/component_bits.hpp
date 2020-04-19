@@ -34,7 +34,8 @@ namespace components
 		deck_cursor = 56,
 		spawn_effect = 57,
 		capture = 58,
-		tip = 59
+		tip = 59,
+		button_tooltip = 60
 
 		// careful: need to take action after 
 		// count reaches 63.

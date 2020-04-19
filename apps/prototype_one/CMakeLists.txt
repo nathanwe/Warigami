@@ -37,6 +37,7 @@ add_executable (warigami
 	components/tug_of_war_meter.cpp
 	components/tip.cpp
 	components/tip_loader.cpp
+	components/button_tooltip.cpp
 	deck_selection_controller.cpp
 	deck_ui_controller.cpp
 	energy_ball_system.cpp
