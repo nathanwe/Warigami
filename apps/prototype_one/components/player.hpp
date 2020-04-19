@@ -36,6 +36,10 @@ namespace components
 		WON
 	};
 	typedef std::uint8_t deck_index;
+
+	const static std::vector<int> card_costanamos =
+	{ 0, 0, 3, 3, 8, 4, 5, 4, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 3, 5, 3, 5, 3, 5 };
+
 	const static std::vector<card_enum> spider_deck = {
 			card_enum::SCISSORLING_TWIN,
 			card_enum::SCISSOR_TROOPER,
@@ -95,8 +99,7 @@ namespace components
 		fantasy_deck
 	};
 
-	const static std::vector<int> card_costanamos =
-	{ 0, 0, 3, 3, 8, 4, 5, 4, 8, 3, 3, 3, 4, 4, 4, 5, 5, 5, 0, 0, 3, 5, 3, 5, 3, 5 };
+
 	const static int dice_costanamos = 1;
 
 	enum class dice_nets {

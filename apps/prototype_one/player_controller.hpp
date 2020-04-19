@@ -79,10 +79,12 @@ public:
 							components::selection_arrow& select,
 							audio::audio_emitter& emitter)
 							{
+								auto sound = player.deck_selection == 0 ? 3 : 6;
+
 								if (select.team == player.team) {
-									if (emitter.emitter_sounds[3].state != audio::sound_state::playing)
+									if (emitter.emitter_sounds[sound].state != audio::sound_state::playing)
 									{
-										emitter.set_sound_state(3, audio::sound_state::playback_requested);
+										emitter.set_sound_state(sound, audio::sound_state::playback_requested);
 									}
 								}
 							});
@@ -94,10 +96,12 @@ public:
 							components::selection_arrow& select,
 							audio::audio_emitter& emitter)
 							{
+								auto sound = player.deck_selection == 0 ? 3 : 6;
+
 								if (select.team == player.team) {
-									if (emitter.emitter_sounds[3].state == audio::sound_state::playing)
+									if (emitter.emitter_sounds[sound].state == audio::sound_state::playing)
 									{
-										emitter.set_sound_state(3, audio::sound_state::stop_requested);
+										emitter.set_sound_state(sound, audio::sound_state::stop_requested);
 									}
 								}
 							});
