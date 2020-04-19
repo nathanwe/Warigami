@@ -29,7 +29,12 @@
             "type": "audio_emitter",
             "sounds": [
                 {
-                    "file": "assets/sound/slap.wav",
+                    "file": "assets/sound/zapsplat_animals_insect_chirp_vocalisation_001_18940.mp3",
+                    "loop": false,
+                    "volume": 1
+                },
+                {
+                    "file": "assets/sound/zapsplat_cartoon_squish_squelch_wet_003_14502.mp3",
                     "loop": false,
                     "volume": 1
                 }
