@@ -4,6 +4,7 @@
 #include <ecs/system_base.hpp>
 #include <ecs/state.hpp>
 #include <algorithm>
+#include <random>
 
 #include "components/board.hpp"
 #include "components/pause.hpp"
@@ -32,6 +33,12 @@ public:
 		{
 			return;
 		}
+		std::random_device rd;
+		auto rng = std::default_random_engine{ rd() };
+		std::uniform_int_distribution<int> dice(0, 300);
+		auto d300 = std::bind(dice, rng);
+		std::uniform_int_distribution<int> coin(0, 2);
+		auto d2 = std::bind(coin, rng);
 		state.each_id<transforms::transform, components::board>(
 			[&](entity_id board_id, transforms::transform& board_t, components::board& board) 
 			{				
@@ -51,13 +58,30 @@ public:
 									player.AI_movement_direction = 1;
 								}
 								player.selected_row += player.AI_movement_direction;
-								if (player.selected_row != board.columns - 1) {
+								if (player.selected_row != board.columns - 1 && d2() == 1) {
 									player.place_card(0, _timer.total_s(), state, board.spawner, _hydrater);
+							
+							// extra energy
+								
+
+								state.each_id<components::board_square, components::terrain>([&]
+								(entity_id board_square_id, components::board_square& square, components::terrain& terrain) {
+										if (d300() == 1 && terrain.type == components::TERRAIN_ENUM::NONE) {
+											terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
+											terrain.team = 0.0f;
+											terrain.damage = -1;
+											terrain.duration = -1;
+											terrain.growth_stage = 7;
+										}
+
+
+									});
 							}
 						}
 					}
 				});					
 			});
+
 
 	}
 
