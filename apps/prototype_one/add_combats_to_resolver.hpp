@@ -114,12 +114,23 @@ private:
     }
 
     void spawn_projectile(components::game_piece& attacker, glm::vec2 position, glm::vec2 destination, components::board& board, transforms::transform& board_t) {
-        ecs::entity& projectile = hydrater.add_from_prototype("assets/prototypes/health_unit.json");
+        std::string projectile_type;
+        if (attacker.projectile_type == components::PROJECTILE::PENCIL) {
+            projectile_type = "assets/prototypes/projectile_pencil.json";
+        }
+        else if (attacker.projectile_type == components::PROJECTILE::FIRE) {
+            projectile_type = "assets/prototypes/projectile_fire.json";
+        }
+        else if (attacker.projectile_type == components::PROJECTILE::WEB) {
+            projectile_type = "assets/prototypes/projectile_web.json";
+        }
+        ecs::entity& projectile = hydrater.add_from_prototype(projectile_type);
         transforms::transform& projectileT = projectile.get_component<transforms::transform>();
         projectileT.has_parent = true;
         projectileT.parent = 69; // Game board
         projectileT.position = board.grid_to_board(position, board_t);
         projectileT.position.y += 0.5;
+        projectileT.rotation = glm::vec3(0, 90, -48);
         projectileT.is_matrix_dirty = true;
         attacker.projectiles.push_back(std::make_pair(projectile, board.grid_to_board(destination, board_t) + glm::vec3(0,0.5,0)));
     }
