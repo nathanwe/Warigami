@@ -35,50 +35,62 @@ public:
 		}
 		std::random_device rd;
 		auto rng = std::default_random_engine{ rd() };
-		std::uniform_int_distribution<int> dice(0, 200);
-		auto d200 = std::bind(dice, rng);
+		std::uniform_int_distribution<int> dice(0, 2000);
+		auto d2000 = std::bind(dice, rng);
 		std::uniform_int_distribution<int> coin(0, 2);
 		auto d2 = std::bind(coin, rng);
 		state.each_id<transforms::transform, components::board>(
 			[&](entity_id board_id, transforms::transform& board_t, components::board& board) 
 			{				
 				state.each<components::player>([&](components::player& player)
+				{
+					if (player.controlled_by_AI)
 					{
-						if (player.controlled_by_AI)
+						player.pull = true;
+						if (board.did_tick_elapse)
 						{
-							player.pull = true;
-							if (board.did_tick_elapse)
-							{
-								player.pull = false;
+							player.pull = false;
 								
-								if (player.selected_row >= board.columns - 1) {
-									player.AI_movement_direction = -1;
-								}
-								if (player.selected_row <= 0) {
-									player.AI_movement_direction = 1;
-								}
-								player.selected_row += player.AI_movement_direction;
-								if (player.selected_row != board.columns - 1 && d2() == 1) {
-									player.place_card(0, _timer.total_s(), state, board.spawner, _hydrater);
-							
-							// extra energy
-								
-
-								state.each_id<components::board_square, components::terrain>([&]
-								(entity_id board_square_id, components::board_square& square, components::terrain& terrain) {
-										if (d200() == 1 && terrain.type == components::TERRAIN_ENUM::NONE && square.team == player.team) {
-											terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
-											terrain.team = 0.0f;
-											terrain.damage = -1;
-											terrain.duration = -1;
-											terrain.growth_stage = 7;
-										}
-
-
-									});
+							if (player.selected_row >= board.columns - 1) {
+								player.AI_movement_direction = -1;
 							}
+							if (player.selected_row <= 0) {
+								player.AI_movement_direction = 1;
+							}
+							player.selected_row += player.AI_movement_direction;
+							if (player.selected_row != board.columns - 1 && d2() == 1) {
+								player.place_card(0, _timer.total_s(), state, board.spawner, _hydrater);
+							}
+							
+						// extra energy
+							int p1_sq = 0;
+							int p2_sq = 0;
+							state.each_id<components::board_square, components::terrain>([&]
+							(entity_id board_square_id, components::board_square& square, components::terrain& terrain)
+								{
+									if(square.team == 1) {
+										p1_sq++;
+									}
+									else if (square.team == -1) {
+										p2_sq++;
+									}
+								});
+
+							state.each_id<components::board_square, components::terrain>([&]
+							(entity_id board_square_id, components::board_square& square, components::terrain& terrain) {
+								if (d2000() < (player.team == 1 ? p2_sq : p1_sq) && terrain.type == components::TERRAIN_ENUM::NONE && square.team == player.team) {
+									terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
+									terrain.team = 0.0f;
+									terrain.damage = -1;
+									terrain.duration = -1;
+									terrain.growth_stage = 7;
+								}
+
+
+							});
 						}
 					}
+					
 				});					
 			});
 
