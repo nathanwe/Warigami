@@ -52,7 +52,7 @@ private:
 			return false;
 		}
 		const auto& pause = p_pause_entity->get_component<components::pause>();
-		return !pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over;
+		return !pause.is_game_started || pause.is_game_over;
 	}
 
 	bool kill_spawn_effect(ecs::state& r_state, entity_id id, const components::spawn_effect& spawn_effect)

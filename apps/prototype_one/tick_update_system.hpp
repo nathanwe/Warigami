@@ -26,14 +26,14 @@ public:
 		if (e)
 		{
 			auto& pause = e->get_component<components::pause>();
-			if (pause.is_game_paused || !pause.is_game_started || pause.is_game_over)
+			if (pause.is_game_paused || pause.is_game_over)
 			{
 				return;
 			}
 		}
 
 		state.each<components::board>([&](components::board& board) {
-			if (board.state != components::game_state::gameplay) return;
+			if (!(board.state == components::game_state::gameplay || board.state == components::game_state::countdown)) return;
 
 			board.tick_time_remaining -= _timer.smoothed_delta_secs();
 			

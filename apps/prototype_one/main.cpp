@@ -57,9 +57,6 @@
 #include "board_update_system.hpp"
 #include "player_controller.hpp"
 #include "game_start_system.hpp"
-#include "energy_meter_system.hpp"
-#include "health_meter_system.hpp"
-#include "tug_of_war_system.hpp"
 #include "countdown_system.hpp"
 #include "combat.hpp"
 #include "components/deck_ui.hpp"
@@ -184,9 +181,6 @@ int main(int argc, char** argv) {
 	rendering::freetype_system text_renderer(window_view, assets, strings, render_state);
 	transforms::transformer transformer(hydrater);
 
-	energy_meter_system energy_system(strings, glfw);
-	health_meter_system health_system;
-	tug_of_war_meter_system tug_system;
 	countdown_system count_system(timer, events, strings, glfw);
 	endgame_system endgame(state, events, hydrater);
 	tick_update_system ticker(timer);
@@ -208,9 +202,6 @@ int main(int argc, char** argv) {
 	spawn_effect_system spawn_effector(timer);
 
 	ecs::systems systems({
-		&energy_system,
-		&health_system,
-		&tug_system,
 		&count_system,
 		&camera_updater,
 		&flycam,
@@ -220,15 +211,14 @@ int main(int argc, char** argv) {
 		&game_start_system,
 		&ticker,
 		&remove_dying_and_dancing,
-		&energy_flower_creation_system,
 		&terrain_update_system,
+		&energy_flower_creation_system,
 		&territory_claim_system,
 		&health_regen,
 		&stun_system,
 		&set_game_peice_states_system,
 		&add_combats_to_resolver,
 		&board_updater,
-		&terrain_update_system,
 		&spiderlings,
 		&flash_step_system,
 		&AI_system,		

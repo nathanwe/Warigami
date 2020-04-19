@@ -81,7 +81,7 @@ public:
 		auto& pause = e->get_component<components::pause>();
 		auto& menu_audio = e->get_component<audio::audio_emitter>();
 
-		if (!pause.is_game_started || !pause.is_game_countdown_over || pause.is_game_over)
+		if (!pause.is_game_started || pause.is_game_over)
 		{
 			return;
 		}
