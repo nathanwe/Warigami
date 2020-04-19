@@ -27,6 +27,13 @@ namespace components
 		NUM
 	};
 
+	enum class PROJECTILE {
+		NONE,
+		PENCIL,
+		WEB,
+		FIRE
+	};
+
 	struct game_piece : ecs::component<game_piece>
 	{
 		int speed; // How many squares a unit moves per second
@@ -47,11 +54,13 @@ namespace components
 		glm::vec3 move_world; // A vector for keeping track of which direction is forward for the unit in world-space
 		std::vector<combats::COMBAT_EFFECTS> effects;
 		components::card_enum piece_type; //what kind of unit it is
+		components::PROJECTILE projectile_type; // Type of projectile it uses
 
 		components::UNIT_STATE last_rendered_state = UNIT_STATE::MOVE;
 		unsigned int last_sprite = 0;
 		float time_last_sprite = 0.f;
 		std::vector<ecs::entity> health_points;
+		std::vector<std::pair<ecs::entity, glm::vec3>> projectiles; // Entity-Destination pair
 		bool flash_step_flag = false;
 
 		std::uint8_t spider_egg_spawn_counter{ 0 };

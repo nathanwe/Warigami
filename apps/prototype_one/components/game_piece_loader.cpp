@@ -130,6 +130,23 @@ void components::game_piece_loader::load(asset::asset_loader_node& asset_loader_
 			gp.piece_type = components::card_enum::KNIGHT;
 		}
 	}
+
+	if (json.find("projectile") != json.end())
+	{
+		std::string val = json.find("projectile")->get<std::string>();
+		if (val == "none") {
+			gp.projectile_type = components::PROJECTILE::NONE;
+		} else if (val == "pencil") {
+			gp.projectile_type = components::PROJECTILE::PENCIL;
+		} else if (val == "fire") {
+			gp.projectile_type = components::PROJECTILE::FIRE;
+		} else if (val == "web") {
+			gp.projectile_type = components::PROJECTILE::WEB;
+		}
+	}
+	else {
+		gp.projectile_type = components::PROJECTILE::NONE;
+	}
 }
 
 component_bitset components::game_piece_loader::components_to_load()
