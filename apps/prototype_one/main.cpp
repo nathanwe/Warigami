@@ -88,6 +88,7 @@
 #include "stun_system.hpp"
 #include "tip_system.hpp"
 #include "button_tooltip_system.hpp"
+#include "health_orb_color_system.hpp"
 
 #include "cheat_handler.hpp"
 
@@ -205,6 +206,7 @@ int main(int argc, char** argv) {
 	logo_system logo(timer, events, input);
 	spawn_effect_system spawn_effector(timer);
 	button_tooltip_system button_tooltips;
+	health_orb_color_system health_orb_color;
 
 	ecs::systems systems({
 		&count_system,
@@ -242,6 +244,7 @@ int main(int argc, char** argv) {
 		&button_tooltips,
 
 		//
+		&health_orb_color,
 		&tip_system,
 		&main_menu_controller,
 		&spawn_effector,
