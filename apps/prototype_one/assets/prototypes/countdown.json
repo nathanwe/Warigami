@@ -24,7 +24,7 @@
             "type": "audio_emitter",
             "sounds": [
                 {
-                    "file": "assets/sound/zapsplat_multimedia_alert_chime_ping_high_pitched_001_48007.mp3",
+                    "file": "assets/sound/G.mp3",
                     "loop": false,
                     "volume": 1
                 },
