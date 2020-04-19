@@ -78,6 +78,17 @@ void energy_ball_system::update(ecs::state& state)
 			{
 				player_c.energy = glm::min(player_c.energy + 2, player_c.max_energy);
 				player_c.has_ever_gained_energy = true;
+				state.each_id< transforms::transform, components::selection_arrow, audio::audio_emitter>([&](
+					entity_id id1,
+					transforms::transform& transform,
+					components::selection_arrow& select,
+					audio::audio_emitter& emitter)
+					{
+						if (select.team == player_c.team) {
+							emitter.set_sound_state(5, audio::sound_state::playback_requested);
+							emitter.set_sound_state(4, audio::sound_state::stop_requested);
+						}
+					});
 				_hydrater.remove_entity(ball_id);
 				os::rumble(player_index, RumbleStrength, RumbleStrength);
 				cancel_rumble.reset();

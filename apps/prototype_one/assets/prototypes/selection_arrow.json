@@ -16,31 +16,36 @@
       {
         "type": "audio_emitter",
         "sounds": [
-          {
-            "file": "assets/sound/invalid.mp3",
-            "loop": false,
-            "volume": 1
-          },
-          {
-            "file": "assets/sound/spawn.wav",
-            "loop": false,
-            "volume": 1
-          },
-          {
-            "file": "assets/sound/woosh.mp3",
-            "loop": false,
-            "volume": 0.45
-          },
-          {
-            "file": "assets/sound/pull.mp3",
-            "loop": false,
-            "volume": 0.7
-          },
-          {
-            "file": "assets/sound/win.wav",
-            "loop": false,
-            "volume": 0.6
-          }
+            {
+                "file": "assets/sound/invalid.mp3",
+                "loop": false,
+                "volume": 1
+            },
+            {
+                "file": "assets/sound/spawn.wav",
+                "loop": false,
+                "volume": 1
+            },
+            {
+                "file": "assets/sound/woosh.mp3",
+                "loop": false,
+                "volume": 0.45
+            },
+            {
+                "file": "assets/sound/zapsplat_human_drink_slurp_soda_dregs_ice_through_straw_fast_food_003_18650.mp3",
+                "loop": false,
+                "volume": 0.7
+            },
+            {
+                "file": "assets/sound/win.wav",
+                "loop": false,
+                "volume": 0.6
+            },
+            {
+                "file": "assets/sound/zapsplat_human_eat_bite_potato_raw_single_004_39700.mp3",
+                "loop": false,
+                "volume": 0.8
+            }
         ]
       }
     ]
