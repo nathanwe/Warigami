@@ -6,16 +6,33 @@
       },
       {
         "type": "deck_ui"
-      }
+      }      
     ]
   },
   "children": [
+    {
+      "components": [
+        {
+          "type": "transform",
+          "position": [ 0, -8.3, -27 ],
+          "rotation": [ 0, 0, 180 ],
+          "scale": [2.2,2.2,2.2]
+        },
+        {
+          "type": "renderable_mesh_static",
+          "mesh": "assets/meshes/deck_backdrop/deck_backdrop.gltf",
+          "is_alpha_blended": false,
+          "texture_diffuse": "assets/meshes/deck_backdrop/backdrop_tex.png"
+        }
+      ]
+    },
+
     {
       "prototype": "assets/prototypes/tooltip_a.json",
       "components": [
         {
           "type": "transform",
-          "position": [ -16.6, -3.6, -23.5 ]
+          "position": [ -16.6, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",
@@ -29,7 +46,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -12.6, -3.6, -23.5 ]
+          "position": [ -12.6, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",
@@ -43,7 +60,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -8.6, -3.6, -23.5 ]
+          "position": [ -8.6, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",
@@ -57,7 +74,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ -4.6, -3.6, -23.5 ]
+          "position": [ -4.6, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",
@@ -71,7 +88,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 1.6, -3.6, -23.5 ]
+          "position": [ 1.6, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",
@@ -85,7 +102,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 5.6, -3.6, -23.5 ]
+          "position": [ 5.6, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",
@@ -99,7 +116,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 9.5, -3.6, -23.5 ]
+          "position": [ 9.5, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",
@@ -113,7 +130,7 @@
       "components": [
         {
           "type": "transform",
-          "position": [ 13.5, -3.6, -23.5 ]
+          "position": [ 13.5, -3.3, -23.5 ]
         },
         {
           "type": "button_tooltip",

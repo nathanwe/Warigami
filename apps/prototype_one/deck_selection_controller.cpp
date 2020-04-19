@@ -681,6 +681,22 @@ void deck_selection_controller::animate_rotation(
 	transform.is_matrix_dirty = true;
 }
 
+void deck_selection_controller::animate_scale(
+	float animation_t,
+	components::deck_selection& selection,
+	size_t player_index,
+	size_t deck_index,
+	ecs::entity& entity)
+{
+	auto& transform = entity.get_component<transforms::transform>();	
+
+	// this is a terrible hack that needs to go, and also a big brain moment
+	static glm::vec3 original_scale = transform.scale;
+
+	transform.scale = original_scale + glm::vec3(animation_t * 0.45f);
+	transform.is_matrix_dirty = true;
+}
+
 void deck_selection_controller::animate(ecs::state& state, size_t player_index, components::deck_selection& selection)
 {
 	auto deck_index = _players[player_index]->get_component<components::player>().deck_selection;		
@@ -696,6 +712,8 @@ void deck_selection_controller::animate(ecs::state& state, size_t player_index, 
 
 	animate_position(animation_t, selection, player_index, deck_index, next_entity, selection.position_keyframes);	
 	animate_rotation(animation_t, selection, player_index, deck_index, next_entity);
+	animate_scale(animation_t, selection, player_index, deck_index, next_entity);
+
 	
 	next_t.is_matrix_dirty = true;	
 	
@@ -708,6 +726,7 @@ void deck_selection_controller::animate(ecs::state& state, size_t player_index, 
 
 		animate_position(animation_t_reverse, selection, player_index, deck_index, current_entity, selection.position_keyframes_under);
 		animate_rotation(animation_t_reverse, selection, player_index, deck_index, current_entity);
+		animate_scale(animation_t_reverse, selection, player_index, deck_index, current_entity);
 	}
 
 	// clean up when animation is over
