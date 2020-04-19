@@ -66,7 +66,7 @@ public:
 
 								state.each_id<components::board_square, components::terrain>([&]
 								(entity_id board_square_id, components::board_square& square, components::terrain& terrain) {
-										if (d300() == 1 && terrain.type == components::TERRAIN_ENUM::NONE) {
+										if (d300() == 1 && terrain.type == components::TERRAIN_ENUM::NONE && square.team == player.team) {
 											terrain.type = components::TERRAIN_ENUM::ENERGY_FLOWER;
 											terrain.team = 0.0f;
 											terrain.damage = -1;
