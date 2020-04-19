@@ -10,7 +10,7 @@
       {
         "type": "renderable_mesh_static",
         "mesh": "assets/meshes/quad/quad.obj",
-        "texture_diffuse": "assets/textures/fantasy/unicorn.png"
+        "texture_diffuse": "assets/textures/cards/cards-unicorn.png"
       },
       {
         "type": "card",

@@ -51,6 +51,7 @@
 #include "components/capture.hpp"
 #include "components/tip.hpp"
 #include "components/tip_loader.hpp"
+#include "components/button_tooltip.hpp"
 
 // Game systems
 #include "fly_cam_system.hpp"
@@ -134,7 +135,8 @@ int main(int argc, char** argv) {
 	ecs::register_component<components::ready_display>("ready_display");
 	ecs::register_component<components::main_menu>("main_menu");
 	ecs::register_component<components::energy_ball>("energy_ball");
-	ecs::register_component<components::logo>("logo");	
+	ecs::register_component<components::logo>("logo");
+	ecs::register_component<components::button_tooltip>("button_tooltip");
 	ecs::register_component<transforms::transform>("transform");
 	ecs::register_component<rendering::camera>("camera");
 	ecs::register_component<rendering::light_directional>("light_directional");
