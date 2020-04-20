@@ -44,9 +44,9 @@
                     "volume": 1
                 },
                 {
-                    "file": "assets/sound/zapsplat_cartoon_squish_squelch_wet_003_14502.mp3",
+                    "file": "assets/sound/crumple.wav",
                     "loop": false,
-                    "volume": 0.8
+                    "volume": 0.9
                 }
             ]
         }
