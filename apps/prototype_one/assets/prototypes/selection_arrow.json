@@ -34,7 +34,7 @@
           {
             "file": "assets/sound/spiderpull.mp3",
             "loop": true,
-            "volume": 1 
+            "volume": 0.6 
           },
           {
             "file": "assets/sound/win.wav",

@@ -80,10 +80,11 @@ private:
  
 
     void death_check(ecs::state& r_state) {
-        r_state.each_id<components::game_piece>([&](entity_id id, components::game_piece& game_piece) {
+        r_state.each_id<components::game_piece, audio::audio_emitter>([&](entity_id id, components::game_piece& game_piece, audio::audio_emitter& emitter) {
             if (game_piece.health <= 0 && (game_piece.state == components::UNIT_STATE::MOVE || game_piece.state == components::UNIT_STATE::ATTACK || game_piece.state == components::UNIT_STATE::STUN))
             {
                 game_piece.state = components::UNIT_STATE::DYING;
+                emitter.set_sound_state(1, audio::sound_state::playback_requested);
             }
 
             });

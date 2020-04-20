@@ -75,7 +75,7 @@ public:
 					did_num_change = current_num != floored_countdown;
 					current_num = floored_countdown;
 					if (did_num_change) {
-						emitter.set_sound_state(0, audio::sound_state::playback_requested);
+						//emitter.set_sound_state(0, audio::sound_state::playback_requested);
 					}
 					// {3, 2, 1, 0}
 					floored_countdown = std::clamp(floored_countdown, 0, START_COUNT_SECONDS - 1);
@@ -92,6 +92,7 @@ public:
 						auto camera_entity = r_state.first<rendering::camera>();
 						auto& music = camera_entity->get_component<audio::music_player>();
 						music.set_sound_state(0, audio::sound_state::playback_requested);
+						emitter.set_sound_state(0, audio::sound_state::playback_requested);
 
 						board_component.state = components::game_state::gameplay;
 						r_state.each<components::pause>([&](auto& pause)
