@@ -66,6 +66,14 @@ void audio::audio_system::cleanup(ecs::state& state)
             mp.tracks[i].set_null();
         }
     });
+
+    state.each<audio_emitter>([&](audio_emitter& ae) {
+        for (size_t i = 0; i < ae.sound_count; ++i)
+        {
+            stop_sound(ae.emitter_sounds[i]);
+            ae.emitter_sounds[i].set_null();
+        }
+    });
 }
 
 void audio::audio_system::initialize(ecs::state& state)
