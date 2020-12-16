@@ -164,7 +164,7 @@ namespace components
 		components::dice_nets current_dice_shape = dice_nets::SEVEN;
 		card_enum hand[MaxCards];
 		std::uint8_t card_count = 0;
-		bool controlled_by_AI = false;
+		int controlled_by_AI = 0;
 		int AI_movement_direction = 1;
 		bool pull = false;
 		bool has_ever_gained_energy = false;
@@ -181,6 +181,11 @@ namespace components
 		bool is_ready{ false };
 
 		anim_params animation_parameters{};
+		float AI_dificulty = 2.0f;
+		float AI_dificulty_sdev = 0.5f;
+
+
+
 
 		card_enum draw() {
 			card_count++;

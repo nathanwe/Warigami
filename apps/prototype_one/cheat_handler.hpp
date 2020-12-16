@@ -27,7 +27,7 @@ public:
 			{
 				_state.each<components::player>([&](components::player& player) {
 					if (player.team == 1.0f) {
-						player.controlled_by_AI = !player.controlled_by_AI;
+						player.controlled_by_AI = (player.controlled_by_AI + 2) % 3;
 					}
 					});
 			}
@@ -35,14 +35,92 @@ public:
 			{
 				_state.each<components::player>([&](components::player& player) {
 					if (player.team == -1.0f) {
-						player.controlled_by_AI = !player.controlled_by_AI;
+						player.controlled_by_AI = (player.controlled_by_AI + 2) % 3;
+					}
+					});
+			}
+			if (event.mData == "make_p1_harder"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					if (player.team == 1.0f) {
+						player.AI_dificulty -= .25f;
+					}
+					});
+			}
+			if (event.mData == "make_p2_harder"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					if (player.team == -1.0f) {
+						player.AI_dificulty -= .25f;
+					}
+					});
+			}
+			if (event.mData == "make_p1_easyer"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					if (player.team == 1.0f) {
+						player.AI_dificulty += .25f;
+					}
+					});
+			}
+			if (event.mData == "make_p2_easyer"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					if (player.team == -1.0f) {
+						player.AI_dificulty += .25f;
 					}
 					});
 			}
 			if (event.mData == "attract_mode"s)
 			{
 				_state.each<components::player>([&](components::player& player) {
-					player.controlled_by_AI = true;
+					if (player.team == 1.0f) {
+						player.controlled_by_AI = 2;
+						player.AI_dificulty = -1.0;
+					}
+					if (player.team == -1.0f) {
+						player.controlled_by_AI = 1;
+					}
+					});
+				_state.each<components::board_square>([&](components::board_square& square) {
+					if (square.y < 4) {
+						square.next_team = 1.0;
+					}
+					else {
+						square.next_team = -1.0;
+					}
+					});
+			}
+			if (event.mData == "ai_attract_mode"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					if (player.team == 1.0f) {
+						player.controlled_by_AI = 2;
+						player.AI_dificulty = 1.0;
+					}
+					if (player.team == -1.0f) {
+						player.controlled_by_AI = 2;
+						player.AI_dificulty = 3.0;
+					}
+					});
+				_state.each<components::board_square>([&](components::board_square& square) {
+					if (square.y < 4) {
+						square.next_team = 1.0;
+					}
+					else {
+						square.next_team = -1.0;
+					}
+					});
+			}
+			if (event.mData == "old_attract_mode"s)
+			{
+				_state.each<components::player>([&](components::player& player) {
+					if (player.team == 1.0f) {
+						player.controlled_by_AI = 1;
+					}
+					if (player.team == -1.0f) {
+						player.controlled_by_AI = 1;
+					}
 					});
 				_state.each<components::board_square>([&](components::board_square& square) {
 					if (square.y < 4) {

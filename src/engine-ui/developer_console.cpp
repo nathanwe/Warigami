@@ -96,7 +96,17 @@ void engineui::developer_console::handle_command()
 		cheat triggeredEvent("toggle_P1_AI");
 		_events.BroadcastEvent(triggeredEvent);
 	}
+	if (strcmp(_input, "t1") == 0)
+	{
+		cheat triggeredEvent("toggle_P1_AI");
+		_events.BroadcastEvent(triggeredEvent);
+	}
 	if (strcmp(_input, "toggle_P2_AI") == 0)
+	{
+		cheat triggeredEvent("toggle_P2_AI");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "t2") == 0)
 	{
 		cheat triggeredEvent("toggle_P2_AI");
 		_events.BroadcastEvent(triggeredEvent);
@@ -104,6 +114,21 @@ void engineui::developer_console::handle_command()
 	if (strcmp(_input, "attract_mode") == 0)
 	{
 		cheat triggeredEvent("attract_mode");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "am") == 0)
+	{
+		cheat triggeredEvent("attract_mode");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "old_am") == 0)
+	{
+		cheat triggeredEvent("old_attract_mode");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "ai_am") == 0)
+	{
+		cheat triggeredEvent("ai_attract_mode");
 		_events.BroadcastEvent(triggeredEvent);
 	}
 	if (strcmp(_input, "refill_energy") == 0)
@@ -136,6 +161,27 @@ void engineui::developer_console::handle_command()
 		cheat triggeredEvent("redraw_hands");
 		_events.BroadcastEvent(triggeredEvent);
 	}
+	if (strcmp(_input, "make_p1_harder") == 0)
+	{
+		cheat triggeredEvent("make_p1_harder");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "make_p2_harder") == 0)
+	{
+		cheat triggeredEvent("make_p2_harder");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "make_p1_easyer") == 0)
+	{
+		cheat triggeredEvent("make_p1_easyer");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+	if (strcmp(_input, "make_p2_easyer") == 0)
+	{
+		cheat triggeredEvent("make_p2_easyer");
+		_events.BroadcastEvent(triggeredEvent);
+	}
+
 
 	write_buffer(_command, "> ");
 	write_buffer(_command, _input);
